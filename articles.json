@@ -1,0 +1,12 @@
+[
+  {
+    "title": "My First Article",
+    "image": "./assets/images/image1.jpg",
+    "content": "This is the main text of my first article. I can write a lot here."
+  },
+  {
+    "title": "Another Cool Article",
+    "image": "./assets/images/image2.png",
+    "content": "Here is the content for my second post."
+  }
+]
