@@ -1,0 +1,4 @@
+### Hail Mary: Ett jävla påhitt ###
+## Kultur ##
+# Vilhelm Grill #
+Filmen Project: Hail Mary regisserad av Phil Lord och Chris Miller med Ryan Gosling som stjärnskådis är helt och hållet påhittad. Filmens handling centrerar kring att galaxens solar håller på att dö och Gosling måste åka ut i rymden och lösa det. Redan baserat på det blir man skeptisk eftersom jordens sol inte alls håller på att dö, men det blir galnare. Det visar sig nämligen att huvudskådisen aldrig faktiskt åkte upp i rymden. I en intervju med Gosling sa han: “Jag trodde att jag skulle få åka upp i rymden och rädda jorden, men allt jag fick göra var att säga massa repliker framför en greenscreen”. Många andra som jobbade på filmen har också uttryckt missnöje över att den var i sin helhet fabricerad. Som svar på all denna kritik har NASA gått ut med ett uttalande om att vår sol faktiskt håller på att dö ut, men att vi inte har en lösning. Project: Hail Mary får 8,5/10 Goslings av Löken.

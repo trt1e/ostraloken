@@ -1,0 +1,2 @@
+### Skatorna förklarar krig ###
+En av Östra Lökens reportrar har bevittnat hur skatorna anföll en sparv i Älvsjö-området. Reportern jagade efter skatorna och ifrågasatte attacken. Skatoras respons löd: “Sparvjäven var i vägen så den behövde utrotas”.
