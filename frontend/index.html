@@ -4,34 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Östra Löken Hemsidan</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./universal.css">
+    <link rel="stylesheet" href="./index.css">
 </head>
 <body>
-    <div id="top_progress_bar_container">
-        <div id="top_progress_bar"></div>
-    </div>
     <header>
-        <a href="index.html" id="header_titel_container"><h1 id="header_titel_card"><b>Östra Löken</b></h1></a>
-
-        <div id="header_items_container">
-            <a href="" class="header_card"><h2 class="header_card_content">Artiklar</h2></a>
-            <a href="" class="header_card"><h2 class="header_card_content">PDF:er</h2></a>
-            <a href="" class="header_card"><h2 class="header_card_content">IMG library</h2></a>
-            <a href="om_oss.html" class="header_card"><h2 class="header_card_content">Om oss</h2></a>
-            <a href="" class="header_card"><h2 class="header_card_content">Kontaktinfo</h2></a>
-        </div>
-
-        <div id="header_info_container">
-            <div class="header_info_cards"><time id="header_time">time</time></div>
-            <div class="header_info_cards"><p id="header_date">date</p></div>
-            <div class="header_info_cards"><p id="header_wether">...</p></div>
-        </div>
+        <p id="header_date"><b>Söndag 29 mars</b></p>
+        <img id="header_titel_image" alt="Östra Löken logo" src="./images/logo/östra löken i östra format rak vit text.png">
+        <p><b>Hotfult nära verkligheten</b></p>
     </header>
-    <div style="display: flex; justify-content: center;"> <!--bara centrerar main-->
-        <main>
-            <p id="article"></p>
-        </main>
+    <div id="dropdown">•••
+        <div id="dropdown_button_container">
+            <a href="" class="dropdown_button">Hem</a>
+            <a href="" class="dropdown_button">Artiklar</a>
+            <a href="" class="dropdown_button">PDF:er</a>
+            <a href="" class="dropdown_button">Notiser</a>
+            <a href="" class="dropdown_button">Hear me out:s</a>
+            <a href="" class="dropdown_button">Om oss</a>
+            <a href="" class="dropdown_button">Kontaktinfo</a>
+        </div>
     </div>
+    <main>
+        <a class="article" id="article_1">
+            <img id="img_1" src="https://östragymnasiet.com/om_skolan/images/omskolan_image_1.webp">
+            <h2 id="title_1">Löken avslöjar: Lärare skvallrar om elever under lunchen</h2>
+            <p id="preview_1">Under de senaste veckorna har Löken lyssnat av samtalen på ett antal lärarbord och Löken kan nu avslöja vad lärare pratar om under dessa samtalsstunder. Vad är det egentligen lärare pratar om som får dem att skratta så mycket?</p>
+        </a>
+        <a class="article" id="article_2">
+            <img id="img_2" src="./images/Test.png">
+            <h2 id="title_2">Test title</h2>
+            <p id="preview_2">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quibusdam atque laborum cupiditate voluptates reprehenderit mollitia nemo!</p>
+        </a>
+    </main>
     <footer id="footer">
         <div class="footer_text">
             <p>Östra Lökens Policy:</p>
@@ -48,7 +52,9 @@
             <p>
             <br>Vilhelm Grill <br>
             Joar Stange <br>
-            John Ericson
+            John Ericson <br>
+            Magne Nordström <br>
+            Elliot Sandström
             </p> 
         </div>
         <div class="footer_text" style="text-align: right;">
@@ -60,7 +66,5 @@
             </p>
         </div>
     </footer>
-    <script src="script.js"></script>
-    <script src="fetchjson.js"></script>
 </body>
 </html>
