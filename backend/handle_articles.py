@@ -102,38 +102,46 @@ def home():
 
 @app.route("/normal_storys", methods=["GET"])
 def read_normal_storys(): # To get the files and their content from all normal articals 
-    file_list = os.listdir(normal_story_path) # list all files in dir
-    number_of_articles = 0
+    upplaga_list = os.listdir(normal_story_path) # list all folders in dir
+    upplaga_number = 0
+    article_output_sum = []
     output_sum = []
-    for file in file_list: # Go througth every file in the list and extract the content
-        number_of_articles += 1
-        content = open(normal_story_path + "\\" + file, "tr", encoding="utf-8") # extract
-        whole_text = content.read() # read it
-        
-        # find the positions of difrent key parts
-        title_pos1 = whole_text.find("## ") + 3
-        title_pos2 = whole_text.find(" ##")
-        type_pos1 = whole_text.find("¤¤ ") + 3
-        type_pos2 = whole_text.find(" ¤¤")
-        writer_pos1 = whole_text.find("@@ ") + 3
-        writer_pos2 = whole_text.find(" @@")
-        
-        # Sum up into the title, type, writer and article
-        title = whole_text[title_pos1:title_pos2]
-        type = whole_text[type_pos1:type_pos2]
-        writer = whole_text[writer_pos1:writer_pos2]
-        article = whole_text[(writer_pos2 + 4):]
-        
-        """
-        print("Title:", title)
-        print("Type:", type)
-        print("Writer:", writer)
-        print("Article:", article)
-        """
-        
-        content.close() # at the end
-        
-        output = ({f"full_info_article_{number_of_articles}": {"Title": title, "Type": type, "Writer": writer, "Article": article}})
+    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
+        file_list = os.listdir(normal_story_path + "\\" + upplaga) # list all files in dir  
+        number_of_articles = 0
+        article_output_sum = []
+        upplaga_number = upplaga.split("_")[1]
+        for file in file_list: # Go througth every file in the list and extract the content
+            number_of_articles += 1
+            content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8") # extract
+            whole_text = content.read() # read it
+            
+            # find the positions of difrent key parts
+            title_pos1 = whole_text.find("## ") + 3
+            title_pos2 = whole_text.find(" ##")
+            type_pos1 = whole_text.find("¤¤ ") + 3
+            type_pos2 = whole_text.find(" ¤¤")
+            writer_pos1 = whole_text.find("@@ ") + 3
+            writer_pos2 = whole_text.find(" @@")
+            
+            # Sum up into the title, type, writer and article
+            title = whole_text[title_pos1:title_pos2]
+            type = whole_text[type_pos1:type_pos2]
+            writer = whole_text[writer_pos1:writer_pos2]
+            article = whole_text[(writer_pos2 + 4):]
+            
+            """
+            print("Title:", title)
+            print("Type:", type)
+            print("Writer:", writer)
+            print("Article:", article)
+            """
+            
+            content.close() # at the end
+            
+            article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
+            article_output_sum.append(article_output)
+        output = ({upplaga_number: article_output_sum})
         output_sum.append(output)
         
     return jsonify(output_sum)
