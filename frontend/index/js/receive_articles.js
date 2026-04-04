@@ -8,18 +8,21 @@ function httpGet(theUrl) {
 function render_normal_storys() {
     const all_storys_json = httpGet("http://127.0.0.1:5000/normal_storys");
     const all_storys_parsed = JSON.parse(all_storys_json);
-    // console.log(all_storys_parsed);
+    console.log(all_storys_parsed.length);
 
     const main_object = document.querySelector("main")
+    
+    let upplagor_data = {}; // This is where the articles are in order
 
-    let upplaga_adjusted = 0;
-    for (let upplaga_number = 0; upplaga_number < all_storys_parsed.length; upplaga_number++) { 
-        upplaga_adjusted = upplaga_number + 31; // change when having lower base upplaga
+    for (let upplaga_number = 0; upplaga_number < all_storys_parsed.length; upplaga_number++) { // This is so js can order them
         const upplagor_object = all_storys_parsed[upplaga_number]; // this is just getting the object out
-        const upplagor_data = upplagor_object[upplaga_adjusted]; // This is the arrey
+        upplagor_data[upplagor_object["Upplaga"]] = upplagor_object["Content"];
+    };
 
-        for (let article_number = 0; article_number < upplagor_data.length; article_number++) {
-            const article_all_info = upplagor_data[article_number];
+    for (let upplaga_number = all_storys_parsed.length; upplaga_number >= 1; upplaga_number--) { // Same thing as erlyer only now orderd
+        console.log(upplaga_number)
+        for (let article_number = 0; article_number < upplagor_data[upplaga_number].length; article_number++) {
+            const article_all_info = upplagor_data[upplaga_number][article_number];
             
             const article_title = article_all_info["Title"];
             const article_type = article_all_info["Type"];

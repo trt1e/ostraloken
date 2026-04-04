@@ -141,7 +141,7 @@ def read_normal_storys(): # To get the files and their content from all normal a
             
             article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
             article_output_sum.append(article_output)
-        output = ({upplaga_number: article_output_sum})
+        output = ({"Upplaga": upplaga_number, "Content": article_output_sum})
         output_sum.append(output)
         
     return jsonify(output_sum)
