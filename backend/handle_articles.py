@@ -117,11 +117,11 @@ def read_normal_storys(): # To get the files and their content from all normal a
             whole_text = content.read() # read it
             
             # find the positions of difrent key parts
-            title_pos1 = whole_text.find("## ") + 3
+            title_pos1 = whole_text.find("### ") + 4
             title_pos2 = whole_text.find(" ##")
-            type_pos1 = whole_text.find("¤¤ ") + 3
+            type_pos1 = whole_text.find("¤¤¤ ") + 4
             type_pos2 = whole_text.find(" ¤¤")
-            writer_pos1 = whole_text.find("@@ ") + 3
+            writer_pos1 = whole_text.find("@@@ ") + 4
             writer_pos2 = whole_text.find(" @@")
             
             # Sum up into the title, type, writer and article

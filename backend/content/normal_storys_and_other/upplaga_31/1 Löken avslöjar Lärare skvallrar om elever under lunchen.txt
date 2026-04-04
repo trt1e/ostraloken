@@ -1,6 +1,6 @@
-## Löken avslöjar: Lärare skvallrar om elever under lunchen ##
-¤¤ Artikel ¤¤
-@@ Vilhelm Grill @@
+### Löken avslöjar: Lärare skvallrar om elever under lunchen ##
+¤¤¤ Artikel ¤¤
+@@@ Vilhelm Grill @@
 Under de senaste veckorna har Löken lyssnat av samtalen på ett antal lärarbord och Löken kan nu avslöja vad lärare pratar om under dessa samtalsstunder. Vad är det egentligen lärare pratar om som får dem att skratta så mycket?
 Östras elever har spekulerat om vad lärarna pratar om under lunchen sedan skolan grundades. Många elever har åskådat tystnaden som följer efter att en elev går förbi ett lärarbord. “Det är som om de pratar om oss”, säger en av eleverna Löken pratade med. “Eller snarare våra betyg”, inflikar en annan elev. Redan 2009 försökte ett antal tvåor lyssna på vad lärarna pratade om genom att sätta sig vid bordet intill, men lärarna insåg vad som försiggick och pratade om helt vanliga saker. Löken pratade också med två elever som 2015 försökte vira sig ner på vajrar från taket för att lyssna på vad lärarna pratade om, men även då insåg lärarna vad som hände och pratade åter om reguljära ämnen. 
 Genom att borra tunnlar under skolan har mikrofoner kunnat placeras ut på rälsar under matsalen. Dessa sätts sedan i en superposition då all personal lämnar de underjordiska tunnlarna och genom att sedan se var lärarna befinner sig kan Löken tvinga mikrofonerna att kollapsa på precis de platserna som finns under lärarna. Sedan extraheras datan från mikrofoner till en superdator som kan återskapa konversationen med 90 % säkerhet. Sist matas all den här datan in i en egenskapad LLM som Löken har utvecklat för att sammanfatta vad konversationerna handlade om. 
