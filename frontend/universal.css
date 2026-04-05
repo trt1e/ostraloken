@@ -72,12 +72,45 @@ body {
     }
 }
 
+/* Header */
+header {
+    z-index: 10;
+    width: 100%;
+    top: 0;
+    background-color: var(--primary-color);
+    overflow: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+header p {
+    font-size: 1.2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: hsl(0, 0%, 100%, 90%);
+}
+
+#header_titel_image {
+    width: 12rem;
+    padding: 0.5rem;
+}
+@media (width <= 13rem) {
+    #header_titel_image {
+        width: calc(100% - 1rem);
+    }
+}
+
+header p {
+    width: 33%;
+    text-align: center;
+}
+
 /* Main */
 main {
     margin: 0 auto 0 auto;
     padding: 3rem;
     width: calc(80rem - 8rem);
-    min-height: 150vh;
+    min-height: 100vh;
     height: fit-content;
     /*
     border-left: var(--darker-bg-color) solid 2px;

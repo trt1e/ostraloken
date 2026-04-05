@@ -2,14 +2,10 @@
 .article {
     background-color: transparent;
     padding: 1rem;
-    cursor: pointer;
     display: block;
     margin-bottom: 3rem;
     color: var(--text-color);
     text-decoration: none;
     border: var(--darker-bg-color) solid 2px;
     transition: 0.3s;
-}
-.article:hover {
-    border: var(--darkest-bg-color) solid 2px;
 }
