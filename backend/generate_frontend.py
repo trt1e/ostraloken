@@ -160,4 +160,4 @@ def generate_index():
     shutil.copy(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
     """
      
-print(generate_lone_article("", "wow", "content"))
+print(generate_lone_article("https://östragymnasiet.com/om_skolan/images/omskolan_image_1.webp", "wow", "content"))
