@@ -1,7 +1,11 @@
 import os
 
 base_path = os.getcwd()
+
+# READ TEXT
 normal_story_path = base_path + r"\ostraloken\backend\content\normal_storys_and_other"
+short_story_path = base_path + r"\ostraloken\backend\content\short_storys.txt"
+hear_me_outs_path = base_path + r"\ostraloken\backend\content\hear_me_outs.txt"
 
 def read_normal_storys(): # To get the files and their content from all normal articals 
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
@@ -46,73 +50,114 @@ def read_normal_storys(): # To get the files and their content from all normal a
         output = ({"Upplaga": upplaga_number, "Content": article_output_sum})
         output_sum.append(output)
         
-def put_into_html(title, article):
-    new_file = """
-    <!DOCTYPE html>
-    <html lang="sv">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Östra Löken Hemsidan</title>
-        <link rel="stylesheet" href="../universal.css">
-        <link rel="stylesheet" href="./article_universal.css">
-    </head>
-    <body>
-        <header>
-            <p id="header_date"><b>Söndag 29 mars</b></p>
-            <img id="header_titel_image" alt="Östra Löken logo" src="../images/logo/östra löken i östra format rak vit text.png">
-            <p><b>Hotfult nära verkligheten</b></p>
-        </header>
-        <div id="dropdown">•••
-            <div id="dropdown_button_container">
-                <a href="" class="dropdown_button">Hem</a>
-                <a href="" class="dropdown_button">Artiklar</a>
-                <a href="" class="dropdown_button">PDF:er</a>
-                <a href="" class="dropdown_button">Notiser</a>
-                <a href="" class="dropdown_button">Hear me out:s</a>
-                <a href="" class="dropdown_button">Om oss</a>
-                <a href="" class="dropdown_button">Kontaktinfo</a>
-            </div>
-        </div>
-        <main>
-            <div class="article">
-                <img src="../images/Test.png">
-                <h2>{title}</h2>
-                <p>{article}</p>
-            </div>
-        </main>
-        <footer id="footer">
-            <div class="footer_text">
-                <p>Östra Lökens Policy:</p>
-                <p>
-                    <br>Alla elevers namn är påhittade. <br>
-                    Östra Löken siktar på att slå <br>
-                    uppåt med satiren, inte neråt. <br>
-                    Alla artiklar är skrivna av människor. <br>
-                    Tidningen är satir. <br>
-                </p>
-            </div>
-            <div class="footer_text" style="text-align: center;">
-                <p>Östra Löken produceras av:</p>
-                <p>
-                <br>Vilhelm Grill <br>
-                Joar Stange <br>
-                John Ericson <br>
-                Magne Nordström <br>
-                Elliot Sandström <br>
-                </p> 
-            </div>
-            <div class="footer_text" style="text-align: right;">
-                <p>Nå oss på:</p>
-                <p>
-                    <br>Instagram: ostra_loken <br>
-                    Email: ostraloken@gmail.com <br>
-                    Linktree: linktr.ee/ostraloken <br>
-                </p>
-            </div>
-        </footer>
+    return output_sum
 
-        <script src="./index/js/receive_articles.js"></script>
-    </body>
-    </html>
+def read_short_storys(): # To get the files and their content from all short articals 
+    content = open(short_story_path, "tr", encoding="utf-8") # extract
+    whole_text = content.read() # read it
+    last_final_pos = 0
+    output_sum = []
+    for number_of_articles in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
+        # find the positions of difrent key parts
+        title_pos1 = whole_text.find("### ", last_final_pos) + 4
+        title_pos2 = whole_text.find(" ##", last_final_pos)
+        article_pos1 = whole_text.find("+++ ", last_final_pos) + 4
+        article_pos2 = whole_text.find(" ++", last_final_pos)
+        last_final_pos = article_pos2 + 3
+        
+        # Sum up into the title, type, writer and article
+        title = whole_text[title_pos1:title_pos2]
+        article = whole_text[article_pos1:article_pos2]
+        
+        """
+        print("Hear_me_out:", hear_me_out)
+        print("Description:", desc)
+        """
+        
+        output = ({"Number": number_of_articles, "Contet": {"Title": title, "Article": article}})
+        output_sum.append(output)
+    
+    content.close() # at the end
+        
+    return output_sum
+
+def read_hear_me_outs(): # To get the contents from all hear me outs
+    content = open(hear_me_outs_path, "tr", encoding="utf-8") # extract
+    whole_text = content.read() # read it
+    last_final_pos = 0
+    output_sum = []
+    for number_of_hear_me_outs in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
+        # find the positions of difrent key parts
+        hear_me_out_pos1 = whole_text.find("### ", last_final_pos) + 4
+        hear_me_out_pos2 = whole_text.find(" ##", last_final_pos)
+        desc_pos1 = whole_text.find("+++ ", last_final_pos) + 4
+        desc_pos2 = whole_text.find(" ++", last_final_pos)
+        last_final_pos = desc_pos2 + 3
+        
+        # Sum up into the title, type, writer and article
+        hear_me_out = whole_text[hear_me_out_pos1:hear_me_out_pos2]
+        desc = whole_text[desc_pos1:desc_pos2]
+        
+        """
+        print("Hear_me_out:", hear_me_out)
+        print("Description:", desc)
+        """
+        
+        output = ({"Number": number_of_hear_me_outs, "Content": {"Har_me_out": hear_me_out, "Description": desc}})
+        output_sum.append(output)
+    
+    content.close() # at the end
+        
+    return output_sum
+
+# GENERATE SITES
+lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
+index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
+index_generated_path = base_path + r"\ostraloken\frontend\generated\index.html"
+article_template_path = base_path + r"\ostraloken\frontend\template\article.html"
+# generated_articles_path = base_path + r"\ostraloken\frontend\generated\a\"
+
+def generate_lone_article(img_src, title, content):
+    if img_src is None or img_src == "":
+        img_src = "./images/Test.png"
+    if title is None:
+        title = "Null"
+    if content is None:
+        content = "Null"
+    
+    template_opend = open(lone_article_template_path)
+    template = template_opend.read()
+    
+
+    # Find where it says <!-- [+title+] -->
+    img_src_title_pos = template.find('img src="') + 9
+    # Find where it says <!-- [+title+] -->
+    article_title_pos = template.find("<!-- [+title+] -->") + 18 
+    # Find where it says <!-- [+content+] -->
+    article_content_pos = template.find("<!-- [+content+] -->") + 20 
+    
+    final_article = template[:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
+    
+    template_opend.close()
+    return final_article
+
+def generate_index():
+    template_opend = open(index_template_path)
+    template = template_opend.read()
+    
+    # Find where it says <!-- [+articles+] -->
+    article_container_pos = template.find("<!-- [+articles+] -->") + 21
+    
+    
+    template_opend.close()
+    
     """
+    import shutil
+
+    shutil.copyfile(src, dst)
+
+    # 2nd option
+    shutil.copy(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
+    """
+     
+print(generate_lone_article("", "wow", "content"))
