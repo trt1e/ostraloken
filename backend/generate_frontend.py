@@ -1,5 +1,5 @@
 import os
-import shutil
+import json
 
 base_path = os.getcwd()
 
@@ -19,35 +19,36 @@ def read_normal_storys(): # To get the files and their content from all normal a
         article_output_sum = []
         upplaga_number = upplaga.split("_")[1]
         for file in file_list: # Go througth every file in the list and extract the content
-            number_of_articles += 1
-            content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8") # extract
-            whole_text = content.read() # read it
-            
-            # find the positions of difrent key parts
-            title_pos1 = whole_text.find("### ") + 4
-            title_pos2 = whole_text.find(" ##")
-            type_pos1 = whole_text.find("¤¤¤ ") + 4
-            type_pos2 = whole_text.find(" ¤¤")
-            writer_pos1 = whole_text.find("@@@ ") + 4
-            writer_pos2 = whole_text.find(" @@")
-            
-            # Sum up into the title, type, writer and article
-            title = whole_text[title_pos1:title_pos2]
-            type = whole_text[type_pos1:type_pos2]
-            writer = whole_text[writer_pos1:writer_pos2]
-            article = whole_text[(writer_pos2 + 4):]
-            
-            """
-            print("Title:", title)
-            print("Type:", type)
-            print("Writer:", writer)
-            print("Article:", article)
-            """
-            
-            content.close() # at the end
-            
-            article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
-            article_output_sum.append(article_output)
+            if file != "upplaga_info.txt":
+                number_of_articles += 1
+                content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8") # extract
+                whole_text = content.read() # read it
+                
+                # find the positions of difrent key parts
+                title_pos1 = whole_text.find("### ") + 4
+                title_pos2 = whole_text.find(" ##")
+                type_pos1 = whole_text.find("¤¤¤ ") + 4
+                type_pos2 = whole_text.find(" ¤¤")
+                writer_pos1 = whole_text.find("@@@ ") + 4
+                writer_pos2 = whole_text.find(" @@")
+                
+                # Sum up into the title, type, writer and article
+                title = whole_text[title_pos1:title_pos2]
+                type = whole_text[type_pos1:type_pos2]
+                writer = whole_text[writer_pos1:writer_pos2]
+                article = whole_text[(writer_pos2 + 4):]
+                
+                """
+                print("Title:", title)
+                print("Type:", type)
+                print("Writer:", writer)
+                print("Article:", article)
+                """
+                
+                content.close() # at the end
+                
+                article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
+                article_output_sum.append(article_output)
         output = ({"Upplaga": upplaga_number, "Content": article_output_sum})
         output_sum.append(output)
         
@@ -120,7 +121,9 @@ index_generated_path = base_path + r"\ostraloken\frontend\generated\index.html"
 article_template_path = base_path + r"\ostraloken\frontend\template\article.html"
 # generated_articles_path = base_path + r"\ostraloken\frontend\generated\a\"
 
-def generate_lone_article(img_src, title, content):
+def generate_lone_article(redirect_src, img_src, title, content):
+    if redirect_src is None or redirect_src == "":
+        redirect_src = "./"
     if img_src is None or img_src == "":
         img_src = "./images/Test.png"
     if title is None:
@@ -132,31 +135,44 @@ def generate_lone_article(img_src, title, content):
     template = template_opend.read()
     
 
-    # Find where it says <!-- [+title+] -->
+    # Find where you put the redirect src
+    redirect_src_title_pos = template.find('a src="') + 7
+    # Find where you put the img src
     img_src_title_pos = template.find('img src="') + 9
     # Find where it says <!-- [+title+] -->
     article_title_pos = template.find("<!-- [+title+] -->") + 18 
     # Find where it says <!-- [+content+] -->
     article_content_pos = template.find("<!-- [+content+] -->") + 20 
     
-    final_article = template[:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
+    final_article = template[:redirect_src_title_pos] + redirect_src + template[redirect_src_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
     
     template_opend.close()
     return final_article
 
 def generate_index():
-    template_opend = open(index_template_path)
+    template_opend = open(index_template_path, encoding="utf-8")
     template = template_opend.read()
     
     # Find where it says <!-- [+articles+] -->
-    article_container_pos = template.find("<!-- [+articles+] -->") + 21
+    article_container_pos = template.find("<!-- [+articles+] -->") + 22
     
-    generated_article = generate_lone_article("https://östragymnasiet.com/om_skolan/images/omskolan_image_1.webp", "wow", "content")
+    generated_articles = ""
     
-    generated_file = open(index_generated_path, "w")
-    generated_file.write(template[:article_container_pos] + generated_article + template[(article_container_pos + len(generated_article)):])
+    for upplaga in read_normal_storys():
+        content = upplaga["Content"]
+        if content:
+            for article in content:
+                article_title = article["Title"]
+                article_main_text = article["Article"][:400]
+                article_main_text_last_caracter = article_main_text.find(". ", 200)
+                generated_articles += generate_lone_article("", "", article_title,(article_main_text[:article_main_text_last_caracter] + "..."))
+    
+    generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
+    generated_file.write(template[:article_container_pos] + generated_articles + template[(article_container_pos):]) #write to it
     
     template_opend.close()
+    
+    print("Index successfully generated!")
     
     """
 

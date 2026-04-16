@@ -13,3 +13,8 @@
 .article:hover {
     border: var(--darkest-bg-color) solid 2px;
 }
+@media (width <= 30rem) {
+    .article p {
+        display: none;
+    }
+}

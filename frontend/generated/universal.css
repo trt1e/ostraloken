@@ -89,6 +89,11 @@ header p {
     font-family: Georgia, 'Times New Roman', Times, serif;
     color: hsl(0, 0%, 100%, 90%);
 }
+@media (width <= 50rem) {
+    header p {
+        display: none;
+    }
+}
 
 #header_titel_image {
     width: 12rem;
@@ -129,7 +134,7 @@ main {
 }
 @media (width < 45rem) {
     main {
-        width: calc(100% - 2rem);
+        width: calc(100% - 4rem);
         padding: 2rem;
     }
 }
