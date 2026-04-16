@@ -1,6 +1,7 @@
 /* Content in main */
 .article {
     background-color: transparent;
+    position: relative;
     padding: 1rem;
     cursor: pointer;
     display: block;
@@ -17,4 +18,18 @@
     .article p {
         display: none;
     }
+}
+.type_text {
+    width: fit-content;
+    background-color: var(--accent-color);
+    color: white;
+    font-size: 1.8rem;
+    position: absolute;
+    padding: 0.2rem;
+    top: 1.6rem;
+    right: 1.6rem;
+}
+.author_text {
+    text-align: end;
+    font-size: 1rem;
 }

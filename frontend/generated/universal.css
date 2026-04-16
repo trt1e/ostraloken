@@ -1,11 +1,11 @@
 /* Base */
 :root {
     --bg-color: #fbf6f3;
-    --darker-bg-color: #f3efec;
+    --darker-bg-color: #ece8e4;
     --darkest-bg-color: #d3cecc;
     --text-color: #130c09;
     --primary-color: #EE7322;
-    --acent-color: #d18f73;
+    --accent-color: #da8852;
 }
 * {
     margin: 0;
@@ -88,6 +88,7 @@ header p {
     font-size: 1.2rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
     color: hsl(0, 0%, 100%, 90%);
+    cursor: default;
 }
 @media (width <= 50rem) {
     header p {

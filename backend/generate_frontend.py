@@ -52,7 +52,7 @@ def read_normal_storys(): # To get the files and their content from all normal a
         output = ({"Upplaga": upplaga_number, "Content": article_output_sum})
         output_sum.append(output)
         
-    return output_sum
+    return (output_sum)
 
 def read_short_storys(): # To get the files and their content from all short articals 
     content = open(short_story_path, "tr", encoding="utf-8") # extract
@@ -121,7 +121,7 @@ index_generated_path = base_path + r"\ostraloken\frontend\generated\index.html"
 article_template_path = base_path + r"\ostraloken\frontend\template\article.html"
 # generated_articles_path = base_path + r"\ostraloken\frontend\generated\a\"
 
-def generate_lone_article(redirect_src, img_src, title, content):
+def generate_lone_article(redirect_src, img_src, title, content, type, author):
     if redirect_src is None or redirect_src == "":
         redirect_src = "./"
     if img_src is None or img_src == "":
@@ -141,10 +141,14 @@ def generate_lone_article(redirect_src, img_src, title, content):
     img_src_title_pos = template.find('img src="') + 9
     # Find where it says <!-- [+title+] -->
     article_title_pos = template.find("<!-- [+title+] -->") + 18 
+    # Find where it says <!-- [+type+] -->
+    article_type_pos = template.find("<!-- [+type+] -->") + 17
     # Find where it says <!-- [+content+] -->
     article_content_pos = template.find("<!-- [+content+] -->") + 20 
+    # Find where it says <!-- [+author+] -->
+    article_author_pos = template.find("<!-- [+author+] -->") + 19
     
-    final_article = template[:redirect_src_title_pos] + redirect_src + template[redirect_src_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
+    final_article = template[:redirect_src_title_pos] + redirect_src + template[redirect_src_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_type_pos] + type + template[article_type_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
     
     template_opend.close()
     return final_article
@@ -158,14 +162,16 @@ def generate_index():
     
     generated_articles = ""
     
-    for upplaga in read_normal_storys():
+    for upplaga in reversed(read_normal_storys()):
         content = upplaga["Content"]
         if content:
             for article in content:
                 article_title = article["Title"]
                 article_main_text = article["Article"][:400]
                 article_main_text_last_caracter = article_main_text.find(". ", 200)
-                generated_articles += generate_lone_article("", "", article_title,(article_main_text[:article_main_text_last_caracter] + "..."))
+                article_type = article["Type"]
+                article_author = article["Writer"]
+                generated_articles += generate_lone_article("", "", article_title,(article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[(article_container_pos):]) #write to it
@@ -181,5 +187,6 @@ def generate_index():
     # 2nd option
     shutil.copy(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
     """
-     
+
+# print(read_normal_storys())    
 generate_index()
