@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Östra Löken Hemsidan</title>
-    <link rel="stylesheet" href="./universal.css">
-    <link rel="stylesheet" href="./index/style.css">
+    <link rel="stylesheet" href="../universal.css">
+    <link rel="stylesheet" href="./AAA_article_universal.css">
 </head>
 <body>
     <header>
         <p><b>Hotfullt nära verkligheten</b></p>
-        <a href="./"><img id="header_titel_image" alt="Östra Löken logo" src="./images/logo/östra löken i östra format rak vit text.png"></a>
+        <a href="../"><img id="header_titel_image" alt="Östra Löken logo" src="../images/logo/östra löken i östra format rak vit text.png"></a>
         <p><b id="header_date"></b></p> <!-- Example: Söndag 29 mars -->
     </header>
     <div id="dropdown">•••
         <div id="dropdown_button_container">
-            <a href="./" class="dropdown_button">Hem</a>
+            <a href="../" class="dropdown_button">Hem</a>
             <a href="" class="dropdown_button">Artiklar</a>
-            <a href="./pdfer/" class="dropdown_button">PDF:er</a>
+            <a href="../pdfer/" class="dropdown_button">PDF:er</a>
             <a href="" class="dropdown_button">Notiser</a>
             <a href="" class="dropdown_button">Hear me out:s</a>
             <a href="" class="dropdown_button">Om oss</a>
@@ -26,8 +26,14 @@
     </div>
     <main>
 
-        <!-- [+articles+] -->
-
+        <!-- [+article+] -->
+        <div href="" class="article">
+            <img src="../images/Test.png">
+            <h2><!-- [+title+] -->Vad har hänt med dagens fusk-anda?</h2>
+            <p class="type_text"><!-- [+type+] -->Reportage</p>
+            <p><!-- [+content+] -->Jag sitter i ett tapetserat vardagsrum, en kopp kaffe står och rycker på ett bord framför mig. Mittemot mig är Göran Lutter, expert på Lunds universitet, som pratar om ett nytt fenomen: tråkigt fuskande. Han förklarar hur början av 90- till 2000 talet var en "guldåldern" för kreativt fuskande. “Nuförtiden använder folk bara AI, fusklappar eller gömda mobiler”. Visst finns det gömda hörlurar och James Bond-liknande prylar men de ursprungar oftast från en fusk-överklass, förklarar experten. En studie utförd av Umeås universitet visade att bara 3% av fusk utfördes genom annat än smugglade mobiler, lappar eller generativ AI. “Jag önskar ju såklart att vi inte befann oss i detta läge, men det finns saker vi kan göra; man kan komma på egna fusk eller till och med strejka för sämre fusk motverkan" säger Göran avslutande.</p>
+            <p class="author_text"><b><!-- [+author+] -->Vilhelm Grill</b></p>
+        </div>
     </main>
     <footer id="footer">
         <div class="footer_text">
@@ -59,7 +65,7 @@
             </p>
         </div>
     </footer>
-
-    <script src="./js/set_date.js"></script>
+    
+    <script src="../js/set_date.js"></script>
 </body>
 </html>

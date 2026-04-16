@@ -4,20 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Östra Löken Hemsidan</title>
-    <link rel="stylesheet" href="./universal.css">
-    <link rel="stylesheet" href="./index/style.css">
+    <link rel="stylesheet" href="../universal.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <header>
         <p><b>Hotfullt nära verkligheten</b></p>
-        <a href="./"><img id="header_titel_image" alt="Östra Löken logo" src="./images/logo/östra löken i östra format rak vit text.png"></a>
+        <a href="../"><img id="header_titel_image" alt="Östra Löken logo" src="../images/logo/östra löken i östra format rak vit text.png"></a>
         <p><b id="header_date"></b></p> <!-- Example: Söndag 29 mars -->
     </header>
     <div id="dropdown">•••
         <div id="dropdown_button_container">
-            <a href="./" class="dropdown_button">Hem</a>
+            <a href="../" class="dropdown_button">Hem</a>
             <a href="" class="dropdown_button">Artiklar</a>
-            <a href="./pdfer/" class="dropdown_button">PDF:er</a>
+            <a href="./" class="dropdown_button">PDF:er</a>
             <a href="" class="dropdown_button">Notiser</a>
             <a href="" class="dropdown_button">Hear me out:s</a>
             <a href="" class="dropdown_button">Om oss</a>
@@ -25,9 +25,17 @@
         </div>
     </div>
     <main>
+        <h1>Upplagor</h1>
+        <div id="pdf_nav_UI">
+            <button class="pdf_nav_buttons" aria-label="Tidigare upplaga">tidigare</button>
+            <button class="pdf_nav_buttons" aria-label="Tidigare upplaga">byt till bildrendering</button>
+            <button class="pdf_nav_buttons" aria-label="Nästa upplaga">nästa</button>
+        </div>
 
-        <!-- [+articles+] -->
-
+        <p id="pdf_upplaga_number">Upplaga 1</p>
+        <iframe id="main_pdf" title="Östra Löken upplagor" src="./pdfs/Östra_Löken_upplaga_1.pdf"></iframe>
+        <div id="pdf_container"></div>
+        <h2 id="pdf_loading_text">Laddar…</h2>
     </main>
     <footer id="footer">
         <div class="footer_text">
@@ -59,7 +67,8 @@
             </p>
         </div>
     </footer>
-
-    <script src="./js/set_date.js"></script>
+    
+    <script src="../js/set_date.js"></script>
+    <script type="module" src="./js/PDFjs_reader.js"></script>
 </body>
 </html>

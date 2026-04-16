@@ -1,5 +1,5 @@
 import os
-import json
+import re
 
 base_path = os.getcwd()
 
@@ -49,10 +49,11 @@ def read_normal_storys(): # To get the files and their content from all normal a
                 
                 article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
                 article_output_sum.append(article_output)
-        output = ({"Upplaga": upplaga_number, "Content": article_output_sum})
+        output = ({"Upplaga": int(upplaga_number), "Content": article_output_sum})
         output_sum.append(output)
         
-    return (output_sum)
+    output_sum.sort(key=lambda x: int(x["Upplaga"])) # sortera den baserat på upplaga_number
+    return output_sum
 
 def read_short_storys(): # To get the files and their content from all short articals 
     content = open(short_story_path, "tr", encoding="utf-8") # extract
@@ -118,25 +119,26 @@ lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_ar
 index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
 index_generated_path = base_path + r"\ostraloken\frontend\generated\index.html"
 
-article_template_path = base_path + r"\ostraloken\frontend\template\article.html"
-# generated_articles_path = base_path + r"\ostraloken\frontend\generated\a\"
+article_template_path = base_path + r"\ostraloken\frontend\template\articles_pages.html"
+generated_articles_path = base_path + r"\ostraloken\frontend\generated\a" + "\\"
 
 def generate_lone_article(redirect_src, img_src, title, content, type, author):
+    # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./"
     if img_src is None or img_src == "":
-        img_src = "./images/Test.png"
-    if title is None:
+        img_src = "Null"
+    if title is None or title == "":
         title = "Null"
-    if content is None:
+    if content is None or content == "":
         content = "Null"
-    
+        
     template_opend = open(lone_article_template_path)
     template = template_opend.read()
     
 
     # Find where you put the redirect src
-    redirect_src_title_pos = template.find('a src="') + 7
+    redirect_href_title_pos = template.find('a href="') + 8
     # Find where you put the img src
     img_src_title_pos = template.find('img src="') + 9
     # Find where it says <!-- [+title+] -->
@@ -148,8 +150,13 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     # Find where it says <!-- [+author+] -->
     article_author_pos = template.find("<!-- [+author+] -->") + 19
     
-    final_article = template[:redirect_src_title_pos] + redirect_src + template[redirect_src_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_type_pos] + type + template[article_type_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
-    
+    if redirect_src != "SHOULD_NOT_REDIRECT":
+        final_article = template[:redirect_href_title_pos] + redirect_src + template[redirect_href_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_type_pos] + type + template[article_type_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
+    else: # make article not ancor
+        first_a_pos = template.find("<a") + 1
+        second_a_pos = template.find("</a", first_a_pos) + 2
+        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_type_pos] + type + template[article_type_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
+        
     template_opend.close()
     return final_article
 
@@ -171,22 +178,44 @@ def generate_index():
                 article_main_text_last_caracter = article_main_text.find(". ", 200)
                 article_type = article["Type"]
                 article_author = article["Writer"]
-                generated_articles += generate_lone_article("", "", article_title,(article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
+                article_img_src = "./images/Test.png"
+                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), article_img_src, article_title,(article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:article_container_pos] + generated_articles + template[(article_container_pos):]) #write to it
+    generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
     
     template_opend.close()
     
     print("Index successfully generated!")
+
+def generate_all_articles():
+    template_opend = open(article_template_path, encoding="utf-8")
+    template = template_opend.read()
     
-    """
+    # Find where it says <!-- [+article+] -->
+    article_pos = template.find("<!-- [+article+] -->") + 21
+    
+    # go throught every upplaga
+    for upplaga in read_normal_storys():
+        # go throught every article in the upplaga
+        for article in upplaga["Content"]:
+            if article: # somethimes article is empty, this prevents that
+                generated_articles = "" # where we put the article
 
-    shutil.copyfile(src, dst)
-
-    # 2nd option
-    shutil.copy(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
-    """
+                article_title = str(article["Title"])
+                article_main_text = str(article["Article"])
+                article_type = str(article["Type"])
+                article_author = str(article["Writer"])
+                article_img_src = "../images/Test.png"
+                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
+            
+                generated_file = open((generated_articles_path + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), "w", encoding="utf-8") # create / find the file
+                generated_file.write(template[:article_pos] + generated_articles + template[article_pos:]) # write to it
+            
+    template_opend.close()
+        
+    print("All articles successfully generated!")
 
 # print(read_normal_storys())    
 generate_index()
+generate_all_articles()
