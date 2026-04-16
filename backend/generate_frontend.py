@@ -1,4 +1,5 @@
 import os
+import shutil
 
 base_path = os.getcwd()
 
@@ -112,8 +113,10 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
 
 # GENERATE SITES
 lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
+
 index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
 index_generated_path = base_path + r"\ostraloken\frontend\generated\index.html"
+
 article_template_path = base_path + r"\ostraloken\frontend\template\article.html"
 # generated_articles_path = base_path + r"\ostraloken\frontend\generated\a\"
 
@@ -148,11 +151,14 @@ def generate_index():
     # Find where it says <!-- [+articles+] -->
     article_container_pos = template.find("<!-- [+articles+] -->") + 21
     
+    generated_article = generate_lone_article("https://östragymnasiet.com/om_skolan/images/omskolan_image_1.webp", "wow", "content")
+    
+    generated_file = open(index_generated_path, "w")
+    generated_file.write(template[:article_container_pos] + generated_article + template[(article_container_pos + len(generated_article)):])
     
     template_opend.close()
     
     """
-    import shutil
 
     shutil.copyfile(src, dst)
 
@@ -160,4 +166,4 @@ def generate_index():
     shutil.copy(src, dst)  # dst can be a folder; use shutil.copy2() to preserve timestamp
     """
      
-print(generate_lone_article("https://östragymnasiet.com/om_skolan/images/omskolan_image_1.webp", "wow", "content"))
+generate_index()
