@@ -117,10 +117,10 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
 lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
 
 index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
-index_generated_path = base_path + r"\ostraloken\frontend\generated\index.html"
+index_generated_path = base_path + r"\ostraloken\frontend\webbpage\index.html"
 
 article_template_path = base_path + r"\ostraloken\frontend\template\articles_pages.html"
-generated_articles_path = base_path + r"\ostraloken\frontend\generated\a" + "\\"
+generated_articles_path = base_path + r"\ostraloken\frontend\webbpage\a" + "\\"
 
 def generate_lone_article(redirect_src, img_src, title, content, type, author):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"

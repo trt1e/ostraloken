@@ -1,7 +1,8 @@
-document.addEventListener("DOMContentLoaded", () => {set_date()});
+const now_date = get_date();
 
-function set_date() {
-    const date_element = document.getElementById("header_date");
+document.addEventListener("DOMContentLoaded", () => {set_date(now_date)});
+
+function get_date() {
     const date = new Date();
     let new_date_string = "";
 
@@ -14,6 +15,11 @@ function set_date() {
     let month = months[date.getMonth()];
     new_date_string += month;
 
-    date_element.innerText = new_date_string;
-    console.log("Setting date to: " + new_date_string);
+    return new_date_string;
+};
+
+function set_date(date_given) {
+    const date_element = document.getElementById("header_date");
+    date_element.innerText = date_given;
+    console.log("Setting date to: " + date_given);
 };
