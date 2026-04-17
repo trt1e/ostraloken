@@ -1,0 +1,39 @@
+/* Content in main */
+.kontakt_card {
+    background-color: transparent;
+    position: relative;
+    padding: 1rem;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 3rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border: var(--darker-bg-color) solid 2px;
+    transition: 0.3s;
+    display: flex;
+}
+.kontakt_card:hover {
+    border: var(--darkest-bg-color) solid 2px;
+}
+.kontakt_card.highlight {
+    border: var(--accent-color) solid 2px;
+    background-color: var(--darker-bg-color);
+}
+.kontakt_card.highlight:hover {
+    border: var(--primary-color) solid 2px;
+}
+.kontakt_card img {
+    height: 5rem;
+    width: 5rem;
+    border-radius: 50%;
+}
+.kontakt_card h2 {
+    font-size: 1.5rem;
+    margin: auto auto auto 1rem;
+}
+
+/*Text styling*/
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}

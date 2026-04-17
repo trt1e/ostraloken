@@ -17,25 +17,40 @@
         <div id="dropdown_button_container">
             <a href="../" class="dropdown_button">Hem</a>
             <a href="" class="dropdown_button">Artiklar</a>
-            <a href="./" class="dropdown_button">PDF:er</a>
+            <a href="../pdfer/" class="dropdown_button">PDF:er</a>
             <a href="" class="dropdown_button">Notiser</a>
             <a href="" class="dropdown_button">Hear me out:s</a>
             <a href="" class="dropdown_button">Om oss</a>
-            <a href="../kontaktinfo/" class="dropdown_button">Kontaktinfo</a>
+            <a href="./" class="dropdown_button">Kontaktinfo</a>
         </div>
     </div>
     <main>
-        <h1>Upplagor</h1>
-        <div id="pdf_nav_UI">
-            <button class="pdf_nav_buttons" aria-label="Tidigare upplaga">tidigare</button>
-            <button class="pdf_nav_buttons" aria-label="Tidigare upplaga">byt till bildrendering</button>
-            <button class="pdf_nav_buttons" aria-label="Nästa upplaga">nästa</button>
-        </div>
+        <h1>Kontaktinfo</h1>
 
-        <p id="pdf_upplaga_number">Upplaga 1</p>
-        <iframe id="main_pdf" title="Östra Löken upplagor" src="./pdfs/Östra_Löken_upplaga_1.pdf"></iframe>
-        <div id="pdf_container"></div>
-        <h2 id="pdf_loading_text">Laddar…</h2>
+        <a class="kontakt_card highlight" href="mailto:ostraloken@gmail.com">
+            <img src="./images/email_icon.svg">
+            <h2>Redaktionen: ostraloken@gmail.com</h2>
+        </a>
+        <a class="kontakt_card" href="mailto:vilhelm.grill@gmail.com">
+            <img src="./images/Vilhelm.png">
+            <h2>Epost: Vilhelm Grill</h2>
+        </a>
+        <a class="kontakt_card" href="mailto:joar.stange@edu.huddinge.se">
+            <img src="./images/Joar.png">
+            <h2>Epost: Joar Stange</h2>
+        </a>
+        <a class="kontakt_card" href="mailto:john.ericson@edu.huddinge.se">
+            <img src="./images/John.png">
+            <h2>Epost: John Ericson</h2>
+        </a>
+        <a class="kontakt_card" href="mailto:magne.nordstrom@edu.huddinge.se">
+            <img src="./images/email_icon.svg">
+            <h2>Epost: Magne Nordström</h2>
+        </a>
+        <a class="kontakt_card" href="mailto:elliot.sandstrom@edu.huddinge.se">
+            <img src="./images/Elliot.png">
+            <h2>Epost: Elliot Sandström</h2>
+        </a>
     </main>
     <footer id="footer">
         <div class="footer_text">
@@ -69,6 +84,5 @@
     </footer>
     
     <script src="../js/set_date.js"></script>
-    <script type="module" src="./js/PDFjs_reader.js"></script>
 </body>
 </html>
