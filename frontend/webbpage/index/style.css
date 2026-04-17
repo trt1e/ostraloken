@@ -15,7 +15,7 @@
     border: var(--darkest-bg-color) solid 2px;
 }
 @media (width <= 30rem) {
-    .article p {
+    .article .main_article_text {
         display: none;
     }
 }
