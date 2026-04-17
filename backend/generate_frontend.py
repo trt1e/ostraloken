@@ -209,7 +209,7 @@ def generate_articles_page():
                 article_main_text_last_caracter = article_main_text.find(". ", 200)
                 article_type = article["Type"]
                 article_author = article["Writer"]
-                article_img_src = "./images/Test.png"
+                article_img_src = "../images/Test.png"
                 generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), article_img_src, article_title,(article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
     
     generated_file = open(articles_page_generated_path, "w", encoding="utf-8") # create / find the file
