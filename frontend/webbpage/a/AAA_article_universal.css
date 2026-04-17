@@ -10,11 +10,6 @@
     border: var(--darker-bg-color) solid 2px;
     transition: 0.3s;
 }
-@media (width <= 30rem) {
-    .article p {
-        display: none;
-    }
-}
 .type_text {
     width: fit-content;
     background-color: var(--highlight-color);
