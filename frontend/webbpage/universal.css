@@ -166,6 +166,20 @@ main p {
     font-size: 1.2rem;
 }
 
+/* Content in main */
+.article {
+    background-color: transparent;
+    position: relative;
+    padding: 1rem;
+    cursor: pointer;
+    display: block;
+    margin-bottom: 3rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border: var(--darker-bg-color) solid 2px;
+    transition: 0.3s;
+}
+
 /* Footer */
 footer {
     min-width: 100%;
