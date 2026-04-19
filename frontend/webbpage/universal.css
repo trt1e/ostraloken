@@ -171,7 +171,6 @@ main p {
     background-color: transparent;
     position: relative;
     padding: 1rem;
-    cursor: pointer;
     display: block;
     margin-bottom: 3rem;
     color: var(--text-color);

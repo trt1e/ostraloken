@@ -119,9 +119,6 @@ lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_ar
 index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
 index_generated_path = base_path + r"\ostraloken\frontend\webbpage\index.html"
 
-articles_page_template_path = base_path + r"\ostraloken\frontend\template\articles_site.html"
-articles_page_generated_path = base_path + r"\ostraloken\frontend\webbpage\artiklar\index.html"
-
 article_template_path = base_path + r"\ostraloken\frontend\template\articles_pages.html"
 generated_articles_path = base_path + r"\ostraloken\frontend\webbpage\a" + "\\"
 
@@ -177,12 +174,19 @@ def generate_index():
         if content:
             for article in content:
                 article_title = article["Title"]
+                if len(article_title) >= 60:
+                    article_title = article_title[:60] + "..."
                 article_main_text = article["Article"][:400]
+                if "<b>" in article_main_text:
+                    article_main_text = article_main_text.replace("<b>", "") # remove any bolding
+                    article_main_text = article_main_text.replace("</b>", "") # remove any bolding
                 article_main_text_last_caracter = article_main_text.find(". ", 200)
+                if article_main_text[:article_main_text_last_caracter].find("<br>") != -1:
+                    article_main_text_last_caracter = article_main_text.find("<br>") - 1
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 article_img_src = "./images/Test.png"
-                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), article_img_src, article_title,(article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
+                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
@@ -190,34 +194,6 @@ def generate_index():
     template_opend.close()
     
     print("Index successfully generated!")
-
-def generate_articles_page():
-    template_opend = open(articles_page_template_path, encoding="utf-8")
-    template = template_opend.read()
-    
-    # Find where it says <!-- [+articles+] -->
-    article_container_pos = template.find("<!-- [+articles+] -->") + 22
-    
-    generated_articles = ""
-    
-    for upplaga in reversed(read_normal_storys()):
-        content = upplaga["Content"]
-        if content:
-            for article in content:
-                article_title = article["Title"]
-                article_main_text = article["Article"][:400]
-                article_main_text_last_caracter = article_main_text.find(". ", 200)
-                article_type = article["Type"]
-                article_author = article["Writer"]
-                article_img_src = "../images/Test.png"
-                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), article_img_src, article_title,(article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
-    
-    generated_file = open(articles_page_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
-    
-    template_opend.close()
-    
-    print("Articles page successfully generated!")
 
 def generate_all_articles():
     template_opend = open(article_template_path, encoding="utf-8")
@@ -249,5 +225,11 @@ def generate_all_articles():
 
 # print(read_normal_storys())    
 generate_index()
-generate_articles_page()
 generate_all_articles()
+
+"""
+Saker att lägga till
+- sökfunktion
+- infinite scroll
+
+"""
