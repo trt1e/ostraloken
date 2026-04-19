@@ -1,16 +1,16 @@
-Fråga att besvaras: Bör notiser som handlar om aktuella grejer användas?
-
+VIKTIGT: Alla notiser finns med här, men om notisen typ var tidsbaserat så att den inte var relevant
+för framtiden har den strukits med två "--" i början och slutet.
 
 Upplaga 1 (6/5/2025):
 
-### Du som går i åk 3! ##
-+++ Skolan förväntar sig ditt skåp tömt och städat till senast 31 maj. Om du går i åk 1 eller åk 2 får du sno någon av de nu tillgängliga skåpen om du först frågar vaktmästaren. ++
+###--Du som går i åk 3!--##
++++--Skolan förväntar sig ditt skåp tömt och städat till senast 31 maj. Om du går i åk 1 eller åk 2 får du sno någon av de nu tillgängliga skåpen om du först frågar vaktmästaren.--++
 
 ### Nytt förslag! ##
 +++ En grupp elever tog förra veckan fram ett förslag på en matte studie stödgrupp för elever som inte vågar gå till den riktiga. ++
 
-### Var beredd! ##
-+++ Skolan startade för-förra veckan upp det årstidsberoende programmet där de slumpmässigt stänger salar för "nationella prov". ++
+###--Var beredd!--##
++++--Skolan startade för-förra veckan upp det årstidsberoende programmet där de slumpmässigt stänger salar för "nationella prov".--++
 
 ### Ny elevenkät finner: ingen svarade på enkäten ##
 +++ En enkät utskickad av Johan i samhälle finner att ingen svarade på enkäten. Detta tragiska besked rapporterar andra elever också. ++
@@ -18,8 +18,8 @@ Upplaga 1 (6/5/2025):
 
 Upplaga 2 (12/5/2025):
 
-### Filmklubben söker ansvariga! ##
-+++ Snälla🙏😭🙏 ++
+###--Filmklubben söker ansvariga!--##
++++--Snälla🙏😭🙏--++
 
 ### Tyck till! ##
 +++ Ett förslag till skolledningen där alla elever får tävla mot varandra i "sten-sax-påse-battle-royale" för att avgöra vilken plats man får i matkön har framförts. Vad tycker du? Rösta nu på onsdag! ++
@@ -36,23 +36,23 @@ Upplaga 3 (19/5/2025):
 ### Elev skrev "vi" i teknikrapport ##
 +++ En elev i 1:an ertappades idag med att ha skrivit "vi" i sin tekniska rapport. Detta resulterade i att eleven fick F i teknik och avrättning skall hållas nästkommande torsdag. ++
 
-### Attans! Du missade skräpplockardagen, inte igen! ##
-+++ Tyvärr hade du bättre saker för dig att göra än att plocka skräp, nästa år kanske. ++
+###--Attans! Du missade skräpplockardagen, inte igen!--##
++++--Tyvärr hade du bättre saker för dig att göra än att plocka skräp, nästa år kanske.--++
 
-### Rekord många på Östra Loppet ##
-+++ Under Östra Loppet den 16 maj kom rekordmånga och sprang fem-kilometer-sprinten. Enligt källor skådades hela 6 personer, men det är svårt att få exakta siffror. ++
+###--Rekord många på Östra Loppet--##
++++--Under Östra Loppet den 16 maj kom rekordmånga och sprang fem-kilometer-sprinten. Enligt källor skådades hela 6 personer, men det är svårt att få exakta siffror.--++
 
-### Volleybollturneringen i luften ##
-+++ Inget av volleybollnäten möter den internationella standarden på 3,23 svenska alnar, visar en undersökning gjord av Löken. Avslöjandet har lett till att volleybollturneringen ligger på svag is. ++
+###--Volleybollturneringen i luften--##
++++--Inget av volleybollnäten möter den internationella standarden på 3,23 svenska alnar, visar en undersökning gjord av Löken. Avslöjandet har lett till att volleybollturneringen ligger på svag is.--++
 
 
 Upplaga 4 (26/5/2025):
 
-### Ta ett skåp nu! ##
-+++ Nu när alla treor tar studenten finns det massa tomma skåp som väntar på en ny ägare. Ta ett redan idag! (Fråga vaktmästaren, Löken uppmanar inte till illegala handlingar) ++
+###--Ta ett skåp nu!--##
++++--Nu när alla treor tar studenten finns det massa tomma skåp som väntar på en ny ägare. Ta ett redan idag! (Fråga vaktmästaren, Löken uppmanar inte till illegala handlingar)--++
 
-### Vad ska hända med filmklubben bror ##
-+++ Då INGEN på hela skolan vill ta över ledningen för filmklubben riskerar den nu att upplösas helt. "En kulturell massaker," säger en snubbe utanför ICA. ++
+###--Vad ska hända med filmklubben bror--##
++++--Då INGEN på hela skolan vill ta över ledningen för filmklubben riskerar den nu att upplösas helt. "En kulturell massaker," säger en snubbe utanför ICA.--++
 
 ### Kristersson: kom inte på besök ##
 +++ Förra veckan kom inte Stockholm och Sveriges premiärminister på besök på Östra gymnasiet. Han gav ingen kommentar. ++
@@ -66,14 +66,14 @@ Upplaga 5 (2/6/2025):
 ### EK supertunga pappersvikter visar sig vara lagbok ##
 +++ Östra Löken kan nu bevisa att de supertunga pappersvikter ekonomiare har burit runt på faktiskt är lagböcker med ord i. ++
 
-### Ingen AC sista veckan ##
-+++ Skolans budget har tagit slut för terminen och de behöver tyvärr stänga av all AC i hela byggnaden. Det meddelade skolledningen i fredags. ++
+###--Ingen AC sista veckan--##
++++--Skolans budget har tagit slut för terminen och de behöver tyvärr stänga av all AC i hela byggnaden. Det meddelade skolledningen i fredags.--++
 
 ### Undersökning: syntetiska diamanter är sämre ##
 +++ En undersökning gjord av De Beers visar att labbväxta diamanter är betydligt sämre än diamanter grävda ur marken. ++
 
-### Sista upplagan för terminen ##
-+++ Femte upplagan blir den sista för terminen, men vi lovar att vi kommer fortsätta till hösten också. Vi på Löken vill önska alla en glad sommar! ++
+###--Sista upplagan för terminen--##
++++--Femte upplagan blir den sista för terminen, men vi lovar att vi kommer fortsätta till hösten också. Vi på Löken vill önska alla en glad sommar!--++
 
 
 Upplaga 6 (25/8/2025):
@@ -96,8 +96,8 @@ Upplaga 7 (1/9/2025):
 ### Rubix hintar ny leksak ##
 +++ Efter över 50 år har Ernő Rubik hintat om en ny leksak. Spekulationer på nätet har redan fyllt reddit trådar. "Hoppas den är en annan form" säger Poppyface420. ++
 
-### 11 september närmar sig ##
-+++ Östra Löken vill påminna sina läsare att det inte är kul att skämta om detta datum, det är inte kul att Annika Tomsdotter erkände i rätten att hon aldrig hade varit på Blåkulla. ++
+###--11 september närmar sig--##
++++--Östra Löken vill påminna sina läsare att det inte är kul att skämta om detta datum, det är inte kul att Annika Tomsdotter erkände i rätten att hon aldrig hade varit på Blåkulla.--++
 
 
 Upplaga 8 (8/9/2025):
@@ -117,8 +117,8 @@ Upplaga 9 (15/9/2025):
 ### Trump: "Vilken Epstein?" ##
 +++ Trump kommenterade i lördags "Vilken Epstein?" efter en fråga kring den amerikanska presidentens favoritmaträtt. Kommentaren har återuppväckt protester för att släppa Epstein-filmerna. ++
 
-### Ingen upptejpning i år ##
-+++ Löken har fått information att elevkåren inte har fått tillstånd att ha att tejpa upp någon som en utmaning i år. Enligt information Löken har tagit del av har nära 25% av utmaningarna tagits bort, något som elevkåren är ytterst missnöjda med. ++
+###--Ingen upptejpning i år--##
++++--Löken har fått information att elevkåren inte har fått tillstånd att ha att tejpa upp någon som en utmaning i år. Enligt information Löken har tagit del av har nära 25% av utmaningarna tagits bort, något som elevkåren är ytterst missnöjda med.--++
 
 ### Nepals nya anime regering ##
 +++ Nepals gen-z protester införde en ny regering i söndags. Partierna är unika eftersom de inte är på det vanliga vänster-höger-spektrumet utan fokuserar mer på vilken anime som är mest "peak". ++
@@ -132,8 +132,8 @@ Upplaga 10 (22/9/2025):
 ### Teknikare väljer bort månads dush för att spara på vatten ##
 +++ En teknikare har modigt gett upp sin månadsdush för att spara på vattnet. För att verkligen göra en skillnad i världen erbjuder också eleven sig att mocka stall och rensa avlopp. De förklarar att annars skulle man ju inte känna någon skillnad. ++
 
-### Gratis datorskärmar i caféet ##
-+++ Skolan vill bli av med datorskärmarna som tidigare huserat i datorsalarna. Tyvärr flockades teknikarna dit som nattfjärilar runt en lampa så fort ryktet spreds så nu är de slut :( ++
+###--Gratis datorskärmar i caféet--##
++++--Skolan vill bli av med datorskärmarna som tidigare huserat i datorsalarna. Tyvärr flockades teknikarna dit som nattfjärilar runt en lampa så fort ryktet spreds så nu är de slut :(--++
 
 
 Upplaga 11 (29/9/2025):
@@ -198,8 +198,8 @@ Upplaga 15 (3/11/2025):
 
 Upplaga 16 (10/11/2025):
 
-### Hade vi en poängjakt? ##
-+++ Tydligen hade tvåorna en poängjakt onsdag till torsdag men, uhhh, var det bara jag eller hade ingen sagt något?? Elevkåren step up your game asså. ++
+###--Hade vi en poängjakt?--##
++++--Tydligen hade tvåorna en poängjakt onsdag till torsdag men, uhhh, var det bara jag eller hade ingen sagt något?? Elevkåren step up your game asså.--++
 
 ### Kristersson hittar en miljon fembarnsfamiljer ##
 +++ Ulf Kristersson påstod häromdagen att det nu finns över en miljon svenska fembarnsfamiljer. Kristersson menar att alla dessa familjer snor pengar rakt ur skattekassan och bör hanteras. ++
@@ -210,20 +210,20 @@ Upplaga 16 (10/11/2025):
 
 Upplaga 17 (17/11/2025):
 
-### Elevkårens stavfelsskandal: förklarad ##
-+++ Elevkåren skrev i reglerna till tvåornas poängjakt att videos bara räknas om de skickades in "inför" poängjakten. "Inför" betyder ordagrant innan. Alltså borde bara videos som skickades innan poängjaktens start få poäng. ++
+###--Elevkårens stavfelsskandal: förklarad--##
++++--Elevkåren skrev i reglerna till tvåornas poängjakt att videos bara räknas om de skickades in "inför" poängjakten. "Inför" betyder ordagrant innan. Alltså borde bara videos som skickades innan poängjaktens start få poäng.--++
 
 ### Blocket Black Week ##
 +++ Blocket kommer för första gången ta del av Black Week. Detta innebär en påtvingad sänkning av priser för alla produkter. Företaget har förklarat att de inte tänker betala för säljarnas förluster. ++
 
-### Livecafé imorgon ##
-+++ Imorgon tisdag 18/11 är det livecafé på skolan! På scen kommer flera band spela och även ett stand up-nummer kommer att vara med. 19:00 i matsalen. Fri entré. ++
+###--Livecafé imorgon--##
++++--Imorgon tisdag 18/11 är det livecafé på skolan! På scen kommer flera band spela och även ett stand up-nummer kommer att vara med. 19:00 i matsalen. Fri entré.--++
 
 
 Upplaga 18 (24/11/2025):
 
-### Nobelpristagare på besök ##
-+++ Snart kommer en nobelpristagare att besöka skolan. Pristagaren sa i en intervju att han ser fram emot att besöka skolan men hoppas också ha tid att gå på Nobelfesten. ++
+###--Nobelpristagare på besök--##
++++--Snart kommer en nobelpristagare att besöka skolan. Pristagaren sa i en intervju att han ser fram emot att besöka skolan men hoppas också ha tid att gå på Nobelfesten.--++
 
 ### Pisskallt i skolbyggnaden ##
 +++ Många elever har klagat på att det är kallt i skolan de senaste veckorna. Förra veckan var experter på skolan där de mätte temperaturer i matsalen "farligt nära absoluta nollpunkten". Skolledningen har tillsvidare löst problemet med att ge 1 extra filt till varje korridor. ++
@@ -234,14 +234,14 @@ Upplaga 18 (24/11/2025):
 
 Upplaga 19 (1/12/2025):
 
-### Löken avslöjar Lock-in ##
-+++ Efter nära ett halvt årtionde återvänder nu Östras Lock-in. En aktivitet där man besöker skolan på natten, deltar i kul aktiviteter och de som vill kan till och med sova över. ++
+###--Löken avslöjar Lock-in--##
++++--Efter nära ett halvt årtionde återvänder nu Östras Lock-in. En aktivitet där man besöker skolan på natten, deltar i kul aktiviteter och de som vill kan till och med sova över.--++
 
 ### Pendeltåg försenat, SL skyller på elever ##
 +++ Ett pendeltåg blev försenat för att det var fullpackat av elever. SL-tåg är inte byggda för att kunna bära mer än 5 resenärer per vagn. ++
 
-### Lökig debatt ##
-+++ Löken planerar en stor politisk debatt i skolan snart. Håll dig uppdaterad på Instagram för att veta när mer information kommer! ++
+###--Lökig debatt--##
++++--Löken planerar en stor politisk debatt i skolan snart. Håll dig uppdaterad på Instagram för att veta när mer information kommer!--++
 
 
 Upplaga 20 (8/12/2025):
@@ -276,8 +276,8 @@ Upplaga 22 (12/1/2026):
 ### Elev kontemplerar kort universum ##
 +++ En elev spenderade en halv sekund på att kontemplera universum innan han tog fram mobilen och öppnade upp Tiktok. ++
 
-### Red carpet i AI-datacentrum ##
-+++ Östras Elevkårs 100-dagarsfest "Red carpet"-evenemanget kommer att vara i AI-datacentrumet Gorsingeberget, Strängnäs. Det avslöjar elevkåren efter att tidigare släppt en AI-generad reklambild. ++
+###--Red carpet i AI-datacentrum--##
++++--Östras Elevkårs 100-dagarsfest "Red carpet"-evenemanget kommer att vara i AI-datacentrumet Gorsingeberget, Strängnäs. Det avslöjar elevkåren efter att tidigare släppt en AI-generad reklambild.--++
 
 
 Upplaga 23 (19/1/2026):
@@ -297,8 +297,8 @@ Upplaga 24 (26/1/2026):
 ### Källkritisk tonåring skitjobbig ##
 +++ Klasskamraten är visserligen korrekt i att "gå för guld" är en anglicism, men alla förstår ju vad man menar. Var det verkligen nödvändigt att ta fram ChatGPT när ingen ändå bryr sig? Det anser inte kompisarna. ++
 
-### Russinen är borta igen! ##
-+++ I torsdags och fredags fanns det inga russin i müslibuffén. Om de inte kommer tillbaka snart kan det bli fråga om demonstrationer igen! Detta är både ett hot och en varning. ++
+###--Russinen är borta igen!--##
++++--I torsdags och fredags fanns det inga russin i müslibuffén. Om de inte kommer tillbaka snart kan det bli fråga om demonstrationer igen! Detta är både ett hot och en varning.--++
 
 ### Döv elev får unik present ##
 +++ Majken i SABE23 gav ett falskt tack till vännerna på sitt 19-års kalas på teckenspråk efter att ha fått ett par dyra hörlurar. ++
@@ -313,7 +313,7 @@ Upplaga 25 (2/2/2026):
 +++ Östra gymnasiets Centralbank blev under tisdagen den 27 januari 2026 rånad av tre maskerade män. Poliundersökningen pågår och banken påstår att över tio miljarder stefansdaler är försvunna. ++
 
 ### Gangster mobbad för kort pistol ##
-+++ Boken Kort pistol, skriven av kriminalreportern Lasse Wierup, berättar den tragiska historien om en 31-årig gangster som blev mobbad för sin korta pistol av sina 12-åriga kollegor. Boken får 5/5 pistoler av Löken. ++
++++ Boken <i>Kort pistol</i>, skriven av kriminalreportern Lasse Wierup, berättar den tragiska historien om en 31-årig gangster som blev mobbad för sin korta pistol av sina 12-åriga kollegor. Boken får 5/5 pistoler av Löken. ++
 
 
 Upplaga 26 (9/2/2026):
@@ -321,8 +321,8 @@ Upplaga 26 (9/2/2026):
 ### Olycka utanför Östra ##
 +++ Klockan 18:03 kolliderade två fordon på vägen utanför Östra gymnasiet. "Jag dog", säger en elev som var med i olyckan. ++
 
-### Åkesson inte med i renrejs ##
-+++ Sverigedemokraternas partiledare Jimmie Åkesson nekade i sista sekund erbjudandet om att vara med i Jokkmokks renrejs. "Renarna var inte svenska nog", säger Åkesson. ++
+###--Åkesson inte med i renrejs--##
++++--Sverigedemokraternas partiledare Jimmie Åkesson nekade i sista sekund erbjudandet om att vara med i Jokkmokks renrejs. "Renarna var inte svenska nog", säger Åkesson.--++
 
 ### Flaggan på månen blåste ner ##
 +++ "Attans bananer", sa NASA under helgen efter att den amerikanska flaggan på månen, som sattes upp 1969, blåste ner. ++
@@ -333,8 +333,8 @@ Upplaga 27 (16/2/2026):
 ### Usama Bin Laden gick inte på Östra ##
 +++ En ny undersökning som Löken gjort har visat ett rykte som länge gått i skolan: Usama Bin Laden har aldrig varit en elev på skolan. ++
 
-### Teknikare fick ros ##
-+++ Under elevkårens rosutdelning fick en teknikare, mot all förmodan, en ros som han sedan inte vågade röra eftersom den liknar gräs för mycket. ++
+###--Teknikare fick ros--##
++++--Under elevkårens rosutdelning fick en teknikare, mot all förmodan, en ros som han sedan inte vågade röra eftersom den liknar gräs för mycket.--++
 
 ### Östras elevkår rikast i Sverige ##
 +++ Efter rosutdelningen i fredags redovisade elevkåren en nettovinst på 4,8 miljoner kronor tack vare ockerpriserna på rosorna. Det gör organisationen till den rikaste elevkåren i hela Sverige. ++
@@ -342,8 +342,8 @@ Upplaga 27 (16/2/2026):
 
 Upplaga 28 (2/3/2026):
 
-### Siri på Mello nästa år ##
-+++ Efter att Alexa var med i Melodifestivalen förra veckan har Apples digitala assistent Siri avslöjat att hon nu vill uppträda nästa år. ++
+###--Siri på Mello nästa år--##
++++--Efter att Alexa var med i Melodifestivalen förra veckan har Apples digitala assistent Siri avslöjat att hon nu vill uppträda nästa år.--++
 
 ### Busch portad från afterski ##
 +++ Löken kan rapportera att Ebba Busch (KD) blev portad från en afterski fest efter att ha försökt göra en backflip från ett bord. Busch sa senare i en intervju att hon försökte visa hur mycket energi kärnkraft skulle ge Sverige. ++
@@ -354,14 +354,14 @@ Upplaga 28 (2/3/2026):
 
 Upplaga 29 (9/3/2026):
 
-### Livecafé på tisdag ##
-+++ Den 10 mars är det livekafé igen. Banden som ska vara med är till stor del av arten Homo sapiens från planeten Jorden. ++
+###--Livecafé på tisdag--##
++++--Den 10 mars är det livekafé igen. Banden som ska vara med är till stor del av arten Homo sapiens från planeten Jorden.--++
 
 ### Nya 1177 regler ##
 +++ Tidigare erbjöd 1177 kryddning gratis men nu har de infört ett nytt regelverk där patienter nu tvingas krydda sitt egna urin. ++
 
-### Lock, TF, in! ##
-+++ Lock-in närmar sig, är du redo? Kolla Lökens eller Elevkårens Instagram för mer information! ++
+###--Lock, TF, in!--##
++++--Lock-in närmar sig, är du redo? Kolla Lökens eller Elevkårens Instagram för mer information!--++
 
 
 Upplaga 30 (16/3/2026):
@@ -372,8 +372,8 @@ Upplaga 30 (16/3/2026):
 ### Guinness slutar med ölmakeri ##
 +++ Ölbryggaren Guinness ska enligt källor sluta brygga från och med 2028. Företaget ska istället bara fokusera på sin hitbokserie Guinness World Records. ++
 
-### Östra Löken gör podcast ##
-+++ Undrar du vad som egentligen hände med lock-in? Vill du veta lite hur det ser ut bakom kulisserna på Löken? Vill du ha något som kanske är lite underhållande att lyssna på? Lyssna då på Östra Lökens podcast: Redaktionen! ++
+###--Östra Löken gör podcast--##
++++--Undrar du vad som egentligen hände med lock-in? Vill du veta lite hur det ser ut bakom kulisserna på Löken? Vill du ha något som kanske är lite underhållande att lyssna på? Lyssna då på Östra Lökens podcast: Redaktionen!--++
 
 
 Upplaga 31 (23/3/2026):
@@ -390,8 +390,8 @@ Upplaga 31 (23/3/2026):
 
 Upplaga 32 (30/3/2026):
 
-### Alla människors lika värde-dag flyttad ##
-+++ Östra gymnasiet kommer inte att fira alla människors lika värde den 1 april, säger rektorn i ett upplägg på V-klass: "Alla människors lika värde är inte ett skämt så att fira det på 1 april är helt enkelt olämpligt". ++
+###--Alla människors lika värde-dag flyttad--##
++++--Östra gymnasiet kommer inte att fira alla människors lika värde den 1 april, säger rektorn i ett upplägg på V-klass: "Alla människors lika värde är inte ett skämt så att fira det på 1 april är helt enkelt olämpligt".--++
 
 ### Jag är den enda som faktiskt sätter in arbetet ##
 +++ Ni ska alla veta att jag själv håller Östra löken igång. Alla de andra säger att de sätter in arbetet men det är bara lögner, de vill bara ha äran av att vara med i redaktionen utan att skriva en enda paragraf. ++
