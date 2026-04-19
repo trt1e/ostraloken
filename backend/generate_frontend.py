@@ -173,20 +173,26 @@ def generate_index():
         content = upplaga["Content"]
         if content:
             for article in content:
+                extra_after_last_caracter = ""
                 article_title = article["Title"]
-                if len(article_title) >= 60:
-                    article_title = article_title[:60] + "..."
+                org_article_title = article_title
+                if len(article_title) >= 70:
+                    article_title = article_title[:70] + "..."
                 article_main_text = article["Article"][:400]
                 if "<b>" in article_main_text:
                     article_main_text = article_main_text.replace("<b>", "") # remove any bolding
                     article_main_text = article_main_text.replace("</b>", "") # remove any bolding
                 article_main_text_last_caracter = article_main_text.find(". ", 200)
                 if article_main_text[:article_main_text_last_caracter].find("<br>") != -1:
-                    article_main_text_last_caracter = article_main_text.find("<br>") - 1
+                    if article_main_text[article_main_text.find("<br>") - 1] != ">": # so if for example something ends with </i> the i isnt cut of
+                        article_main_text_last_caracter = article_main_text.find("<br>") - 1
+                    else:
+                        article_main_text_last_caracter = article_main_text.find("<br>") - 5
+                        extra_after_last_caracter = article_main_text[(article_main_text.find("<br>") - 4):(article_main_text.find("<br>"))]
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 article_img_src = "./images/Test.png"
-                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + "..."), article_type, article_author)
+                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", org_article_title) + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it

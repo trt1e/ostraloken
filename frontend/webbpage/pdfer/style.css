@@ -1,7 +1,9 @@
 /*PDF*/
 #main_pdf {
     width: 100%;
-    height: 35rem;
+    min-height: 35rem;
+    height: 75vh;
+    max-height: 100rem;
     border: none;
 }
 #pdf_nav_UI {
