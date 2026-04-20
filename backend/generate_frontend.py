@@ -238,4 +238,8 @@ Saker att lägga till
 - sökfunktion
 - infinite scroll
 
+Att fixa senare:
+- Från och innan upplaga 6 ska skribenterna dubbelkollas
+- Alla " ska fixas 
+- Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text 
 """
