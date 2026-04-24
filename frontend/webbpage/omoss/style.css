@@ -1,0 +1,13 @@
+/*Images*/
+#our_history_article img {
+    width: 3vw;
+    height: 2vw;
+    object-fit: cover;
+    float: right;
+}
+
+/*Text styling*/
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
