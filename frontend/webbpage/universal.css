@@ -201,6 +201,12 @@ footer {
         flex-direction: column;
     }
 }
+@media (width < 25rem) {
+    footer {
+        white-space: normal;
+    }
+}
+
 .footer_text {
     padding: 0.7em;
 }
