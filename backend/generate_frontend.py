@@ -151,11 +151,11 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     article_author_pos = template.find("<!-- [+author+] -->") + 19
     
     if redirect_src != "SHOULD_NOT_REDIRECT":
-        final_article = template[:redirect_href_title_pos] + redirect_src + template[redirect_href_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_type_pos] + type + template[article_type_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
+        final_article = template[:redirect_href_title_pos] + redirect_src + template[redirect_href_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
     else: # make article not ancor
         first_a_pos = template.find("<a") + 1
         second_a_pos = template.find("</a", first_a_pos) + 2
-        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):img_src_title_pos] + img_src +  template[img_src_title_pos:article_title_pos] + title + template[article_title_pos:article_type_pos] + type + template[article_type_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
+        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):img_src_title_pos] + img_src +  template[img_src_title_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
         
     template_opend.close()
     return final_article
