@@ -4,17 +4,20 @@
     background-color: var(--highlight-color);
     font-size: 1.8rem;
     padding: 0.2rem;
+    margin-left: 0.4rem;
     position: absolute;
     top: 1.6rem;
     right: 1.6rem;
 }
 .no_img .type_text { /* In the case that there is no image */
-    width: fit-content;
-    background-color: var(--highlight-color);
-    font-size: 1.8rem;
-    padding: 0.2rem;
     position: static;
     float: right;
+}
+@media (width < 25rem) {
+    .no_img .type_text { /* In the case that there is no image */
+        width: 100%;
+        text-align: center;
+    }
 }
 .author_text {
     text-align: end;
