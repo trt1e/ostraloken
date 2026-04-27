@@ -18,66 +18,6 @@ body {
     overflow-wrap: anywhere;
 }
 
-/* Hide scrollbar */
-::-webkit-scrollbar {
-    display: none;
-}
-
-/* Dropdown */
-#dropdown {
-    background-color: transparent;
-    z-index: 11;
-    height: 2.5rem;
-    font-family: 'Times New Roman', Times, serif;
-    width: fit-content;
-    font-size: 2rem;
-    padding: 0.5rem 1rem 1.5rem 1rem;
-    transition: 0.3s;
-    border: none;
-    position: fixed;
-    cursor: default;
-    top: 0;
-    right: 0.5rem;
-}
-#dropdown_button_container {
-    background-color: var(--darker-bg-color);
-    border: var(--darkest-bg-color) solid 2px;
-    display: none;
-    position: fixed;
-    padding: 1rem;
-    top: 4rem;
-    right: 0.5rem;
-    min-width: 5rem;
-    direction: rtl;
-    flex-direction: column;
-}
-#dropdown:hover #dropdown_button_container {
-    display: flex;
-}
-#dropdown_button_container:hover {
-    display: flex;
-}
-.dropdown_button {
-    padding: 0.5rem;
-    color: var(--text-color);
-    text-decoration: none;
-    border-right: transparent solid 2px;
-    transition: 0.3s;
-}
-.dropdown_button:hover {
-    border-right: var(--primary-color) solid 2px;
-}
-@media (height < 30rem) {
-    .header_button {
-        font-size: 1.4rem;
-    }
-}
-@media (height < 23rem) {
-    #header_button_container {
-        flex-direction: row;
-    }
-}
-
 /* Header */
 header {
     z-index: 10;
@@ -88,25 +28,26 @@ header {
     overflow: auto;
     white-space: nowrap;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
 }
 header img {
     cursor: pointer;
 }
 header p {
-    font-size: 1.2rem;
+    font-size: 2.3rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    color: hsl(0, 0%, 100%, 90%);
-    cursor: default;
-    width: 33%;
+    color: white;
+    width: fit-content;
     text-align: center;
+    padding: 0.5rem 0 0 0.5rem;
 }
 @media (width <= 50rem) {
     header p {
         display: none;
     }
 }
+
 #header_titel_image {
     width: 12rem;
     padding: 0.5rem;
@@ -166,6 +107,25 @@ main li {
     font-size: 1.2rem;
 }
 
+main label {
+    font-size: 1.2rem;
+}
+main input {
+    background-color: transparent;
+    width: 100%;
+    font-size: 1.1rem;
+    font-family: 'Times New Roman', Times, serif;
+    border: var(--darkest-bg-color) 1.5px solid;
+}
+main textarea {
+    background-color: transparent;
+    width: 100%;
+    font-size: 1.1rem;
+    font-family: 'Times New Roman', Times, serif;
+    border: var(--darkest-bg-color) 1.5px solid;
+    resize: none;
+}
+
 /* Content in main */
 .article {
     background-color: transparent;
@@ -177,6 +137,25 @@ main li {
     text-decoration: none;
     border: var(--darker-bg-color) solid 2px;
     transition: 0.3s;
+}
+.article h2 {
+    margin-bottom: 1rem;
+}
+
+#add_button_container {
+    display: flex;
+    justify-content: space-between;
+}
+#add_button_container button {
+    border: var(--accent-color) solid 2px;
+    background-color: transparent;
+    margin: 1rem 0 1rem 0;
+    width: 30%;
+    height: 4rem;
+    font-size: 1.2rem;
+}
+#add_button_container button:hover {
+    border: var(--primary-color) solid 2px;
 }
 
 /* Footer */
@@ -205,4 +184,6 @@ footer {
 
 .footer_text {
     padding: 0.7em;
+    text-align: center;
+    width: 100%;
 }
