@@ -176,7 +176,7 @@ def generate_index():
                 extra_after_last_caracter = ""
                 article_title = article["Title"]
                 org_article_title = article_title
-                if len(article_title) >= 70:
+                if len(article_title) >= 70 and article_title.count("</span>") == 0:
                     article_title = article_title[:70] + "..."
                 article_main_text = article["Article"][:400]
                 if "<b>" in article_main_text:
@@ -244,7 +244,11 @@ Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text 
 - går så alla ettor med <b> har <b>
 - dubbelkolla allas typ
+- gör system för bilder
+- LÄGG TILL BILDER FÖR ALLT
+- gör så att den första censurerade blir som den i upplaga 32
 
 
 GÖR ARTIKLAR <article>
+SE TILL ATT LIGHTHOUSE FUNGERAR!!!
 """

@@ -165,6 +165,10 @@ main p {
 main li {
     font-size: 1.2rem;
 }
+.redacted_text {
+    background-color: black;
+    color: black;
+}
 
 /* Content in main */
 .article {
