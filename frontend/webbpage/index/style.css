@@ -33,7 +33,7 @@
     position: static;
     float: right;
 }
-@media (width < 25rem) {
+@media (width < 30rem) {
     .no_img .type_text { /* In the case that there is no image */
         width: 100%;
         text-align: center;
