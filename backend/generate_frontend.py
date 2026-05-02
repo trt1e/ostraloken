@@ -192,7 +192,7 @@ def generate_index():
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 article_img_src = "./images/Test.png"
-                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", org_article_title) + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + "..."), article_type, article_author)
+                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 - – — åäöÅÄÖ]", "", org_article_title).replace(" ", "_") + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
@@ -222,7 +222,7 @@ def generate_all_articles():
                 article_img_src = "../images/Test.png"
                 generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
             
-                generated_file = open((generated_articles_path + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title) + ".html"), "w", encoding="utf-8") # create / find the file
+                generated_file = open((generated_articles_path + re.sub(r"[^a-zA-Z0-9 - – — åäöÅÄÖ]", "", article_title).replace(" ", "_") + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:article_pos] + generated_articles + template[article_pos:]) # write to it
             
     template_opend.close()
