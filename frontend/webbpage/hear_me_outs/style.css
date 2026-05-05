@@ -1,14 +1,37 @@
 /* Content in main */
 .article {
-    background-color: transparent;
-    position: relative;
-    padding: 1rem;
-    cursor: pointer;
-    display: block;
-    margin-bottom: 3rem;
-    color: var(--text-color);
-    text-decoration: none;
-    border: var(--darker-bg-color) solid 2px;
-    transition: 0.3s;
     text-align: center;
+}
+.article p {
+    font-size: 1rem;
+}
+
+.smash_pass_area {
+    width: 100%;
+    height: 4rem;
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+}
+.article button {
+    background: radial-gradient(white 0%, white 50%, rgb(241, 241, 241) 100%);
+    width: 90%;
+    height: 4rem;
+    border: black solid 2px;
+    margin: auto;
+}
+@property --highlight-change-color { 
+    syntax: '<color>';
+    inherits: false;
+    initial-value: transparent; 
+}
+.article .underline {
+    background: linear-gradient(to right, transparent, var(--highlight-change-color), var(--highlight-change-color), transparent);
+    padding: 0.5rem 28%;
+    clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%); /*Make the item slanted*/
+    transition: --highlight-change-color 0.3s;
+}
+.article button:hover .underline {
+    --highlight-change-color: var(--highlight-color);
 }

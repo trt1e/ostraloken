@@ -1,7 +1,7 @@
 import os
 import re
 
-is_linux = True
+is_linux = False
 
 base_path = os.getcwd()
 
@@ -130,7 +130,46 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
         
     return output_sum
 
+
 # FIX ARTICLES NAMES
+def fix_all_backend_articles_names(): # Make the names in articles more consistant
+    upplaga_list = os.listdir(normal_story_path) # list all folders in dir
+    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
+        file_number = 0
+        
+        # list all files in dir  
+        if is_linux == True:
+            file_list = os.listdir(normal_story_path + "/" + upplaga) 
+        else:
+            file_list = os.listdir(normal_story_path + "\\" + upplaga)
+        for file in file_list: # Go througth every file in the list and extract the content
+            if file != "upplaga_info.txt":
+                file_number += 1
+                
+                # extract
+                if is_linux == True:
+                    content = open(normal_story_path + "/" + upplaga + "/" + file, "tr", encoding="utf-8")
+                else:
+                    content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8")
+                whole_text = content.read() # read it
+                
+                # find the positions of difrent key parts
+                title_pos1 = whole_text.find("### ") + 4
+                title_pos2 = whole_text.find(" ##")
+                
+                # Sum up into the title, type, writer and article
+                title = whole_text[title_pos1:title_pos2]
+                
+                content.close() # at the end
+                
+                new_file_name = str(file_number) + " " + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", title).replace(" ", "_")[:100] + ".txt"
+                
+                if is_linux == True:
+                    os.rename((normal_story_path + "/" + upplaga + "/" + file), (normal_story_path + "/" + upplaga + "/" + new_file_name))
+                else:
+                    os.rename((normal_story_path + "\\" + upplaga + "\\" + file), (normal_story_path + "\\" + upplaga + "\\" + new_file_name))
+
+    print("Article names successfully fixed!")
 
 
 # GENERATE SITES
@@ -239,7 +278,7 @@ def generate_index():
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 article_img_src = "./images/Test.png"
-                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", org_article_title).replace(" ", "_") + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + extra_span + "..."), article_type, article_author)
+                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", org_article_title)[:100].replace(" ", "_") + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + extra_span + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
@@ -269,7 +308,7 @@ def generate_all_articles():
                 article_img_src = "../images/Test.png"
                 generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
             
-                generated_file = open((generated_articles_path + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title).replace(" ", "_") + ".html"), "w", encoding="utf-8") # create / find the file
+                generated_file = open((generated_articles_path + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title)[:100].replace(" ", "_") + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:article_pos] + generated_articles + template[article_pos:]) # write to it
             
     template_opend.close()
@@ -280,17 +319,25 @@ def generate_all_articles():
 def generate_lone_hear_me_out(hear_me_out, description):
     if hear_me_out is None or hear_me_out == "":
         hear_me_out = "Null"
-    if description is None or description == "":
+    if description is None:
         description = "Null"
+    if description != "":
+        description = "<b>Förklaring:</b> " + description
         
     template_opend = open(lone_hear_me_out_template_path)
     template = template_opend.read()
     
 
     # Find where it says <!-- [+hear_me_out+] -->
-    article_hear_me_out_pos = template.find("<!-- [+hear_me_out+] -->") + 24 
+    article_hear_me_out_pos = template.find("<!-- [+hear_me_out+] -->") + 24
     # Find where it says <!-- [+desc+] -->
     article_desc_pos = template.find("<!-- [+desc+] -->") + 17
+    
+    if len(hear_me_out) > 70:
+        hear_me_out = hear_me_out[:70] + "..."
+        
+    if len(description) > 500:
+        description = description[:500] + "..."
     
     final_article = template[:article_hear_me_out_pos] + hear_me_out + template[article_hear_me_out_pos:article_desc_pos] + description + template[article_desc_pos:]
         
@@ -302,7 +349,7 @@ def generate_hear_me_outs():
     template = template_opend.read()
     
     # Find where it says <!-- [+hear_me_outs+] -->
-    hear_me_out_container_pos = template.find("<!-- [+hear_me_outs+] -->") + 25
+    hear_me_out_container_pos = template.find("<!-- [+hear_me_outs+] -->") + 26
     
     generated_hear_me_out = ""
     
@@ -324,6 +371,7 @@ def generate_hear_me_outs():
 generate_index()
 generate_hear_me_outs()
 generate_all_articles()
+fix_all_backend_articles_names()
 
 """
 Saker att lägga till
