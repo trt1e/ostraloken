@@ -259,4 +259,10 @@ Att fixa senare:
 
 GÖR ARTIKLAR <article>
 SE TILL ATT LIGHTHOUSE FUNGERAR!!!
+
+
+Hur man gör så den har infinite scroll:
+- Alla artikelsidor har också en bit av rå info som index kan enkelt fetcha
+- indexfilen har massa länkar till artikelsidornas info
+- js genererar rätt mängd artiklar taget från fetchningen
 """
