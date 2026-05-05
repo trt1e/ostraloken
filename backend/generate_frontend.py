@@ -1,12 +1,21 @@
 import os
 import re
 
+is_linux = True
+
 base_path = os.getcwd()
 
 # READ TEXT
-normal_story_path = base_path + r"\ostraloken\backend\content\normal_storys_and_other"
-short_story_path = base_path + r"\ostraloken\backend\content\short_storys.txt"
-hear_me_outs_path = base_path + r"\ostraloken\backend\content\hear_me_outs.txt"
+# give dirs
+if is_linux == True:
+    normal_story_path = base_path + r"/backend/content/normal_storys_and_other"
+    short_story_path = base_path + r"/backend/content/short_storys.txt"
+    hear_me_outs_path = base_path + r"/backend/content/hear_me_outs.txt"
+else:
+    normal_story_path = base_path + r"\ostraloken\backend\content\normal_storys_and_other"
+    short_story_path = base_path + r"\ostraloken\backend\content\short_storys.txt"
+    hear_me_outs_path = base_path + r"\ostraloken\backend\content\hear_me_outs.txt"
+
 
 def read_normal_storys(): # To get the files and their content from all normal articals 
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
@@ -14,14 +23,22 @@ def read_normal_storys(): # To get the files and their content from all normal a
     article_output_sum = []
     output_sum = []
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
-        file_list = os.listdir(normal_story_path + "\\" + upplaga) # list all files in dir  
+        # list all files in dir  
+        if is_linux == True:
+            file_list = os.listdir(normal_story_path + "/" + upplaga) 
+        else:
+            file_list = os.listdir(normal_story_path + "\\" + upplaga)
         number_of_articles = 0
         article_output_sum = []
         upplaga_number = upplaga.split("_")[1]
         for file in file_list: # Go througth every file in the list and extract the content
             if file != "upplaga_info.txt":
                 number_of_articles += 1
-                content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8") # extract
+                # extract
+                if is_linux == True:
+                    content = open(normal_story_path + "/" + upplaga + "/" + file, "tr", encoding="utf-8")
+                else:
+                    content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8")
                 whole_text = content.read() # read it
                 
                 # find the positions of difrent key parts
@@ -106,7 +123,7 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
         print("Description:", desc)
         """
         
-        output = ({"Number": number_of_hear_me_outs, "Content": {"Har_me_out": hear_me_out, "Description": desc}})
+        output = ({"Number": int(number_of_hear_me_outs), "Content": {"Hear_me_out": hear_me_out, "Description": desc}})
         output_sum.append(output)
     
     content.close() # at the end
@@ -114,14 +131,33 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
     return output_sum
 
 # GENERATE SITES
-lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
+# give dirs
+if is_linux == True:
+    lone_article_template_path = base_path + r"/frontend/template/lone_article.html"
 
-index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
-index_generated_path = base_path + r"\ostraloken\frontend\webbpage\index.html"
+    index_template_path = base_path + r"/frontend/template/index.html"
+    index_generated_path = base_path + r"/frontend/webbpage/index.html"
 
-article_template_path = base_path + r"\ostraloken\frontend\template\articles_pages.html"
-generated_articles_path = base_path + r"\ostraloken\frontend\webbpage\a" + "\\"
+    article_template_path = base_path + r"/frontend/template/articles_pages.html"
+    generated_articles_path = base_path + r"/frontend/webbpage/a" + "//"
 
+    hear_me_outs_template_path = base_path + r"/frontend/template/hear_me_outs.html"
+    lone_hear_me_out_template_path = base_path + r"/frontend/template/lone_hear_me_out.html"
+    hear_me_outs_generated_path = base_path + r"/frontend/webbpage/hear_me_outs/index.html"
+else:
+    lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
+
+    index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
+    index_generated_path = base_path + r"\ostraloken\frontend\webbpage\index.html"
+
+    article_template_path = base_path + r"\ostraloken\frontend\template\articles_pages.html"
+    generated_articles_path = base_path + r"\ostraloken\frontend\webbpage\a" + "\\"
+
+    hear_me_outs_template_path = base_path + r"\ostraloken\frontend\template\hear_me_outs.html"
+    lone_hear_me_out_template_path = base_path + r"\ostraloken\frontend\template\lone_hear_me_out.html"
+    hear_me_outs_generated_path = base_path + r"\ostraloken\frontend\webbpage\hear_me_outs\index.html"
+
+# articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
@@ -237,8 +273,53 @@ def generate_all_articles():
         
     print("All articles successfully generated!")
 
+# hear me outs
+def generate_lone_hear_me_out(hear_me_out, description):
+    if hear_me_out is None or hear_me_out == "":
+        hear_me_out = "Null"
+    if description is None or description == "":
+        description = "Null"
+        
+    template_opend = open(lone_hear_me_out_template_path)
+    template = template_opend.read()
+    
+
+    # Find where it says <!-- [+hear_me_out+] -->
+    article_hear_me_out_pos = template.find("<!-- [+hear_me_out+] -->") + 24 
+    # Find where it says <!-- [+desc+] -->
+    article_desc_pos = template.find("<!-- [+desc+] -->") + 17
+    
+    final_article = template[:article_hear_me_out_pos] + hear_me_out + template[article_hear_me_out_pos:article_desc_pos] + description + template[article_desc_pos:]
+        
+    template_opend.close()
+    return final_article
+
+def generate_hear_me_outs():
+    template_opend = open(hear_me_outs_template_path, encoding="utf-8")
+    template = template_opend.read()
+    
+    # Find where it says <!-- [+hear_me_outs+] -->
+    hear_me_out_container_pos = template.find("<!-- [+hear_me_outs+] -->") + 25
+    
+    generated_hear_me_out = ""
+    
+    for upplaga in reversed(read_hear_me_outs()):
+        content = upplaga["Content"]
+        if content:
+            article_hear_me_out = content["Hear_me_out"]
+            article_main_desc = content["Description"]
+            generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_main_desc)
+    
+    generated_file = open(hear_me_outs_generated_path, "w", encoding="utf-8") # create / find the file
+    generated_file.write(template[:hear_me_out_container_pos] + generated_hear_me_out + template[hear_me_out_container_pos:]) #write to it
+    
+    template_opend.close()
+    
+    print("Hear me outs successfully generated!")
+
 # print(read_normal_storys())    
 generate_index()
+generate_hear_me_outs()
 generate_all_articles()
 
 """
