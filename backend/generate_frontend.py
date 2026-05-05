@@ -113,6 +113,9 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
         
     return output_sum
 
+# FIX ARTICLES NAMES
+
+
 # GENERATE SITES
 lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
 
