@@ -97,7 +97,6 @@ def read_normal_storys(): # To get the files and their content from all normal a
         # list all files in dir  
         file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
         article_output_sum = []
-        upplaga_number = upplaga.split("_")[1]
         for file in file_list: # Go througth every file in the list and extract the content
             if file != "upplaga_info.txt":
                 # extract
@@ -114,6 +113,8 @@ def read_normal_storys(): # To get the files and their content from all normal a
                 
                 article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
                 article_output_sum.append(article_output)
+            else:
+                pass
         output = ({"Upplaga": int(upplaga_number), "Content": article_output_sum})
         output_sum.append(output)
         
@@ -164,7 +165,7 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         # list all files in dir 
         file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
-        for file_number, file in enumerate(file_list): # Go througth every file in the list and extract the content
+        for file_number, file in enumerate(file_list, 1): # Go througth every file in the list and extract the content
             if file != "upplaga_info.txt":
                 # extract
                 content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
