@@ -24,3 +24,8 @@
     font-size: 1rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
+/* Back button */
+button.return {
+    float: left;
+}

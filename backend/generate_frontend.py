@@ -72,39 +72,10 @@ def read_normal_storys(): # To get the files and their content from all normal a
     output_sum.sort(key=lambda x: int(x["Upplaga"])) # sortera den baserat på upplaga_number
     return output_sum
 
-def read_short_storys(): # To get the files and their content from all short articals 
-    content = open(short_story_path, "tr", encoding="utf-8") # extract
-    whole_text = content.read() # read it
-    last_final_pos = 0
-    output_sum = []
-    for number_of_articles in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
-        # find the positions of difrent key parts
-        title_pos1 = whole_text.find("### ", last_final_pos) + 4
-        title_pos2 = whole_text.find(" ##", last_final_pos)
-        article_pos1 = whole_text.find("+++ ", last_final_pos) + 4
-        article_pos2 = whole_text.find(" ++", last_final_pos)
-        last_final_pos = article_pos2 + 3
-        
-        # Sum up into the title, type, writer and article
-        title = whole_text[title_pos1:title_pos2]
-        article = whole_text[article_pos1:article_pos2]
-        
-        """
-        print("Hear_me_out:", hear_me_out)
-        print("Description:", desc)
-        """
-        
-        output = ({"Number": number_of_articles, "Contet": {"Title": title, "Article": article}})
-        output_sum.append(output)
-    
-    content.close() # at the end
-        
-    return output_sum
-
 def read_hear_me_outs(): # To get the contents from all hear me outs
     content = open(hear_me_outs_path, "tr", encoding="utf-8") # extract
     whole_text = content.read() # read it
-    last_final_pos = 0
+    last_final_pos = whole_text.find("### ")
     output_sum = []
     for number_of_hear_me_outs in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
         # find the positions of difrent key parts
@@ -124,6 +95,36 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
         """
         
         output = ({"Number": int(number_of_hear_me_outs), "Content": {"Hear_me_out": hear_me_out, "Description": desc}})
+        output_sum.append(output)
+    
+    content.close() # at the end
+        
+    return output_sum
+
+def read_short_storys(): # To get the files and their content from all short articals 
+    content = open(short_story_path, "tr", encoding="utf-8") # extract
+    whole_text = content.read() # read it
+    last_final_pos = whole_text.find("### ")
+    output_sum = []
+    for number_of_articles in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
+        # find the positions of difrent key parts
+        title_pos1 = whole_text.find("### ", last_final_pos) + 4
+        print(title_pos1)
+        title_pos2 = whole_text.find(" ##", last_final_pos)
+        article_pos1 = whole_text.find("+++ ", last_final_pos) + 4
+        article_pos2 = whole_text.find(" ++", last_final_pos)
+        last_final_pos = article_pos2 + 3
+        
+        # Sum up into the title, type, writer and article
+        title = whole_text[title_pos1:title_pos2]
+        article = whole_text[article_pos1:article_pos2]
+        
+        """
+        print("Hear_me_out:", hear_me_out)
+        print("Description:", desc)
+        """
+        
+        output = ({"Number": number_of_articles, "Content": {"Title": title, "Article": article}})
         output_sum.append(output)
     
     content.close() # at the end
@@ -186,6 +187,10 @@ if is_linux == True:
     hear_me_outs_template_path = base_path + r"/frontend/template/hear_me_outs.html"
     lone_hear_me_out_template_path = base_path + r"/frontend/template/lone_hear_me_out.html"
     hear_me_outs_generated_path = base_path + r"/frontend/webbpage/hear_me_outs/index.html"
+    
+    short_storys_template_path = base_path + r"/frontend/template/notiser.html"
+    lone_short_story_template_path = base_path + r"/frontend/template/lone_notis.html"
+    short_storys_generated_path = base_path + r"/frontend/webbpage/notiser/index.html"
 else:
     lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
 
@@ -198,6 +203,10 @@ else:
     hear_me_outs_template_path = base_path + r"\ostraloken\frontend\template\hear_me_outs.html"
     lone_hear_me_out_template_path = base_path + r"\ostraloken\frontend\template\lone_hear_me_out.html"
     hear_me_outs_generated_path = base_path + r"\ostraloken\frontend\webbpage\hear_me_outs\index.html"
+    
+    short_storys_template_path = base_path + r"\ostraloken\frontend\template\notiser.html"
+    lone_short_story_template_path = base_path + r"\ostraloken\frontend\template\lone_notis.html"
+    short_storys_generated_path = base_path + r"\ostraloken\frontend\webbpage\notiser\index.html"
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author):
@@ -353,12 +362,12 @@ def generate_hear_me_outs():
     
     generated_hear_me_out = ""
     
-    for upplaga in reversed(read_hear_me_outs()):
-        content = upplaga["Content"]
+    for hear_me_out_bundle in reversed(read_hear_me_outs()):
+        content = hear_me_out_bundle["Content"]
         if content:
             article_hear_me_out = content["Hear_me_out"]
-            article_main_desc = content["Description"]
-            generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_main_desc)
+            article_desc = content["Description"]
+            generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_desc)
     
     generated_file = open(hear_me_outs_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:hear_me_out_container_pos] + generated_hear_me_out + template[hear_me_out_container_pos:]) #write to it
@@ -367,9 +376,54 @@ def generate_hear_me_outs():
     
     print("Hear me outs successfully generated!")
 
+# short storys
+def generate_lone_short_storys(title, content):
+    if title is None or title == "":
+        title = "Null"
+    if content is None or content == "":
+        content = "Null"
+        
+    template_opend = open(lone_short_story_template_path)
+    template = template_opend.read()
+    
+
+    # Find where it says <!-- [+title+] -->
+    article_title_pos = template.find("<!-- [+title+] -->") + 18
+    # Find where it says <!-- [+content+] -->
+    article_content_pos = template.find("<!-- [+content+] -->") + 20
+    
+    final_article = template[:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
+        
+    template_opend.close()
+    return final_article
+
+def generate_short_storys():
+    template_opend = open(short_storys_template_path, encoding="utf-8")
+    template = template_opend.read()
+    
+    # Find where it says <!-- [+short_storys+] -->
+    short_story_container_pos = template.find("<!-- [+short_storys+] -->") + 26
+    
+    generated_short_story = ""
+    
+    for short_story_bundle in reversed(read_short_storys()):
+        content = short_story_bundle["Content"]
+        if content:
+            article_title = content["Title"]
+            article_main_content = content["Article"]
+            generated_short_story += generate_lone_short_storys(article_title, article_main_content)
+    
+    generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
+    generated_file.write(template[:short_story_container_pos] + generated_short_story + template[short_story_container_pos:]) #write to it
+    
+    template_opend.close()
+    
+    print("Short storys successfully generated!")
+
 # print(read_normal_storys())    
 generate_index()
 generate_hear_me_outs()
+generate_short_storys()
 generate_all_articles()
 fix_all_backend_articles_names()
 
