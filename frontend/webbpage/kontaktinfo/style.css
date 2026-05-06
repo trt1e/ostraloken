@@ -6,7 +6,7 @@
     border: var(--darkest-bg-color) solid 2px;
 }
 .kontakt_card.highlight {
-    border: var(--accent-color) solid 2px;
+    border: var(--secondary-color) solid 2px;
     background-color: var(--darker-bg-color);
 }
 .kontakt_card.highlight:hover {

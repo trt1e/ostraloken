@@ -15,23 +15,15 @@
     grid-template-rows: auto;
 }
 .article button {
-    background: radial-gradient(white 0%, white 50%, rgb(241, 241, 241) 100%);
+    background: white;
     width: 90%;
     height: 4rem;
     border: black solid 2px;
     margin: auto;
+    transition: 0.2s;
 }
-@property --highlight-change-color { 
-    syntax: '<color>';
-    inherits: false;
-    initial-value: transparent; 
-}
-.article .underline {
-    background: linear-gradient(to right, transparent, var(--highlight-change-color), var(--highlight-change-color), transparent);
-    padding: 0.5rem 28%;
-    clip-path: polygon(3% 0, 100% 0, 97% 100%, 0 100%); /*Make the item slanted*/
-    transition: --highlight-change-color 0.3s;
-}
-.article button:hover .underline {
-    --highlight-change-color: var(--highlight-color);
+.article button:hover {
+    background: var(--highlight-color);
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: hsl(0, 0%, 0%, 50%) 0.2rem 0.2rem 0.8rem;
 }

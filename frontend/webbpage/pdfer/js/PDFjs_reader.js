@@ -17,7 +17,7 @@ let renderMode = "browser"; // "browser" vs "JSrender"
 
 window.addEventListener("load", () => {
     PDFHandle();
-    pdfContent.src = `./pdfs/Östra_Löken_upplaga_${counter}.pdf`;
+    pdfContent.src = `../../../backend/content/pdfs/Östra_Löken_upplaga_${counter}.pdf`;
 });
 
 function getLokenEdition(edition) {
