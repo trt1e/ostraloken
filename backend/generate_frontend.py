@@ -224,9 +224,11 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     
 
     # Find where you put the redirect src
-    redirect_href_title_pos = template.find('a href="') + 8
+    article_redirect_href_pos = template.find('a href="') + 8
+    # Find where you put the article id
+    article_id_pos = template.find('id="') + 4
     # Find where you put the img src
-    img_src_title_pos = template.find('img src="') + 9
+    article_img_src_pos = template.find('img src="') + 9
     # Find where it says <!-- [+title+] -->
     article_title_pos = template.find("<!-- [+title+] -->") + 18 
     # Find where it says <!-- [+type+] -->
@@ -235,13 +237,17 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     article_content_pos = template.find("<!-- [+content+] -->") + 20 
     # Find where it says <!-- [+author+] -->
     article_author_pos = template.find("<!-- [+author+] -->") + 19
+
+    # generate the article id
+    article_id = (re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", title).replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", author)[:15].replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", type).replace(" ", "_"))[:100] 
+    # We strip the content of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     if redirect_src != "SHOULD_NOT_REDIRECT":
-        final_article = template[:redirect_href_title_pos] + redirect_src + template[redirect_href_title_pos:img_src_title_pos] + img_src +  template[img_src_title_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
+        final_article = template[:article_redirect_href_pos] + redirect_src + template[article_redirect_href_pos:article_id_pos] + article_id + template[article_id_pos:article_img_src_pos] + img_src +  template[article_img_src_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
     else: # make article not ancor
         first_a_pos = template.find("<a") + 1
         second_a_pos = template.find("</a", first_a_pos) + 2
-        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):img_src_title_pos] + img_src +  template[img_src_title_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
+        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):article_img_src_pos] + img_src +  template[article_img_src_pos:article_id_pos] + article_id + template[article_id_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
         
     template_opend.close()
     return final_article
@@ -316,8 +322,13 @@ def generate_all_articles():
                 article_img_src = "../images/Test.png"
                 generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
             
+                # generate the home url
+                article_home_url_pos = template.find('<a id="return" href="') + 21
+                home_place_id = (re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title).replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_author)[:15].replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_type).replace(" ", "_"))[:100] 
+                article_home_url_finale = "../#" + home_place_id
+            
                 generated_file = open((generated_articles_path + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title)[:100].replace(" ", "_") + ".html"), "w", encoding="utf-8") # create / find the file
-                generated_file.write(template[:article_pos] + generated_articles + template[article_pos:]) # write to it
+                generated_file.write(template[:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:]) # write to it
             
     template_opend.close()
         

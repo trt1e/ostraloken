@@ -29,7 +29,7 @@
 a#return {
     position: absolute;
     top: 6.4rem;
-    width: 2.5rem;
+    width: fit-content;
     left: 50%;
     right: 50%;
     transform: translateX(-44rem); /*Main width default is 80 rem, we want 4 extra rem*/
@@ -57,4 +57,8 @@ a#return:hover {
     a#return {
         display: none; /*Main width is 100%*/
     }
+}
+a#return p {
+    font-size: 2rem;
+    font-weight: 700;
 }
