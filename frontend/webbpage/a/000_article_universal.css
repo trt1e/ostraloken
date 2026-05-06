@@ -37,7 +37,7 @@ a#return {
     padding: 1rem;
     color: var(--secondary-color);
     text-decoration: none;
-    transition: border color 0.3s;
+    transition: border 0.3s, color 0.3s;
 }
 a#return:hover {
     border: var(--darkest-bg-color) solid 2px;

@@ -5,62 +5,57 @@ is_linux = False
 
 base_path = os.getcwd()
 
-# READ TEXT
-# give dirs
-if is_linux == True:
-    normal_story_path = base_path + r"/backend/content/normal_storys_and_other"
-    short_story_path = base_path + r"/backend/content/short_storys.txt"
-    hear_me_outs_path = base_path + r"/backend/content/hear_me_outs.txt"
-else:
-    normal_story_path = base_path + r"\ostraloken\backend\content\normal_storys_and_other"
-    short_story_path = base_path + r"\ostraloken\backend\content\short_storys.txt"
-    hear_me_outs_path = base_path + r"\ostraloken\backend\content\hear_me_outs.txt"
+# BASE COMMANDS
+def strip_string(string, max):
+    if max == -1 or max == "" or max is None:
+        return re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", string).replace(" ", "_")
+    else:
+        return re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", string).replace(" ", "_")[:max]
 
+def handel_path_slash(string): # needs to be own function cause some parts just require one or two slashes
+    if is_linux == True:
+        return string.replace("\\", "/")
+    else:
+        return string
+
+def work_path(path): # input a path that works on windows and it then works in linux if needed
+    if is_linux == True:
+        new_path = handel_path_slash(path)
+        new_path_start = new_path.find("/", 1)
+        return base_path + new_path[new_path_start:]
+    else:
+        return base_path + path
+
+def find_between(input, find_start, find_end, start_pos):
+    pos1 = input.find(find_start, start_pos) + len(find_start)
+    pos2 = input.find(find_end, start_pos)
+    return input[pos1:pos2]
+
+
+# READ TEXT
+normal_story_path = work_path(r"\ostraloken\backend\content\normal_storys_and_other")
+short_story_path = work_path(r"\ostraloken\backend\content\short_storys.txt")
+hear_me_outs_path = work_path(r"\ostraloken\backend\content\hear_me_outs.txt")
 
 def read_normal_storys(): # To get the files and their content from all normal articals 
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
-    upplaga_number = 0
-    article_output_sum = []
-    output_sum = []
-    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
+    output_sum = [] # all the output
+    for upplaga_number, upplaga in enumerate(upplaga_list): # go thrpguth every folder to get all the upplagor
         # list all files in dir  
-        if is_linux == True:
-            file_list = os.listdir(normal_story_path + "/" + upplaga) 
-        else:
-            file_list = os.listdir(normal_story_path + "\\" + upplaga)
-        number_of_articles = 0
+        file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
         article_output_sum = []
         upplaga_number = upplaga.split("_")[1]
         for file in file_list: # Go througth every file in the list and extract the content
             if file != "upplaga_info.txt":
-                number_of_articles += 1
                 # extract
-                if is_linux == True:
-                    content = open(normal_story_path + "/" + upplaga + "/" + file, "tr", encoding="utf-8")
-                else:
-                    content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8")
+                content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
                 whole_text = content.read() # read it
                 
-                # find the positions of difrent key parts
-                title_pos1 = whole_text.find("### ") + 4
-                title_pos2 = whole_text.find(" ##")
-                type_pos1 = whole_text.find("¤¤¤ ") + 4
-                type_pos2 = whole_text.find(" ¤¤")
-                writer_pos1 = whole_text.find("@@@ ") + 4
-                writer_pos2 = whole_text.find(" @@")
-                
-                # Sum up into the title, type, writer and article
-                title = whole_text[title_pos1:title_pos2]
-                type = whole_text[type_pos1:type_pos2]
-                writer = whole_text[writer_pos1:writer_pos2]
-                article = whole_text[(writer_pos2 + 4):]
-                
-                """
-                print("Title:", title)
-                print("Type:", type)
-                print("Writer:", writer)
-                print("Article:", article)
-                """
+                # find where diffrent parts are in the document
+                title = find_between(whole_text, "### ", " ##", 0)
+                type = find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
+                writer = find_between(whole_text, "@@@ ", " @@", 0)
+                article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
                 
                 content.close() # at the end
                 
@@ -69,61 +64,40 @@ def read_normal_storys(): # To get the files and their content from all normal a
         output = ({"Upplaga": int(upplaga_number), "Content": article_output_sum})
         output_sum.append(output)
         
-    output_sum.sort(key=lambda x: int(x["Upplaga"])) # sortera den baserat på upplaga_number
+    output_sum.sort(key=lambda x: int(x["Upplaga"])) # sort all articles based on upplaga_number so it orders correct
     return output_sum
 
-def read_hear_me_outs(): # To get the contents from all hear me outs
-    content = open(hear_me_outs_path, "tr", encoding="utf-8") # extract
+def read_short_storys(): # To get the files and their content from all short articals 
+    content = open(short_story_path, "tr", encoding="utf-8") # extract
     whole_text = content.read() # read it
-    last_final_pos = whole_text.find("### ")
+    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
     output_sum = []
-    for number_of_hear_me_outs in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
-        # find the positions of difrent key parts
-        hear_me_out_pos1 = whole_text.find("### ", last_final_pos) + 4
-        hear_me_out_pos2 = whole_text.find(" ##", last_final_pos)
-        desc_pos1 = whole_text.find("+++ ", last_final_pos) + 4
-        desc_pos2 = whole_text.find(" ++", last_final_pos)
-        last_final_pos = desc_pos2 + 3
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
+        # find where diffrent parts are in the document
+        title = find_between(whole_text, "### ", " ##", last_final_pos)
+        article = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
         
-        # Sum up into the title, type, writer and article
-        hear_me_out = whole_text[hear_me_out_pos1:hear_me_out_pos2]
-        desc = whole_text[desc_pos1:desc_pos2]
-        
-        """
-        print("Hear_me_out:", hear_me_out)
-        print("Description:", desc)
-        """
-        
-        output = ({"Number": int(number_of_hear_me_outs), "Content": {"Hear_me_out": hear_me_out, "Description": desc}})
+        output = ({"Number": number_of_articles, "Content": {"Title": title, "Article": article}})
         output_sum.append(output)
     
     content.close() # at the end
         
     return output_sum
 
-def read_short_storys(): # To get the files and their content from all short articals 
-    content = open(short_story_path, "tr", encoding="utf-8") # extract
+def read_hear_me_outs(): # To get the contents from all hear me outs
+    content = open(hear_me_outs_path, "tr", encoding="utf-8") # extract
     whole_text = content.read() # read it
-    last_final_pos = whole_text.find("### ")
+    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "
     output_sum = []
-    for number_of_articles in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
-        # find the positions of difrent key parts
-        title_pos1 = whole_text.find("### ", last_final_pos) + 4
-        title_pos2 = whole_text.find(" ##", last_final_pos)
-        article_pos1 = whole_text.find("+++ ", last_final_pos) + 4
-        article_pos2 = whole_text.find(" ++", last_final_pos)
-        last_final_pos = article_pos2 + 3
+    for number_of_hear_me_outs in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
+
+        # find where diffrent parts are in the document
+        hear_me_out = find_between(whole_text, "### ", " ##", last_final_pos)
+        desc = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
         
-        # Sum up into the title, type, writer and article
-        title = whole_text[title_pos1:title_pos2]
-        article = whole_text[article_pos1:article_pos2]
-        
-        """
-        print("Hear_me_out:", hear_me_out)
-        print("Description:", desc)
-        """
-        
-        output = ({"Number": number_of_articles, "Content": {"Title": title, "Article": article}})
+        output = ({"Number": int(number_of_hear_me_outs), "Content": {"Hear_me_out": hear_me_out, "Description": desc}})
         output_sum.append(output)
     
     content.close() # at the end
@@ -135,77 +109,41 @@ def read_short_storys(): # To get the files and their content from all short art
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
-        file_number = 0
-        
-        # list all files in dir  
-        if is_linux == True:
-            file_list = os.listdir(normal_story_path + "/" + upplaga) 
-        else:
-            file_list = os.listdir(normal_story_path + "\\" + upplaga)
-        for file in file_list: # Go througth every file in the list and extract the content
+        # list all files in dir 
+        file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
+        for file_number, file in enumerate(file_list): # Go througth every file in the list and extract the content
             if file != "upplaga_info.txt":
-                file_number += 1
-                
                 # extract
-                if is_linux == True:
-                    content = open(normal_story_path + "/" + upplaga + "/" + file, "tr", encoding="utf-8")
-                else:
-                    content = open(normal_story_path + "\\" + upplaga + "\\" + file, "tr", encoding="utf-8")
+                content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
                 whole_text = content.read() # read it
-                
-                # find the positions of difrent key parts
-                title_pos1 = whole_text.find("### ") + 4
-                title_pos2 = whole_text.find(" ##")
-                
-                # Sum up into the title, type, writer and article
-                title = whole_text[title_pos1:title_pos2]
-                
+                # find where title is in the document
+                title = find_between(whole_text, "### ", " ##", 0)
+
                 content.close() # at the end
                 
-                new_file_name = str(file_number) + " " + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", title).replace(" ", "_")[:100] + ".txt"
+                new_file_name = str(file_number) + " " + strip_string(title, 100) + ".txt"
                 
-                if is_linux == True:
-                    os.rename((normal_story_path + "/" + upplaga + "/" + file), (normal_story_path + "/" + upplaga + "/" + new_file_name))
-                else:
-                    os.rename((normal_story_path + "\\" + upplaga + "\\" + file), (normal_story_path + "\\" + upplaga + "\\" + new_file_name))
+                os.rename((normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file), (normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + new_file_name))
 
     print("Article names successfully fixed!")
 
 
 # GENERATE SITES
-# give dirs
-if is_linux == True:
-    lone_article_template_path = base_path + r"/frontend/template/lone_article.html"
+lone_article_template_path = work_path(r"\ostraloken\frontend\template\lone_article.html")
 
-    index_template_path = base_path + r"/frontend/template/index.html"
-    index_generated_path = base_path + r"/frontend/webbpage/index.html"
+index_template_path = work_path(r"\ostraloken\frontend\template\index.html")
+index_generated_path = work_path(r"\ostraloken\frontend\webbpage\index.html")
 
-    article_template_path = base_path + r"/frontend/template/articles_pages.html"
-    generated_articles_path = base_path + r"/frontend/webbpage/a" + "//"
+article_template_path = work_path(r"\ostraloken\frontend\template\articles_pages.html")
+generated_articles_path = work_path(r"\ostraloken\frontend\webbpage\a" + "\\")
 
-    hear_me_outs_template_path = base_path + r"/frontend/template/hear_me_outs.html"
-    lone_hear_me_out_template_path = base_path + r"/frontend/template/lone_hear_me_out.html"
-    hear_me_outs_generated_path = base_path + r"/frontend/webbpage/hear_me_outs/index.html"
-    
-    short_storys_template_path = base_path + r"/frontend/template/notiser.html"
-    lone_short_story_template_path = base_path + r"/frontend/template/lone_notis.html"
-    short_storys_generated_path = base_path + r"/frontend/webbpage/notiser/index.html"
-else:
-    lone_article_template_path = base_path + r"\ostraloken\frontend\template\lone_article.html"
+hear_me_outs_template_path = work_path(r"\ostraloken\frontend\template\hear_me_outs.html")
+lone_hear_me_out_template_path = work_path(r"\ostraloken\frontend\template\lone_hear_me_out.html")
+hear_me_outs_generated_path = work_path(r"\ostraloken\frontend\webbpage\hear_me_outs\index.html")
 
-    index_template_path = base_path + r"\ostraloken\frontend\template\index.html"
-    index_generated_path = base_path + r"\ostraloken\frontend\webbpage\index.html"
-
-    article_template_path = base_path + r"\ostraloken\frontend\template\articles_pages.html"
-    generated_articles_path = base_path + r"\ostraloken\frontend\webbpage\a" + "\\"
-
-    hear_me_outs_template_path = base_path + r"\ostraloken\frontend\template\hear_me_outs.html"
-    lone_hear_me_out_template_path = base_path + r"\ostraloken\frontend\template\lone_hear_me_out.html"
-    hear_me_outs_generated_path = base_path + r"\ostraloken\frontend\webbpage\hear_me_outs\index.html"
-    
-    short_storys_template_path = base_path + r"\ostraloken\frontend\template\notiser.html"
-    lone_short_story_template_path = base_path + r"\ostraloken\frontend\template\lone_notis.html"
-    short_storys_generated_path = base_path + r"\ostraloken\frontend\webbpage\notiser\index.html"
+short_storys_template_path = work_path(r"\ostraloken\frontend\template\notiser.html")
+lone_short_story_template_path = work_path(r"\ostraloken\frontend\template\lone_notis.html")
+short_storys_generated_path = work_path(r"\ostraloken\frontend\webbpage\notiser\index.html")
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author):
@@ -238,16 +176,20 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     # Find where it says <!-- [+author+] -->
     article_author_pos = template.find("<!-- [+author+] -->") + 19
 
-    # generate the article id
-    article_id = (re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", title).replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", author)[:15].replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", type).replace(" ", "_"))[:100] 
+    # generate the article id 
+    article_id = (strip_string(title, -1) + "_" + strip_string(author, 20) + "_" + strip_string(type, -1))[:100] 
     # We strip the content of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
+    # get the core part that is in both versions
+    core_article_part = article_id + template[article_id_pos:article_img_src_pos] + img_src + template[article_img_src_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author
+    
+    # act diffrently if it should redirect or not
     if redirect_src != "SHOULD_NOT_REDIRECT":
-        final_article = template[:article_redirect_href_pos] + redirect_src + template[article_redirect_href_pos:article_id_pos] + article_id + template[article_id_pos:article_img_src_pos] + img_src +  template[article_img_src_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:]
+        final_article = template[:article_redirect_href_pos] + redirect_src + template[article_redirect_href_pos:article_id_pos] + core_article_part + template[article_author_pos:]
     else: # make article not ancor
         first_a_pos = template.find("<a") + 1
         second_a_pos = template.find("</a", first_a_pos) + 2
-        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):article_img_src_pos] + img_src +  template[article_img_src_pos:article_id_pos] + article_id + template[article_id_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
+        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):article_id_pos] + core_article_part + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
         
     template_opend.close()
     return final_article
@@ -263,7 +205,7 @@ def generate_index():
     
     for upplaga in reversed(read_normal_storys()):
         content = upplaga["Content"]
-        if content:
+        if content: # if there is content
             for article in content:
                 extra_after_last_caracter = ""
                 extra_span = ""
@@ -291,8 +233,8 @@ def generate_index():
                 
                 article_type = article["Type"]
                 article_author = article["Writer"]
-                article_img_src = "./images/Test.png"
-                generated_articles += generate_lone_article(("./a/" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", org_article_title)[:100].replace(" ", "_") + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + extra_span + "..."), article_type, article_author)
+                article_img_src = "./images/Test.png" 
+                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + extra_span + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
@@ -323,16 +265,60 @@ def generate_all_articles():
                 generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
             
                 # generate the home url
-                article_home_url_pos = template.find('<a id="return" href="') + 21
-                home_place_id = (re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title).replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_author)[:15].replace(" ", "_") + "_" + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_type).replace(" ", "_"))[:100] 
+                article_home_url_pos = template.find('<a id="return" href="') + 21 
+                home_place_id = (strip_string(article_title, -1) + "_" + strip_string(article_author, 20) + "_" + strip_string(article_type, -1))[:100]
                 article_home_url_finale = "../#" + home_place_id
-            
-                generated_file = open((generated_articles_path + re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", article_title)[:100].replace(" ", "_") + ".html"), "w", encoding="utf-8") # create / find the file
+
+                generated_file = open((generated_articles_path + strip_string(article_title, 100) + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:]) # write to it
             
     template_opend.close()
         
     print("All articles successfully generated!")
+
+# short storys
+def generate_lone_short_storys(title, content):
+    if title is None or title == "":
+        title = "Null"
+    if content is None or content == "":
+        content = "Null"
+        
+    template_opend = open(lone_short_story_template_path)
+    template = template_opend.read()
+    
+
+    # Find where it says <!-- [+title+] -->
+    article_title_pos = template.find("<!-- [+title+] -->") + 18
+    # Find where it says <!-- [+content+] -->
+    article_content_pos = template.find("<!-- [+content+] -->") + 20
+    
+    final_article = template[:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
+        
+    template_opend.close()
+    return final_article
+
+def generate_short_storys():
+    template_opend = open(short_storys_template_path, encoding="utf-8")
+    template = template_opend.read()
+    
+    # Find where it says <!-- [+short_storys+] -->
+    short_story_container_pos = template.find("<!-- [+short_storys+] -->") + 26
+    
+    generated_short_story = ""
+    
+    for short_story_bundle in reversed(read_short_storys()):
+        content = short_story_bundle["Content"]
+        if content:
+            article_title = content["Title"]
+            article_main_content = content["Article"]
+            generated_short_story += generate_lone_short_storys(article_title, article_main_content)
+    
+    generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
+    generated_file.write(template[:short_story_container_pos] + generated_short_story + template[short_story_container_pos:]) #write to it
+    
+    template_opend.close()
+    
+    print("Short storys successfully generated!")
 
 # hear me outs
 def generate_lone_hear_me_out(hear_me_out, description):
@@ -386,56 +372,13 @@ def generate_hear_me_outs():
     
     print("Hear me outs successfully generated!")
 
-# short storys
-def generate_lone_short_storys(title, content):
-    if title is None or title == "":
-        title = "Null"
-    if content is None or content == "":
-        content = "Null"
-        
-    template_opend = open(lone_short_story_template_path)
-    template = template_opend.read()
-    
-
-    # Find where it says <!-- [+title+] -->
-    article_title_pos = template.find("<!-- [+title+] -->") + 18
-    # Find where it says <!-- [+content+] -->
-    article_content_pos = template.find("<!-- [+content+] -->") + 20
-    
-    final_article = template[:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
-        
-    template_opend.close()
-    return final_article
-
-def generate_short_storys():
-    template_opend = open(short_storys_template_path, encoding="utf-8")
-    template = template_opend.read()
-    
-    # Find where it says <!-- [+short_storys+] -->
-    short_story_container_pos = template.find("<!-- [+short_storys+] -->") + 26
-    
-    generated_short_story = ""
-    
-    for short_story_bundle in reversed(read_short_storys()):
-        content = short_story_bundle["Content"]
-        if content:
-            article_title = content["Title"]
-            article_main_content = content["Article"]
-            generated_short_story += generate_lone_short_storys(article_title, article_main_content)
-    
-    generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:short_story_container_pos] + generated_short_story + template[short_story_container_pos:]) #write to it
-    
-    template_opend.close()
-    
-    print("Short storys successfully generated!")
-
-# print(read_normal_storys())    
+ 
 generate_index()
 generate_hear_me_outs()
 generate_short_storys()
 generate_all_articles()
 fix_all_backend_articles_names()
+
 
 """
 Saker att lägga till
