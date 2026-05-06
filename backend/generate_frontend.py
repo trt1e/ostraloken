@@ -31,6 +31,59 @@ def find_between(input, find_start, find_end, start_pos):
     pos2 = input.find(find_end, start_pos)
     return input[pos1:pos2]
 
+def remove_html_elements(string):
+    new_string = string
+    last_pos = 0
+    amount_of_start = string.count("<")
+    amount_of_end = string.count(">")
+    if amount_of_start != amount_of_end:
+        print(f"WARNING, amount of < ({amount_of_start}) not same as > ({amount_of_end}) in {string}")
+    
+    for i in range(amount_of_start):
+        start_pos = string.find("<", last_pos)
+        end_pos = string.find(">", last_pos) + 1
+        last_pos = end_pos
+        new_string = new_string.replace(str(string[start_pos:end_pos]), "")
+        
+    return new_string
+
+def fix_cut_of_html_elements(text):
+    # closes html element if it was left open
+    extra_at_end = ""
+    if text.count("<") > text.count("</") and text.count("<") != 0 and text.count("<") != text.count("<br>"):
+        # find what html element is missing
+        list_of_html_elements = re.findall(r"<(.*?)>", text) # find all things between < and > and set it in a list (not including < and > in that element)
+        not_closed_html_elements = []
+        for element in list_of_html_elements:
+            if element == "br" or element == "img": # br and img both do not have </ to close, so they are not relevant
+                list_of_html_elements.remove(element)
+            else:
+                element = re.split(" ", element)[0]
+                if element in not_closed_html_elements:
+                    not_closed_html_elements.remove(element)
+                elif str("/" + element) in not_closed_html_elements:
+                    not_closed_html_elements.remove("/" + element)
+                elif element[1:] in not_closed_html_elements:
+                    not_closed_html_elements.remove(element[1:])
+                else:
+                    not_closed_html_elements.append(element)
+                
+        # paragraphs are closed automaticly, no need to do it here
+        if "p" in not_closed_html_elements:
+            not_closed_html_elements.remove("p")
+        elif "/p" in not_closed_html_elements:
+            not_closed_html_elements.remove("/p")
+                
+        for html_element in not_closed_html_elements: 
+            # reverse the html element: if it is for example <span>, we need to make it </span> and vice versa
+            if "/" in html_element:
+                opposite_html_element = html_element[1:]
+            else:
+                opposite_html_element = "/" + html_element
+            extra_at_end += f"<{opposite_html_element}>"
+           
+    # this returns what should be added at the end of the text given 
+    return extra_at_end
 
 # READ TEXT
 normal_story_path = work_path(r"\ostraloken\backend\content\normal_storys_and_other")
@@ -118,10 +171,11 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
                 whole_text = content.read() # read it
                 # find where title is in the document
                 title = find_between(whole_text, "### ", " ##", 0)
+                basic_title = remove_html_elements(title)
 
                 content.close() # at the end
                 
-                new_file_name = str(file_number) + " " + strip_string(title, 100) + ".txt"
+                new_file_name = str(file_number) + " " + strip_string(basic_title, 100) + ".txt"
                 
                 os.rename((normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file), (normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + new_file_name))
 
@@ -162,11 +216,11 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     
 
     # Find where you put the redirect src
-    article_redirect_href_pos = template.find('a href="') + 8
+    article_redirect_href_pos = template.find('a href="') + 8 # dependent on the html layout
     # Find where you put the article id
-    article_id_pos = template.find('id="') + 4
+    article_id_pos = template.find('id="') + 4 # only works if there is just one id, wich there should only be
     # Find where you put the img src
-    article_img_src_pos = template.find('img src="') + 9
+    article_img_src_pos = template.find('img src="') + 9 # dependent on the html layout
     # Find where it says <!-- [+title+] -->
     article_title_pos = template.find("<!-- [+title+] -->") + 18 
     # Find where it says <!-- [+type+] -->
@@ -176,9 +230,9 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     # Find where it says <!-- [+author+] -->
     article_author_pos = template.find("<!-- [+author+] -->") + 19
 
-    # generate the article id 
-    article_id = (strip_string(title, -1) + "_" + strip_string(author, 20) + "_" + strip_string(type, -1))[:100] 
-    # We strip the content of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
+    # generate the article id
+    article_id = (strip_string(remove_html_elements(title), -1) + "-" + strip_string(author, 20) + "-" + strip_string(type, -1))[:100] 
+    # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     # get the core part that is in both versions
     core_article_part = article_id + template[article_id_pos:article_img_src_pos] + img_src + template[article_img_src_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author
@@ -205,36 +259,60 @@ def generate_index():
     
     for upplaga in reversed(read_normal_storys()):
         content = upplaga["Content"]
-        if content: # if there is content
+        if content: # if there is content, content is the text, title, type and author
             for article in content:
-                extra_after_last_caracter = ""
-                extra_span = ""
+                extra_at_end = ""
                 article_title = article["Title"]
-                org_article_title = article_title
-                if len(article_title) >= 70 and article_title.count("</span>") == 0:
-                    article_title = article_title[:70] + "..."
-                    
+                basic_article_title = remove_html_elements(article_title)
+                org_article_title = basic_article_title # so that even if title is shortend, it is still the same URL
+                # shorten down article titles over 70 characters
+                if len(basic_article_title) >= 70:
+                    if ">" in article_title:
+                        if article_title[30:].find(">") == -1: # if there is no ">" in the first 30 characters
+                            title_end_pos = article_title.find(">")
+                        else:
+                            title_end_pos = article_title[30:].find(">")
+                        basic_article_title = basic_article_title[:title_end_pos] + fix_cut_of_html_elements(basic_article_title) + "..." # add back any cut of html elements
+                    else:
+                        basic_article_title = basic_article_title[:70] + fix_cut_of_html_elements(basic_article_title) + "..."
+                
                 article_main_text = article["Article"][:400]
                 # remove any bolding
                 if "<b>" in article_main_text:
                     article_main_text = article_main_text.replace("<b>", "")
                     article_main_text = article_main_text.replace("</b>", "")
-                # find the last caracter
-                article_main_text_last_caracter = article_main_text.find(". ", 200)
-                if article_main_text[:article_main_text_last_caracter].find("<br>") != -1: # if <br> exists
-                    if article_main_text[article_main_text.find("<br>") - 1] != ">": # so if for example something ends with </i> the i isnt cut of
-                        article_main_text_last_caracter = article_main_text.find("<br>") - 1
-                    else:
-                        article_main_text_last_caracter = article_main_text.find("<br>") - 5
-                        extra_after_last_caracter = article_main_text[(article_main_text.find("<br>") - 4):(article_main_text.find("<br>"))]
-                # closes span if it was left open
-                if article_main_text.count("<span") > article_main_text.count("</span"): 
-                    extra_span = "</span>"
+                    
+                # find the last character
+                article_main_text_last_caracter_pos = 400 # if no . ? ! : ; or <br> is found: this is used and we cut at the 400:th character
+                article_main_text_last_caracter = re.search(r"\.|\?|\!|\:|\;", article_main_text[200:]) # this finds a . ? ! : or ; in the last 200-400 characters
+                if article_main_text_last_caracter:
+                    article_main_text_last_caracter_pos = article_main_text.find(article_main_text_last_caracter.group(0), 200)
+                    # print(article_main_text[article_main_text_last_caracter_pos])
+                    
+                    # se if its closed by a <br> before the . ? ! : or ;
+                    if article_main_text[:article_main_text_last_caracter_pos].find("<br>") != -1: # if <br> exists
+                        character_before_break_pos = article_main_text.find("<br>") - 1
+                        if article_main_text[character_before_break_pos] == ">": # so if for example something ends with </i>, the i isnt cut of
+                            # find how long the html element before the break is
+                            length_of_html_element_before_break = 4 # have 4 (the length of, for example, <\i>) as a backup just in case
+                            for element_length, character in enumerate(article_main_text[:character_before_break_pos]):
+                                if character == "<":
+                                    length_of_html_element_before_break = character_before_break_pos - element_length + 1
+                            article_main_text_last_caracter_pos = character_before_break_pos - length_of_html_element_before_break
+                            extra_at_end += article_main_text[(article_main_text.find("<br>") - length_of_html_element_before_break):(article_main_text.find("<br>"))]
+                        else:
+                            article_main_text_last_caracter_pos = character_before_break_pos
                 
+                # the text cut of at the right place
+                shorted_main_text = article_main_text[:article_main_text_last_caracter_pos]
+                            
+                # add back any cut of html elements
+                extra_at_end = fix_cut_of_html_elements(shorted_main_text)
+                                    
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 article_img_src = "./images/Test.png" 
-                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), article_img_src, article_title, (article_main_text[:article_main_text_last_caracter] + extra_after_last_caracter + extra_span + "..."), article_type, article_author)
+                generated_articles += generate_lone_article(("./a/" + strip_string(basic_article_title, 100) + ".html"), article_img_src, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
@@ -258,6 +336,7 @@ def generate_all_articles():
                 generated_articles = "" # where we put the article
 
                 article_title = str(article["Title"])
+                basic_article_title = remove_html_elements(article_title)
                 article_main_text = str(article["Article"])
                 article_type = str(article["Type"])
                 article_author = str(article["Writer"])
@@ -266,10 +345,10 @@ def generate_all_articles():
             
                 # generate the home url
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
-                home_place_id = (strip_string(article_title, -1) + "_" + strip_string(article_author, 20) + "_" + strip_string(article_type, -1))[:100]
+                home_place_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
                 article_home_url_finale = "../#" + home_place_id
 
-                generated_file = open((generated_articles_path + strip_string(article_title, 100) + ".html"), "w", encoding="utf-8") # create / find the file
+                generated_file = open((generated_articles_path + strip_string(basic_article_title, 100) + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:]) # write to it
             
     template_opend.close()
@@ -372,7 +451,7 @@ def generate_hear_me_outs():
     
     print("Hear me outs successfully generated!")
 
- 
+
 generate_index()
 generate_hear_me_outs()
 generate_short_storys()
@@ -390,15 +469,12 @@ Att fixa senare:
 - Alla " ska fixas 
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text 
 - går så alla ettor med <b> har <b>
-- dubbelkolla allas typ
+- dubbelkolla allas type
 - gör system för bilder
 - LÄGG TILL BILDER FÖR ALLT
-- gör så att den första censurerade blir som den i upplaga 32
-
 
 GÖR ARTIKLAR <article>
-SE TILL ATT LIGHTHOUSE FUNGERAR!!!
-
+SE TILL ATT LIGHTHOUSE OCH VALIDATOR FUNGERAR!!!
 
 Hur man gör så den har infinite scroll:
 - Alla artikelsidor har också en bit av rå info som index kan enkelt fetcha
