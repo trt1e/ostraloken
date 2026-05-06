@@ -26,6 +26,35 @@
 }
 
 /* Back button */
-button.return {
-    float: left;
+a#return {
+    position: absolute;
+    top: 6.4rem;
+    width: 2.5rem;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-44rem); /*Main width default is 80 rem, we want 4 extra rem*/
+    border: var(--darker-bg-color) solid 2px;
+    padding: 1rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: border color 0.3s;
+}
+a#return:hover {
+    border: var(--darkest-bg-color) solid 2px;
+    color: var(--primary-color);
+}
+@media (80rem <= width <= 120rem) { 
+    a#return {
+        transform: translateX(-31.5rem); /*Main width is 55rem*/
+    }
+}
+@media (45rem <= width < 80rem) {
+    a#return {
+        transform: translateX(-26.5rem); /*Main width is 45rem*/
+    }
+}
+@media (width < 55rem) {
+    a#return {
+        display: none; /*Main width is 100%*/
+    }
 }

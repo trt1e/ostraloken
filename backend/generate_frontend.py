@@ -109,7 +109,6 @@ def read_short_storys(): # To get the files and their content from all short art
     for number_of_articles in range(whole_text.count("## ")): # repeat for how many hear me outs there are in the txt
         # find the positions of difrent key parts
         title_pos1 = whole_text.find("### ", last_final_pos) + 4
-        print(title_pos1)
         title_pos2 = whole_text.find(" ##", last_final_pos)
         article_pos1 = whole_text.find("+++ ", last_final_pos) + 4
         article_pos2 = whole_text.find(" ++", last_final_pos)
