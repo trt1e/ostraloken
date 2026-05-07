@@ -333,15 +333,21 @@ def generate_all_articles():
     template = template_opend.read()
     
     # Find where it says <!-- [+article+] -->
-    article_pos = template.find("<!-- [+article+] -->") + 21
+    article_pos = template.find("<!-- [+article+] -->") + 20 + 1
+    # Find where it says <!-- [+upplaga_number+] -->
+    upplaga_number_pos = template.find("<!-- [+upplaga_number+] -->") + 27
+    # Find where it says <!-- [+date+] -->
+    date_pos = template.find("<!-- [+date+] -->") + 17
     
     # go throught every upplaga
     for upplaga in read_normal_storys():
         # go throught every article in the upplaga
+        upplaga_number = upplaga["Upplaga"]
+        upplaga_date = upplaga["Release_date"]
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 generated_articles = "" # where we put the article
-
+                
                 article_title = str(article["Title"])
                 basic_article_title = remove_html_elements(article_title)
                 article_main_text = str(article["Article"])
@@ -356,7 +362,7 @@ def generate_all_articles():
                 article_home_url_finale = "../#" + home_place_id
 
                 generated_file = open((generated_articles_path + strip_string(basic_article_title, 100) + ".html"), "w", encoding="utf-8") # create / find the file
-                generated_file.write(template[:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:]) # write to it
+                generated_file.write(template[:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
             
     template_opend.close()
         
