@@ -172,7 +172,7 @@ main li {
 
 /* Content in main */
 .article {
-    background-color: transparent;
+    background-color: var(--bg-color);
     position: relative;
     padding: 1rem;
     display: block;

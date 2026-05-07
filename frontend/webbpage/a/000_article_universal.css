@@ -62,3 +62,32 @@ a#return p {
     font-size: 2rem;
     font-weight: 700;
 }
+
+/* Upplaga number and date */
+#upplaga {
+    width: 20rem;
+    z-index: -1;
+    color: var(--darkest-bg-color);
+    position: absolute;
+    top: 4.4rem;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-36rem); /*Main width default is 80 rem*/
+    font-size: 1.6rem;
+}
+@media (80rem <= width <= 120rem) {
+    #upplaga {
+        transform: translateX(-23.5rem); /*Main width is 55rem*/
+    }
+}
+@media (45rem <= width < 80rem) {
+    #upplaga {
+        transform: translateX(-18.5rem); /*Main width is 45rem*/
+    }
+}
+@media (width < 55rem) {
+    #upplaga {
+        left: 4rem;
+        right: 0;
+    }
+}

@@ -28,7 +28,7 @@ def work_path(path): # input a path that works on windows and it then works in l
 
 def find_between(input, find_start, find_end, start_pos):
     pos1 = input.find(find_start, start_pos) + len(find_start)
-    pos2 = input.find(find_end, start_pos)
+    pos2 = input.find(find_end, pos1)
     return input[pos1:pos2]
 
 def remove_html_elements(string):
@@ -93,29 +93,35 @@ hear_me_outs_path = work_path(r"\ostraloken\backend\content\hear_me_outs.txt")
 def read_normal_storys(): # To get the files and their content from all normal articals 
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     output_sum = [] # all the output
-    for upplaga_number, upplaga in enumerate(upplaga_list): # go thrpguth every folder to get all the upplagor
+    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         # list all files in dir  
         file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
         article_output_sum = []
+        upplaga_number = 1
+        upplaga_date = ""
+        upplaga_extra_info = ""
         for file in file_list: # Go througth every file in the list and extract the content
+            # extract
+            content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
+            whole_text = content.read() # read it
             if file != "upplaga_info.txt":
-                # extract
-                content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
-                whole_text = content.read() # read it
-                
                 # find where diffrent parts are in the document
                 title = find_between(whole_text, "### ", " ##", 0)
                 type = find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
                 writer = find_between(whole_text, "@@@ ", " @@", 0)
                 article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
                 
-                content.close() # at the end
-                
                 article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
                 article_output_sum.append(article_output)
             else:
-                pass
-        output = ({"Upplaga": int(upplaga_number), "Content": article_output_sum})
+                # find where diffrent parts are in the document
+                # REMEMBER: This is loaded 1, 10, 11, 12... 2, 20, 21, 22... 3, 30, 31, 32...
+                upplaga_number = find_between(whole_text, "=== ", " ==", 0)
+                upplaga_date = find_between(whole_text, "$$$ ", " $$", 0)
+                upplaga_extra_info = find_between(whole_text, "*** ", " **", 0)
+
+            content.close() # at the end
+        output = ({"Upplaga": int(upplaga_number), "Release_date": upplaga_date, "Extra_upplaga_info": upplaga_extra_info, "Content": article_output_sum})
         output_sum.append(output)
         
     output_sum.sort(key=lambda x: int(x["Upplaga"])) # sort all articles based on upplaga_number so it orders correct
@@ -313,7 +319,7 @@ def generate_index():
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 article_img_src = "./images/Test.png" 
-                generated_articles += generate_lone_article(("./a/" + strip_string(basic_article_title, 100) + ".html"), article_img_src, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author)
+                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), article_img_src, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
