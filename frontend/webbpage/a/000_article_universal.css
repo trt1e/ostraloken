@@ -5,9 +5,10 @@
     font-size: 1.8rem;
     padding: 0.2rem;
     margin-left: 0.4rem;
+    margin-right: 0.6rem;
     position: absolute;
     top: 1.6rem;
-    right: 1.6rem;
+    right: 1rem;
 }
 .no_img .type_text { /* In the case that there is no image */
     position: static;
@@ -18,6 +19,9 @@
         width: 100%;
         text-align: center;
     }
+}
+.no_img img {
+    display: none;
 }
 .author_text {
     text-align: end;
@@ -93,7 +97,7 @@ a#return p {
     #upplaga_and_date {
         transform: translateX(0rem); /*Main width is 100%*/
         left: 2rem;
-        top: 3.4rem;
+        top: 3.8rem;
         width: calc(100% - 4rem);
     }
 }

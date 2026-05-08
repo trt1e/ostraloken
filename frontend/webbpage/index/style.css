@@ -26,9 +26,10 @@ html {
     font-size: 1.8rem;
     padding: 0.2rem;
     margin-left: 0.4rem;
+    margin-right: 0.6rem;
     position: absolute;
     top: 1.6rem;
-    right: 1.6rem;
+    right: 1rem;
 }
 .no_img .type_text { /* In the case that there is no image */
     position: static;
@@ -39,6 +40,9 @@ html {
         width: 100%;
         text-align: center;
     }
+}
+.no_img img {
+    display: none;
 }
 .author_text {
     text-align: end;

@@ -1,5 +1,7 @@
 import os
 import re
+from PIL import Image
+import math
 
 is_linux = False
 
@@ -101,26 +103,27 @@ def read_normal_storys(): # To get the files and their content from all normal a
         upplaga_date = ""
         upplaga_extra_info = ""
         for file in file_list: # Go througth every file in the list and extract the content
-            # extract
-            content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
-            whole_text = content.read() # read it
-            if file != "upplaga_info.txt":
-                # find where diffrent parts are in the document
-                title = find_between(whole_text, "### ", " ##", 0)
-                type = find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
-                writer = find_between(whole_text, "@@@ ", " @@", 0)
-                article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
-                
-                article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
-                article_output_sum.append(article_output)
-            else:
-                # find where diffrent parts are in the document
-                # REMEMBER: This is loaded 1, 10, 11, 12... 2, 20, 21, 22... 3, 30, 31, 32...
-                upplaga_number = find_between(whole_text, "=== ", " ==", 0)
-                upplaga_date = find_between(whole_text, "$$$ ", " $$", 0)
-                upplaga_extra_info = find_between(whole_text, "*** ", " **", 0)
+            if file[:4] != "IMG-":
+                # extract
+                content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
+                whole_text = content.read() # read it
+                if file != "upplaga_info.txt":
+                    # find where diffrent parts are in the document
+                    title = find_between(whole_text, "### ", " ##", 0)
+                    type = find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
+                    writer = find_between(whole_text, "@@@ ", " @@", 0)
+                    article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
+                    
+                    article_output = ({"Title": title, "Type": type, "Writer": writer, "Article": article})
+                    article_output_sum.append(article_output)
+                else:
+                    # find where diffrent parts are in the document
+                    # REMEMBER: This is loaded 1, 10, 11, 12... 2, 20, 21, 22... 3, 30, 31, 32...
+                    upplaga_number = find_between(whole_text, "=== ", " ==", 0)
+                    upplaga_date = find_between(whole_text, "$$$ ", " $$", 0)
+                    upplaga_extra_info = find_between(whole_text, "*** ", " **", 0)
 
-            content.close() # at the end
+                content.close() # at the end
         output = ({"Upplaga": int(upplaga_number), "Release_date": upplaga_date, "Extra_upplaga_info": upplaga_extra_info, "Content": article_output_sum})
         output_sum.append(output)
         
@@ -172,7 +175,7 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
         # list all files in dir 
         file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
         for file_number, file in enumerate(file_list, 1): # Go througth every file in the list and extract the content
-            if file != "upplaga_info.txt":
+            if file != "upplaga_info.txt" and file[:4] != "IMG-":
                 # extract
                 content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
                 whole_text = content.read() # read it
@@ -206,13 +209,41 @@ short_storys_template_path = work_path(r"\ostraloken\frontend\template\notiser.h
 lone_short_story_template_path = work_path(r"\ostraloken\frontend\template\lone_notis.html")
 short_storys_generated_path = work_path(r"\ostraloken\frontend\webbpage\notiser\index.html")
 
+# images
+def copy_over_images(article_title, upplaga_nmr):
+    all_img_title = "IMG-" + strip_string(article_title, 100)
+    old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
+    new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
+    extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
+    for ext in extentions:
+        if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
+            old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+            break
+    else:
+        old_img_path_with_extention = "NO_IMG" # article does not have image
+        
+    if old_img_path_with_extention != "NO_IMG":
+        if os.path.isfile(new_img_url_with_extention) is False:
+            image = Image.open(old_img_path_with_extention)
+            img_width, img_height = image.size
+            new_width = 800
+            new_height = int((new_width / img_width) * img_height)
+            new_image = image.resize((new_width, new_height))
+            new_image.save(new_img_url_with_extention, quality=50)
+            print(f"copied: {all_img_title}")
+        return f"./a/images/{all_img_title + ".webp"}"
+    else:
+        return "NO_IMAGE_AVAILABLE"
+
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
-        redirect_src = "./"
-    if img_src is None or img_src == "":
-        img_src = "Null"
+        redirect_src = "./" # hide image
+    if img_src is None or img_src == "" or img_src == "NO_IMAGE_AVAILABLE":
+        no_img_class = "no_img"
+    else:
+        no_img_class = ""
     if title is None or title == "":
         title = "Null"
     if content is None or content == "":
@@ -226,8 +257,11 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     article_redirect_href_pos = template.find('a href="') + 8 # dependent on the html layout
     # Find where you put the article id
     article_id_pos = template.find('id="') + 4 # only works if there is just one id, wich there should only be
+    # Find where you put if there is no image
+    no_img_class_pos = template.find('class="article ') + 15 # dependent on the html layout
     # Find where you put the img src
     article_img_src_pos = template.find('img src="') + 9 # dependent on the html layout
+    
     # Find where it says <!-- [+title+] -->
     article_title_pos = template.find("<!-- [+title+] -->") + 18 
     # Find where it says <!-- [+type+] -->
@@ -242,7 +276,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     # get the core part that is in both versions
-    core_article_part = article_id + template[article_id_pos:article_img_src_pos] + img_src + template[article_img_src_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author
+    core_article_part = article_id + template[article_id_pos:no_img_class_pos] + no_img_class + template[no_img_class_pos:article_img_src_pos] + img_src + template[article_img_src_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author
     
     # act diffrently if it should redirect or not
     if redirect_src != "SHOULD_NOT_REDIRECT":
@@ -255,7 +289,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     template_opend.close()
     return final_article
 
-def generate_index():
+def generate_index(): # PS images are copy:d here
     template_opend = open(index_template_path, encoding="utf-8")
     template = template_opend.read()
     
@@ -265,6 +299,7 @@ def generate_index():
     generated_articles = ""
     
     for upplaga in reversed(read_normal_storys()):
+        upplaga_number = upplaga["Upplaga"]
         content = upplaga["Content"]
         if content: # if there is content, content is the text, title, type and author
             for article in content:
@@ -318,8 +353,11 @@ def generate_index():
                                     
                 article_type = article["Type"]
                 article_author = article["Writer"]
-                article_img_src = "./images/Test.png" 
-                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), article_img_src, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author)
+                
+                # copy over images
+                html_url = copy_over_images(basic_article_title, upplaga_number)
+    
+                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author)
     
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
@@ -353,7 +391,7 @@ def generate_all_articles():
                 article_main_text = str(article["Article"])
                 article_type = str(article["Type"])
                 article_author = str(article["Writer"])
-                article_img_src = "../images/Test.png"
+                article_img_src = ""
                 generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
             
                 # generate the home url
