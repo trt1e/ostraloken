@@ -521,7 +521,6 @@ fix_all_backend_articles_names()
 """
 Saker att lägga till
 - sökfunktion
-- infinite scroll
 
 Att fixa senare:
 - Från och innan upplaga 6 ska skribenterna dubbelkollas
@@ -529,10 +528,7 @@ Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text 
 - går så alla ettor med <b> har <b>
 - dubbelkolla allas type
-- gör system för bilder
-- LÄGG TILL BILDER FÖR ALLT
 
-GÖR ARTIKLAR <article>
 SE TILL ATT LIGHTHOUSE OCH VALIDATOR FUNGERAR!!!
 
 Hur man gör så den har infinite scroll:
