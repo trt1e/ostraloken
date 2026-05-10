@@ -523,4 +523,10 @@ Hur man gör så den har infinite scroll:
 - Alla artikelsidor har också en bit av rå info som index kan enkelt fetcha
 - indexfilen har massa länkar till artikelsidornas info
 - js genererar rätt mängd artiklar taget från fetchningen
+
+
+Mindre viktigt:
+ - få hear me outs att se snygt ut 
+ - få hear me outs att sparas lokalt
+ - skriv vidare på vår historia mm
 """
