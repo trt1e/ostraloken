@@ -4,7 +4,7 @@ html {
 }
 */
 * {
-    scroll-margin-top: 25dvh; /*Centers it when getting there from another url via # */
+    scroll-margin-top: 5dvh; /*Centers it when getting there from another url via # */
 }
 
 /* Content in main */

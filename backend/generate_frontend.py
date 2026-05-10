@@ -229,8 +229,8 @@ def copy_over_images(article_title, upplaga_nmr):
             new_width = 800
             new_height = int((new_width / img_width) * img_height)
             new_image = image.resize((new_width, new_height))
-            new_image.save(new_img_url_with_extention, quality=50)
-            print(f"copied: {all_img_title}")
+            new_image.save(new_img_url_with_extention, quality=100)
+            print(f"copied image: {all_img_title}")
         return f"./a/images/{all_img_title + ".webp"}"
     else:
         return "NO_IMAGE_AVAILABLE"
