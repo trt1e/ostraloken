@@ -233,10 +233,10 @@ def copy_over_images(article_title, upplaga_nmr, base_url):
             print(f"copied image: {all_img_title}")
         return base_url + all_img_title + ".webp"
     else:
-        return "NO_IMAGE_AVAILABLE"
+        return ""
 
 # articles
-def generate_lone_article(redirect_src, img_src, title, content, type, author):
+def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./" # hide image
@@ -244,6 +244,11 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
         no_img_class = "no_img"
     else:
         no_img_class = ""
+        img_src += f'" alt="{title}" ' # add the alt text
+        if article_nmr != 0: # this is so the first image dosn't have loading lazy so it dosnt pop in
+            img_src += 'loading="lazy'
+        else:
+            img_src += 'fetchpriority="high'
     if title is None or title == "":
         title = "Null"
     if content is None or content == "":
@@ -290,6 +295,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author):
     return final_article
 
 def generate_index(): # PS images are copy:d here
+    how_many_articles_generated = 0
     template_opend = open(index_template_path, encoding="utf-8")
     template = template_opend.read()
     
@@ -357,8 +363,9 @@ def generate_index(): # PS images are copy:d here
                 # copy over images and get the url to the right image
                 html_url = copy_over_images(basic_article_title, upplaga_number, "./a/images/")
     
-                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author)
-    
+                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated)
+                how_many_articles_generated += 1
+                
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
     
@@ -393,7 +400,7 @@ def generate_all_articles():
                 article_author = str(article["Writer"])
                 # copy over images and get the url to the right image
                 article_img_src = copy_over_images(basic_article_title, upplaga_number, "./images/")
-                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
+                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0)
             
                 # generate the home url
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
