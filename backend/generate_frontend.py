@@ -244,7 +244,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         no_img_class = "no_img"
     else:
         no_img_class = ""
-        img_src += f'" alt="{title}" ' # add the alt text
+        img_src += f'" alt="{remove_html_elements(title)}" ' # add the alt text
         if article_nmr != 0: # this is so the first image dosn't have loading lazy so it dosnt pop in
             img_src += 'loading="lazy'
         else:
@@ -294,7 +294,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     template_opend.close()
     return final_article
 
-def generate_index(): # PS images are copy:d here
+def generate_index(): # PS images are copyd here
     how_many_articles_generated = 0
     template_opend = open(index_template_path, encoding="utf-8")
     template = template_opend.read()
@@ -373,7 +373,7 @@ def generate_index(): # PS images are copy:d here
     
     print("Index successfully generated!")
 
-def generate_all_articles():
+def generate_all_articles(): # PS images are also copyd here
     template_opend = open(article_template_path, encoding="utf-8")
     template = template_opend.read()
     
