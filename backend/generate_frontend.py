@@ -210,7 +210,7 @@ lone_short_story_template_path = work_path(r"\ostraloken\frontend\template\lone_
 short_storys_generated_path = work_path(r"\ostraloken\frontend\webbpage\notiser\index.html")
 
 # images
-def copy_over_images(article_title, upplaga_nmr):
+def copy_over_images(article_title, upplaga_nmr, base_url):
     all_img_title = "IMG-" + strip_string(article_title, 100)
     old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
     new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
@@ -231,7 +231,7 @@ def copy_over_images(article_title, upplaga_nmr):
             new_image = image.resize((new_width, new_height))
             new_image.save(new_img_url_with_extention, quality=100)
             print(f"copied image: {all_img_title}")
-        return f"./a/images/{all_img_title + ".webp"}"
+        return base_url + all_img_title + ".webp"
     else:
         return "NO_IMAGE_AVAILABLE"
 
@@ -354,8 +354,8 @@ def generate_index(): # PS images are copy:d here
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 
-                # copy over images
-                html_url = copy_over_images(basic_article_title, upplaga_number)
+                # copy over images and get the url to the right image
+                html_url = copy_over_images(basic_article_title, upplaga_number, "./a/images/")
     
                 generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author)
     
@@ -391,7 +391,8 @@ def generate_all_articles():
                 article_main_text = str(article["Article"])
                 article_type = str(article["Type"])
                 article_author = str(article["Writer"])
-                article_img_src = ""
+                # copy over images and get the url to the right image
+                article_img_src = copy_over_images(basic_article_title, upplaga_number, "./images/")
                 generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author)
             
                 # generate the home url
