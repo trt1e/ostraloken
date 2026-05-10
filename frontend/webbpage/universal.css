@@ -152,6 +152,11 @@ main img {
     object-fit: cover;
     aspect-ratio: attr(width) / attr(height); /*To make sure frame exists*/
 }
+@media (width > 120rem) {
+    main img {
+        max-height: 38rem;
+    }
+}
 main h2 {
     font-size: 2.2rem;
 }

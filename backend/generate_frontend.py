@@ -28,6 +28,25 @@ def work_path(path): # input a path that works on windows and it then works in l
     else:
         return base_path + path
 
+def try_opening(content, extra): # extra is like "tr" or something like that
+    list_of_uft = ["utf-8", "uft-8-sig", "uft-16", "uft-16le", "uft-16be", "uft-32"]
+    open_content = None
+
+    for uft in list_of_uft:
+        try:
+            if extra != "":
+                open_content = open(content, extra, encoding=uft) # like se if it exists almost
+            else:
+                open_content = open(content, encoding=uft)
+            text_output = open_content.read() # read it
+            open_content.close() # at the end
+            return text_output
+        except:
+            pass
+
+    if open_content == None:
+        print("WARNING, NO UTF WORKING ON: " + content)
+
 def find_between(input, find_start, find_end, start_pos):
     pos1 = input.find(find_start, start_pos) + len(find_start)
     pos2 = input.find(find_end, pos1)
@@ -105,8 +124,7 @@ def read_normal_storys(): # To get the files and their content from all normal a
         for file in file_list: # Go througth every file in the list and extract the content
             if file[:4] != "IMG-":
                 # extract
-                content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
-                whole_text = content.read() # read it
+                whole_text = try_opening(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr")
                 if file != "upplaga_info.txt":
                     # find where diffrent parts are in the document
                     title = find_between(whole_text, "### ", " ##", 0)
@@ -122,17 +140,14 @@ def read_normal_storys(): # To get the files and their content from all normal a
                     upplaga_number = find_between(whole_text, "=== ", " ==", 0)
                     upplaga_date = find_between(whole_text, "$$$ ", " $$", 0)
                     upplaga_extra_info = find_between(whole_text, "*** ", " **", 0)
-
-                content.close() # at the end
         output = ({"Upplaga": int(upplaga_number), "Release_date": upplaga_date, "Extra_upplaga_info": upplaga_extra_info, "Content": article_output_sum})
         output_sum.append(output)
         
     output_sum.sort(key=lambda x: int(x["Upplaga"])) # sort all articles based on upplaga_number so it orders correct
     return output_sum
 
-def read_short_storys(): # To get the files and their content from all short articals 
-    content = open(short_story_path, "tr", encoding="utf-8") # extract
-    whole_text = content.read() # read it
+def read_short_storys(): # To get the files and their content from all short articals
+    whole_text = try_opening(short_story_path, "tr") # read it
     last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
     output_sum = []
     for number_of_articles in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
@@ -143,14 +158,11 @@ def read_short_storys(): # To get the files and their content from all short art
         
         output = ({"Number": number_of_articles, "Content": {"Title": title, "Article": article}})
         output_sum.append(output)
-    
-    content.close() # at the end
         
     return output_sum
 
 def read_hear_me_outs(): # To get the contents from all hear me outs
-    content = open(hear_me_outs_path, "tr", encoding="utf-8") # extract
-    whole_text = content.read() # read it
+    whole_text = try_opening(hear_me_outs_path, "tr")
     last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "
     output_sum = []
     for number_of_hear_me_outs in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
@@ -162,8 +174,6 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
         
         output = ({"Number": int(number_of_hear_me_outs), "Content": {"Hear_me_out": hear_me_out, "Description": desc}})
         output_sum.append(output)
-    
-    content.close() # at the end
         
     return output_sum
 
@@ -177,13 +187,10 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
         for file_number, file in enumerate(file_list, 1): # Go througth every file in the list and extract the content
             if file != "upplaga_info.txt" and file[:4] != "IMG-":
                 # extract
-                content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr", encoding="utf-8")
-                whole_text = content.read() # read it
+                whole_text = try_opening(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr")
                 # find where title is in the document
                 title = find_between(whole_text, "### ", " ##", 0)
                 basic_title = remove_html_elements(title)
-
-                content.close() # at the end
                 
                 new_file_name = str(file_number) + " " + strip_string(basic_title, 100) + ".txt"
                 
@@ -254,8 +261,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     if content is None or content == "":
         content = "Null"
         
-    template_opend = open(lone_article_template_path)
-    template = template_opend.read()
+    template = try_opening(lone_article_template_path, "")
     
 
     # Find where you put the redirect src
@@ -291,13 +297,11 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         second_a_pos = template.find("</a", first_a_pos) + 2
         final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):article_id_pos] + core_article_part + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
         
-    template_opend.close()
     return final_article
 
 def generate_index(): # PS images are copyd here
     how_many_articles_generated = 0
-    template_opend = open(index_template_path, encoding="utf-8")
-    template = template_opend.read()
+    template = try_opening(index_template_path, "")
     
     # Find where it says <!-- [+articles+] -->
     article_container_pos = template.find("<!-- [+articles+] -->") + 22
@@ -369,13 +373,10 @@ def generate_index(): # PS images are copyd here
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
     
-    template_opend.close()
-    
     print("Index successfully generated!")
 
 def generate_all_articles(): # PS images are also copyd here
-    template_opend = open(article_template_path, encoding="utf-8")
-    template = template_opend.read()
+    template = try_opening(article_template_path, "")
     
     # Find where it says <!-- [+article+] -->
     article_pos = template.find("<!-- [+article+] -->") + 20 + 1
@@ -409,8 +410,6 @@ def generate_all_articles(): # PS images are also copyd here
 
                 generated_file = open((generated_articles_path + strip_string(basic_article_title, 100) + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
-            
-    template_opend.close()
         
     print("All articles successfully generated!")
 
@@ -421,8 +420,7 @@ def generate_lone_short_storys(title, content):
     if content is None or content == "":
         content = "Null"
         
-    template_opend = open(lone_short_story_template_path)
-    template = template_opend.read()
+    template = try_opening(lone_short_story_template_path, "")
     
 
     # Find where it says <!-- [+title+] -->
@@ -432,12 +430,10 @@ def generate_lone_short_storys(title, content):
     
     final_article = template[:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
         
-    template_opend.close()
     return final_article
 
 def generate_short_storys():
-    template_opend = open(short_storys_template_path, encoding="utf-8")
-    template = template_opend.read()
+    template = try_opening(short_storys_template_path, "")
     
     # Find where it says <!-- [+short_storys+] -->
     short_story_container_pos = template.find("<!-- [+short_storys+] -->") + 26
@@ -454,8 +450,6 @@ def generate_short_storys():
     generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:short_story_container_pos] + generated_short_story + template[short_story_container_pos:]) #write to it
     
-    template_opend.close()
-    
     print("Short storys successfully generated!")
 
 # hear me outs
@@ -467,8 +461,7 @@ def generate_lone_hear_me_out(hear_me_out, description):
     if description != "":
         description = "<b>Förklaring:</b> " + description
         
-    template_opend = open(lone_hear_me_out_template_path)
-    template = template_opend.read()
+    template = try_opening(lone_hear_me_out_template_path, "")
     
 
     # Find where it says <!-- [+hear_me_out+] -->
@@ -484,12 +477,10 @@ def generate_lone_hear_me_out(hear_me_out, description):
     
     final_article = template[:article_hear_me_out_pos] + hear_me_out + template[article_hear_me_out_pos:article_desc_pos] + description + template[article_desc_pos:]
         
-    template_opend.close()
     return final_article
 
 def generate_hear_me_outs():
-    template_opend = open(hear_me_outs_template_path, encoding="utf-8")
-    template = template_opend.read()
+    template = try_opening(hear_me_outs_template_path, "")
     
     # Find where it says <!-- [+hear_me_outs+] -->
     hear_me_out_container_pos = template.find("<!-- [+hear_me_outs+] -->") + 26
@@ -506,8 +497,6 @@ def generate_hear_me_outs():
     generated_file = open(hear_me_outs_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:hear_me_out_container_pos] + generated_hear_me_out + template[hear_me_out_container_pos:]) #write to it
     
-    template_opend.close()
-    
     print("Hear me outs successfully generated!")
 
 
@@ -516,7 +505,6 @@ generate_hear_me_outs()
 generate_short_storys()
 generate_all_articles()
 fix_all_backend_articles_names()
-
 
 """
 Saker att lägga till
