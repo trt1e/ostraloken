@@ -295,7 +295,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     # get the core part that is in both versions
-    core_article_part = article_id + template[article_id_pos:no_img_class_pos] + no_img_class + template[no_img_class_pos:article_img_src_pos] + img_src + template[article_img_src_pos:article_type_pos] + type + template[article_type_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author
+    core_article_part = article_id + template[article_id_pos:no_img_class_pos] + no_img_class + template[no_img_class_pos:article_type_pos] + type + template[article_type_pos:article_img_src_pos] + img_src + template[article_img_src_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author
     
     # act diffrently if it should redirect or not
     if redirect_src != "SHOULD_NOT_REDIRECT":

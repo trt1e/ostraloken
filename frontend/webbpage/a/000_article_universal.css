@@ -15,9 +15,16 @@
     float: right;
 }
 @media (width < 30rem) {
-    .no_img .type_text { /* In the case that there is no image */
+    .type_text {
         width: 100%;
         text-align: center;
+        margin-left: 0;
+        margin-right: 0;
+        position: static;
+        top: 0;
+        right: 0;
+        padding: 0;
+        margin-bottom: 0.2rem;
     }
 }
 .no_img img {
