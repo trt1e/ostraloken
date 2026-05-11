@@ -189,6 +189,12 @@ main li {
     transition: 0.3s;
 }
 
+/*Text styling*/
+h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
 /* Footer */
 footer {
     min-width: 100%;
