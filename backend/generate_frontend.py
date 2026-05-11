@@ -29,20 +29,28 @@ def work_path(path): # input a path that works on windows and it then works in l
         return base_path + path
 
 def try_opening(content, extra): # extra is like "tr" or something like that
-    list_of_uft = ["utf-8", "uft-8-sig", "uft-16", "uft-16le", "uft-16be", "uft-32"]
+    list_of_utf = ["utf-8", "utf-8-sig", "utf-16", "utf-16le", "utf-16be", "utf-32"]
     open_content = None
 
-    for uft in list_of_uft:
+    for utf in list_of_utf:
         try:
             if extra != "":
-                open_content = open(content, extra, encoding=uft) # like se if it exists almost
+                open_content = open(content, extra, encoding=utf) # like se if it exists almost
             else:
-                open_content = open(content, encoding=uft)
+                open_content = open(content, encoding=utf)
             text_output = open_content.read() # read it
             open_content.close() # at the end
             return text_output
         except:
             pass
+    else: # this is only so py doesn't give an error
+        if extra != "":
+            open_content = open(content, extra, encoding="utf-8") # like se if it exists almost
+        else:
+            open_content = open(content, encoding="utf-8")
+        text_output = open_content.read() # read it
+        open_content.close() # at the end
+        return text_output
 
     if open_content == None:
         print("WARNING, NO UTF WORKING ON: " + content)
@@ -233,10 +241,10 @@ def copy_over_images(article_title, upplaga_nmr, base_url):
         if os.path.isfile(new_img_url_with_extention) is False:
             image = Image.open(old_img_path_with_extention)
             img_width, img_height = image.size
-            new_width = 800
+            new_width = 1000
             new_height = int((new_width / img_width) * img_height)
             new_image = image.resize((new_width, new_height))
-            new_image.save(new_img_url_with_extention, quality=100)
+            new_image.save(new_img_url_with_extention, quality=80)
             print(f"copied image: {all_img_title}")
         return base_url + all_img_title + ".webp"
     else:
@@ -354,6 +362,9 @@ def generate_index(): # PS images are copyd here
                             extra_at_end += article_main_text[(article_main_text.find("<br>") - length_of_html_element_before_break):(article_main_text.find("<br>"))]
                         else:
                             article_main_text_last_caracter_pos = character_before_break_pos
+                else:
+                    article_main_text.replace("<br>", "")
+                    print(article_title)
                 
                 # the text cut of at the right place
                 shorted_main_text = article_main_text[:article_main_text_last_caracter_pos]
