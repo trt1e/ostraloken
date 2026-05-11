@@ -208,21 +208,17 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
 
 
 # GENERATE SITES
-lone_article_template_path = work_path(r"\ostraloken\frontend\template\lone_article.html")
-
 index_template_path = work_path(r"\ostraloken\frontend\template\index.html")
 index_generated_path = work_path(r"\ostraloken\frontend\webbpage\index.html")
 
 article_template_path = work_path(r"\ostraloken\frontend\template\articles_pages.html")
 generated_articles_path = work_path(r"\ostraloken\frontend\webbpage\a" + "\\")
 
-hear_me_outs_template_path = work_path(r"\ostraloken\frontend\template\hear_me_outs.html")
-lone_hear_me_out_template_path = work_path(r"\ostraloken\frontend\template\lone_hear_me_out.html")
-hear_me_outs_generated_path = work_path(r"\ostraloken\frontend\webbpage\hear_me_outs\index.html")
-
 short_storys_template_path = work_path(r"\ostraloken\frontend\template\notiser.html")
-lone_short_story_template_path = work_path(r"\ostraloken\frontend\template\lone_notis.html")
 short_storys_generated_path = work_path(r"\ostraloken\frontend\webbpage\notiser\index.html")
+
+hear_me_outs_template_path = work_path(r"\ostraloken\frontend\template\hear_me_outs.html")
+hear_me_outs_generated_path = work_path(r"\ostraloken\frontend\webbpage\hear_me_outs\index.html")
 
 # images
 def copy_over_images(article_title, upplaga_nmr, base_url):
@@ -257,55 +253,52 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         redirect_src = "./" # hide image
     if img_src is None or img_src == "" or img_src == "NO_IMAGE_AVAILABLE":
         no_img_class = "no_img"
-        img_src += f'" alt="NO IMAGE HERE' # add the alt text
+        image_tag = ""
     else:
         no_img_class = ""
-        img_src += f'" alt="{strip_string(title, -1).replace("_", " ")}" ' # add the alt text
+        image_extra = f'alt="{strip_string(title, -1).replace("_", " ")}"' # add the alt text
         if article_nmr != 0: # this is so the first image dosn't have loading lazy so it dosnt pop in
-            img_src += 'loading="lazy'
+            image_extra += ' loading="lazy"'
         else:
-            img_src += 'fetchpriority="high'
+            image_extra += ' fetchpriority="high"'
+            
+        image_tag = f'<img src="{img_src}" {image_extra} width="800" height="600">'
     if title is None or title == "":
         title = "Null"
     if content is None or content == "":
         content = "Null"
         
-    template = try_opening(lone_article_template_path, "")
-    
-
-    # Find where you put the redirect src
-    article_redirect_href_pos = template.find('a href="') + 8 # dependent on the html layout
-    # Find where you put the article id
-    article_id_pos = template.find('id="') + 4 # only works if there is just one id, wich there should only be
-    # Find where you put if there is no image
-    no_img_class_pos = template.find('class="article ') + 15 # dependent on the html layout
-    # Find where you put the img src
-    article_img_src_pos = template.find('img src="') + 9 # dependent on the html layout
-    
-    # Find where it says <!-- [+title+] -->
-    article_title_pos = template.find("<!-- [+title+] -->") + 18 
-    # Find where it says <!-- [+type+] -->
-    article_type_pos = template.find("<!-- [+type+] -->") + 17
-    # Find where it says <!-- [+content+] -->
-    article_content_pos = template.find("<!-- [+content+] -->") + 20 
-    # Find where it says <!-- [+author+] -->
-    article_author_pos = template.find("<!-- [+author+] -->") + 19
-
     # generate the article id
     article_id = (strip_string(remove_html_elements(title), -1) + "-" + strip_string(author, 20) + "-" + strip_string(type, -1))[:100] 
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
-    # get the core part that is in both versions
-    core_article_part = article_id + template[article_id_pos:no_img_class_pos] + no_img_class + template[no_img_class_pos:article_type_pos] + type + template[article_type_pos:article_img_src_pos] + img_src + template[article_img_src_pos:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:article_author_pos] + author
-    
-    # act diffrently if it should redirect or not
-    if redirect_src != "SHOULD_NOT_REDIRECT":
-        final_article = template[:article_redirect_href_pos] + redirect_src + template[article_redirect_href_pos:article_id_pos] + core_article_part + template[article_author_pos:]
-    else: # make article not ancor
-        first_a_pos = template.find("<a") + 1
-        second_a_pos = template.find("</a", first_a_pos) + 2
-        final_article = template[:first_a_pos] + "div" + template[(first_a_pos + 1):article_id_pos] + core_article_part + template[article_author_pos:second_a_pos] + "div" + template[(second_a_pos + 1):]
+    if redirect_src == "SHOULD_NOT_REDIRECT":
+        final_article = f"""
+            <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
+            <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
+                <p class="type_text">{type}</p>
+                {image_tag}
+                <h2>{title}</h2>
+                <p>{content}</p>
+                <p class="author_text"><b>{author}</b></p>
+            </a>
         
+        """
+    else: # make article not ancor
+        final_article = f"""
+            <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
+            <a href="{redirect_src}" id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
+                <article>
+                    <p class="type_text">{type}</p>
+                    {image_tag}
+                    <h2>{title}</h2>
+                    <p>{content}</p>
+                    <p class="author_text"><b>{author}</b></p>
+                </article>
+            </a>
+        
+        """
+
     return final_article
 
 def generate_index(): # PS images are copyd here
@@ -445,15 +438,14 @@ def generate_lone_short_storys(title, content):
     if content is None or content == "":
         content = "Null"
         
-    template = try_opening(lone_short_story_template_path, "")
-    
+    final_article = f"""
+        <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
+        <article class="article">
+            <h2>{title}</h2>
+            <p>{content}</p>
+        </article>
 
-    # Find where it says <!-- [+title+] -->
-    article_title_pos = template.find("<!-- [+title+] -->") + 18
-    # Find where it says <!-- [+content+] -->
-    article_content_pos = template.find("<!-- [+content+] -->") + 20
-    
-    final_article = template[:article_title_pos] + title + template[article_title_pos:article_content_pos] + content + template[article_content_pos:]
+    """
         
     return final_article
 
@@ -485,14 +477,6 @@ def generate_lone_hear_me_out(hear_me_out, description):
         description = "Null"
     if description != "":
         description = "<b>Förklaring:</b> " + description
-        
-    template = try_opening(lone_hear_me_out_template_path, "")
-    
-
-    # Find where it says <!-- [+hear_me_out+] -->
-    article_hear_me_out_pos = template.find("<!-- [+hear_me_out+] -->") + 24
-    # Find where it says <!-- [+desc+] -->
-    article_desc_pos = template.find("<!-- [+desc+] -->") + 17
     
     if len(hear_me_out) > 70:
         hear_me_out = hear_me_out[:70] + "..."
@@ -500,7 +484,18 @@ def generate_lone_hear_me_out(hear_me_out, description):
     if len(description) > 500:
         description = description[:500] + "..."
     
-    final_article = template[:article_hear_me_out_pos] + hear_me_out + template[article_hear_me_out_pos:article_desc_pos] + description + template[article_desc_pos:]
+    final_article = f"""
+        <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
+        <article class="article">
+            <h2>{hear_me_out}</h2>
+            <p>{description}</p>
+            <div class="smash_pass_area">
+                <button class="smash_button"><i>SMASH</i></button>
+                <button class="pass_button"><i>PASS</i></button>
+            </div>
+        </article>
+
+    """
         
     return final_article
 
