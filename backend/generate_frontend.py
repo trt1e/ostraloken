@@ -257,9 +257,10 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         redirect_src = "./" # hide image
     if img_src is None or img_src == "" or img_src == "NO_IMAGE_AVAILABLE":
         no_img_class = "no_img"
+        img_src += f'" alt="NO IMAGE HERE' # add the alt text
     else:
         no_img_class = ""
-        img_src += f'" alt="{remove_html_elements(title)}" ' # add the alt text
+        img_src += f'" alt="{strip_string(title, -1).replace("_", " ")}" ' # add the alt text
         if article_nmr != 0: # this is so the first image dosn't have loading lazy so it dosnt pop in
             img_src += 'loading="lazy'
         else:
@@ -541,7 +542,5 @@ Att fixa senare:
 SE TILL ATT LIGHTHOUSE OCH VALIDATOR FUNGERAR!!!
 
 Mindre viktigt:
- - få hear me outs att se snygt ut
- - få hear me outs att sparas lokalt
  - skriv vidare på vår historia mm
 """
