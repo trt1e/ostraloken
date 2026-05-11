@@ -363,8 +363,21 @@ def generate_index(): # PS images are copyd here
                         else:
                             article_main_text_last_caracter_pos = character_before_break_pos
                 else:
-                    article_main_text.replace("<br>", "")
-                    print(article_title)
+                    if article_main_text.find("<br>") != -1: # if <br> exists
+                        character_before_break_pos = article_main_text.find("<br>") - 1
+                        if character_before_break_pos <= 400:
+                            if article_main_text[character_before_break_pos] == ">": # so if for example something ends with </i>, the i isnt cut of
+                                # find how long the html element before the break is
+                                length_of_html_element_before_break = 4 # have 4 (the length of, for example, <\i>) as a backup just in case
+                                for element_length, character in enumerate(article_main_text[:character_before_break_pos]):
+                                    if character == "<":
+                                        length_of_html_element_before_break = character_before_break_pos - element_length + 1
+                                article_main_text_last_caracter_pos = character_before_break_pos - length_of_html_element_before_break
+                                extra_at_end += article_main_text[(article_main_text.find("<br>") - length_of_html_element_before_break):(article_main_text.find("<br>"))]
+                            else:
+                                article_main_text_last_caracter_pos = character_before_break_pos
+                        else:
+                            article_main_text = article_main_text.replace("<br>", "")
                 
                 # the text cut of at the right place
                 shorted_main_text = article_main_text[:article_main_text_last_caracter_pos]
@@ -522,22 +535,13 @@ Saker att lägga till
 - sökfunktion
 
 Att fixa senare:
-- Från och innan upplaga 6 ska skribenterna dubbelkollas
-- Alla " ska fixas 
-- Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text 
-- går så alla ettor med <b> har <b>
+- Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
 - dubbelkolla allas type
 
 SE TILL ATT LIGHTHOUSE OCH VALIDATOR FUNGERAR!!!
 
-Hur man gör så den har infinite scroll:
-- Alla artikelsidor har också en bit av rå info som index kan enkelt fetcha
-- indexfilen har massa länkar till artikelsidornas info
-- js genererar rätt mängd artiklar taget från fetchningen
-
-
 Mindre viktigt:
- - få hear me outs att se snygt ut 
+ - få hear me outs att se snygt ut
  - få hear me outs att sparas lokalt
  - skriv vidare på vår historia mm
 """

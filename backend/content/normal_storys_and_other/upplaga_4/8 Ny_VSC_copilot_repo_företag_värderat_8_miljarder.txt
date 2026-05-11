@@ -1,5 +1,0 @@
-### Ny VSC copilot repo företag: värderat 8 miljarder ##
-¤¤¤ Teknik ¤¤
-@@@ Vilhelm Grill @@
-Ett nytt silicon valley företag köptes av Perplexity AI, skaparna av AI-chatboten Perplexity, för nära 8 miljarder. Företaget som fick denna enorma värdering är Shitpilot som grundades bara en vecka tidigare. Jacob Nilsson, tidigare VD på internetstiftelsen, som Löken pratade med, påstår att Shitpilot bara är “en enkel klonad Github-repo på Microsoft Copilot”. Han förklarar vidare vad en repo är, “En GitHub-repo är ett projektarkiv där kod sparas, versionshanteras och delas”. Nilsson fortsätter att det Shitpilot har gjort är att kopiera, eller klona, vad Microsoft redan har gjort. Den enda riktiga ändringen som Shitpilot har gjort enligt Nilsson är att lägga till ett högt irriterande ljud varje gång man skriver.<br><br>
-James Cambult från Perplexity AI gick med på en intervju med Löken. “Nej, vi ångrar inte vårt beslut” säger Cambult. Löken kan också rapportera att anledningen till det höga priset på Shitpilot är att Elon Musk drev upp priset, men drog ut i sista minuten. Köpet följer en rad av investeringar av AI företag som siktar på att tjäna pengar någon gång.
