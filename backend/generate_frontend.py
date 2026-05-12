@@ -278,7 +278,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
             <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
                 <p class="type_text">{type}</p>
                 {image_tag}
-                <h2>{title}</h2>
+                <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
                 <p>{content}</p>
                 <p class="author_text"><b>{author}</b></p>
             </article>
