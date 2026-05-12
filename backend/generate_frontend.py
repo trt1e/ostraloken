@@ -395,8 +395,8 @@ def generate_index(): # PS images are copyd here
 def generate_all_articles(): # PS images are also copyd here
     template = try_opening(article_template_path, "")
     
-    # Find where it says <!-- [+page_description+] -->
-    page_description_pos = template.find("<!-- [+page_description+] -->") + 29
+    # Find where it says <title>
+    page_description_pos = template.find("<title>") + 7
     # Find where it says <!-- [+article+] -->
     article_pos = template.find("<!-- [+article+] -->") + 20 + 1
     # Find where it says <!-- [+upplaga_number+] -->
