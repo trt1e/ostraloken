@@ -157,6 +157,11 @@ main img {
         max-height: 38rem;
     }
 }
+@media (width < 35rem) {
+    main img {
+        max-height: 12rem;
+    }
+}
 main h2 {
     font-size: 2.2rem;
 }
