@@ -389,13 +389,15 @@ def generate_index(): # PS images are copyd here
                 how_many_articles_generated += 1
                 
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
+    generated_file.write(template[:article_container_pos] + template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
     
     print("Index successfully generated!")
 
 def generate_all_articles(): # PS images are also copyd here
     template = try_opening(article_template_path, "")
     
+    # Find where it says <!-- [+page_description+] -->
+    page_description_pos = template.find("<!-- [+page_description+] -->") + 29
     # Find where it says <!-- [+article+] -->
     article_pos = template.find("<!-- [+article+] -->") + 20 + 1
     # Find where it says <!-- [+upplaga_number+] -->
@@ -427,7 +429,7 @@ def generate_all_articles(): # PS images are also copyd here
                 article_home_url_finale = "../#" + home_place_id
 
                 generated_file = open((generated_articles_path + strip_string(basic_article_title, 100) + ".html"), "w", encoding="utf-8") # create / find the file
-                generated_file.write(template[:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
+                generated_file.write(template[:page_description_pos] + basic_article_title + template[page_description_pos:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
         
     print("All articles successfully generated!")
 
@@ -533,8 +535,6 @@ Saker att lägga till
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
 - dubbelkolla allas type
-
-SE TILL ATT LIGHTHOUSE OCH VALIDATOR FUNGERAR!!!
 
 Mindre viktigt:
  - skriv vidare på vår historia mm
