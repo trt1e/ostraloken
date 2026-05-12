@@ -527,7 +527,7 @@ generate_short_storys()
 generate_all_articles()
 fix_all_backend_articles_names()
 
-"""
+r"""
 Saker att lägga till
 - sökfunktion
 
@@ -537,4 +537,30 @@ Att fixa senare:
 
 Mindre viktigt:
  - skriv vidare på vår historia mm
+
+
+Gammla api hantering:
+
+from flask import Flask, jsonify
+from flask_cors import CORS
+import os
+
+app = Flask(__name__)
+CORS(app, origins=["http://127.0.0.1:5500"])
+
+base_path = os.getcwd()
+normal_story_path = base_path + r"\ostraloken\backend\content\normal_storys_and_other"
+short_story_path = base_path + r"\ostraloken\backend\content\short_storys.txt"
+hear_me_outs_path = base_path + r"\ostraloken\backend\content\hear_me_outs.txt"
+
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({"data": "hello world"})
+
+@app.route("/home/<int:num>", methods=["GET"])
+def disp(num):
+    return jsonify({"data": num ** 2})
+
+if __name__ == "__main__":
+    app.run(debug=True)
 """

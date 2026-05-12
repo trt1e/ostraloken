@@ -102,7 +102,7 @@ header p {
     width: 33%;
     text-align: center;
 }
-@media (width <= 50rem) {
+@media (width <= 52rem) {
     header p {
         display: none;
     }
@@ -190,7 +190,7 @@ main li {
 }
 
 /*Text styling*/
-h1 {
+.top_text {
     width: 100%;
     text-align: center;
     margin-bottom: 1rem;

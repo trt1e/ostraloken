@@ -13,7 +13,9 @@ function get_date() {
     new_date_string += date_number + " ";
     const months = ["Januari", "Februari", "Mars", "April", "Maj", "Juni", "Juli", "Augusti", "September", "Oktober", "November", "December"];
     let month = months[date.getMonth()];
-    new_date_string += month;
+    new_date_string += month + " ";
+    let year = date.getFullYear();
+    new_date_string += year;
 
     return new_date_string;
 };
