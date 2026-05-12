@@ -1,7 +1,6 @@
 import os
 import re
 from PIL import Image
-import math
 
 is_linux = False
 
@@ -389,7 +388,7 @@ def generate_index(): # PS images are copyd here
                 how_many_articles_generated += 1
                 
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:article_container_pos] + template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
+    generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
     
     print("Index successfully generated!")
 
