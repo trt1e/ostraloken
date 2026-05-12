@@ -281,7 +281,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
                 <h2>{title}</h2>
                 <p>{content}</p>
                 <p class="author_text"><b>{author}</b></p>
-            </a>
+            </article>
         
         """
     else: # make article not ancor
