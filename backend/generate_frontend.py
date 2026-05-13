@@ -533,10 +533,6 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-- dubbelkolla allas type
-
-Mindre viktigt:
- - skriv vidare på vår historia mm
 
 
 Gammla api hantering:
