@@ -344,7 +344,13 @@ def generate_index(): # PS images are copyd here
                     
                     # se if its closed by a <br> before the . ? ! : or ;
                     if article_main_text[:article_main_text_last_caracter_pos].find("<br>") != -1: # if <br> exists
-                        character_before_break_pos = article_main_text.find("<br>") - 1
+                        end_characters = ".", "?", "!", ":", ";"
+                        for character in end_characters: # so that it only removes the last character if it is one of . ? ! : or ;
+                            if character == article_main_text[article_main_text.find("<br>") - 1]:
+                                character_before_break_pos = article_main_text.find("<br>") - 1
+                                break
+                        else:
+                            character_before_break_pos = article_main_text.find("<br>")
                         if article_main_text[character_before_break_pos] == ">": # so if for example something ends with </i>, the i isnt cut of
                             # find how long the html element before the break is
                             length_of_html_element_before_break = 4 # have 4 (the length of, for example, <\i>) as a backup just in case
