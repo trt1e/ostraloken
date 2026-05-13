@@ -80,6 +80,7 @@ a#return p {
     color: var(--darkest-bg-color);
     position: absolute;
     top: -1.8rem;
+    top: 4.4rem;
     left: 50%;
     right: 50%;
     transform: translateX(-36rem); /*Main width default is 72 + 8 rem*/
@@ -101,6 +102,7 @@ a#return p {
 }
 @media (width < 45rem) {
     #upplaga_and_date {
+        top: 3.8rem;
         transform: translateX(0rem); /*Main width is 100%*/
         left: 2rem;
         width: calc(100% - 4rem);
