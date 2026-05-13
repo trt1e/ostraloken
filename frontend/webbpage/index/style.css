@@ -23,7 +23,7 @@ html {
 .type_text {
     width: fit-content;
     background-color: var(--highlight-color);
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     padding: 0.2rem;
     margin-left: 0.4rem;
     margin-right: 0.6rem;
