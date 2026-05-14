@@ -207,17 +207,17 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
 
 
 # GENERATE SITES
-index_template_path = work_path(r"\ostraloken\frontend\template\index.html")
-index_generated_path = work_path(r"\ostraloken\frontend\webbpage\index.html")
+index_template_path = work_path(r"\ostraloken\templates\index.html")
+index_generated_path = work_path(r"\ostraloken\webbpage\index.html")
 
-article_template_path = work_path(r"\ostraloken\frontend\template\articles_pages.html")
-generated_articles_path = work_path(r"\ostraloken\frontend\webbpage\a" + "\\")
+article_template_path = work_path(r"\ostraloken\templates\articles_pages.html")
+generated_articles_path = work_path(r"\ostraloken\webbpage\a" + "\\")
 
-short_storys_template_path = work_path(r"\ostraloken\frontend\template\notiser.html")
-short_storys_generated_path = work_path(r"\ostraloken\frontend\webbpage\notiser\index.html")
+short_storys_template_path = work_path(r"\ostraloken\templates\notiser.html")
+short_storys_generated_path = work_path(r"\ostraloken\webbpage\notiser\index.html")
 
-hear_me_outs_template_path = work_path(r"\ostraloken\frontend\template\hear_me_outs.html")
-hear_me_outs_generated_path = work_path(r"\ostraloken\frontend\webbpage\hear_me_outs\index.html")
+hear_me_outs_template_path = work_path(r"\ostraloken\templates\hear_me_outs.html")
+hear_me_outs_generated_path = work_path(r"\ostraloken\webbpage\hear_me_outs\index.html")
 
 # images
 def copy_over_images(article_title, upplaga_nmr, base_url):
