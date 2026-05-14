@@ -389,8 +389,9 @@ def generate_index(): # PS images are copyd here
                 
                 # copy over images and get the url to the right image
                 html_url = copy_over_images(basic_article_title, upplaga_number, "./a/images/")
+                article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 24) + "-" + strip_string(article_type, -1))[:100] # what is used to identefy the article
     
-                generated_articles += generate_lone_article(("./a/" + strip_string(org_article_title, 100) + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated)
+                generated_articles += generate_lone_article(("./a/" + article_id + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated)
                 how_many_articles_generated += 1
                 
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
@@ -430,11 +431,11 @@ def generate_all_articles(): # PS images are also copyd here
             
                 # generate the home url
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
-                home_place_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
-                article_home_url_finale = "../#" + home_place_id
+                article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 24) + "-" + strip_string(article_type, -1))[:100]
+                article_home_url = "../#" + article_id
 
-                generated_file = open((generated_articles_path + strip_string(basic_article_title, 100) + ".html"), "w", encoding="utf-8") # create / find the file
-                generated_file.write(template[:page_description_pos] + basic_article_title + template[page_description_pos:article_home_url_pos] + article_home_url_finale + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
+                generated_file = open((generated_articles_path + article_id + ".html"), "w", encoding="utf-8") # create / find the file
+                generated_file.write(template[:page_description_pos] + basic_article_title + template[page_description_pos:article_home_url_pos] + article_home_url + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
         
     print("All articles successfully generated!")
 
