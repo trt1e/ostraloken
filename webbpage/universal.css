@@ -188,7 +188,7 @@ main li {
     position: relative;
     padding: 1rem;
     display: block;
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
     color: var(--text-color);
     text-decoration: none;
     border: var(--darker-bg-color) solid 2px;
@@ -198,7 +198,7 @@ main li {
     margin-bottom: 0;
 }
 
-a.user_prompt {
+.extra_info {
     background-color: var(--dark-bg-color);
     border: var(--secondary-color) solid 2px;
     width: 12.5rem;
@@ -211,18 +211,22 @@ a.user_prompt {
     text-align: center;
 }
 @media (80rem <= width <= 120rem) { 
-    a.user_prompt {
+    .extra_info {
         transform: translateX(25.5rem);
     }
 }
 @media (width < 85rem) {
-    a.user_prompt {
+    .extra_info {
         position: static;
         transform: translateX(0);
         width: calc(100% - 2rem);
     }
 }
-a.user_prompt:hover {
+.extra_info.attention {
+    box-shadow: var(--highlight-color) 0 0 0.5rem;
+    margin-bottom: 1rem;
+}
+a.extra_info.user_prompt:hover {
     border: var(--primary-color) solid 2px;
 }
 

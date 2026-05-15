@@ -268,7 +268,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         content = "Null"
         
     # generate the article id
-    article_id = (strip_string(remove_html_elements(title), -1) + "-" + strip_string(author, 20) + "-" + strip_string(type, -1))[:100] 
+    article_id = (strip_string(remove_html_elements(title), -1) + "-" + strip_string(author, 20) + "-" + strip_string(type, -1))[:100]
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     if redirect_src == "SHOULD_NOT_REDIRECT":
@@ -388,8 +388,9 @@ def generate_index(): # PS images are copyd here
                 article_author = article["Writer"]
                 
                 # copy over images and get the url to the right image
-                html_url = copy_over_images(basic_article_title, upplaga_number, "./a/images/")
-                article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 24) + "-" + strip_string(article_type, -1))[:100] # what is used to identefy the article
+                # not basic_title since that has been shortend alredy
+                html_url = copy_over_images(remove_html_elements(article_title), upplaga_number, "./a/images/")
+                article_id = (strip_string(remove_html_elements(article_title), -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100] # what is used to identefy the article
     
                 generated_articles += generate_lone_article(("./a/" + article_id + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated)
                 how_many_articles_generated += 1
@@ -416,9 +417,21 @@ def generate_all_articles(): # PS images are also copyd here
         # go throught every article in the upplaga
         upplaga_number = upplaga["Upplaga"]
         upplaga_date = upplaga["Release_date"]
+        upplaga_extra_info = upplaga["Extra_upplaga_info"]
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 generated_articles = "" # where we put the article
+                has_extra_info = False
+                
+                # this is done early so it is over the article itself
+                if upplaga_extra_info != "" and upplaga_extra_info != None and has_extra_info == False:
+                    has_extra_info = True
+                    # add the extra content
+                    generated_articles += f""" 
+        <div class="article extra_info attention">
+            <p><b>Notera:</b> {upplaga_extra_info}</p>
+        </div>
+                    """
                 
                 article_title = str(article["Title"])
                 basic_article_title = remove_html_elements(article_title)
@@ -431,12 +444,14 @@ def generate_all_articles(): # PS images are also copyd here
             
                 # generate the home url
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
-                article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 24) + "-" + strip_string(article_type, -1))[:100]
+                article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
                 article_home_url = "../#" + article_id
-                
-                if article_type == "Insändare": # add prompt to write insändare if it is a insändare
-                    generated_articles += f""" 
-        <a class="article user_prompt" href="https://forms.gle/bBiEhDSCFijSFoHk9" target="_blank">
+            
+                if article_type == "Insändare" and has_extra_info == False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
+                    has_extra_info = True
+                    # add prompt to write insändare if it is a insändare
+                    generated_articles += """ 
+        <a class="article extra_info user_prompt" href="https://forms.gle/bBiEhDSCFijSFoHk9" target="_blank">
             <h2>Skicka in en insändare!</h2>
             <p>Vill du också skicka en insändare till Östra Löken? Fyll bara i denna korta enkät!</p>
         </a>
@@ -534,7 +549,6 @@ def generate_hear_me_outs():
     generated_file.write(template[:hear_me_out_container_pos] + generated_hear_me_out + template[hear_me_out_container_pos:]) #write to it
     
     print("Hear me outs successfully generated!")
-
 
 generate_index()
 generate_hear_me_outs()
