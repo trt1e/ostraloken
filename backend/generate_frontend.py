@@ -433,7 +433,15 @@ def generate_all_articles(): # PS images are also copyd here
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
                 article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 24) + "-" + strip_string(article_type, -1))[:100]
                 article_home_url = "../#" + article_id
-
+                
+                if article_type == "Insändare": # add prompt to write insändare if it is a insändare
+                    generated_articles += f""" 
+        <a class="article user_prompt" href="https://forms.gle/bBiEhDSCFijSFoHk9" target="_blank">
+            <h2>Skicka in en insändare!</h2>
+            <p>Vill du också skicka en insändare till Östra Löken? Fyll bara i denna korta enkät!</p>
+        </a>
+                    """
+                
                 generated_file = open((generated_articles_path + article_id + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:page_description_pos] + basic_article_title + template[page_description_pos:article_home_url_pos] + article_home_url + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
         
