@@ -16,6 +16,7 @@
     height: 5rem;
     width: 5rem;
     border-radius: 50%;
+    border-radius: red solid 2px;
 }
 .kontakt_card h2 {
     font-size: 1.5rem;
