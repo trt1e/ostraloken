@@ -562,6 +562,8 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+- att namn är titel och upplaga, inte upplaga förfatare och typ
+- gör en egen fil för att skriva om namn och ta bort alla konstiga "
 
 
 Gammla api hantering:

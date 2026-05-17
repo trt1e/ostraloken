@@ -9,7 +9,7 @@ pdfjs.GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
 const pdfContent = document.getElementById("main_pdf");
 const pdfNumber = document.getElementById("pdf_upplaga_number");
 const baseUrl = "\pdfs/";
-const amoutPDfs = 37; // Change this when adding new upplagor
+const amoutPDfs = 38; // Change this when adding new upplagor
 
 let numberOfPages;
 let counter = amoutPDfs;
