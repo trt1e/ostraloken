@@ -246,7 +246,7 @@ def copy_over_images(article_title, upplaga_nmr, base_url):
         return ""
 
 # articles
-def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr):
+def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./" # hide image
@@ -268,7 +268,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         content = "Null"
         
     # generate the article id
-    article_id = (strip_string(remove_html_elements(title), -1) + "-" + strip_string(author, 20) + "-" + strip_string(type, -1))[:100]
+    article_id = strip_string(remove_html_elements(title), -1)[:100] + "-" + str(upplaga_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     if redirect_src == "SHOULD_NOT_REDIRECT":
@@ -389,10 +389,10 @@ def generate_index(): # PS images are copyd here
                 
                 # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
-                html_url = copy_over_images(remove_html_elements(article_title), upplaga_number, "./a/images/")
-                article_id = (strip_string(remove_html_elements(article_title), -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100] # what is used to identefy the article
+                img_url = f"./a/images/IMG-{strip_string(article_title, 100)}.webp"
+                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number) # what is used to identefy the article
     
-                generated_articles += generate_lone_article(("./a/" + article_id + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated)
+                generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
                 how_many_articles_generated += 1
                 
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
@@ -440,11 +440,12 @@ def generate_all_articles(): # PS images are also copyd here
                 article_author = str(article["Writer"])
                 # copy over images and get the url to the right image
                 article_img_src = copy_over_images(basic_article_title, upplaga_number, "./images/")
-                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0)
+                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
             
                 # generate the home url
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
-                article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
+                # article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
+                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number)
                 article_home_url = "../#" + article_id
             
                 if article_type == "Insändare" and has_extra_info == False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
@@ -550,6 +551,54 @@ def generate_hear_me_outs():
     
     print("Hear me outs successfully generated!")
 
+
+# UI for backend user
+def handle_backend_UI():
+    print("Welcome to the backend!")
+    print('(Print "help" for commands)')
+    answer = input("$ ")
+    if answer == "help":
+        print("""
+              $ help --> Lists all commands
+              
+              GENERATE TEXT FILES
+              $ gen_all_files --> Lists all commands
+              
+              $ gen_index --> Generate just the index file
+              $ gen_hear_me_outs --> Generate just the hear me outs file
+              $ gen_notiser --> Generate just the notiser file
+              $ gen_all_articles --> Generate just all the article files
+              
+              COPY IMAGES
+              $ copy_new_images --> Copy over only the new images
+              $ copy_all_images --> Copy over only all images, even if it alredy exists
+              """)
+    
+    # generate text files
+    if answer == "gen_all_files":
+        generate_index()
+        generate_hear_me_outs()
+        generate_short_storys()
+        generate_all_articles()
+    if answer == "gen_index":
+        generate_index()
+    if answer == "gen_hear_me_outs":
+        generate_hear_me_outs()
+    if answer == "gen_notiser":
+        generate_short_storys()
+    if answer == "gen_all_articles":
+        generate_all_articles()
+        
+    """
+    # images
+    if answer == "copy_new_images":
+        copy_over_images(remove_html_elements(article_title), upplaga_number, "./a/images/")
+    if answer == "copy_all_images":
+        copy_over_images(remove_html_elements(article_title), upplaga_number, "./a/images/")
+    """
+
+
+# handle_backend_UI()
 generate_index()
 generate_hear_me_outs()
 generate_short_storys()
