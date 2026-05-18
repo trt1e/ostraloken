@@ -220,6 +220,22 @@ hear_me_outs_template_path = work_path(r"\ostraloken\templates\hear_me_outs.html
 hear_me_outs_generated_path = work_path(r"\ostraloken\webbpage\hear_me_outs\index.html")
 
 # images
+def find_img(article_title, upplaga_nmr):
+    all_img_title = "IMG-" + strip_string(article_title, 100)
+    old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
+    extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
+    for ext in extentions:
+        if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
+            old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+            break
+    else:
+        old_img_path_with_extention = "NO_IMG" # article does not have image
+        
+    if old_img_path_with_extention != "NO_IMG":
+        return f"./a/images/{all_img_title}.webp"
+    else:
+        return ""
+
 def copy_over_images(article_title, upplaga_nmr, base_url):
     all_img_title = "IMG-" + strip_string(article_title, 100)
     old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
@@ -389,7 +405,7 @@ def generate_index(): # PS images are copyd here
                 
                 # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
-                img_url = f"./a/images/IMG-{strip_string(article_title, 100)}.webp"
+                img_url = find_img(article_title, upplaga_number)
                 article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number) # what is used to identefy the article
     
                 generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
