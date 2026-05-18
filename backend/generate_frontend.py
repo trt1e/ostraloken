@@ -236,30 +236,38 @@ def find_img(article_title, upplaga_nmr):
     else:
         return ""
 
-def copy_over_images(article_title, upplaga_nmr, base_url):
-    all_img_title = "IMG-" + strip_string(article_title, 100)
-    old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
-    new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
-    extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
-    for ext in extentions:
-        if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
-            old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
-            break
-    else:
-        old_img_path_with_extention = "NO_IMG" # article does not have image
-        
-    if old_img_path_with_extention != "NO_IMG":
-        if os.path.isfile(new_img_url_with_extention) is False:
-            image = Image.open(old_img_path_with_extention)
-            img_width, img_height = image.size
-            new_width = 1000
-            new_height = int((new_width / img_width) * img_height)
-            new_image = image.resize((new_width, new_height))
-            new_image.save(new_img_url_with_extention, quality=80)
-            print(f"copied image: {all_img_title}")
-        return base_url + all_img_title + ".webp"
-    else:
-        return ""
+def copy_over_images(gen_all_or_new):
+    # go throught every upplaga
+    for upplaga in read_normal_storys():
+        # go throught every article in the upplaga
+        upplaga_number = upplaga["Upplaga"]
+        for article in upplaga["Content"]:
+            if article: # somethimes article is empty, this prevents that
+                article_title = str(article["Title"])
+                all_img_title = "IMG-" + strip_string(article_title, 100)
+                old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + all_img_title
+                new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
+                extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
+                for ext in extentions:
+                    if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
+                        old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+                        break
+                else:
+                    old_img_path_with_extention = "NO_IMG" # article does not have image
+                    
+                if old_img_path_with_extention != "NO_IMG":
+                    # if all and no file: YES
+                    # if all and file: YES
+                    # if new and no file: YES
+                    # if new and file: NO
+                    if gen_all_or_new == "all" or os.path.isfile(new_img_url_with_extention) is False:
+                        image = Image.open(old_img_path_with_extention)
+                        img_width, img_height = image.size
+                        new_width = 1000
+                        new_height = int((new_width / img_width) * img_height)
+                        new_image = image.resize((new_width, new_height))
+                        new_image.save(new_img_url_with_extention, quality=80)
+                        print(f"copied image: {all_img_title}")
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
@@ -588,6 +596,9 @@ def handle_backend_UI():
               COPY IMAGES
               $ copy_new_images --> Copy over only the new images
               $ copy_all_images --> Copy over only all images, even if it alredy exists
+              
+              FIX CONTENT THAT EXISTS
+              $ fix_article_names --> Rename normal storys to their title name in same order
               """)
     
     # generate text files
@@ -605,21 +616,18 @@ def handle_backend_UI():
     if answer == "gen_all_articles":
         generate_all_articles()
         
-    """
     # images
     if answer == "copy_new_images":
-        copy_over_images(remove_html_elements(article_title), upplaga_number, "./a/images/")
+        copy_over_images("new")
     if answer == "copy_all_images":
-        copy_over_images(remove_html_elements(article_title), upplaga_number, "./a/images/")
-    """
+        copy_over_images("all")
+        
+    # fix content
+    if answer == "fix_article_names":
+        fix_all_backend_articles_names()
 
 
-# handle_backend_UI()
-generate_index()
-generate_hear_me_outs()
-generate_short_storys()
-generate_all_articles()
-fix_all_backend_articles_names()
+handle_backend_UI()
 
 r"""
 Saker att lägga till
