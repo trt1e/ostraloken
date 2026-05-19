@@ -206,7 +206,8 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
 
     print("Article names successfully fixed!")
 
-def setup_new_upplaga():
+def setup_new_upplaga(count_notiser, count_hear_me_outs, day, month, year):
+    # normal storys and other folder
     highest_upplaga_number = 1
     for upplaga in reversed(read_normal_storys()):
         if upplaga["Upplaga"] > highest_upplaga_number:
@@ -217,11 +218,42 @@ def setup_new_upplaga():
     os.makedirs(folder_path, exist_ok=True) # generate the folder
     generated_file = open(new_path, "x", encoding="utf-8") # create / find the file
     content = f"""Upplaga: === {highest_upplaga_number} ==
-Datum: $$$ DD/MM/ÅÅÅÅ $$
+Datum: $$$ {day}/{month}/{year} $$
 Extra info: ***  **"""
     generated_file.write(content) #write to it
     generated_file.close()
     print(f"Generated shell for upplaga {highest_upplaga_number}")
+    
+    # short storys
+    edited_file = open(short_story_path, "a", encoding="utf-8") # create / find the file
+    content = f"""
+    
+Upplaga {highest_upplaga_number} ({day}/{month}/{year}):
+    """
+    lone_content = f"""### RUBRIK ##
++++ BRÖDTEXT ++
+    """
+    # add right amount of notiser to new upplaga
+    for notis_number in count_notiser:
+        content += lone_content
+    
+    edited_file.write(content) #write to it
+    edited_file.close()
+
+    # hear me out
+    edited_file = open(hear_me_outs_path, "a", encoding="utf-8") # create / find the file
+    content = ""
+    lone_content = f"""
+
+### HEAR_ME_OUT ##
++++ BESKRIVNING ++"""
+    # add right amount of notiser to new upplaga
+    for hear_me_out_number in count_hear_me_outs:
+        content += lone_content
+    
+    edited_file.write(content) #write to it
+    edited_file.close()
+
 
 # GENERATE SITES
 index_template_path = work_path(r"\ostraloken\templates\index.html")
@@ -661,7 +693,25 @@ def handle_backend_UI():
                 
             # new content
             elif answer == "new upplaga":
-                setup_new_upplaga()
+                amount_of_notiser = input("Amount notiser: ")
+                if amount_of_notiser is None or amount_of_notiser == "":
+                    amount_of_notiser = 0
+                    
+                amount_of_hear_me_outs = input("Amount hear me outs: ")
+                if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "":
+                    amount_of_hear_me_outs = 0
+                
+                day = input("Day of release: ")
+                if day is None or day == "":
+                    day = "DD"
+                month = input("Month of release: ")
+                if month is None or month == "":
+                    month = "MM"
+                year = input("Year of release: ")
+                if year is None or year == "":
+                    year = "ÅÅÅÅ"
+                    
+                setup_new_upplaga(amount_of_notiser, amount_of_hear_me_outs, day, month, year)
                 
             # fix content
             elif answer == "fix article names":
