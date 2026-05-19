@@ -164,7 +164,7 @@ def read_short_storys(): # To get the files and their content from all short art
     whole_text = try_opening(short_story_path, "tr") # read it
     last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
     output_sum = []
-    for number_of_articles in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many short storys there are in the txt
         # find where diffrent parts are in the document
         title = find_between(whole_text, "### ", " ##", last_final_pos)
         article = find_between(whole_text, "+++ ", " ++", last_final_pos)
@@ -194,6 +194,7 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
 
 # FIX ARTICLES
 def inspect_normal_storys(): # looks throught all files to se if something is wrong but doesnt change nothing
+    print("↓ ARTICLES ↓")
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         printed_something = False
@@ -278,7 +279,7 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
 
 def inspect_short_storys():
     whole_text = try_opening(short_story_path, "tr") # read it
-    print("↓ NOTISER ↓")
+    print("\n↓ NOTISER ↓")
     if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
         print(f'NOTE: Notiser contains “ and/or ”. Instead you should use "')
         
@@ -340,6 +341,7 @@ def inspect_hear_me_outs():
 
 def fix_citationmarks():
     # normal storys
+    fixed_something = False
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         # list all files in dir
@@ -348,15 +350,50 @@ def fix_citationmarks():
             if file[:4] != "IMG-":
                 whole_text = try_opening(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr")
                 if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-                    new_text = whole_text.replace("“", "")
-                    new_text = new_text.replace("”", "")
+                    new_text = whole_text.replace("“", '"')
+                    new_text = new_text.replace("”", '"')
                     open_content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "w", encoding="utf-8")
                     open_content.write(new_text) # write to it
                     open_content.close()
                     
+                    fixed_something = True
                     print(f"Fixed citationmark(s) in {file}")
                     
+    if fixed_something == False:
+        print("No citationmarks to fix in articles")
+
+    # short storys
+    fixed_something = False
+    whole_text = try_opening(short_story_path, "tr") # read it
+    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+        new_text = whole_text.replace("“", '"')
+        new_text = new_text.replace("”", '"')
+        open_content = open(short_story_path, "w", encoding="utf-8")
+        open_content.write(new_text) # write to it
+        open_content.close()
         
+        fixed_something = True
+        print(f"Fixed citationmark(s) in notiser")
+        
+    if fixed_something == False:
+        print("No citationmarks to fix in notiser")
+
+    # hear me outs
+    fixed_something = False
+    whole_text = try_opening(hear_me_outs_path, "tr") # read it
+    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+        new_text = whole_text.replace("“", '"')
+        new_text = new_text.replace("”", '"')
+        open_content = open(hear_me_outs_path, "w", encoding="utf-8")
+        open_content.write(new_text) # write to it
+        open_content.close()
+        
+        fixed_something = True
+        print(f"Fixed citationmark(s) in hear me outs")
+        
+    if fixed_something == False:
+        print("No citationmarks to fix in hear me outs")
+
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
@@ -934,35 +971,9 @@ handle_backend_UI()
 r"""
 Saker att lägga till
 - sökfunktion
+- gör tinder av hear me outs
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-- en grej som skappar mall för short storys och hear me outs också
-- en funktion som inspekterar alla filer etc
-
-
-Gammla api hantering:
-
-from flask import Flask, jsonify
-from flask_cors import CORS
-import os
-
-app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:5500"])
-
-base_path = os.getcwd()
-normal_story_path = base_path + r"\ostraloken\backend\content\normal_storys_and_other"
-short_story_path = base_path + r"\ostraloken\backend\content\short_storys.txt"
-hear_me_outs_path = base_path + r"\ostraloken\backend\content\hear_me_outs.txt"
-
-@app.route("/", methods=["GET"])
-def home():
-    return jsonify({"data": "hello world"})
-
-@app.route("/home/<int:num>", methods=["GET"])
-def disp(num):
-    return jsonify({"data": num ** 2})
-
-if __name__ == "__main__":
-    app.run(debug=True)
+- fixa hear me outs smash or pass system
 """
