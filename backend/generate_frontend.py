@@ -4,6 +4,7 @@ from PIL import Image
 
 is_linux = False
 
+global base_path
 base_path = os.getcwd()
 
 # BASE COMMANDS
@@ -205,6 +206,22 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
 
     print("Article names successfully fixed!")
 
+def setup_new_upplaga():
+    highest_upplaga_number = 1
+    for upplaga in reversed(read_normal_storys()):
+        if upplaga["Upplaga"] > highest_upplaga_number:
+            highest_upplaga_number = upplaga["Upplaga"]
+    highest_upplaga_number += 1 # so highest_upplaga_number is one higher than what exists
+    new_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{highest_upplaga_number}" + handel_path_slash("\\") + "upplaga_info.txt"
+    folder_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{highest_upplaga_number}"
+    os.makedirs(folder_path, exist_ok=True) # generate the folder
+    generated_file = open(new_path, "x", encoding="utf-8") # create / find the file
+    content = f"""Upplaga: === {highest_upplaga_number} ==
+Datum: $$$ DD/MM/ÅÅÅÅ $$
+Extra info: ***  **"""
+    generated_file.write(content) #write to it
+    generated_file.close()
+    print(f"Generated shell for upplaga {highest_upplaga_number}")
 
 # GENERATE SITES
 index_template_path = work_path(r"\ostraloken\templates\index.html")
@@ -220,7 +237,7 @@ hear_me_outs_template_path = work_path(r"\ostraloken\templates\hear_me_outs.html
 hear_me_outs_generated_path = work_path(r"\ostraloken\webbpage\hear_me_outs\index.html")
 
 # images
-def find_img(article_title, upplaga_nmr):
+def find_img(article_title, upplaga_nmr, base_url):
     all_img_title = "IMG-" + strip_string(article_title, 100)
     old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
     extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
@@ -232,7 +249,7 @@ def find_img(article_title, upplaga_nmr):
         old_img_path_with_extention = "NO_IMG" # article does not have image
         
     if old_img_path_with_extention != "NO_IMG":
-        return f"./a/images/{all_img_title}.webp"
+        return base_url + all_img_title + ".webp"
     else:
         return ""
 
@@ -268,6 +285,8 @@ def copy_over_images(gen_all_or_new):
                         new_image = image.resize((new_width, new_height))
                         new_image.save(new_img_url_with_extention, quality=80)
                         print(f"copied image: {all_img_title}")
+    else:
+        print("No images left to copy")
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
@@ -413,7 +432,7 @@ def generate_index(): # PS images are copyd here
                 
                 # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
-                img_url = find_img(article_title, upplaga_number)
+                img_url = find_img(article_title, upplaga_number, "./a/images/")
                 article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number) # what is used to identefy the article
     
                 generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
@@ -421,6 +440,7 @@ def generate_index(): # PS images are copyd here
                 
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
+    generated_file.close()
     
     print("Index successfully generated!")
 
@@ -463,7 +483,7 @@ def generate_all_articles(): # PS images are also copyd here
                 article_type = str(article["Type"])
                 article_author = str(article["Writer"])
                 # copy over images and get the url to the right image
-                article_img_src = copy_over_images(basic_article_title, upplaga_number, "./images/")
+                article_img_src = find_img(basic_article_title, upplaga_number, "./images/")
                 generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
             
                 # generate the home url
@@ -484,6 +504,7 @@ def generate_all_articles(): # PS images are also copyd here
                 
                 generated_file = open((generated_articles_path + article_id + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:page_description_pos] + basic_article_title + template[page_description_pos:article_home_url_pos] + article_home_url + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
+                generated_file.close()
         
     print("All articles successfully generated!")
 
@@ -522,6 +543,7 @@ def generate_short_storys():
     
     generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:short_story_container_pos] + generated_short_story + template[short_story_container_pos:]) #write to it
+    generated_file.close()
     
     print("Short storys successfully generated!")
 
@@ -572,60 +594,89 @@ def generate_hear_me_outs():
     
     generated_file = open(hear_me_outs_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:hear_me_out_container_pos] + generated_hear_me_out + template[hear_me_out_container_pos:]) #write to it
+    generated_file.close()
     
     print("Hear me outs successfully generated!")
 
 
 # UI for backend user
 def handle_backend_UI():
+    global base_path
+    
     print("Welcome to the backend!")
     print('(Print "help" for commands)')
-    answer = input("$ ")
-    if answer == "help":
-        print("""
-              $ help --> Lists all commands
-              
-              GENERATE TEXT FILES
-              $ gen_all_files --> Lists all commands
-              
-              $ gen_index --> Generate just the index file
-              $ gen_hear_me_outs --> Generate just the hear me outs file
-              $ gen_notiser --> Generate just the notiser file
-              $ gen_all_articles --> Generate just all the article files
-              
-              COPY IMAGES
-              $ copy_new_images --> Copy over only the new images
-              $ copy_all_images --> Copy over only all images, even if it alredy exists
-              
-              FIX CONTENT THAT EXISTS
-              $ fix_article_names --> Rename normal storys to their title name in same order
-              """)
+    while True:
+        answer = input("$ ")
+        try:
+            if answer == "help":
+                print("""
+    $ help --> Lists all commands
+    $ close --> Terminate script
     
-    # generate text files
-    if answer == "gen_all_files":
-        generate_index()
-        generate_hear_me_outs()
-        generate_short_storys()
-        generate_all_articles()
-    if answer == "gen_index":
-        generate_index()
-    if answer == "gen_hear_me_outs":
-        generate_hear_me_outs()
-    if answer == "gen_notiser":
-        generate_short_storys()
-    if answer == "gen_all_articles":
-        generate_all_articles()
-        
-    # images
-    if answer == "copy_new_images":
-        copy_over_images("new")
-    if answer == "copy_all_images":
-        copy_over_images("all")
-        
-    # fix content
-    if answer == "fix_article_names":
-        fix_all_backend_articles_names()
-
+    GENERATE TEXT FILES
+    $ gen all files --> Lists all commands
+    
+    $ gen index --> Generate just the index file
+    $ gen hear_me_outs --> Generate just the hear me outs file
+    $ gen notiser --> Generate just the notiser file
+    $ gen all articles --> Generate just all the article files
+    
+    COPY IMAGES
+    $ copy new images --> Copy over only the new images
+    $ copy all images --> Copy over only all images, even if it alredy exists
+    
+    CREATE NEW 
+    $ new upplaga --> Generates a new upplaga shell in the normal_storys_and_other folder
+    
+    FIX CONTENT THAT EXISTS
+    $ fix article names --> Rename normal storys to their title name in same order
+    
+    OTHER
+    $ get dir --> Print the currant base dir
+    $ set dir --> Set the base dir
+                    """)
+            elif answer == "close":
+                break
+            
+            # generate text files
+            elif answer == "gen all files":
+                generate_index()
+                generate_hear_me_outs()
+                generate_short_storys()
+                generate_all_articles()
+            elif answer == "gen index":
+                generate_index()
+            elif answer == "gen hear me outs":
+                generate_hear_me_outs()
+            elif answer == "gen notiser":
+                generate_short_storys()
+            elif answer == "gen all articles":
+                generate_all_articles()
+                
+            # images
+            elif answer == "copy new images":
+                copy_over_images("new")
+            elif answer == "copy all images":
+                copy_over_images("all")
+                
+            # new content
+            elif answer == "new upplaga":
+                setup_new_upplaga()
+                
+            # fix content
+            elif answer == "fix article names":
+                fix_all_backend_articles_names()
+                
+            # other
+            elif answer == "get dir":
+                print(base_path)
+            elif answer == "set dir":
+                base_path = input("New dir: ")
+                
+            else:
+                print(f'"{answer}" is not a command')
+        except Exception as e:
+            print(e)
 
 handle_backend_UI()
 
@@ -635,6 +686,8 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+- en grej som skappar mall för short storys och hear me outs också
+- en funktion som inspekterar alla filer etc
 
 
 Gammla api hantering:
