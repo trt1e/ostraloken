@@ -510,7 +510,7 @@ def find_img(article_title, upplaga_nmr, base_url):
     else:
         return ""
 
-def copy_over_images(gen_all_or_new):
+def copy_over_images(gen_type):
     # go throught every upplaga
     for upplaga in read_normal_storys():
         # go throught every article in the upplaga
@@ -533,14 +533,25 @@ def copy_over_images(gen_all_or_new):
                     # if all and file: YES
                     # if new and no file: YES
                     # if new and file: NO
-                    if gen_all_or_new == "all" or os.path.isfile(new_img_url_with_extention) is False:
-                        image = Image.open(old_img_path_with_extention)
-                        img_width, img_height = image.size
-                        new_width = 1000
-                        new_height = int((new_width / img_width) * img_height)
-                        new_image = image.resize((new_width, new_height))
-                        new_image.save(new_img_url_with_extention, quality=80)
-                        print(f"copied image: {all_img_title}")
+                    if gen_type != "new" or os.path.isfile(new_img_url_with_extention) is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
+                        create_image_switch = False
+                        if "specific" in gen_type:
+                            desired_upplaga_nmr = gen_type.split(": ")[1]
+                            if int(upplaga_number) == int(desired_upplaga_nmr):
+                                create_image_switch = True
+                        if gen_type == "all":
+                            create_image_switch = True
+
+                        if create_image_switch:
+                            image = Image.open(old_img_path_with_extention)
+                            img_width, img_height = image.size
+                            new_width = 1000
+                            new_height = int((new_width / img_width) * img_height)
+                            new_image = image.resize((new_width, new_height))
+                            new_image.save(new_img_url_with_extention, quality=80)
+                            print(f"copied image: {all_img_title}")
+                    else: # gen type == "new" and os.path.isfile(new_img_url_with_extention) is True
+                        pass
     else:
         print("No images left to copy")
 
@@ -883,6 +894,7 @@ def handle_backend_UI():
     COPY IMAGES
     $ copy new images --> Copy over only the new images
     $ copy all images --> Copy over all images, even if they alredy exists
+    $ copy specific images --> Copy over all images in a specific upplaga
     
     FIX CONTENT
     $ fix citationmarks --> Replace all “ and ” with ", as they should be
@@ -899,23 +911,23 @@ def handle_backend_UI():
             # new content
             elif answer == "new upplaga":
                 amount_of_articles = input("Amount articles: ")
-                if amount_of_articles is None or amount_of_articles == "":
+                if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
                     amount_of_articles = 0
                 amount_of_notiser = input("Amount notiser: ")
-                if amount_of_notiser is None or amount_of_notiser == "":
+                if amount_of_notiser is None or amount_of_notiser == "" or not re.search(r"[0-9]", amount_of_notiser):
                     amount_of_notiser = 0
                 amount_of_hear_me_outs = input("Amount hear me outs: ")
-                if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "":
+                if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "" or not re.search(r"[0-9]", amount_of_hear_me_outs):
                     amount_of_hear_me_outs = 0
                     
                 day = input("Day of release: ")
-                if day is None or day == "":
+                if day is None or day == "" or not re.search(r"[0-9]", day):
                     day = "DD"
                 month = input("Month of release: ")
-                if month is None or month == "":
+                if month is None or month == "" or not re.search(r"[0-9]", month):
                     month = "MM"
                 year = input("Year of release: ")
-                if year is None or year == "":
+                if year is None or year == "" or not re.search(r"[0-9]", year):
                     year = "ÅÅÅÅ"
                     
                 setup_new_upplaga_folder(day, month, year)
@@ -943,6 +955,12 @@ def handle_backend_UI():
                 copy_over_images("new")
             elif answer == "copy all images":
                 copy_over_images("all")
+            elif answer == "copy specific images":
+                upplaga_to_copy = input("Copy over images in upplaga: ")
+                if re.search(r"[0-9]", upplaga_to_copy):
+                    copy_over_images(f"specific: {upplaga_to_copy}")
+                else:
+                    print(f"{upplaga_to_copy} not a number")
                     
             # fix content
             elif answer == "inspect":
