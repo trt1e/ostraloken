@@ -4,7 +4,9 @@ from PIL import Image
 
 is_linux = False
 
+global base_path
 base_path = os.getcwd()
+img_extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
 
 # BASE COMMANDS
 def strip_string(string, max):
@@ -50,9 +52,6 @@ def try_opening(content, extra): # extra is like "tr" or something like that
         text_output = open_content.read() # read it
         open_content.close() # at the end
         return text_output
-
-    if open_content == None:
-        print("WARNING, NO UTF WORKING ON: " + content)
 
 def find_between(input, find_start, find_end, start_pos):
     pos1 = input.find(find_start, start_pos) + len(find_start)
@@ -113,6 +112,14 @@ def fix_cut_of_html_elements(text):
     # this returns what should be added at the end of the text given 
     return extra_at_end
 
+def get_next_upplaga_number():
+    highest_upplaga_number = 1
+    for upplaga in reversed(read_normal_storys()):
+        if upplaga["Upplaga"] > highest_upplaga_number:
+            highest_upplaga_number = upplaga["Upplaga"]
+    highest_upplaga_number += 1 # so highest_upplaga_number is one higher than what exists
+    return highest_upplaga_number
+
 # READ TEXT
 normal_story_path = work_path(r"\ostraloken\backend\content\normal_storys_and_other")
 short_story_path = work_path(r"\ostraloken\backend\content\short_storys.txt")
@@ -157,7 +164,7 @@ def read_short_storys(): # To get the files and their content from all short art
     whole_text = try_opening(short_story_path, "tr") # read it
     last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
     output_sum = []
-    for number_of_articles in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many short storys there are in the txt
         # find where diffrent parts are in the document
         title = find_between(whole_text, "### ", " ##", last_final_pos)
         article = find_between(whole_text, "+++ ", " ++", last_final_pos)
@@ -185,7 +192,208 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
     return output_sum
 
 
-# FIX ARTICLES NAMES
+# FIX ARTICLES
+def inspect_normal_storys(): # looks throught all files to se if something is wrong but doesnt change nothing
+    print("↓ ARTICLES ↓")
+    upplaga_list = os.listdir(normal_story_path) # list all folders in dir
+    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
+        printed_something = False
+        # list all files in dir
+        file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
+        exists_upplaga_info_file = False
+        for file in file_list: # Go througth every file in the list
+            if file[:4] != "IMG-":
+                # check if there are img files that do not start with IMG-
+                if file[3:] in img_extentions or file[4:] in img_extentions:
+                    print(f'WARNING: {file} is image but does not start with "IMG-" as it should')
+                    printed_something = True
+                
+                whole_text = try_opening(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr")
+                if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+                    print(f'NOTE: {file} contains “ and/or ”. Instead you should use "')
+                    printed_something = True
+                    
+                if whole_text.count("<") != whole_text.count(">"):
+                    print(f'NOTE: {file} has a uneven amount of "<" and ">"')
+                    printed_something = True
+                    
+                if file != "upplaga_info.txt":
+                    if whole_text.find("### ") == -1:
+                        print(f'WARNING: {file} does not have a "### " as it should')
+                        printed_something = True
+                    if whole_text.find(" ##") == -1:
+                        print(f'WARNING: {file} does not have a " ##" as it should')
+                        printed_something = True
+                    if whole_text.find("¤¤¤ ") == -1:
+                        print(f'WARNING: {file} does not have a "¤¤¤ " as it should')
+                        printed_something = True
+                    if whole_text.find(" ¤¤") == -1:
+                        print(f'WARNING: {file} does not have a " ¤¤" as it should')
+                        printed_something = True
+                    if whole_text.find("@@@ ") == -1:
+                        print(f'WARNING: {file} does not have a "@@@ " as it should')
+                        printed_something = True
+                    if whole_text.find(" @@") == -1:
+                        print(f'WARNING: {file} does not have a " @@" as it should')
+                        printed_something = True
+
+                    title = find_between(whole_text, "### ", " ##", 0)
+                    if title == "":
+                        print(f'WARNING: {title} is empty')
+                    if title == "RUBRIK":
+                        print(f'WARNING: {title} is still template')
+                    type = find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
+                    if type == "":
+                        print(f'WARNING: {title} type is empty')
+                    if type == "ARTIKEL_TYP":
+                        print(f'WARNING: {title} type is still template')
+                    writer = find_between(whole_text, "@@@ ", " @@", 0)
+                    if writer == "":
+                        print(f'WARNING: {title} writer is empty')
+                    if writer == "SKRIBENT":
+                        print(f'WARNING: {title} writer is still template')
+                    article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
+                    if article == "":
+                        print(f'WARNING: {file} does not have content after " @@"')
+                        printed_something = True
+                else:
+                    exists_upplaga_info_file = True
+                    upplaga_number = find_between(whole_text, "=== ", " ==", 0)
+                    upplaga_date = find_between(whole_text, "$$$ ", " $$", 0)
+                    
+                    if not re.search(r"[0-9]", upplaga_number):
+                        print(f'WARNING: {file} upplaga number is not number')
+                        printed_something = True
+                    if not re.search(r"[0-9 /]", upplaga_number):
+                        print(f'WARNING: {file} upplaga date are not numbers')
+                        printed_something = True
+                    if upplaga_date == "DD/MM/ÅÅÅÅ":
+                        print(f'WARNING: {file} upplaga date is still the template')
+                        printed_something = True
+                    
+                    if printed_something == True:
+                        print(f"↑ Upplaga number: {upplaga_number} ↑\n")
+        
+        if exists_upplaga_info_file == False:
+            print(f'WARNING: {upplaga} does not have a upplaga_info.txt file')
+
+def inspect_short_storys():
+    whole_text = try_opening(short_story_path, "tr") # read it
+    print("\n↓ NOTISER ↓")
+    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+        print(f'NOTE: Notiser contains “ and/or ”. Instead you should use "')
+        
+    if whole_text.count("<") != whole_text.count(">"):
+        print(f'NOTE: Notiser has a uneven amount of "<" and ">"')
+    
+    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
+        # find where diffrent parts are in the document
+        title = find_between(whole_text, "### ", " ##", last_final_pos)
+        if "++" in title:
+            print(f'WARNING: {title} contains "++" in title which it should not have')
+        if "##" in title:
+            print(f'WARNING: {title} contains "##" in title which it should not have')
+        if title == "":
+            print(f'WARNING: {title} is empty')
+        if title == "RUBRIK":
+            print(f'WARNING: {title} is still template')
+        article = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        if "++" in article:
+            print(f'WARNING: {title} contains "++" in article which it should not have')
+        if "##" in article:
+            print(f'WARNING: {title} contains "##" in article which it should not have')
+        if article == "":
+            print(f'WARNING: {title} text is empty')
+        if article == "BRÖDTEXT":
+            print(f'WARNING: {title} text is still template')
+        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
+        
+def inspect_hear_me_outs():
+    whole_text = try_opening(hear_me_outs_path, "tr") # read it
+    print("\n↓ HEAR ME OUTS ↓")
+    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+        print(f'NOTE: Hear me outs contains “ and/or ”. Instead you should use "')
+        
+    if whole_text.count("<") != whole_text.count(">"):
+        print(f'NOTE: Hear me outs has a uneven amount of "<" and ">"')
+    
+    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
+        # find where diffrent parts are in the document
+        hear_me_out = find_between(whole_text, "### ", " ##", last_final_pos)
+        if "++" in hear_me_out:
+            print(f'WARNING: {hear_me_out} contains "++" in hear me out which it should not have')
+        if "##" in hear_me_out:
+            print(f'WARNING: {hear_me_out} contains "##" in hear me out which it should not have')
+        if hear_me_out == "":
+            print(f'WARNING: {hear_me_out} is empty')
+        if hear_me_out == "HEAR_ME_OUT":
+            print(f'WARNING: {hear_me_out} is still template')
+        desc = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        if "++" in desc:
+            print(f'WARNING: {hear_me_out} contains "++" in description which it should not have')
+        if "##" in desc:
+            print(f'WARNING: {hear_me_out} contains "##" in description which it should not have')
+        if hear_me_out == "BESKRIVNING":
+            print(f'WARNING: {hear_me_out} description is still template')
+        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
+
+def fix_citationmarks():
+    # normal storys
+    fixed_something = False
+    upplaga_list = os.listdir(normal_story_path) # list all folders in dir
+    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
+        # list all files in dir
+        file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
+        for file in file_list: # Go througth every file in the list
+            if file[:4] != "IMG-":
+                whole_text = try_opening(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr")
+                if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+                    new_text = whole_text.replace("“", '"')
+                    new_text = new_text.replace("”", '"')
+                    open_content = open(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "w", encoding="utf-8")
+                    open_content.write(new_text) # write to it
+                    open_content.close()
+                    
+                    fixed_something = True
+                    print(f"Fixed citationmark(s) in {file}")
+                    
+    if fixed_something == False:
+        print("No citationmarks to fix in articles")
+
+    # short storys
+    fixed_something = False
+    whole_text = try_opening(short_story_path, "tr") # read it
+    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+        new_text = whole_text.replace("“", '"')
+        new_text = new_text.replace("”", '"')
+        open_content = open(short_story_path, "w", encoding="utf-8")
+        open_content.write(new_text) # write to it
+        open_content.close()
+        
+        fixed_something = True
+        print(f"Fixed citationmark(s) in notiser")
+        
+    if fixed_something == False:
+        print("No citationmarks to fix in notiser")
+
+    # hear me outs
+    fixed_something = False
+    whole_text = try_opening(hear_me_outs_path, "tr") # read it
+    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+        new_text = whole_text.replace("“", '"')
+        new_text = new_text.replace("”", '"')
+        open_content = open(hear_me_outs_path, "w", encoding="utf-8")
+        open_content.write(new_text) # write to it
+        open_content.close()
+        
+        fixed_something = True
+        print(f"Fixed citationmark(s) in hear me outs")
+        
+    if fixed_something == False:
+        print("No citationmarks to fix in hear me outs")
+
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
@@ -205,6 +413,73 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
 
     print("Article names successfully fixed!")
 
+# SETUP TEMPLATES
+def setup_new_upplaga_folder(day, month, year):
+    next_upplaga_number = get_next_upplaga_number()
+    new_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{next_upplaga_number}" + handel_path_slash("\\") + "upplaga_info.txt"
+    folder_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{next_upplaga_number}"
+    os.makedirs(folder_path, exist_ok=True) # generate the folder
+    generated_file = open(new_path, "x", encoding="utf-8") # create / find the file
+    content = f"""Upplaga: === {next_upplaga_number} ==
+Datum: $$$ {day}/{month}/{year} $$
+Extra info: ***  **"""
+    generated_file.write(content) #write to it
+    generated_file.close()
+    
+def setup_new_upplaga_articles(count_articles):
+    next_upplaga_number = get_next_upplaga_number()
+    # all new articles
+    for article_number in range(int(count_articles)):
+        article_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{next_upplaga_number}" + handel_path_slash("\\") + f"{article_number + 1} ARTICLE_NAME.txt"
+        generated_file = open(article_path, "x", encoding="utf-8") # create / find the file
+        content = f"""### RUBRIK ##
+¤¤¤ ARTIKEL_TYP ¤¤
+@@@ SKRIBENT @@
+BRÖDTEXT"""
+        generated_file.write(content) #write to it
+        generated_file.close()
+    
+def setup_new_notiser(count_notiser, day, month, year):
+    next_upplaga_number = get_next_upplaga_number()
+    for upplaga in reversed(read_normal_storys()):
+        if upplaga["Upplaga"] > next_upplaga_number:
+            highest_upplaga_number = upplaga["Upplaga"]
+    edited_file = open(short_story_path, "a", encoding="utf-8") # create / find the file
+    content = f"""
+
+
+Upplaga {next_upplaga_number} ({day}/{month}/{year}):"""
+    if int(count_notiser) == 0:
+        content = "" # make so it doesnt say "Upplaga {highest_upplaga_number} ({day}/{month}/{year}):" if there are no notiser
+    lone_content = f"""
+
+### RUBRIK ##
++++ BRÖDTEXT ++"""
+    # add right amount of notiser to new upplaga
+    for notis_number in range(int(count_notiser)):
+        content += lone_content
+    
+    edited_file.write(content) #write to it
+    edited_file.close()
+
+    print(f"Generated template for upplaga {next_upplaga_number}")
+    
+def setup_new_hear_me_outs(count_hear_me_outs):
+    edited_file = open(hear_me_outs_path, "a", encoding="utf-8") # create / find the file
+    content = ""
+    lone_content = f"""
+
+### HEAR_ME_OUT ##
++++ BESKRIVNING ++"""
+    # add right amount of notiser to new upplaga
+    for hear_me_out_number in range(int(count_hear_me_outs)):
+        content += lone_content
+    
+    edited_file.write(content) #write to it
+    edited_file.close()
+    
+    print(f"Generated template hear me outs")
+
 
 # GENERATE SITES
 index_template_path = work_path(r"\ostraloken\templates\index.html")
@@ -220,12 +495,10 @@ hear_me_outs_template_path = work_path(r"\ostraloken\templates\hear_me_outs.html
 hear_me_outs_generated_path = work_path(r"\ostraloken\webbpage\hear_me_outs\index.html")
 
 # images
-def copy_over_images(article_title, upplaga_nmr, base_url):
+def find_img(article_title, upplaga_nmr, base_url):
     all_img_title = "IMG-" + strip_string(article_title, 100)
     old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
-    new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
-    extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
-    for ext in extentions:
+    for ext in img_extentions:
         if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
             old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
             break
@@ -233,20 +506,46 @@ def copy_over_images(article_title, upplaga_nmr, base_url):
         old_img_path_with_extention = "NO_IMG" # article does not have image
         
     if old_img_path_with_extention != "NO_IMG":
-        if os.path.isfile(new_img_url_with_extention) is False:
-            image = Image.open(old_img_path_with_extention)
-            img_width, img_height = image.size
-            new_width = 1000
-            new_height = int((new_width / img_width) * img_height)
-            new_image = image.resize((new_width, new_height))
-            new_image.save(new_img_url_with_extention, quality=80)
-            print(f"copied image: {all_img_title}")
         return base_url + all_img_title + ".webp"
     else:
         return ""
 
+def copy_over_images(gen_all_or_new):
+    # go throught every upplaga
+    for upplaga in read_normal_storys():
+        # go throught every article in the upplaga
+        upplaga_number = upplaga["Upplaga"]
+        for article in upplaga["Content"]:
+            if article: # somethimes article is empty, this prevents that
+                article_title = str(article["Title"])
+                all_img_title = "IMG-" + strip_string(article_title, 100)
+                old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + all_img_title
+                new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
+                for ext in img_extentions:
+                    if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
+                        old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+                        break
+                else:
+                    old_img_path_with_extention = "NO_IMG" # article does not have image
+                    
+                if old_img_path_with_extention != "NO_IMG":
+                    # if all and no file: YES
+                    # if all and file: YES
+                    # if new and no file: YES
+                    # if new and file: NO
+                    if gen_all_or_new == "all" or os.path.isfile(new_img_url_with_extention) is False:
+                        image = Image.open(old_img_path_with_extention)
+                        img_width, img_height = image.size
+                        new_width = 1000
+                        new_height = int((new_width / img_width) * img_height)
+                        new_image = image.resize((new_width, new_height))
+                        new_image.save(new_img_url_with_extention, quality=80)
+                        print(f"copied image: {all_img_title}")
+    else:
+        print("No images left to copy")
+
 # articles
-def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr):
+def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./" # hide image
@@ -268,7 +567,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         content = "Null"
         
     # generate the article id
-    article_id = (strip_string(remove_html_elements(title), -1) + "-" + strip_string(author, 20) + "-" + strip_string(type, -1))[:100]
+    article_id = strip_string(remove_html_elements(title), -1)[:100] + "-" + str(upplaga_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     if redirect_src == "SHOULD_NOT_REDIRECT":
@@ -389,14 +688,15 @@ def generate_index(): # PS images are copyd here
                 
                 # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
-                html_url = copy_over_images(remove_html_elements(article_title), upplaga_number, "./a/images/")
-                article_id = (strip_string(remove_html_elements(article_title), -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100] # what is used to identefy the article
+                img_url = find_img(article_title, upplaga_number, "./a/images/")
+                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number) # what is used to identefy the article
     
-                generated_articles += generate_lone_article(("./a/" + article_id + ".html"), html_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated)
+                generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
                 how_many_articles_generated += 1
                 
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
+    generated_file.close()
     
     print("Index successfully generated!")
 
@@ -439,12 +739,13 @@ def generate_all_articles(): # PS images are also copyd here
                 article_type = str(article["Type"])
                 article_author = str(article["Writer"])
                 # copy over images and get the url to the right image
-                article_img_src = copy_over_images(basic_article_title, upplaga_number, "./images/")
-                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0)
+                article_img_src = find_img(basic_article_title, upplaga_number, "./images/")
+                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
             
                 # generate the home url
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
-                article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
+                # article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
+                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number)
                 article_home_url = "../#" + article_id
             
                 if article_type == "Insändare" and has_extra_info == False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
@@ -459,6 +760,7 @@ def generate_all_articles(): # PS images are also copyd here
                 
                 generated_file = open((generated_articles_path + article_id + ".html"), "w", encoding="utf-8") # create / find the file
                 generated_file.write(template[:page_description_pos] + basic_article_title + template[page_description_pos:article_home_url_pos] + article_home_url + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
+                generated_file.close()
         
     print("All articles successfully generated!")
 
@@ -497,6 +799,7 @@ def generate_short_storys():
     
     generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:short_story_container_pos] + generated_short_story + template[short_story_container_pos:]) #write to it
+    generated_file.close()
     
     print("Short storys successfully generated!")
 
@@ -547,47 +850,130 @@ def generate_hear_me_outs():
     
     generated_file = open(hear_me_outs_generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(template[:hear_me_out_container_pos] + generated_hear_me_out + template[hear_me_out_container_pos:]) #write to it
+    generated_file.close()
     
     print("Hear me outs successfully generated!")
 
-generate_index()
-generate_hear_me_outs()
-generate_short_storys()
-generate_all_articles()
-fix_all_backend_articles_names()
+
+# UI for backend user
+def handle_backend_UI():
+    global base_path
+    
+    print("Welcome to the backend!")
+    print('(Print "help" for commands)')
+    while True:
+        answer = input("$ ")
+        try:
+            if answer == "help":
+                print("""
+    $ help --> Lists all commands
+    $ close --> Terminate script
+    
+    TEMPLATES
+    $ new upplaga template --> Generates a new upplaga template with articles, notiser and hear me outs
+    
+    GENERATE TEXT FILES
+    $ gen all files --> Generate all webbpage files that are generated
+    
+    $ gen index --> Generate just the index file
+    $ gen hear_me_outs --> Generate just the hear me outs file
+    $ gen notiser --> Generate just the notiser file
+    $ gen all articles --> Generate just all the article files
+    
+    COPY IMAGES
+    $ copy new images --> Copy over only the new images
+    $ copy all images --> Copy over all images, even if they alredy exists
+    
+    FIX CONTENT
+    $ fix citationmarks --> Replace all “ and ” with ", as they should be
+    $ fix article names --> Rename normal storys to their title (keeping them in the same order)
+    $ inspect --> Looks through content so everything is as it should be, if not: it is reported
+    
+    OTHER
+    $ get dir --> Print the currant base dir
+    $ set dir --> Set the base dir
+                    """)
+            elif answer == "close":
+                break
+            
+            # new content
+            elif answer == "new upplaga":
+                amount_of_articles = input("Amount articles: ")
+                if amount_of_articles is None or amount_of_articles == "":
+                    amount_of_articles = 0
+                amount_of_notiser = input("Amount notiser: ")
+                if amount_of_notiser is None or amount_of_notiser == "":
+                    amount_of_notiser = 0
+                amount_of_hear_me_outs = input("Amount hear me outs: ")
+                if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "":
+                    amount_of_hear_me_outs = 0
+                    
+                day = input("Day of release: ")
+                if day is None or day == "":
+                    day = "DD"
+                month = input("Month of release: ")
+                if month is None or month == "":
+                    month = "MM"
+                year = input("Year of release: ")
+                if year is None or year == "":
+                    year = "ÅÅÅÅ"
+                    
+                setup_new_upplaga_folder(day, month, year)
+                setup_new_upplaga_articles(amount_of_articles)
+                setup_new_notiser(amount_of_notiser, day, month, year)
+                setup_new_hear_me_outs(amount_of_hear_me_outs)
+            
+            # generate text files
+            elif answer == "gen all files":
+                generate_index()
+                generate_hear_me_outs()
+                generate_short_storys()
+                generate_all_articles()
+            elif answer == "gen index":
+                generate_index()
+            elif answer == "gen hear me outs":
+                generate_hear_me_outs()
+            elif answer == "gen notiser":
+                generate_short_storys()
+            elif answer == "gen all articles":
+                generate_all_articles()
+                
+            # images
+            elif answer == "copy new images":
+                copy_over_images("new")
+            elif answer == "copy all images":
+                copy_over_images("all")
+                    
+            # fix content
+            elif answer == "inspect":
+                inspect_normal_storys()
+                inspect_short_storys()
+                inspect_hear_me_outs()
+            elif answer == "fix citationmarks":
+                fix_citationmarks()
+            elif answer == "fix article names":
+                fix_all_backend_articles_names()
+                
+            # other
+            elif answer == "get dir":
+                print(base_path)
+            elif answer == "set dir":
+                base_path = input("New dir: ")
+                
+            else:
+                if answer != "":
+                    print(f'"{answer}" is not a command')
+        except Exception as e:
+            print(e)
+
+handle_backend_UI()
 
 r"""
 Saker att lägga till
 - sökfunktion
+- gör tinder av hear me outs
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-- att namn är titel och upplaga, inte upplaga förfatare och typ
-- gör en egen fil för att skriva om namn och ta bort alla konstiga "
-
-
-Gammla api hantering:
-
-from flask import Flask, jsonify
-from flask_cors import CORS
-import os
-
-app = Flask(__name__)
-CORS(app, origins=["http://127.0.0.1:5500"])
-
-base_path = os.getcwd()
-normal_story_path = base_path + r"\ostraloken\backend\content\normal_storys_and_other"
-short_story_path = base_path + r"\ostraloken\backend\content\short_storys.txt"
-hear_me_outs_path = base_path + r"\ostraloken\backend\content\hear_me_outs.txt"
-
-@app.route("/", methods=["GET"])
-def home():
-    return jsonify({"data": "hello world"})
-
-@app.route("/home/<int:num>", methods=["GET"])
-def disp(num):
-    return jsonify({"data": num ** 2})
-
-if __name__ == "__main__":
-    app.run(debug=True)
+- fixa hear me outs smash or pass system
 """
