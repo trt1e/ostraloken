@@ -90,7 +90,7 @@ main { /* since there is no h1 top text to hold the main up*/
 
 /* Up button */
 #go_up {
-    background-color: transparent;
+    background-color: var(--bg-color);
     position: fixed;
     bottom: 2rem;
     right: 2rem;

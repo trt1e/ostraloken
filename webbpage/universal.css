@@ -1,14 +1,14 @@
 /* Base */
 :root {
-    --bg-color: #fbf6f3;
-    --dark-bg-color: #f3efec;
-    --darker-bg-color: #ece8e4;
-    --darkest-bg-color: #d3cecc;
-    --text-color: #130c09;
-    --lighter-text-color: #aba29e;
-    --primary-color: #EE7322;
-    --secondary-color: #da8852;
-    --highlight-color: yellow;
+    --bg-color: #fbf6f3; /*for the background*/
+    --dark-bg-color: #f3efec; /*for things with a clearly differant background than --bg-color*/
+    --darker-bg-color: #ece8e4; /*for outline before hover*/
+    --darkest-bg-color: #d3cecc; /*for outlines and for hover outline*/
+    --text-color: #130c09; /*for text*/
+    --lighter-text-color: #aba29e; /*for less inportant text*/
+    --primary-color: #EE7322; /*for header and hover*/
+    --secondary-color: #da8852; /*for orange color before hover*/
+    --highlight-color: yellow; /*for the article type*/
 }
 * {
     margin: 0;
@@ -27,7 +27,7 @@ body {
 
 /* Dropdown */
 #dropdown {
-    background-color: transparent;
+    background-color: var(--bg-color);
     z-index: 11;
     height: 2.5rem;
     font-family: 'Times New Roman', Times, serif;
