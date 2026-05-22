@@ -27,7 +27,7 @@ body {
 
 /* Dropdown */
 #dropdown {
-    background-color: var(--bg-color);
+    background-color: transparent;
     z-index: 11;
     height: 2.5rem;
     font-family: 'Times New Roman', Times, serif;
