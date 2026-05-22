@@ -107,7 +107,6 @@ a#return p {
 }
 @media (width < 45rem) {
     #upplaga_and_date {
-        top: 3.8rem;
         transform: translateX(0rem); /*Main width is 100%*/
         left: 2rem;
         width: calc(100% - 4rem);

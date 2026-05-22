@@ -73,7 +73,6 @@ main { /* since there is no h1 top text to hold the main up*/
     #im_feeling_lucky {
         width: 100%;
         left: 0;
-        top: 3.8rem;
     }
 }
 #im_feeling_lucky button {
