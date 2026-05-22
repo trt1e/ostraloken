@@ -221,18 +221,17 @@ main li {
     width: 12.5rem;
     position: absolute;
     top: 7.4rem;
-    left: 50%;
-    right: 50%;
-    transform: translateX(38rem);
+    left: calc(50%);
+    transform: translateX(calc((72rem / 2) + 2rem)); /*width = 72rem*/
     transition: none;
     text-align: center;
 }
-@media (80rem <= width <= 120rem) { 
+@media (83rem <= width <= 120rem) { 
     .extra_info {
-        transform: translateX(25.5rem);
+        transform: translateX(calc((47rem / 2) + 2rem)); /*width = 47rem*/
     }
 }
-@media (width < 85rem) {
+@media (width < 83rem) {
     .extra_info {
         position: static;
         transform: translateX(0);

@@ -44,12 +44,12 @@ main { /* since there is no h1 top text to hold the main up*/
 a#return {
     position: absolute;
     top: 6.4rem;
-    width: fit-content;
-    left: 50%;
-    right: 50%;
-    transform: translateX(-44rem); /*Main width default is 80 rem, we want 4 extra rem*/
+    width: 2.3rem;
+    right: calc(50%);
+    transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
     border: var(--darker-bg-color) solid 2px;
     padding: 1rem;
+    padding-top: 0.7rem;
     color: var(--secondary-color);
     text-decoration: none;
     transition: border 0.3s, color 0.3s;
@@ -60,15 +60,15 @@ a#return:hover {
 }
 @media (80rem <= width <= 120rem) { 
     a#return {
-        transform: translateX(-31.5rem); /*Main width is 55rem*/
+        transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
     }
 }
 @media (45rem <= width < 80rem) {
     a#return {
-        transform: translateX(-26.5rem); /*Main width is 45rem*/
+        transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
     }
 }
-@media (width < 55rem) {
+@media (width < 52rem) {
     a#return {
         display: none; /*Main width is 100%*/
     }
@@ -86,9 +86,7 @@ a#return p {
     position: absolute;
     top: -1.8rem;
     top: 4.4rem;
-    left: 50%;
-    right: 50%;
-    transform: translateX(-36rem); /*Main width default is 72 + 8 rem*/
+    left: calc(50% - 36rem);
     font-size: 1.6rem;
     display: flex;
     justify-content: space-between;
@@ -96,13 +94,13 @@ a#return p {
 @media (80rem <= width <= 120rem) {
     #upplaga_and_date {
         width: 47rem;
-        transform: translateX(-23.5rem); /*Main width is 47 + 8 rem*/
+        left: calc(50% - 23.5rem);
     }
 }
 @media (45rem <= width < 80rem) {
     #upplaga_and_date {
         width: 37rem;
-        transform: translateX(-18.5rem); /*Main width is 37 + 8 rem*/
+        left: calc(50% - 18.5rem);
     }
 }
 @media (width < 45rem) {

@@ -61,13 +61,18 @@ main { /* since there is no h1 top text to hold the main up*/
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Im feeling lucky button*/
+/* Im feeling lucky button */
 #im_feeling_lucky {
     position: absolute;
     width: 30rem;
     top: 4.4rem;
     left: calc(50vw - 15rem);
     text-align: center;
+    background-color: transparent;
+    border: none;
+    color: var(--darkest-bg-color);
+    text-decoration: none;
+    transition: color 0.3s;
 }
 @media (width < 45rem) {
     #im_feeling_lucky {
@@ -75,14 +80,7 @@ main { /* since there is no h1 top text to hold the main up*/
         left: 0;
     }
 }
-#im_feeling_lucky button {
-    background-color: transparent;
-    border: none;
-    color: var(--darkest-bg-color);
-    text-decoration: none;
-    transition: 0.3s;
-}
-#im_feeling_lucky button:hover {
+#im_feeling_lucky:hover {
     color: var(--secondary-color);
 }
 #im_feeling_lucky p {
@@ -90,7 +88,46 @@ main { /* since there is no h1 top text to hold the main up*/
 }
 
 
-/* Text styling */
+/* Up button */
+#go_up {
+    background-color: transparent;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 4rem;
+    cursor: pointer;
+    text-align: center;
+    border: var(--darker-bg-color) solid 2px;
+    padding: 1rem;
+    padding-top: 0.7rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: border 0.3s, color 0.3s, opacity 0.3s, visibility 0.3s;
+
+    /*Starting as this, changed later by JS. Therefor the #go_up.show class*/
+    opacity: 0%;
+    pointer-events: none;
+    visibility: hidden;
+}
+#go_up:hover {
+    border: var(--darkest-bg-color) solid 2px;
+    color: var(--primary-color);
+}
+@media (width < 55rem) {
+    #go_up {
+        display: none; /*Main width is 100%*/
+    }
+}
+#go_up.show {
+    opacity: 100%;
+    pointer-events: auto;
+    visibility: visible;
+}
+#go_up p {
+    font-size: 2rem;
+    font-weight: 700;
+}
+
 main h1 {
     display: none;
 }

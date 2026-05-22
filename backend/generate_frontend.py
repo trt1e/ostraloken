@@ -578,7 +578,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         content = "Null"
         
     # generate the article id
-    article_id = strip_string(remove_html_elements(title), -1)[:100] + "-" + str(upplaga_nmr)
+    article_id = strip_string(remove_html_elements(title), -1)[:100] + "-U" + str(upplaga_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     if redirect_src == "SHOULD_NOT_REDIRECT":
@@ -700,7 +700,7 @@ def generate_index(): # PS images are copyd here
                 # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
                 img_url = find_img(article_title, upplaga_number, "./a/images/")
-                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number) # what is used to identefy the article
+                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-U" + str(upplaga_number) # what is used to identefy the article
     
                 generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
                 how_many_articles_generated += 1
@@ -756,7 +756,7 @@ def generate_all_articles(): # PS images are also copyd here
                 # generate the home url
                 article_home_url_pos = template.find('<a id="return" href="') + 21 
                 # article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
-                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-" + str(upplaga_number)
+                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-U" + str(upplaga_number)
                 article_home_url = "../#" + article_id
             
                 if article_type == "Insändare" and has_extra_info == False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
@@ -870,7 +870,7 @@ def generate_hear_me_outs():
 def handle_backend_UI():
     global base_path
     
-    print("Welcome to the backend!")
+    print("Welcome to the backend terminal!")
     print('(Print "help" for commands)')
     while True:
         answer = input("$ ")
@@ -884,23 +884,23 @@ def handle_backend_UI():
     $ new upplaga template --> Generates a new upplaga template with articles, notiser and hear me outs
     
     GENERATE TEXT FILES
-    $ gen all files --> Generate all webbpage files that are generated
+    $ gen all --> Generate all webbpage files that are generated
     
     $ gen index --> Generate just the index file
     $ gen hear_me_outs --> Generate just the hear me outs file
     $ gen notiser --> Generate just the notiser file
-    $ gen all articles --> Generate just all the article files
+    $ gen articles --> Generate just all the article files
     
     COPY IMAGES
-    $ copy new images --> Copy over only the new images
-    $ copy all images --> Copy over all images, even if they alredy exists
-    $ copy specific images --> Copy over all images in a specific upplaga
+    $ copy images new --> Copy over only the new images
+    $ copy images all --> Copy over all images, even if they alredy exists
+    $ copy images specific --> Copy over all images in a specific upplaga
     
     FIX CONTENT
+    $ inspect --> Looks through content so everything is as it should be, if not: it is reported   
     $ fix citationmarks --> Replace all “ and ” with ", as they should be
     $ fix article names --> Rename normal storys to their title (keeping them in the same order)
-    $ inspect --> Looks through content so everything is as it should be, if not: it is reported
-    
+ 
     OTHER
     $ get dir --> Print the currant base dir
     $ set dir --> Set the base dir
@@ -936,7 +936,7 @@ def handle_backend_UI():
                 setup_new_hear_me_outs(amount_of_hear_me_outs)
             
             # generate text files
-            elif answer == "gen all files":
+            elif answer == "gen all":
                 generate_index()
                 generate_hear_me_outs()
                 generate_short_storys()
@@ -947,15 +947,15 @@ def handle_backend_UI():
                 generate_hear_me_outs()
             elif answer == "gen notiser":
                 generate_short_storys()
-            elif answer == "gen all articles":
+            elif answer == "gen articles":
                 generate_all_articles()
                 
             # images
-            elif answer == "copy new images":
+            elif answer == "copy images new":
                 copy_over_images("new")
-            elif answer == "copy all images":
+            elif answer == "copy images all":
                 copy_over_images("all")
-            elif answer == "copy specific images":
+            elif answer == "copy images specific":
                 upplaga_to_copy = input("Copy over images in upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
                     copy_over_images(f"specific: {upplaga_to_copy}")
