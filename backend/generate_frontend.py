@@ -64,7 +64,7 @@ def remove_html_elements(string):
     amount_of_start = string.count("<")
     amount_of_end = string.count(">")
     if amount_of_start != amount_of_end:
-        print(f"WARNING, amount of < ({amount_of_start}) not same as > ({amount_of_end}) in {string}")
+        print(f"WARNING WHEN REMOVING HTML FROM ELEMENT: amount of < ({amount_of_start}) not same as > ({amount_of_end}) in {string}")
     
     for i in range(amount_of_start):
         start_pos = string.find("<", last_pos)
@@ -198,82 +198,108 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         printed_something = False
+        exists_upplaga_info_file = False
+        images_list = []
+        titles_list = []
         # list all files in dir
         file_list = os.listdir(normal_story_path + handel_path_slash("\\") + upplaga)
-        exists_upplaga_info_file = False
         for file in file_list: # Go througth every file in the list
             if file[:4] != "IMG-":
                 # check if there are img files that do not start with IMG-
-                if file[3:] in img_extentions or file[4:] in img_extentions:
+                if file[-3:] in img_extentions or file[-4:] in img_extentions:
                     print(f'WARNING: {file} is image but does not start with "IMG-" as it should')
                     printed_something = True
-                
-                whole_text = try_opening(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr")
-                if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-                    print(f'NOTE: {file} contains “ and/or ”. Instead you should use "')
-                    printed_something = True
-                    
-                if whole_text.count("<") != whole_text.count(">"):
-                    print(f'NOTE: {file} has a uneven amount of "<" and ">"')
-                    printed_something = True
-                    
-                if file != "upplaga_info.txt":
-                    if whole_text.find("### ") == -1:
-                        print(f'WARNING: {file} does not have a "### " as it should')
-                        printed_something = True
-                    if whole_text.find(" ##") == -1:
-                        print(f'WARNING: {file} does not have a " ##" as it should')
-                        printed_something = True
-                    if whole_text.find("¤¤¤ ") == -1:
-                        print(f'WARNING: {file} does not have a "¤¤¤ " as it should')
-                        printed_something = True
-                    if whole_text.find(" ¤¤") == -1:
-                        print(f'WARNING: {file} does not have a " ¤¤" as it should')
-                        printed_something = True
-                    if whole_text.find("@@@ ") == -1:
-                        print(f'WARNING: {file} does not have a "@@@ " as it should')
-                        printed_something = True
-                    if whole_text.find(" @@") == -1:
-                        print(f'WARNING: {file} does not have a " @@" as it should')
-                        printed_something = True
-
-                    title = find_between(whole_text, "### ", " ##", 0)
-                    if title == "":
-                        print(f'WARNING: {title} is empty')
-                    if title == "RUBRIK":
-                        print(f'WARNING: {title} is still template')
-                    type = find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
-                    if type == "":
-                        print(f'WARNING: {title} type is empty')
-                    if type == "ARTIKEL_TYP":
-                        print(f'WARNING: {title} type is still template')
-                    writer = find_between(whole_text, "@@@ ", " @@", 0)
-                    if writer == "":
-                        print(f'WARNING: {title} writer is empty')
-                    if writer == "SKRIBENT":
-                        print(f'WARNING: {title} writer is still template')
-                    article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
-                    if article == "":
-                        print(f'WARNING: {file} does not have content after " @@"')
-                        printed_something = True
                 else:
-                    exists_upplaga_info_file = True
-                    upplaga_number = find_between(whole_text, "=== ", " ==", 0)
-                    upplaga_date = find_between(whole_text, "$$$ ", " $$", 0)
-                    
-                    if not re.search(r"[0-9]", upplaga_number):
-                        print(f'WARNING: {file} upplaga number is not number')
+                    try:
+                        whole_text = try_opening(normal_story_path + handel_path_slash("\\") + upplaga + handel_path_slash("\\") + file, "tr")
+                        if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
+                            print(f'NOTE: {file} contains “ and/or ”. Instead you should use "')
+                            printed_something = True
+                            
+                        if whole_text.count("<") != whole_text.count(">"):
+                            print(f'NOTE: {file} has a uneven amount of "<" and ">"')
+                            printed_something = True
+                            
+                        if file != "upplaga_info.txt":
+                            if whole_text.find("### ") == -1:
+                                print(f'WARNING: {file} does not have a "### " as it should')
+                                printed_something = True
+                            if whole_text.find(" ##") == -1:
+                                print(f'WARNING: {file} does not have a " ##" as it should')
+                                printed_something = True
+                            if whole_text.find("¤¤¤ ") == -1:
+                                print(f'WARNING: {file} does not have a "¤¤¤ " as it should')
+                                printed_something = True
+                            if whole_text.find(" ¤¤") == -1:
+                                print(f'WARNING: {file} does not have a " ¤¤" as it should')
+                                printed_something = True
+                            if whole_text.find("@@@ ") == -1:
+                                print(f'WARNING: {file} does not have a "@@@ " as it should')
+                                printed_something = True
+                            if whole_text.find(" @@") == -1:
+                                print(f'WARNING: {file} does not have a " @@" as it should')
+                                printed_something = True
+
+                            if whole_text.find("### ") != -1 and whole_text.find(" ##") != -1:
+                                title = find_between(whole_text, "### ", " ##", 0)
+                                if title == "":
+                                    print(f'WARNING: {file} title is empty')
+                                if title == "RUBRIK":
+                                    print(f'WARNING: {file} title is still template')
+                                    
+                                titles_list.append(strip_string(remove_html_elements(title), 100))
+                                
+                                if str("_".join(file.split(" ")[1:])).split(".")[0] != strip_string(remove_html_elements(title), 100):
+                                    print(f'WARNING: {file} (fixed: {str("_".join(file.split(" ")[1:])).split(".")[0]}) does not have same name as title: {title} (fixed: {strip_string(remove_html_elements(title), 100)})')
+                                    printed_something = True
+                                
+                            if whole_text.find("¤¤¤ ") != -1 and whole_text.find(" ¤¤") != -1:
+                                type = find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
+                                if type == "":
+                                    print(f'WARNING: {file} type is empty')
+                                if type == "ARTIKEL_TYP":
+                                    print(f'WARNING: {file} type is still template')
+                                
+                            if whole_text.find("@@@ ") != -1 and whole_text.find(" @@") != -1:
+                                writer = find_between(whole_text, "@@@ ", " @@", 0)
+                                if writer == "":
+                                    print(f'WARNING: {file} writer is empty')
+                                if writer == "SKRIBENT":
+                                    print(f'WARNING: {file} writer is still template')
+                                
+                            article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
+                            if article == "":
+                                print(f'WARNING: {file} does not have content after " @@"')
+                                printed_something = True
+                        else:
+                            exists_upplaga_info_file = True
+                            upplaga_number = find_between(whole_text, "=== ", " ==", 0)
+                            upplaga_date = find_between(whole_text, "$$$ ", " $$", 0)
+                            
+                            if not re.search(r"^[0-9]+$", upplaga_number):
+                                print(f'WARNING: {file} upplaga number is not number')
+                                printed_something = True
+                            if not re.search(r"^[0-9/]+$", upplaga_date):
+                                print(f'WARNING: {file} upplaga date are not numbers')
+                                printed_something = True
+                            if upplaga_date == "DD/MM/ÅÅÅÅ":
+                                print(f'WARNING: {file} upplaga date is still the template')
+                                printed_something = True
+                            
+                            for image in images_list:
+                                image_title = str(image[4:]).split(".")[0]
+                                if image_title not in titles_list:
+                                    print(f"WARNING: {image} does not have a article it is linked to")
+                                    printed_something = True
+                            
+                            if printed_something == True:
+                                print(f"↑ Upplaga number: {upplaga_number} ↑\n")
+                    except Exception as e:
+                        print(f"ERROR: {e}")
                         printed_something = True
-                    if not re.search(r"[0-9 /]", upplaga_number):
-                        print(f'WARNING: {file} upplaga date are not numbers')
-                        printed_something = True
-                    if upplaga_date == "DD/MM/ÅÅÅÅ":
-                        print(f'WARNING: {file} upplaga date is still the template')
-                        printed_something = True
-                    
-                    if printed_something == True:
-                        print(f"↑ Upplaga number: {upplaga_number} ↑\n")
-        
+            else: # starts with IMG-
+                images_list.append(file) # add the file to a list so we can check if it has article by same name
+            
         if exists_upplaga_info_file == False:
             print(f'WARNING: {upplaga} does not have a upplaga_info.txt file')
 
@@ -982,7 +1008,7 @@ def handle_backend_UI():
                 if answer != "":
                     print(f'"{answer}" is not a command')
         except Exception as e:
-            print(e)
+            print(f"ERROR: {e}")
 
 handle_backend_UI()
 
@@ -990,6 +1016,7 @@ r"""
 Saker att lägga till
 - sökfunktion
 - gör tinder av hear me outs
+- lägg till share knapp
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
