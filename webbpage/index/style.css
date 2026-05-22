@@ -64,13 +64,13 @@ main { /* since there is no h1 top text to hold the main up*/
 /* Im feeling lucky button */
 #im_feeling_lucky {
     position: absolute;
-    width: 30rem;
+    width: 15rem;
     top: 4.4rem;
-    left: calc(50vw - 15rem);
+    left: calc(50vw - 7.5rem);
     text-align: center;
     background-color: transparent;
     border: none;
-    color: var(--darkest-bg-color);
+    color: var(--lighter-text-color);
     text-decoration: none;
     transition: color 0.3s;
 }

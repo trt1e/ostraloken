@@ -82,7 +82,7 @@ a#return p {
 #upplaga_and_date {
     width: 72rem;
     z-index: 1;
-    color: var(--darkest-bg-color);
+    color: var(--lighter-text-color);
     position: absolute;
     top: -1.8rem;
     top: 4.4rem;
