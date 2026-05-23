@@ -59,12 +59,12 @@ body {
 #dropdown_button_container:hover {
     display: flex;
 }
-@media (height < 26rem) {
+@media (height < 30rem) {
     #dropdown_button_container {
         overflow-y: scroll;
         width: calc(100% - 3rem);
         height: calc(100% - 6.5rem);
-        grid-template-rows: repeat(2, minmax(0, 1fr));
+        grid-template-rows: repeat(3, minmax(0, 1fr));
         grid-template-columns: repeat(3, minmax(0, 1fr));
         justify-items: center;
         align-items: center;
