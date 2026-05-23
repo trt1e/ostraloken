@@ -15,7 +15,7 @@
     grid-template-rows: auto;
 }
 .article button {
-    background: white;
+    background-color: white;
     width: 90%;
     height: 4rem;
     border: var(--darkest-bg-color) solid 2px;
@@ -23,11 +23,11 @@
     transition: 0.2s;
 }
 .article button:hover {
-    background: var(--dark-bg-color);
+    background-color: var(--dark-bg-color);
     transform: translate(-0.2rem, -0.2rem);
     box-shadow: var(--darker-bg-color) 0.2rem 0.2rem 0.8rem;
 }
 .article button.clicked {
-    background: var(--dark-bg-color);
+    background-color: var(--dark-bg-color);
     border: var(--secondary-color) solid 2px;
 }

@@ -48,7 +48,7 @@ main {
     width: 4.5rem;
     height: 4rem;
     position: absolute;
-    top: 12.4rem; /*3.4rem + 1rem + 3rem + 1.5rem + 3.5rem = 12.4rem*/
+    top: 12.9rem; /*3.4rem + 1rem + 3rem + 1.5rem + 4rem = 12.9rem*/
     cursor: pointer;
     text-align: center;
     border: var(--darker-bg-color) solid 2px;

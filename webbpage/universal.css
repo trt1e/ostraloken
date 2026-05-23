@@ -195,7 +195,7 @@ h1.top_text {
     width: 100%;
     height: 2.5rem;
     text-align: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 main .article h1 { /* Same as h2 in but for articles */
     font-size: 2.2rem;
@@ -245,7 +245,7 @@ main li {
     border: var(--secondary-color) solid 2px;
     width: 12.5rem;
     position: absolute;
-    top: 7.4rem;
+    top: 7.9rem;
     left: calc(50%);
     transform: translateX(calc((72rem / 2) + 2rem)); /*width = 72rem*/
     transition: none;
@@ -269,6 +269,45 @@ main li {
 }
 a.extra_info.user_prompt:hover {
     border: var(--primary-color) solid 2px;
+}
+
+/* Up button */
+#go_up {
+    background-color: var(--bg-color);
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 4rem;
+    cursor: pointer;
+    text-align: center;
+    border: var(--darker-bg-color) solid 2px;
+    padding: 1rem;
+    padding-top: 0.7rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    transition: border 0.3s, color 0.3s, opacity 0.3s, visibility 0.3s;
+
+    /*Starting as this, changed later by JS. Therefor the #go_up.show class*/
+    opacity: 0%;
+    pointer-events: none;
+    visibility: hidden;
+}
+#go_up:hover {
+    border: var(--darkest-bg-color) solid 2px;
+    color: var(--primary-color);
+}
+@media (width < 55rem) {
+    #go_up {
+        display: none; /*Main width is 100%*/
+    }
+}
+#go_up.show {
+    opacity: 100%;
+    pointer-events: auto;
+    visibility: visible;
+}
+#go_up p {
+    font-size: 2rem;
 }
 
 /* Footer */

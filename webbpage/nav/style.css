@@ -1,9 +1,24 @@
 /* Content in main */
 .nav_card {
+    height: 2rem;
     display: flex;
+    align-items: center;
+    border: var(--darkest-bg-color) solid 2px;
 }
 .nav_card:hover {
-    border: var(--darkest-bg-color) solid 2px;
+    background-color: var(--darker-bg-color);
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+}
+.nav_card.highlight {
+    background-color: var(--dark-bg-color);
+    border: var(--secondary-color) solid 2px;
+}
+.nav_card.highlight:hover {
+    background-color: var(--darker-bg-color);
+    border: var(--primary-color) solid 2px;
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
 }
 .nav_card img {
     height: 5rem;
