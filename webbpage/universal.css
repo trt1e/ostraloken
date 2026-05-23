@@ -34,7 +34,6 @@ body {
     width: fit-content;
     font-size: 2rem;
     padding: 0.5rem 1rem 1.5rem 1rem;
-    transition: 0.3s;
     border: none;
     position: fixed;
     cursor: default;
@@ -44,7 +43,6 @@ body {
 #dropdown_button_container {
     background-color: var(--dark-bg-color);
     border: var(--darkest-bg-color) solid 2px;
-    display: none;
     position: fixed;
     padding: 1rem;
     top: 4rem;
@@ -52,6 +50,8 @@ body {
     min-width: 5rem;
     direction: rtl;
     flex-direction: column;
+    
+    display: none;
 }
 #dropdown:hover #dropdown_button_container {
     display: flex;
@@ -59,12 +59,36 @@ body {
 #dropdown_button_container:hover {
     display: flex;
 }
+@media (height < 26rem) {
+    #dropdown_button_container {
+        overflow-y: scroll;
+        width: calc(100% - 3rem);
+        height: calc(100% - 6.5rem);
+        grid-template-rows: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        justify-items: center;
+        align-items: center;
+        font-size: 4.5vw;
+        text-align: center;
+    }
+    #dropdown:hover #dropdown_button_container {
+        display: grid;
+    }
+    #dropdown_button_container:hover {
+        display: grid;
+    }
+}
 .dropdown_button {
     padding: 0.5rem;
     color: var(--text-color);
     text-decoration: none;
     border-right: transparent solid 2px;
-    transition: 0.3s;
+    transition: border 0.3s;
+}
+@media (height < 26rem) {
+    .dropdown_button {
+        width: fit-content;
+    }
 }
 .dropdown_button:hover {
     border-right: var(--primary-color) solid 2px;
@@ -111,7 +135,7 @@ header p {
 }
 #header_titel_image {
     width: 12rem;
-    padding: 0.5rem;
+    padding: 0.4rem;
 }
 @media (width <= 13rem) {
     #header_titel_image {

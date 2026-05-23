@@ -19,6 +19,10 @@ window.addEventListener("load", () => {
     PDFHandle();
     pdfContent.src = `./pdfs/Östra_Löken_upplaga_${counter}.pdf`;
     console.log(pdfContent.src)
+    if (window.innerWidth < 800) { // if window is this small, we can assume they are on phone or tablet
+        console.log("Under 800 width: switching to JS render")
+        switchImageFormat(); // If so, make it render in image rendering since webrendering ussualy doesn't work on phone or tablet
+    };
 });
 
 function getLokenEdition(edition) {
@@ -74,7 +78,7 @@ async function unrenderDocument() {
 };
 
 // back button
-document.getElementsByClassName("pdf_nav_buttons")[0].addEventListener("click", async () => {
+document.querySelector(".pdf_nav_buttons#previous").addEventListener("click", async () => {
     counter -= 1;
     if (counter < 1) {
         counter = amoutPDfs;
@@ -83,53 +87,38 @@ document.getElementsByClassName("pdf_nav_buttons")[0].addEventListener("click", 
     if (renderMode == "browser") {
         pdfContent.src = `./pdfs/Östra_Löken_upplaga_${counter}.pdf`;
     } else {
-        let backgroundColorBlob = document.getElementsByClassName("background_colorblob"); 
-        for (let element = 0; element < backgroundColorBlob.length; element++) {
-            let elementBlob = backgroundColorBlob[element];
-            elementBlob.style.transition = "0s";
-        };
         unrenderDocument();
         document.getElementById("pdf_loading_text").style.display = "block";
         await renderDocument(getLokenEdition(counter));
         document.getElementById("pdf_loading_text").style.display = "none";
-        for (let element = 0; element < backgroundColorBlob.length; element++) {
-            let elementBlob = backgroundColorBlob[element];
-            elementBlob.style.transition = "4.6s";
-        };
     };
 });
 
 // byt bildform button
-const bildformButton = document.getElementsByClassName("pdf_nav_buttons")[1];
-bildformButton.addEventListener("click", async () => {
-    let backgroundColorBlob = document.getElementsByClassName("background_colorblob"); 
-    for (let element = 0; element < backgroundColorBlob.length; element++) {
-        let elementBlob = backgroundColorBlob[element];
-        elementBlob.style.transition = "0s";
-    };
+async function switchImageFormat() {
     if (renderMode == "browser") {
         renderMode = "JSrender";
-        bildformButton.innerText = "byt till browserrendering";
+        bildformText.innerText = "byt till browserrendering";
         document.getElementById("main_pdf").style.display = "none";
         document.getElementById("pdf_loading_text").style.display = "block";
         await renderDocument(getLokenEdition(counter));
         document.getElementById("pdf_loading_text").style.display = "none";
     } else {
         renderMode = "browser";
-        bildformButton.innerText = "byt till bildrendering";
+        bildformText.innerText = "byt till bildrendering";
         pdfContent.src = `./pdfs/Östra_Löken_upplaga_${counter}.pdf`;
         document.getElementById("main_pdf").style.display = "block";
         await unrenderDocument();
     };
-    for (let element = 0; element < backgroundColorBlob.length; element++) {
-        let elementBlob = backgroundColorBlob[element];
-        elementBlob.style.transition = "4.6s";
-    };
     console.log("render mode now " + renderMode)
+};
+const bildformText = document.querySelector("#pdf_nav_switch_render p")
+document.getElementById("pdf_nav_switch_render").addEventListener("click", async () => {
+    await switchImageFormat();
 });
 
 // next button
-document.getElementsByClassName("pdf_nav_buttons")[2].addEventListener("click", async () => {
+document.querySelector(".pdf_nav_buttons#next").addEventListener("click", async () => {
     counter += 1;
     if (counter > amoutPDfs) {
         counter = 1;
@@ -138,19 +127,10 @@ document.getElementsByClassName("pdf_nav_buttons")[2].addEventListener("click", 
     if (renderMode == "browser") {
         pdfContent.src = `./pdfs/Östra_Löken_upplaga_${counter}.pdf`;
     } else {
-        let backgroundColorBlob = document.getElementsByClassName("background_colorblob"); 
-        for (let element = 0; element < backgroundColorBlob.length; element++) {
-            let elementBlob = backgroundColorBlob[element];
-            elementBlob.style.transition = "4.6s";
-        };
         unrenderDocument();
         document.getElementById("pdf_loading_text").style.display = "block";
         await renderDocument(getLokenEdition(counter));
         document.getElementById("pdf_loading_text").style.display = "none";
-        for (let element = 0; element < backgroundColorBlob.length; element++) {
-            let elementBlob = backgroundColorBlob[element];
-            elementBlob.style.transition = "4.6s";
-        };
     };
 });
 

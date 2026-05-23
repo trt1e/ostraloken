@@ -1,3 +1,11 @@
+/*Main*/
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
 /*PDF*/
 #main_pdf {
     width: 100%;
@@ -6,6 +14,7 @@
     max-height: 100rem;
     border: none;
 }
+/*
 #pdf_nav_UI {
     width: 100%;
     height: fit-content;
@@ -18,25 +27,106 @@
         flex-direction: column;
         justify-content: start;
         align-items: center;
+        gap: 0.5rem;
     }
 }
+*/
 #pdf_upplaga_number {
+    height: 1.5rem;
     text-align: center;
-    margin: 1.5rem 0;
+    margin: 1rem 0;
     font-family: monospace;
 }
+#pdf_nav_container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 .pdf_nav_buttons {
-    background-color: transparent;
-    border: none;
-    color: var(--text-color);
-    font-size: 1.5rem;
-    margin-top: 0.5rem;
+    background-color: var(--bg-color);
+    width: 4.5rem;
+    height: 4rem;
+    position: absolute;
+    top: 12.4rem; /*3.4rem + 1rem + 3rem + 1.5rem + 3.5rem = 12.4rem*/
     cursor: pointer;
-    opacity: 0.7;
+    text-align: center;
+    border: var(--darker-bg-color) solid 2px;
+    padding: 1rem;
+    padding-top: 0.7rem;
+    color: var(--secondary-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: border 0.3s, color 0.3s;
+
+}
+.pdf_nav_buttons p {
+    font-size: 2rem;
 }
 .pdf_nav_buttons:hover {
-    opacity: 1;
-    text-decoration: underline;
+    border: var(--darkest-bg-color) solid 2px;
+    color: var(--primary-color);
+}
+.pdf_nav_buttons#previous {
+    right: 50%;
+    transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
+}
+@media (80rem <= width <= 120rem) { 
+    .pdf_nav_buttons#previous {
+        transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
+    }
+}
+@media (52rem <= width < 80rem) {
+    .pdf_nav_buttons#previous {
+        transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
+    }
+}
+@media (width < 52rem) {
+    .pdf_nav_buttons#previous {
+        transform: translateX(0); /*Main width is 100%*/
+        position: static;
+    }
+}
+.pdf_nav_buttons#next {
+    left: 50%;
+    transform: translateX(calc((72rem / 2) + 2rem)); /*width = 72rem*/
+}
+@media (80rem <= width <= 120rem) { 
+    .pdf_nav_buttons#next {
+        transform: translateX(calc((47rem / 2) + 2rem)); /*width = 47rem*/
+    }
+}
+@media (52rem <= width < 80rem) {
+    .pdf_nav_buttons#next {
+        transform: translateX(calc((37rem / 2) + 2rem)); /*width = 37rem*/
+    }
+}
+@media (width < 52rem) {
+    .pdf_nav_buttons#next {
+        transform: translateX(0); /*Main width is 100%*/
+        position: static;
+    }
+}
+#pdf_nav_switch_render {
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    color: var(--lighter-text-color);
+    text-decoration: none;
+    transition: color 0.3s;
+    height: 1.5rem;
+    margin: auto;
+}
+@media (23rem > width) {
+    #pdf_nav_switch_render {
+        display: none;
+    }
+}
+#pdf_nav_switch_render:hover {
+    color: var(--secondary-color);
+}
+#pdf_nav_switch_render p {
+    font-size: 1.4rem;
 }
 
 /*Image rendered PDF*/

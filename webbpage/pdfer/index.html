@@ -27,10 +27,10 @@
     </div>
     <main>
         <h1 class="top_text">PDF:er</h1>
-        <div id="pdf_nav_UI">
-            <button class="pdf_nav_buttons" aria-label="Tidigare upplaga">tidigare</button>
-            <button class="pdf_nav_buttons" aria-label="Tidigare upplaga">byt till bildrendering</button>
-            <button class="pdf_nav_buttons" aria-label="Nästa upplaga">nästa</button>
+        <div id="pdf_nav_container">
+            <button class="pdf_nav_buttons" id="previous" aria-label="Tidigare upplaga"><p>⟵</p></button>
+            <button id="pdf_nav_switch_render" aria-label="Byt renderingsläge"><p>byt till bildrendering</p></button>
+            <button class="pdf_nav_buttons" id="next" aria-label="Nästa upplaga"><p>⟶</p></button>
         </div>
 
         <p id="pdf_upplaga_number">Upplaga 1</p>
