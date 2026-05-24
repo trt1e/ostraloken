@@ -112,12 +112,11 @@ def fix_cut_of_html_elements(text):
     # this returns what should be added at the end of the text given 
     return extra_at_end
 
-def get_next_upplaga_number():
+def get_curant_upplaga_number():
     highest_upplaga_number = 1
     for upplaga in reversed(read_normal_storys()):
         if upplaga["Upplaga"] > highest_upplaga_number:
             highest_upplaga_number = upplaga["Upplaga"]
-    highest_upplaga_number += 1 # so highest_upplaga_number is one higher than what exists
     return highest_upplaga_number
 
 # READ TEXT
@@ -441,7 +440,8 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
 
 # SETUP TEMPLATES
 def setup_new_upplaga_folder(day, month, year):
-    next_upplaga_number = get_next_upplaga_number()
+    next_upplaga_number = get_curant_upplaga_number()
+    next_upplaga_number += 1 # so highest_upplaga_number is one higher than what exists
     new_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{next_upplaga_number}" + handel_path_slash("\\") + "upplaga_info.txt"
     folder_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{next_upplaga_number}"
     os.makedirs(folder_path, exist_ok=True) # generate the folder
@@ -453,7 +453,7 @@ Extra info: ***  **"""
     generated_file.close()
     
 def setup_new_upplaga_articles(count_articles):
-    next_upplaga_number = get_next_upplaga_number()
+    next_upplaga_number = get_curant_upplaga_number()
     # all new articles
     for article_number in range(int(count_articles)):
         article_path = normal_story_path + handel_path_slash("\\") + f"upplaga_{next_upplaga_number}" + handel_path_slash("\\") + f"{article_number + 1} ARTICLE_NAME.txt"
@@ -466,7 +466,7 @@ BRÖDTEXT"""
         generated_file.close()
     
 def setup_new_notiser(count_notiser, day, month, year):
-    next_upplaga_number = get_next_upplaga_number()
+    next_upplaga_number = get_curant_upplaga_number()
     for upplaga in reversed(read_normal_storys()):
         if upplaga["Upplaga"] > next_upplaga_number:
             highest_upplaga_number = upplaga["Upplaga"]
@@ -588,7 +588,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         redirect_src = "./" # hide image
     if img_src is None or img_src == "" or img_src == "NO_IMAGE_AVAILABLE":
         no_img_class = "no_img"
-        image_tag = ""
+        image_tag = "<!-- NO IMAGE HERE -->"
     else:
         no_img_class = ""
         image_extra = f'alt="{strip_string(title, -1).replace("_", " ")}"' # add the alt text
@@ -725,7 +725,7 @@ def generate_index(): # PS images are copyd here
                 
                 # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
-                img_url = find_img(article_title, upplaga_number, "./a/images/")
+                img_url = find_img(remove_html_elements(article_title), upplaga_number, "./a/images/")
                 article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-U" + str(upplaga_number) # what is used to identefy the article
     
                 generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
@@ -935,7 +935,7 @@ def handle_backend_UI():
                 break
             
             # new content
-            elif answer == "new upplaga":
+            elif answer == "new upplaga template":
                 amount_of_articles = input("Amount articles: ")
                 if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
                     amount_of_articles = 0
