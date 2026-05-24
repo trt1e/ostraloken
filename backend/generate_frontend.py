@@ -447,7 +447,7 @@ def setup_new_upplaga_folder(day, month, year):
     os.makedirs(folder_path, exist_ok=True) # generate the folder
     generated_file = open(new_path, "x", encoding="utf-8") # create / find the file
     content = f"""Upplaga: === {next_upplaga_number} ==
-Datum: $$$ {day}/{month}/{year} $$
+Datum: $$$ {day}-{month}-{year} $$
 Extra info: ***  **"""
     generated_file.write(content) #write to it
     generated_file.close()
