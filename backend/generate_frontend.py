@@ -804,6 +804,9 @@ def generate_all_articles(): # PS images are also copyd here
                 else:
                     final_file = final_file.replace("[+thumb_image_url+]", "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png")
                 final_file = final_file.replace("[+title+]", article_title.replace('"', "&quot;"))
+                final_file = final_file.replace("[+article_type+]", article_type)
+                final_file = final_file.replace("[+article_author+]", article_author)
+                final_file = final_file.replace("[+upplaga_date_ISO_8601+]", f"{upplaga_date.split("-")[2]}-{upplaga_date.split("-")[1].zfill(2)}-{upplaga_date.split("-")[0].zfill(2)}")
                 final_file = final_file.replace("[+article+]", generated_article)
                 final_file = final_file.replace("[+upplaga_number+]", str(upplaga_number))
                 final_file = final_file.replace("[+upplaga_date+]", upplaga_date)
@@ -1031,6 +1034,7 @@ Saker att lägga till
 - sökfunktion
 - gör tinder av hear me outs
 - lägg till share knapp
+- skapa individuella sidor för alla i stabb som artiklar kan länka till både i og: och som klickbart namn
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
