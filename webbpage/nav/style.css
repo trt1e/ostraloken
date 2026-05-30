@@ -1,6 +1,5 @@
 /* Content in main */
 .nav_card {
-    height: 2rem;
     display: flex;
     align-items: center;
     border: var(--darkest-bg-color) solid 2px;
@@ -20,13 +19,9 @@
     transform: translate(-0.2rem, -0.2rem);
     box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
 }
-.nav_card img {
-    height: 5rem;
-    width: 5rem;
-    border-radius: 50%;
-}
 .nav_card h2 {
     width: 100%;
     font-size: 1.5rem;
     text-align: center;
+    margin: 0.5rem 0;
 }

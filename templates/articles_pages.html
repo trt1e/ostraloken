@@ -4,10 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex, nofollow"> <!--Make sure articles do not show up in search-->
-    <title> | Östra Löken</title>
+    <meta name="description" content="[+description+]">
+    <meta property="og:description" content="[+description+]">
+    <meta property="og:image" content="[+thumb_image_url+]">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="[+url+]">
+    <meta property="og:title" content="[+title+] | Östra Löken">
+    <title>[+title+] | Östra Löken</title>
+
     <link rel="stylesheet" href="../universal.css">
     <link rel="stylesheet" href="./000_article_universal.css">
-    <link rel="icon" type="image/x-icon" href="../images/icons/lök_bild_cirkel.ico">
+    <link rel="icon" type="image/x-icon" href="../images/meta/lök_bild_cirkel.ico">
 </head>
 <body>
     <header>
@@ -27,15 +34,15 @@
         </nav>
     </div>
     <main>
-        <a id="return" href=""> <!--This needs to have <a id="return" href="... in that specific order for py to work -->
+        <a id="return" href="[+home_url+]">
             <p>⟵</p>
         </a>
 
-        <!-- [+article+] -->
+        [+article+]
 
         <div id="upplaga_and_date">
-            <p>Upplaga <!-- [+upplaga_number+] --></p>
-            <p><!-- [+date+] --></p>
+            <p>Upplaga [+upplaga_number+]</p>
+            <p>[+upplaga_date+]</p>
         </div>
 
     </main>

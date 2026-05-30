@@ -640,9 +640,6 @@ def generate_index(): # PS images are copyd here
     how_many_articles_generated = 0
     template = try_opening(index_template_path, "")
     
-    # Find where it says <!-- [+articles+] -->
-    article_container_pos = template.find("<!-- [+articles+] -->") + 22
-    
     generated_articles = ""
     
     for upplaga in reversed(read_normal_storys()):
@@ -731,23 +728,29 @@ def generate_index(): # PS images are copyd here
                 generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
                 how_many_articles_generated += 1
                 
+
+    # get the top story
+    latest_title = ""
+    for upplaga in read_normal_storys():
+        content = upplaga["Content"]
+        if content: # if there is content, content is the text, title, type and author
+            for order_number, article in enumerate(content):
+                if order_number == 0:
+                    latest_title = remove_html_elements(article["Title"])
+                
+    final_file = template
+    final_file = final_file.replace("[+articles+]", generated_articles)
+    final_file = final_file.replace("[+latest_title+]", latest_title.replace('"', "&quot"))
+                
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
+    # generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
+    generated_file.write(final_file) #write to it
     generated_file.close()
     
     print("Index successfully generated!")
 
 def generate_all_articles(): # PS images are also copyd here
     template = try_opening(article_template_path, "")
-    
-    # Find where it says <title>
-    page_description_pos = template.find("<title>") + 7
-    # Find where it says <!-- [+article+] -->
-    article_pos = template.find("<!-- [+article+] -->") + 20 + 1
-    # Find where it says <!-- [+upplaga_number+] -->
-    upplaga_number_pos = template.find("<!-- [+upplaga_number+] -->") + 27
-    # Find where it says <!-- [+date+] -->
-    date_pos = template.find("<!-- [+date+] -->") + 17
     
     # go throught every upplaga
     for upplaga in read_normal_storys():
@@ -757,14 +760,14 @@ def generate_all_articles(): # PS images are also copyd here
         upplaga_extra_info = upplaga["Extra_upplaga_info"]
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
-                generated_articles = "" # where we put the article
+                generated_article = "" # where we put the article
                 has_extra_info = False
                 
                 # this is done early so it is over the article itself
                 if upplaga_extra_info != "" and upplaga_extra_info != None and has_extra_info == False:
                     has_extra_info = True
                     # add the extra content
-                    generated_articles += f""" 
+                    generated_article += f""" 
         <div class="article extra_info attention">
             <p><b>Notera:</b> {upplaga_extra_info}</p>
         </div>
@@ -777,26 +780,36 @@ def generate_all_articles(): # PS images are also copyd here
                 article_author = str(article["Writer"])
                 # copy over images and get the url to the right image
                 article_img_src = find_img(basic_article_title, upplaga_number, "./images/")
-                generated_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
+                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
             
-                # generate the home url
-                article_home_url_pos = template.find('<a id="return" href="') + 21 
-                # article_id = (strip_string(basic_article_title, -1) + "-" + strip_string(article_author, 20) + "-" + strip_string(article_type, -1))[:100]
+                # generate the article id
                 article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-U" + str(upplaga_number)
-                article_home_url = "../#" + article_id
             
                 if article_type == "Insändare" and has_extra_info == False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
                     has_extra_info = True
                     # add prompt to write insändare if it is a insändare
-                    generated_articles += """ 
+                    generated_article += """ 
         <a class="article extra_info user_prompt" href="https://forms.gle/bBiEhDSCFijSFoHk9" target="_blank">
             <h2>Skicka in en insändare!</h2>
             <p>Vill du också skicka en insändare till Östra Löken? Fyll bara i denna korta enkät!</p>
         </a>
                     """
                 
+                final_file = template
+                final_file = final_file.replace("[+description+]", article_main_text[:200].replace('"', "&quot") + "...")
+                final_file = final_file.replace("[+url+]", f"https://ostraloken.se/a/{article_id}.html")
+                final_file = final_file.replace("[+home_url+]", "../#" + article_id)
+                if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
+                    final_file = final_file.replace("[+thumb_image_url+]", f"https://ostraloken.se/a/images/IMG-{strip_string(article_title, 100)}.webp")
+                else:
+                    final_file = final_file.replace("[+thumb_image_url+]", "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png")
+                final_file = final_file.replace("[+title+]", article_title.replace('"', "&quot"))
+                final_file = final_file.replace("[+article+]", generated_article)
+                final_file = final_file.replace("[+upplaga_number+]", str(upplaga_number))
+                final_file = final_file.replace("[+upplaga_date+]", upplaga_date)
+                
                 generated_file = open((generated_articles_path + article_id + ".html"), "w", encoding="utf-8") # create / find the file
-                generated_file.write(template[:page_description_pos] + basic_article_title + template[page_description_pos:article_home_url_pos] + article_home_url + template[article_home_url_pos:article_pos] + generated_articles + template[article_pos:upplaga_number_pos] + str(upplaga_number) + template[upplaga_number_pos:date_pos] + upplaga_date + template[date_pos:]) # write to it
+                generated_file.write(final_file) # write to it
                 generated_file.close()
         
     print("All articles successfully generated!")
@@ -822,9 +835,6 @@ def generate_lone_short_storys(title, content):
 def generate_short_storys():
     template = try_opening(short_storys_template_path, "")
     
-    # Find where it says <!-- [+short_storys+] -->
-    short_story_container_pos = template.find("<!-- [+short_storys+] -->") + 26
-    
     generated_short_story = ""
     
     for short_story_bundle in reversed(read_short_storys()):
@@ -834,8 +844,10 @@ def generate_short_storys():
             article_main_content = content["Article"]
             generated_short_story += generate_lone_short_storys(article_title, article_main_content)
     
+    final_file = template.replace("[+short_storys+]", generated_short_story)
+    
     generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:short_story_container_pos] + generated_short_story + template[short_story_container_pos:]) #write to it
+    generated_file.write(final_file) #write to it
     generated_file.close()
     
     print("Short storys successfully generated!")
@@ -885,8 +897,10 @@ def generate_hear_me_outs():
             article_desc = content["Description"]
             generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_desc)
     
+    final_file = template.replace("[+hear_me_outs+]", generated_hear_me_out)
+    
     generated_file = open(hear_me_outs_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(template[:hear_me_out_container_pos] + generated_hear_me_out + template[hear_me_out_container_pos:]) #write to it
+    generated_file.write(final_file) #write to it
     generated_file.close()
     
     print("Hear me outs successfully generated!")
