@@ -278,7 +278,7 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
                             if not re.search(r"^[0-9]+$", upplaga_number):
                                 print(f'WARNING: {file} upplaga number is not number')
                                 printed_something = True
-                            if not re.search(r"^[0-9/]+$", upplaga_date):
+                            if not re.search(r"^[0-9 \-]+$", upplaga_date):
                                 print(f'WARNING: {file} upplaga date are not numbers')
                                 printed_something = True
                             if upplaga_date == "DD/MM/ÅÅÅÅ":
@@ -565,7 +565,7 @@ def copy_over_images(gen_type):
                             desired_upplaga_nmr = gen_type.split(": ")[1]
                             if int(upplaga_number) == int(desired_upplaga_nmr):
                                 create_image_switch = True
-                        if gen_type == "all":
+                        else:
                             create_image_switch = True
 
                         if create_image_switch:
@@ -1020,5 +1020,4 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-- fixa hear me outs smash or pass system
 """
