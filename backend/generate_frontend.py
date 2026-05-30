@@ -740,7 +740,7 @@ def generate_index(): # PS images are copyd here
                 
     final_file = template
     final_file = final_file.replace("[+articles+]", generated_articles)
-    final_file = final_file.replace("[+latest_title+]", latest_title.replace('"', "&quot"))
+    final_file = final_file.replace("[+latest_title+]", latest_title.replace('"', "&quot;"))
                 
     generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
     # generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
@@ -796,14 +796,14 @@ def generate_all_articles(): # PS images are also copyd here
                     """
                 
                 final_file = template
-                final_file = final_file.replace("[+description+]", article_main_text[:200].replace('"', "&quot") + "...")
+                final_file = final_file.replace("[+description+]", article_main_text[:200].replace('"', "&quot;") + "...")
                 final_file = final_file.replace("[+url+]", f"https://ostraloken.se/a/{article_id}.html")
                 final_file = final_file.replace("[+home_url+]", "../#" + article_id)
                 if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
                     final_file = final_file.replace("[+thumb_image_url+]", f"https://ostraloken.se/a/images/IMG-{strip_string(article_title, 100)}.webp")
                 else:
                     final_file = final_file.replace("[+thumb_image_url+]", "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png")
-                final_file = final_file.replace("[+title+]", article_title.replace('"', "&quot"))
+                final_file = final_file.replace("[+title+]", article_title.replace('"', "&quot;"))
                 final_file = final_file.replace("[+article+]", generated_article)
                 final_file = final_file.replace("[+upplaga_number+]", str(upplaga_number))
                 final_file = final_file.replace("[+upplaga_date+]", upplaga_date)
