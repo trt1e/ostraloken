@@ -508,26 +508,26 @@ def setup_new_hear_me_outs(count_hear_me_outs):
 
 
 # GENERATE SITES
-index_template_path = work_path(r"\ostraloken\templates\index.html")
-index_generated_path = work_path(r"\ostraloken\webbpage\index.html")
+index_template_path = work_path(r"\ostraloken\ostraloken.se\templates\index.html")
+index_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\index.html")
 
-article_template_path = work_path(r"\ostraloken\templates\articles_pages.html")
-generated_articles_path = work_path(r"\ostraloken\webbpage\a" + "\\")
+article_template_path = work_path(r"\ostraloken\ostraloken.se\templates\articles_pages.html")
+generated_articles_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a" + "\\")
 
-short_storys_template_path = work_path(r"\ostraloken\templates\notiser.html")
-short_storys_generated_path = work_path(r"\ostraloken\webbpage\notiser\index.html")
+short_storys_template_path = work_path(r"\ostraloken\ostraloken.se\templates\notiser.html")
+short_storys_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\notiser\index.html")
 
-hear_me_outs_template_path = work_path(r"\ostraloken\templates\hear_me_outs.html")
-hear_me_outs_generated_path = work_path(r"\ostraloken\webbpage\hear_me_outs\index.html")
+hear_me_outs_template_path = work_path(r"\ostraloken\ostraloken.se\templates\hear_me_outs.html")
+hear_me_outs_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hear_me_outs\index.html")
 
-pdfer_template_path = work_path(r"\ostraloken\templates\pdfer.html")
-pdfer_generated_path = work_path(r"\ostraloken\webbpage\pdfer\index.html")
-nav_template_path = work_path(r"\ostraloken\templates\nav.html")
-nav_generated_path = work_path(r"\ostraloken\webbpage\nav\index.html")
-omoss_template_path = work_path(r"\ostraloken\templates\omoss.html")
-omoss_generated_path = work_path(r"\ostraloken\webbpage\omoss\index.html")
-kontakt_template_path = work_path(r"\ostraloken\templates\kontakt.html")
-kontakt_generated_path = work_path(r"\ostraloken\webbpage\kontakt\index.html")
+pdfer_template_path = work_path(r"\ostraloken\ostraloken.se\templates\pdfer.html")
+pdfer_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\index.html")
+nav_template_path = work_path(r"\ostraloken\ostraloken.se\templates\nav.html")
+nav_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\nav\index.html")
+omoss_template_path = work_path(r"\ostraloken\ostraloken.se\templates\omoss.html")
+omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\omoss\index.html")
+kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontakt.html")
+kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontakt\index.html")
 
 # images
 def find_img(article_title, upplaga_nmr, base_url):
@@ -1064,7 +1064,6 @@ Saker att lägga till
 - sökfunktion
 - gör tinder av hear me outs
 - lägg till share knapp
-- skapa individuella sidor för alla i stabb som artiklar kan länka till både i og: och som klickbart namn
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
