@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
     const wantedUpplagaNumber = urlParameters.get("upplaga")
     // if there is a upplaga request in url it sets it as the first 
     if (wantedUpplagaNumber) {
-        counter = wantedUpplagaNumber;
+        counter = parseInt(wantedUpplagaNumber);
     };
 
     PDFHandle();
