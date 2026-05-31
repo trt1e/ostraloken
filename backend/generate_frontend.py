@@ -607,21 +607,27 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     article_id = strip_string(remove_html_elements(title), -1)[:100] + "-U" + str(upplaga_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
-    if redirect_src == "SHOULD_NOT_REDIRECT":
+    if redirect_src == "SHOULD_NOT_REDIRECT": # Not anchor
+        author_context = f'<p class="author_text"><b>{author}</b></p>'
+        
+        # list Löken head writers
+        head_writers = ["Vilhelm Grill", "Joar Stange", "John Ericson", "Magne Nordström", "Elliot Sandström"]
+        # if author is one of head Löken writers: point their name to their part of kontaktinfo 
+        if author in head_writers:
+            author_context = f'<p class="author_text"><a href="https://ostraloken.se/kontakt/#{author.replace(" ", "_")}"><b>{author}</b></a></p>'
+        
         final_article = f"""
-            <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
             <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
                 <p class="type_text">{type}</p>
                 {image_tag}
                 <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
                 <p>{content}</p>
-                <p class="author_text"><b>{author}</b></p>
+                {author_context}
             </article>
         
         """
-    else: # make article not ancor
+    else: # make article not anchor
         final_article = f"""
-            <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
             <a href="{redirect_src}" id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
                 <article>
                     <p class="type_text">{type}</p>

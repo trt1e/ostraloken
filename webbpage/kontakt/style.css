@@ -1,3 +1,7 @@
+* {
+    scroll-margin-top: 30vh; /*Centers it when getting there from another url via # */
+}
+
 /* Content in main */
 .kontakt_card {
     display: flex;
