@@ -267,8 +267,24 @@ main li {
     box-shadow: var(--highlight-color) 0 0 0.5rem;
     margin-bottom: 1rem;
 }
+a.extra_info.user_prompt {
+    transition: 0.3s;
+}
 a.extra_info.user_prompt:hover {
+    background-color: var(--darker-bg-color);
     border: var(--primary-color) solid 2px;
+    transform: translate(calc((72rem / 2) + 2rem - 0.2rem), -0.2rem); /*width = 72rem*/
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+}
+@media (83rem <= width <= 120rem) { 
+    a.extra_info.user_prompt:hover {
+        transform: translate(calc((47rem / 2) + 2rem - 0.2rem), -0.2rem); /*width = 47rem*/
+    }
+}
+@media (width < 83rem) {
+    a.extra_info.user_prompt:hover {
+        transform: translate(-0.2rem, -0.2rem);
+    }
 }
 
 /* Up button */
@@ -336,4 +352,10 @@ footer {
 
 .footer_text {
     padding: 0.7em;
+}
+
+/* Animation stopper */
+.resize_animation_stopper * {
+  transition: none !important;
+  animation: none !important;
 }
