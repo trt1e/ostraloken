@@ -796,7 +796,7 @@ def generate_all_articles(): # PS images are also copyd here
                     """
                 
                 final_file = template
-                final_file = final_file.replace("[+description+]", article_main_text[:200].replace('"', "&quot;") + "...")
+                final_file = final_file.replace("[+description+]", remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...")
                 final_file = final_file.replace("[+url+]", f"https://ostraloken.se/a/{article_id}.html")
                 final_file = final_file.replace("[+home_url+]", "../#" + article_id)
                 if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
