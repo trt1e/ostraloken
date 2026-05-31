@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alla Östra Löken PDF:er sammanställda!">
+    <meta property="og:description" content="Alla Östra Löken PDF:er sammanställda!">
+    <meta property="og:image" content="https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ostraloken.se/pdfer/">
+    <meta property="og:title" content="PDF:er | Östra Löken">
+    <title>PDF:er | Östra Löken</title>
+
+    <link rel="stylesheet" href="../universal.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/x-icon" href="../images/meta/lök_bild_cirkel.ico">
+</head>
+<body>
+    <header>
+        <p><b>Hotfullt nära verkligheten</b></p>
+        <a href="../"><img id="header_titel_image" alt="Östra Löken logo" src="../images/logo/östra_löken_i_östra_format_rak_vit_text.webp"></a>
+        <p><b id="header_date"></b></p> <!-- Example: Söndag 29 mars -->
+    </header>
+    <div id="dropdown">•••
+        <nav id="dropdown_button_container">
+            <a href="../" class="dropdown_button">Hem</a>
+            <a href="./" class="dropdown_button">PDF:er</a>
+            <a href="../notiser/" class="dropdown_button">Notiser</a>
+            <a href="../hear_me_outs/" class="dropdown_button">Hear me out:s</a>
+            <a href="../nav/" class="dropdown_button">Länk nav</a>
+            <a href="../omoss/" class="dropdown_button">Om oss</a>
+            <a href="../kontakt/" class="dropdown_button">Kontaktinfo</a>
+        </nav>
+    </div>
+    <main>
+        <h1 class="top_text">PDF:er</h1>
+        <div id="pdf_nav_container">
+            <button class="pdf_nav_buttons" id="previous" aria-label="Tidigare upplaga"><p>⟵</p></button>
+            <button id="pdf_nav_switch_render" aria-label="Byt renderingsläge"><p>byt till bildrendering</p></button>
+            <button class="pdf_nav_buttons" id="next" aria-label="Nästa upplaga"><p>⟶</p></button>
+        </div>
+
+        <p id="pdf_upplaga_number">Upplaga 1</p>
+        <iframe id="main_pdf" title="Östra Löken upplagor" src="./pdfs/Östra_Löken_upplaga_1.pdf"></iframe>
+        <div id="pdf_container"></div>
+        <h2 id="pdf_loading_text">Laddar…</h2>
+    </main>
+    <footer id="footer">
+        <div class="footer_text">
+            <p>Östra Lökens Policy:</p>
+            <p>
+                <br>Alla elevers namn är påhittade. <br>
+                Östra Löken siktar på att slå <br>
+                uppåt med satiren, inte neråt. <br>
+                Alla artiklar är skrivna av människor. <br>
+                Tidningen är satir. <br>
+            </p>
+        </div>
+        <div class="footer_text" style="text-align: center;">
+            <p>Östra Löken produceras av:</p>
+            <p>
+            <br>Vilhelm Grill <br>
+            Joar Stange <br>
+            John Ericson <br>
+            Magne Nordström <br>
+            Elliot Sandström
+            </p> 
+        </div>
+        <div class="footer_text" style="text-align: right;">
+            <p>Nå oss på:</p>
+            <p>
+                <br>Instagram: ostra_loken <br>
+                Email: ostraloken@gmail.com <br>
+                Linktree: linktr.ee/ostraloken <br>
+            </p>
+        </div>
+    </footer>
+    
+    <script src="../js/dont_animate_when_rezising.js"></script>
+    <script src="../js/set_date.js"></script>
+    <script type="module" src="./js/PDFjs_reader.js"></script>
+</body>
+</html>

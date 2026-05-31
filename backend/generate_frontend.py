@@ -520,6 +520,15 @@ short_storys_generated_path = work_path(r"\ostraloken\webbpage\notiser\index.htm
 hear_me_outs_template_path = work_path(r"\ostraloken\templates\hear_me_outs.html")
 hear_me_outs_generated_path = work_path(r"\ostraloken\webbpage\hear_me_outs\index.html")
 
+pdfer_template_path = work_path(r"\ostraloken\templates\pdfer.html")
+pdfer_generated_path = work_path(r"\ostraloken\webbpage\pdfer\index.html")
+nav_template_path = work_path(r"\ostraloken\templates\nav.html")
+nav_generated_path = work_path(r"\ostraloken\webbpage\nav\index.html")
+omoss_template_path = work_path(r"\ostraloken\templates\omoss.html")
+omoss_generated_path = work_path(r"\ostraloken\webbpage\omoss\index.html")
+kontakt_template_path = work_path(r"\ostraloken\templates\kontakt.html")
+kontakt_generated_path = work_path(r"\ostraloken\webbpage\kontakt\index.html")
+
 # images
 def find_img(article_title, upplaga_nmr, base_url):
     all_img_title = "IMG-" + strip_string(article_title, 100)
@@ -580,6 +589,24 @@ def copy_over_images(gen_type):
                         pass
     else:
         print("No images left to copy")
+
+# basic for all generated text files
+def generate_site(template_path, generated_path, dictionary_of_replacment): # the sites that dont realy need to be generated
+    # pdf:er
+    template = try_opening(template_path, "")
+    
+    final_file = template
+    for item in dictionary_of_replacment:
+        final_file = final_file.replace(item, dictionary_of_replacment[item])
+    
+    # add something to notify the user that it is editing in the generated file instead of templates
+    row_endings = ["<head>", "</head>", "<body>", "</body>", "<header>", "</header>", "<main>", "</main>", "<footer>", "</footer>"]
+    for ending in row_endings:
+        final_file = final_file.replace(ending, f"{ending} <!--ATTENTION: YOU ARE RIGHT NOW IN THE GENERATED FILE!-->")
+    
+    generated_file = open(generated_path, "w", encoding="utf-8") # create / find the file
+    generated_file.write(final_file) # write to it
+    generated_file.close()
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
@@ -644,8 +671,6 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
 
 def generate_index(): # PS images are copyd here
     how_many_articles_generated = 0
-    template = try_opening(index_template_path, "")
-    
     generated_articles = ""
     
     for upplaga in reversed(read_normal_storys()):
@@ -743,21 +768,13 @@ def generate_index(): # PS images are copyd here
             for order_number, article in enumerate(content):
                 if order_number == 0:
                     latest_title = remove_html_elements(article["Title"])
-                
-    final_file = template
-    final_file = final_file.replace("[+articles+]", generated_articles)
-    final_file = final_file.replace("[+latest_title+]", latest_title.replace('"', "&quot;"))
-                
-    generated_file = open(index_generated_path, "w", encoding="utf-8") # create / find the file
-    # generated_file.write(template[:article_container_pos] + generated_articles + template[article_container_pos:]) #write to it
-    generated_file.write(final_file) #write to it
-    generated_file.close()
+    
+    replacment = {"[+articles+]": generated_articles, "[+latest_title+]": latest_title.replace('"', "&quot;")} # what gets replaced and with what
+    generate_site(index_template_path, index_generated_path, replacment)
     
     print("Index successfully generated!")
 
 def generate_all_articles(): # PS images are also copyd here
-    template = try_opening(article_template_path, "")
-    
     # go throught every upplaga
     for upplaga in read_normal_storys():
         # go throught every article in the upplaga
@@ -801,25 +818,24 @@ def generate_all_articles(): # PS images are also copyd here
         </a>
                     """
                 
-                final_file = template
-                final_file = final_file.replace("[+description+]", remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...")
-                final_file = final_file.replace("[+url+]", f"https://ostraloken.se/a/{article_id}.html")
-                final_file = final_file.replace("[+home_url+]", "../#" + article_id)
-                if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
-                    final_file = final_file.replace("[+thumb_image_url+]", f"https://ostraloken.se/a/images/IMG-{strip_string(article_title, 100)}.webp")
-                else:
-                    final_file = final_file.replace("[+thumb_image_url+]", "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png")
-                final_file = final_file.replace("[+title+]", article_title.replace('"', "&quot;"))
-                final_file = final_file.replace("[+article_type+]", article_type)
-                final_file = final_file.replace("[+article_author+]", article_author)
-                final_file = final_file.replace("[+upplaga_date_ISO_8601+]", f"{upplaga_date.split("-")[2]}-{upplaga_date.split("-")[1].zfill(2)}-{upplaga_date.split("-")[0].zfill(2)}")
-                final_file = final_file.replace("[+article+]", generated_article)
-                final_file = final_file.replace("[+upplaga_number+]", str(upplaga_number))
-                final_file = final_file.replace("[+upplaga_date+]", upplaga_date)
+                replacment = {
+                    "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
+                    "[+url+]": f"https://ostraloken.se/a/{article_id}.html",
+                    "[+home_url+]": "../#" + article_id,
+                    "[+title+]": article_title.replace('"', "&quot;"),
+                    "[+article_type+]": article_type,
+                    "[+article_author+]": article_author,
+                    "[+upplaga_date_ISO_8601+]": f"{upplaga_date.split("-")[2]}-{upplaga_date.split("-")[1].zfill(2)}-{upplaga_date.split("-")[0].zfill(2)}",
+                    "[+article+]": generated_article,
+                    "[+upplaga_number+]": str(upplaga_number),
+                    "[+upplaga_date+]": upplaga_date,
+                    "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png" # basic backup image
+                } # what gets replaced and with what
                 
-                generated_file = open((generated_articles_path + article_id + ".html"), "w", encoding="utf-8") # create / find the file
-                generated_file.write(final_file) # write to it
-                generated_file.close()
+                if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
+                    replacment["[+thumb_image_url+]"] = f"https://ostraloken.se/a/images/IMG-{strip_string(article_title, 100)}.webp"
+
+                generate_site(article_template_path, (generated_articles_path + article_id + ".html"), replacment)
         
     print("All articles successfully generated!")
 
@@ -831,7 +847,6 @@ def generate_lone_short_storys(title, content):
         content = "Null"
         
     final_article = f"""
-        <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
         <article class="article">
             <h2>{title}</h2>
             <p>{content}</p>
@@ -842,8 +857,6 @@ def generate_lone_short_storys(title, content):
     return final_article
 
 def generate_short_storys():
-    template = try_opening(short_storys_template_path, "")
-    
     generated_short_story = ""
     
     for short_story_bundle in reversed(read_short_storys()):
@@ -853,11 +866,8 @@ def generate_short_storys():
             article_main_content = content["Article"]
             generated_short_story += generate_lone_short_storys(article_title, article_main_content)
     
-    final_file = template.replace("[+short_storys+]", generated_short_story)
-    
-    generated_file = open(short_storys_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(final_file) #write to it
-    generated_file.close()
+    replacment = {"[+short_storys+]": generated_short_story} # what gets replaced and with what
+    generate_site(short_storys_template_path, short_storys_generated_path, replacment)
     
     print("Short storys successfully generated!")
 
@@ -877,7 +887,6 @@ def generate_lone_hear_me_out(hear_me_out, description):
         description = description[:500] + "..."
     
     final_article = f"""
-        <!--IF YOU DONT KNOW WHAT YOU ARE DOING: DO NOT TOUCH-->
         <article class="article">
             <h2>{hear_me_out}</h2>
             <p>{description}</p>
@@ -892,11 +901,6 @@ def generate_lone_hear_me_out(hear_me_out, description):
     return final_article
 
 def generate_hear_me_outs():
-    template = try_opening(hear_me_outs_template_path, "")
-    
-    # Find where it says <!-- [+hear_me_outs+] -->
-    hear_me_out_container_pos = template.find("<!-- [+hear_me_outs+] -->") + 26
-    
     generated_hear_me_out = ""
     
     for hear_me_out_bundle in reversed(read_hear_me_outs()):
@@ -906,14 +910,30 @@ def generate_hear_me_outs():
             article_desc = content["Description"]
             generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_desc)
     
-    final_file = template.replace("[+hear_me_outs+]", generated_hear_me_out)
-    
-    generated_file = open(hear_me_outs_generated_path, "w", encoding="utf-8") # create / find the file
-    generated_file.write(final_file) #write to it
-    generated_file.close()
+    replacment = {"[+hear_me_outs+]": generated_hear_me_out} # what gets replaced and with what
+    generate_site(hear_me_outs_template_path, hear_me_outs_generated_path, replacment)
     
     print("Hear me outs successfully generated!")
 
+# the rest
+def copy_non_changing_sites():
+    replacment_all = {}
+    
+    # PDF:er
+    generate_site(pdfer_template_path, pdfer_generated_path, replacment_all)
+    print("PDF:s successfully copy:d!")
+    
+    # Nav
+    generate_site(nav_template_path, nav_generated_path, replacment_all)
+    print("Nav successfully copy:d!")
+
+    # Om oss
+    generate_site(omoss_template_path, omoss_generated_path, replacment_all)
+    print("Om oss successfully copy:d!")
+    
+    # Kontakt
+    generate_site(kontakt_template_path, kontakt_generated_path, replacment_all)
+    print("Kontakt successfully copy:d!")
 
 # UI for backend user
 def handle_backend_UI():
@@ -936,9 +956,10 @@ def handle_backend_UI():
     $ gen all --> Generate all webbpage files that are generated
     
     $ gen index --> Generate just the index file
-    $ gen hear_me_outs --> Generate just the hear me outs file
+    $ gen hear me outs --> Generate just the hear me outs file
     $ gen notiser --> Generate just the notiser file
     $ gen articles --> Generate just all the article files
+    $ gen not changing --> Generate just the non-changing files
     
     COPY IMAGES
     $ copy images new --> Copy over only the new images
@@ -990,6 +1011,7 @@ def handle_backend_UI():
                 generate_hear_me_outs()
                 generate_short_storys()
                 generate_all_articles()
+                copy_non_changing_sites()
             elif answer == "gen index":
                 generate_index()
             elif answer == "gen hear me outs":
@@ -997,6 +1019,8 @@ def handle_backend_UI():
             elif answer == "gen notiser":
                 generate_short_storys()
             elif answer == "gen articles":
+                generate_all_articles()
+            elif answer == "gen not changing":
                 generate_all_articles()
                 
             # images

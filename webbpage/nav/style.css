@@ -1,8 +1,17 @@
 /* Content in main */
+main #nav_card_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(auto, 1fr);
+    gap: 1rem;
+}
+
 .nav_card {
+    min-height: 4.5rem;
     display: flex;
     align-items: center;
     border: var(--darkest-bg-color) solid 2px;
+    margin-bottom: 0;
 }
 .nav_card:hover {
     background-color: var(--darker-bg-color);
