@@ -5,6 +5,11 @@ main #nav_card_container {
     grid-template-rows: repeat(auto, 1fr);
     gap: 1rem;
 }
+@media (width < 35rem) {
+    main #nav_card_container {
+        display: block;
+    }
+}
 
 .nav_card {
     min-height: 4.5rem;
@@ -12,6 +17,12 @@ main #nav_card_container {
     align-items: center;
     border: var(--darkest-bg-color) solid 2px;
     margin-bottom: 0;
+}
+@media (width < 35rem) {
+    .nav_card {
+        margin-bottom: 2.5rem;
+        min-height: 0;
+    }
 }
 .nav_card:hover {
     background-color: var(--darker-bg-color);
