@@ -81,7 +81,6 @@ a#return p {
 #upplaga_and_date {
     width: 72rem;
     z-index: 1;
-    color: var(--lighter-text-color);
     position: absolute;
     top: -1.8rem;
     top: 4.4rem;
@@ -108,6 +107,16 @@ a#return p {
         left: 2rem;
         width: calc(100% - 4rem);
     }
+}
+#upplaga_and_date p {
+    color: var(--lighter-text-color);
+    transition: color 0.3s;
+}
+#upplaga_and_date a {
+    text-decoration: none;
+}
+#upplaga_and_date a:hover p {
+    color: var(--secondary-color);
 }
 
 /* Extra info */

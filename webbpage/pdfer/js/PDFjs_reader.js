@@ -16,6 +16,16 @@ let counter = amoutPDfs;
 let renderMode = "browser"; // "browser" vs "JSrender"
 
 window.addEventListener("load", () => {
+    // get query info in the url (like ostraloken.se/pdfer/?upplaga=15)
+    const queryString = window.location.search;
+    const urlParameters = new URLSearchParams(queryString);
+    // extract
+    const wantedUpplagaNumber = urlParameters.get("upplaga")
+    // if there is a upplaga request in url it sets it as the first 
+    if (wantedUpplagaNumber) {
+        counter = wantedUpplagaNumber;
+    };
+
     PDFHandle();
     pdfContent.src = `./pdfs/Östra_Löken_upplaga_${counter}.pdf`;
     console.log(pdfContent.src)
