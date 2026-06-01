@@ -294,6 +294,7 @@ a.extra_info.user_prompt:hover {
     bottom: 2rem;
     right: 2rem;
     width: 4rem;
+    z-index: 2;
     cursor: pointer;
     text-align: center;
     border: var(--darker-bg-color) solid 2px;
@@ -312,9 +313,14 @@ a.extra_info.user_prompt:hover {
     border: var(--darkest-bg-color) solid 2px;
     color: var(--primary-color);
 }
-@media (width < 55rem) {
+@media (width < 55rem) {/*Main width is 100%*/
     #go_up {
-        display: none; /*Main width is 100%*/
+        right: 1rem;
+    }
+}
+@media (width < 45rem) {/*Main width is 100%*/
+    #go_up {
+        bottom: 1rem;
     }
 }
 #go_up.show {
