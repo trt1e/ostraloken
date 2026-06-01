@@ -80,10 +80,11 @@ def fix_cut_of_html_elements(text):
     if text.count("<") > text.count("</") and text.count("<") != 0 and text.count("<") != text.count("<br>"):
         # find what html element is missing
         list_of_html_elements = re.findall(r"<(.*?)>", text) # find all things between < and > and set it in a list (not including < and > in that element)
+        remove_list = []
         not_closed_html_elements = []
         for element in list_of_html_elements:
             if element == "br" or element == "img": # br and img both do not have </ to close, so they are not relevant
-                list_of_html_elements.remove(element)
+                remove_list.append(element)
             else:
                 element = re.split(" ", element)[0]
                 if element in not_closed_html_elements:
@@ -94,6 +95,9 @@ def fix_cut_of_html_elements(text):
                     not_closed_html_elements.remove(element[1:])
                 else:
                     not_closed_html_elements.append(element)
+                    
+        for element in remove_list:
+            list_of_html_elements.remove(element)
                 
         # paragraphs are closed automaticly, no need to do it here
         if "p" in not_closed_html_elements:
@@ -688,7 +692,7 @@ def generate_index(): # PS images are copyd here
                         if article_title[30:].find(">") == -1: # if there is no ">" in the first 30 characters
                             title_end_pos = article_title.find(">")
                         else:
-                            title_end_pos = article_title[30:].find(">")
+                            title_end_pos = int(article_title[30:].find(">")) + 30
                         basic_article_title = basic_article_title[:title_end_pos] + fix_cut_of_html_elements(basic_article_title) + "..." # add back any cut of html elements
                     else:
                         basic_article_title = basic_article_title[:70] + fix_cut_of_html_elements(basic_article_title) + "..."
@@ -701,46 +705,36 @@ def generate_index(): # PS images are copyd here
                     
                 # find the last character
                 article_main_text_last_caracter_pos = 400 # if no . ? ! : ; or <br> is found: this is used and we cut at the 400:th character
-                article_main_text_last_caracter = re.search(r"\.|\?|\!|\:|\;", article_main_text[200:]) # this finds a . ? ! : or ; in the last 200-400 characters
-                if article_main_text_last_caracter:
-                    article_main_text_last_caracter_pos = article_main_text.find(article_main_text_last_caracter.group(0), 200)
-                    # print(article_main_text[article_main_text_last_caracter_pos])
+                article_main_text_last_caracter_match = re.search(r"\.|\?|\!|\:|\;", article_main_text[200:]) # this finds a . ? ! : or ; in the last 200-400 characters
+                if article_main_text_last_caracter_match:
+                    article_main_text_last_caracter_pos = article_main_text_last_caracter_match.start() + 200 # .start() gives position at cut, we add 200 since article_main_text was started on 200
                     
                     # se if its closed by a <br> before the . ? ! : or ;
                     if article_main_text[:article_main_text_last_caracter_pos].find("<br>") != -1: # if <br> exists
-                        end_characters = ".", "?", "!", ":", ";"
+                        end_characters = [".", "?", "!", ":", ";"]
                         for character in end_characters: # so that it only removes the last character if it is one of . ? ! : or ;
                             if character == article_main_text[article_main_text.find("<br>") - 1]:
-                                character_before_break_pos = article_main_text.find("<br>") - 1
+                                article_main_text_last_caracter_pos = article_main_text.find("<br>") - 1 # do -1 since we know that it only does it if there is a . ? ! : or ; before
                                 break
                         else:
-                            character_before_break_pos = article_main_text.find("<br>")
-                        if article_main_text[character_before_break_pos] == ">": # so if for example something ends with </i>, the i isnt cut of
-                            # find how long the html element before the break is
-                            length_of_html_element_before_break = 4 # have 4 (the length of, for example, <\i>) as a backup just in case
-                            for element_length, character in enumerate(article_main_text[:character_before_break_pos]):
-                                if character == "<":
-                                    length_of_html_element_before_break = character_before_break_pos - element_length + 1
-                            article_main_text_last_caracter_pos = character_before_break_pos - length_of_html_element_before_break
-                            extra_at_end += article_main_text[(article_main_text.find("<br>") - length_of_html_element_before_break):(article_main_text.find("<br>"))]
-                        else:
-                            article_main_text_last_caracter_pos = character_before_break_pos
+                            article_main_text_last_caracter_pos = article_main_text.find("<br>")
                 else:
                     if article_main_text.find("<br>") != -1: # if <br> exists
-                        character_before_break_pos = article_main_text.find("<br>") - 1
-                        if character_before_break_pos <= 400:
-                            if article_main_text[character_before_break_pos] == ">": # so if for example something ends with </i>, the i isnt cut of
-                                # find how long the html element before the break is
-                                length_of_html_element_before_break = 4 # have 4 (the length of, for example, <\i>) as a backup just in case
-                                for element_length, character in enumerate(article_main_text[:character_before_break_pos]):
-                                    if character == "<":
-                                        length_of_html_element_before_break = character_before_break_pos - element_length + 1
-                                article_main_text_last_caracter_pos = character_before_break_pos - length_of_html_element_before_break
-                                extra_at_end += article_main_text[(article_main_text.find("<br>") - length_of_html_element_before_break):(article_main_text.find("<br>"))]
-                            else:
-                                article_main_text_last_caracter_pos = character_before_break_pos
+                        break_pos = article_main_text.find("<br>")
+                        r"""
+                        if article_main_text[break_pos - 1] == ">": # so if for example something ends with </i>, the i isnt cut of
+                            print("DS")
+                            # find how long the html element before the break is
+                            length_of_html_element_before_break = 4 # have 4 (the length of, for example, <\i>) as a backup just in case
+                            for element_length, character in enumerate(article_main_text[:break_pos - 1]):
+                                if character == "<":
+                                    length_of_html_element_before_break = break_pos - element_length
+                            article_main_text_last_caracter_pos = break_pos - length_of_html_element_before_break
+                            extra_at_end += article_main_text[(break_pos - length_of_html_element_before_break):(article_main_text.find("<br>"))]
                         else:
-                            article_main_text = article_main_text.replace("<br>", "")
+                            article_main_text_last_caracter_pos = break_pos
+                        """
+                        article_main_text_last_caracter_pos = break_pos
                 
                 # the text cut of at the right place
                 shorted_main_text = article_main_text[:article_main_text_last_caracter_pos]
@@ -753,8 +747,8 @@ def generate_index(): # PS images are copyd here
                 
                 # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
-                img_url = find_img(remove_html_elements(article_title), upplaga_number, "./a/images/")
-                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-U" + str(upplaga_number) # what is used to identefy the article
+                img_url = find_img(org_article_title, upplaga_number, "./a/images/")
+                article_id = strip_string(org_article_title, -1)[:100] + "-U" + str(upplaga_number) # what is used to identefy the article
     
                 generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
                 how_many_articles_generated += 1
