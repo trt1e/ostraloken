@@ -1,5 +1,6 @@
 import os
 import re
+import random
 from PIL import Image
 
 is_linux = False
@@ -601,12 +602,12 @@ def generate_site(template_path, generated_path, dictionary_of_replacment): # th
     
     final_file = template
     for item in dictionary_of_replacment:
-        final_file = final_file.replace(item, dictionary_of_replacment[item])
+        final_file = final_file.replace(str(item), str(dictionary_of_replacment[item]))
     
     # add something to notify the user that it is editing in the generated file instead of templates
     row_endings = ["<head>", "</head>", "<body>", "</body>", "<header>", "</header>", "<main>", "</main>", "<footer>", "</footer>"]
     for ending in row_endings:
-        final_file = final_file.replace(ending, f"{ending} <!--ATTENTION: YOU ARE RIGHT NOW IN THE GENERATED FILE!-->")
+        final_file = final_file.replace(str(ending), f"{ending} <!--ATTENTION: YOU ARE RIGHT NOW IN THE GENERATED FILE!-->")
     
     generated_file = open(generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(final_file) # write to it
@@ -633,6 +634,10 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         title = "Null"
     if content is None or content == "":
         content = "Null"
+    if type is None or type == "":
+        type_context = "<!-- NO TYPE HERE -->"
+    else:
+        type_context = f'<p class="type_text">{type}</p>'
         
     # generate the article id
     article_id = strip_string(remove_html_elements(title), -1)[:100] + "-U" + str(upplaga_nmr)
@@ -647,35 +652,31 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         if author in head_writers:
             author_context = f'<p class="author_text"><a href="https://ostraloken.se/kontakt/#{author.replace(" ", "_")}"><b>{author}</b></a></p>'
         
-        final_article = f"""
-            <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
-                <p class="type_text">{type}</p>
-                {image_tag}
-                <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
-                <p>{content}</p>
-                {author_context}
-            </article>
-        
+        final_article = f"""<article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
+            {type_context}
+            {image_tag}
+            <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
+            <p>{content}</p>
+            {author_context}
+        </article>
         """
     else: # make article not anchor
-        final_article = f"""
-            <a href="{redirect_src}" id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
+        final_article = f"""<a href="{redirect_src}" id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
                 <article>
-                    <p class="type_text">{type}</p>
+                    {type_context}
                     {image_tag}
                     <h2>{title}</h2>
                     <p>{content}</p>
                     <p class="author_text"><b>{author}</b></p>
                 </article>
             </a>
-        
-        """
+            """
 
     return final_article
 
-def generate_index(): # PS images are copyd here
+def generate_preview_article(find_only_3_similar_articles, similar_type, similar_title):
     how_many_articles_generated = 0
-    generated_articles = ""
+    generated_articles = []
     
     for upplaga in reversed(read_normal_storys()):
         upplaga_number = upplaga["Upplaga"]
@@ -721,19 +722,6 @@ def generate_index(): # PS images are copyd here
                 else:
                     if article_main_text.find("<br>") != -1: # if <br> exists
                         break_pos = article_main_text.find("<br>")
-                        r"""
-                        if article_main_text[break_pos - 1] == ">": # so if for example something ends with </i>, the i isnt cut of
-                            print("DS")
-                            # find how long the html element before the break is
-                            length_of_html_element_before_break = 4 # have 4 (the length of, for example, <\i>) as a backup just in case
-                            for element_length, character in enumerate(article_main_text[:break_pos - 1]):
-                                if character == "<":
-                                    length_of_html_element_before_break = break_pos - element_length
-                            article_main_text_last_caracter_pos = break_pos - length_of_html_element_before_break
-                            extra_at_end += article_main_text[(break_pos - length_of_html_element_before_break):(article_main_text.find("<br>"))]
-                        else:
-                            article_main_text_last_caracter_pos = break_pos
-                        """
                         article_main_text_last_caracter_pos = break_pos
                 
                 # the text cut of at the right place
@@ -745,14 +733,25 @@ def generate_index(): # PS images are copyd here
                 article_type = article["Type"]
                 article_author = article["Writer"]
                 
-                # copy over images and get the url to the right image
                 # not basic_title since that has been shortend alredy
-                img_url = find_img(org_article_title, upplaga_number, "./a/images/")
                 article_id = strip_string(org_article_title, -1)[:100] + "-U" + str(upplaga_number) # what is used to identefy the article
-    
-                generated_articles += generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number)
-                how_many_articles_generated += 1
+
+                if find_only_3_similar_articles is False:
+                    img_url = find_img(org_article_title, upplaga_number, "./a/images/") # get the url to the img as a html link
+                    generated_articles.append(generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number))
+                    how_many_articles_generated += 1
+                elif similar_type == article_type and similar_title != article_title:
+                    # img_url = find_img(org_article_title, upplaga_number, "./images/") # get the url to the img as a html link
+                    generated_articles.append(generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, upplaga_number))
+                    how_many_articles_generated += 1
                 
+    return generated_articles
+
+def generate_index(): # PS images are copyd here
+    list_of_generated_articles = generate_preview_article(False, None, None)
+    all_generated_articles = ""
+    for generated_articles in list_of_generated_articles:
+        all_generated_articles += str(generated_articles)
 
     # get the top story
     latest_title = ""
@@ -763,7 +762,7 @@ def generate_index(): # PS images are copyd here
                 if order_number == 0:
                     latest_title = remove_html_elements(article["Title"])
     
-    replacment = {"[+articles+]": generated_articles, "[+latest_title+]": latest_title.replace('"', "&quot;")} # what gets replaced and with what
+    replacment = {"[+articles+]": all_generated_articles, "[+latest_title+]": latest_title.replace('"', "&quot;")} # what gets replaced and with what
     generate_site(index_template_path, index_generated_path, replacment)
     
     print("Index successfully generated!")
@@ -775,6 +774,7 @@ def generate_all_articles(): # PS images are also copyd here
         upplaga_number = upplaga["Upplaga"]
         upplaga_date = upplaga["Release_date"]
         upplaga_extra_info = upplaga["Extra_upplaga_info"]
+        print(f"Generating upplaga {upplaga_number}")
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 generated_article = "" # where we put the article
@@ -823,11 +823,48 @@ def generate_all_articles(): # PS images are also copyd here
                     "[+article+]": generated_article,
                     "[+upplaga_number+]": str(upplaga_number),
                     "[+upplaga_date+]": upplaga_date,
-                    "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png" # basic backup image
+                    "[+h3_text_to_intorduce_section+]": "<h3>Läs liknande artiklar:</h3>", # so it can be removed
+                    "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
                 } # what gets replaced and with what
                 
+                # generate extra articles
+                list_of_similar_articles = generate_preview_article(True, article_type, article_title)
+                if list_of_similar_articles != []:
+                    random.seed(str(list_of_similar_articles) + "1")
+                    chosen_article = list_of_similar_articles[random.randint(0, len(list_of_similar_articles) - 1)]
+                    replacment[f"[+extra_article_link_1+]"] = chosen_article
+                    list_of_similar_articles.remove(chosen_article)
+                    
+                    if list_of_similar_articles != []:
+                        random.seed(str(list_of_similar_articles) + "2")
+                        chosen_article = list_of_similar_articles[random.randint(0, len(list_of_similar_articles) - 1)]
+                        replacment[f"[+extra_article_link_2+]"] = chosen_article
+                        list_of_similar_articles.remove(chosen_article)
+                        
+                        if list_of_similar_articles != []:
+                            random.seed(str(list_of_similar_articles) + "3")
+                            chosen_article = list_of_similar_articles[random.randint(0, len(list_of_similar_articles) - 1)]
+                            replacment[f"[+extra_article_link_3+]"] = chosen_article
+                            random.seed()
+                        else:
+                            replacment[f"[+extra_article_link_3+]"] = ""
+                    else:
+                        replacment[f"[+extra_article_link_2+]"] = ""
+                        replacment[f"[+extra_article_link_3+]"] = ""
+                else:
+                    replacment["[+h3_text_to_intorduce_section+]"] = "" # make so there is no h3 text if there are no extra links
+                    replacment[f"[+extra_article_link_1+]"] = ""
+                    replacment[f"[+extra_article_link_2+]"] = ""
+                    replacment[f"[+extra_article_link_3+]"] = ""
+                
+                """
+                [+extra_article_link_1+]
+                [+extra_article_link_2+]
+                [+extra_article_link_3+]
+                """
+                
                 if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
-                    replacment["[+thumb_image_url+]"] = f"https://ostraloken.se/a/images/IMG-{strip_string(article_title, 100)}.webp"
+                    replacment["[+thumb_image_url+]"] = f"https://ostraloken.se/a/images/IMG-{strip_string(article_title, 100)}.webp",
 
                 generate_site(article_template_path, (generated_articles_path + article_id + ".html"), replacment)
         
@@ -1061,4 +1098,7 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+
+MÅSTE FIXA:
+- Fixa utsvartad artikel trump
 """

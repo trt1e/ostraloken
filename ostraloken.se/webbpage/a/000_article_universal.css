@@ -134,3 +134,18 @@ a#return p {
 .extra_info {
     top: 6.4rem;
 }
+
+/* Recomended articles */
+h3 {
+    font-size: 2.2rem;
+    margin: 2rem 0;
+    text-align: center;
+}
+
+#read_also .article {
+    cursor: pointer;
+    transition: 0.3s;
+}
+#read_also .article:hover {
+    border: var(--darkest-bg-color) solid 2px;
+}
