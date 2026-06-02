@@ -2,6 +2,7 @@ import os
 import re
 import random
 from PIL import Image
+import progressbar
 
 is_linux = False
 
@@ -558,7 +559,7 @@ def copy_over_images(gen_type):
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 article_title = str(article["Title"])
-                all_img_title = "IMG-" + strip_string(article_title, 100)
+                all_img_title = "IMG-" + strip_string(remove_html_elements(article_title), 100)
                 old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + all_img_title
                 new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
                 for ext in img_extentions:
@@ -674,9 +675,10 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
 
     return final_article
 
-def generate_preview_article(find_only_3_similar_articles, similar_type, similar_title):
+def generate_preview_article(find_similar_articles_switch):
     how_many_articles_generated = 0
-    generated_articles = []
+    generated_articles = [] # for find_similar_articles == False
+    generated_articles_based_on_type = {} # for find_similar_articles == True
     
     for upplaga in reversed(read_normal_storys()):
         upplaga_number = upplaga["Upplaga"]
@@ -736,19 +738,23 @@ def generate_preview_article(find_only_3_similar_articles, similar_type, similar
                 # not basic_title since that has been shortend alredy
                 article_id = strip_string(org_article_title, -1)[:100] + "-U" + str(upplaga_number) # what is used to identefy the article
 
-                if find_only_3_similar_articles is False:
+                if find_similar_articles_switch is False:
                     img_url = find_img(org_article_title, upplaga_number, "./a/images/") # get the url to the img as a html link
                     generated_articles.append(generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number))
                     how_many_articles_generated += 1
-                elif similar_type == article_type and similar_title != article_title:
+                else:
                     # img_url = find_img(org_article_title, upplaga_number, "./images/") # get the url to the img as a html link
-                    generated_articles.append(generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, upplaga_number))
+                    if article_type not in generated_articles_based_on_type:
+                        generated_articles_based_on_type[article_type] = {} # initialize generated_articles_based_on_type[article_type]
+                    generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, upplaga_number)})
                     how_many_articles_generated += 1
-                
-    return generated_articles
+    if find_similar_articles_switch is False:
+        return generated_articles
+    else:
+        return generated_articles_based_on_type
 
 def generate_index(): # PS images are copyd here
-    list_of_generated_articles = generate_preview_article(False, None, None)
+    list_of_generated_articles = generate_preview_article(False)
     all_generated_articles = ""
     for generated_articles in list_of_generated_articles:
         all_generated_articles += str(generated_articles)
@@ -768,13 +774,19 @@ def generate_index(): # PS images are copyd here
     print("Index successfully generated!")
 
 def generate_all_articles(): # PS images are also copyd here
+    list_of_articles_with_similer_type = generate_preview_article(True)
+    
+    print("Generating all articles:")
+    progressbar_item = progressbar.ProgressBar(maxval=int(len(read_normal_storys())))
+    progressbar_item.start()
+    
     # go throught every upplaga
-    for upplaga in read_normal_storys():
+    for progressbar_ticker, upplaga in enumerate(read_normal_storys()):
         # go throught every article in the upplaga
         upplaga_number = upplaga["Upplaga"]
         upplaga_date = upplaga["Release_date"]
         upplaga_extra_info = upplaga["Extra_upplaga_info"]
-        print(f"Generating upplaga {upplaga_number}")
+        progressbar_item.update(progressbar_ticker + 1)
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 generated_article = "" # where we put the article
@@ -788,8 +800,8 @@ def generate_all_articles(): # PS images are also copyd here
         <div class="article extra_info attention">
             <p><b>Notera:</b> {upplaga_extra_info}</p>
         </div>
-                    """
-                
+        
+        """        
                 article_title = str(article["Title"])
                 basic_article_title = remove_html_elements(article_title)
                 article_main_text = str(article["Article"])
@@ -810,40 +822,49 @@ def generate_all_articles(): # PS images are also copyd here
             <h2>Skicka in en insändare!</h2>
             <p>Vill du också skicka en insändare till Östra Löken? Fyll bara i denna korta enkät!</p>
         </a>
-                    """
+        """
                 
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
                     "[+url+]": f"https://ostraloken.se/a/{article_id}.html",
                     "[+home_url+]": "../#" + article_id,
                     "[+title+]": article_title.replace('"', "&quot;"),
+                    "[+title_basic+]": remove_html_elements(article_title).replace('"', "&quot;"),
                     "[+article_type+]": article_type,
+                    "[+article_type_basic+]": remove_html_elements(article_type),
                     "[+article_author+]": article_author,
+                    "[+article_author_basic+]": remove_html_elements(article_author),
                     "[+upplaga_date_ISO_8601+]": f"{upplaga_date.split("-")[2]}-{upplaga_date.split("-")[1].zfill(2)}-{upplaga_date.split("-")[0].zfill(2)}",
                     "[+article+]": generated_article,
                     "[+upplaga_number+]": str(upplaga_number),
                     "[+upplaga_date+]": upplaga_date,
                     "[+h3_text_to_intorduce_section+]": "<h3>Läs liknande artiklar:</h3>", # so it can be removed
-                    "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
+                    "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png" # basic backup image
                 } # what gets replaced and with what
                 
+                if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
+                    replacment["[+thumb_image_url+]"] = f"https://ostraloken.se/a/images/IMG-{article_id}.webp"
+                
                 # generate extra articles
-                list_of_similar_articles = generate_preview_article(True, article_type, article_title)
-                if list_of_similar_articles != []:
-                    random.seed(str(list_of_similar_articles) + "1")
-                    chosen_article = list_of_similar_articles[random.randint(0, len(list_of_similar_articles) - 1)]
+                dict_of_similar_articles = dict(list_of_articles_with_similer_type)[article_type]
+                dict_of_similar_articles_copy = dict_of_similar_articles.copy() # we do this so we can edit it without changing the original
+                dict_of_similar_articles_copy.pop(article_id) # remove the article (the one you are adding "read also" too) from the dict
+                new_list_of_similar_articles = list(dict_of_similar_articles_copy.values())
+                if new_list_of_similar_articles != []:
+                    random.seed(str(new_list_of_similar_articles) + "1") # we set the seed so that if we are to make a small change and push it it doesnt change everything, only when we add, remove or change articles of that type does this change
+                    chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)] # this random function is determaistic so if we enter the same seed and same command it will give the same result which we want!
                     replacment[f"[+extra_article_link_1+]"] = chosen_article
-                    list_of_similar_articles.remove(chosen_article)
+                    new_list_of_similar_articles.remove(chosen_article) # we remove it so it isn't listed again
                     
-                    if list_of_similar_articles != []:
-                        random.seed(str(list_of_similar_articles) + "2")
-                        chosen_article = list_of_similar_articles[random.randint(0, len(list_of_similar_articles) - 1)]
+                    if new_list_of_similar_articles != []:
+                        random.seed(str(new_list_of_similar_articles) + "2")
+                        chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
                         replacment[f"[+extra_article_link_2+]"] = chosen_article
-                        list_of_similar_articles.remove(chosen_article)
+                        new_list_of_similar_articles.remove(chosen_article)
                         
-                        if list_of_similar_articles != []:
-                            random.seed(str(list_of_similar_articles) + "3")
-                            chosen_article = list_of_similar_articles[random.randint(0, len(list_of_similar_articles) - 1)]
+                        if new_list_of_similar_articles != []:
+                            random.seed(str(new_list_of_similar_articles) + "3")
+                            chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
                             replacment[f"[+extra_article_link_3+]"] = chosen_article
                             random.seed()
                         else:
@@ -857,17 +878,9 @@ def generate_all_articles(): # PS images are also copyd here
                     replacment[f"[+extra_article_link_2+]"] = ""
                     replacment[f"[+extra_article_link_3+]"] = ""
                 
-                """
-                [+extra_article_link_1+]
-                [+extra_article_link_2+]
-                [+extra_article_link_3+]
-                """
-                
-                if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
-                    replacment["[+thumb_image_url+]"] = f"https://ostraloken.se/a/images/IMG-{strip_string(article_title, 100)}.webp",
-
                 generate_site(article_template_path, (generated_articles_path + article_id + ".html"), replacment)
-        
+    
+    progressbar_item.finish()
     print("All articles successfully generated!")
 
 # short storys
