@@ -621,7 +621,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         redirect_src = "./" # hide image
     if img_src is None or img_src == "" or img_src == "NO_IMAGE_AVAILABLE":
         no_img_class = "no_img"
-        image_tag = "<!-- NO IMAGE HERE -->"
+        image_context = "<!-- NO IMAGE HERE -->"
     else:
         no_img_class = ""
         image_extra = f'alt="{strip_string(title, -1).replace("_", " ")}"' # add the alt text
@@ -630,7 +630,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         else:
             image_extra += ' fetchpriority="high"'
             
-        image_tag = f'<img src="{img_src}" {image_extra} width="800" height="600">'
+        image_context = f'<img src="{img_src}" {image_extra} width="800" height="600">'
     if title is None or title == "":
         title = "Null"
     if content is None or content == "":
@@ -655,7 +655,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         
         final_article = f"""<article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
             {type_context}
-            {image_tag}
+            {image_context}
             <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
             <p>{content}</p>
             {author_context}
@@ -665,7 +665,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         final_article = f"""<a href="{redirect_src}" id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
                 <article>
                     {type_context}
-                    {image_tag}
+                    {image_context}
                     <h2>{title}</h2>
                     <p>{content}</p>
                     <p class="author_text"><b>{author}</b></p>
@@ -890,13 +890,11 @@ def generate_lone_short_storys(title, content):
     if content is None or content == "":
         content = "Null"
         
-    final_article = f"""
-        <article class="article">
-            <h2>{title}</h2>
-            <p>{content}</p>
-        </article>
-
-    """
+    final_article = f"""<article class="article">
+                <h2>{title}</h2>
+                <p>{content}</p>
+            </article>
+            """
         
     return final_article
 
@@ -930,8 +928,7 @@ def generate_lone_hear_me_out(hear_me_out, description):
     if len(description) > 500:
         description = description[:500] + "..."
     
-    final_article = f"""
-        <article class="article">
+    final_article = f"""<article class="article">
             <h2>{hear_me_out}</h2>
             <p>{description}</p>
             <div class="smash_pass_area">
@@ -939,8 +936,7 @@ def generate_lone_hear_me_out(hear_me_out, description):
                 <button class="pass_button"><i>PASS</i></button>
             </div>
         </article>
-
-    """
+        """
         
     return final_article
 

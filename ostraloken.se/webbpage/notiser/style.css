@@ -1,0 +1,13 @@
+/* Content in main */
+main #notiser_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(auto, 1fr);
+    column-gap: 1rem;
+    row-gap: 0; /*Article alredy has 2.5rem bottom-margin*/
+}
+@media (width < 35rem) {
+    main #notiser_container {
+        display: block;
+    }
+}
