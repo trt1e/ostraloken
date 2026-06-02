@@ -1,9 +1,3 @@
-/*
-GÖR OM HELA DET HÄR SYSTEMET:
-Den ska egentligen spara som en {} där den pekar mot vilken id som är smash or pass
-Just nu fungerar så länge man inte lägger till fler hear me out:s, men det är precis det vi gör!!
-*/
-
 document.addEventListener("DOMContentLoaded", () => { 
     let hear_me_outs_storage = localStorage.getItem("hear-me-outs");
     let hear_me_out_statuses = {};
