@@ -351,6 +351,7 @@ footer {
     white-space: nowrap;
     display: flex;
     justify-content: space-between;
+    z-index: 5;
 }
 @media (width < 50rem) {
     footer {
@@ -365,6 +366,14 @@ footer {
 
 .footer_text {
     padding: 0.7em;
+}
+.footer_text a {
+    color: var(--text-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer_text a:hover {
+    color: var(--primary-color);
 }
 
 /* Animation stopper */
