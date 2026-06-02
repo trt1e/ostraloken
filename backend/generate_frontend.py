@@ -1111,7 +1111,4 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-
-MÅSTE FIXA:
-- Fixa utsvartad artikel trump
 """
