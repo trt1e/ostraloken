@@ -56,6 +56,7 @@ a#return {
     position: absolute;
     top: 6.4rem;
     width: 2.5rem;
+    height: 2rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -126,6 +127,43 @@ a#return:hover {
 }
 #upplaga_and_date a:hover p {
     color: var(--secondary-color);
+}
+
+/* Share */
+#share {
+    background-color: transparent;
+    cursor: pointer;
+    position: absolute;
+    top: 12rem;
+    height: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: calc(50%);
+    transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
+    border: var(--darker-bg-color) solid 2px;
+    padding: 1rem;
+    color: var(--secondary-color);
+    transition: border 0.3s, color 0.3s;
+}
+#share:hover {
+    border: var(--darkest-bg-color) solid 2px;
+    color: var(--primary-color);
+}
+@media (80rem <= width <= 120rem) { 
+   #share {
+        transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
+    }
+}
+@media (45rem <= width < 80rem) {
+    #share {
+        transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
+    }
+}
+@media (width < 52rem) {
+    #share {
+        display: none; /*Main width is 100%*/
+    }
 }
 
 /* Extra info */
