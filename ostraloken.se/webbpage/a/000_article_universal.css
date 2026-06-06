@@ -1,6 +1,6 @@
 /* Main */
 main { /* since there is no h1 top text to hold the main up*/
-    padding-top: 3rem;
+    padding-top: 1rem;
 }
 
 /* Content in main */
@@ -91,10 +91,9 @@ a#return:hover {
 #upplaga_and_date {
     width: 72rem;
     z-index: 1;
-    position: absolute;
-    top: -1.8rem;
-    top: 4.4rem;
-    left: calc(50% - 36rem);
+    width: calc(100%);
+    position: static; 
+    margin-bottom: 1rem;
     font-size: 1.6rem;
     display: flex;
     justify-content: space-between;
@@ -102,20 +101,17 @@ a#return:hover {
 @media (80rem <= width <= 120rem) {
     #upplaga_and_date {
         width: 47rem;
-        left: calc(50% - 23.5rem);
     }
 }
 @media (45rem <= width < 80rem) {
     #upplaga_and_date {
         width: 37rem;
-        left: calc(50% - 18.5rem);
     }
 }
 @media (width < 45rem) {
     #upplaga_and_date {
-        transform: translateX(0rem); /*Main width is 100%*/
-        left: 2rem;
-        width: calc(100% - 4rem);
+        transform: translateX(0rem); /*Main width is 100%*//* It is made static so that*/
+        text-align: right;
     }
 }
 #upplaga_and_date p {
@@ -164,7 +160,8 @@ a#return:hover {
     #share {
         transform: translateX(0); /*Main width is 100%*/
         position: static;
-        margin-bottom: 0.5rem;
+        width: 100%;
+        margin-bottom: 1rem;
     }
 }
 

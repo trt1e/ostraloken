@@ -657,7 +657,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
             {type_context}
             {image_context}
             <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
-            <p class="main">{content}</p>
+            <p>{content}</p>
             {author_context}
         </article>
         """

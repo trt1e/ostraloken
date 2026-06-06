@@ -1,7 +1,6 @@
 const share_button = document.querySelector("button#share");
 const share_data = {
     title: document.querySelector("article.article h1").innerText,
-    text: document.querySelector("article.article p.main").innerText,
     url: window.location.href
 };
 
