@@ -1,18 +1,24 @@
 const share_button = document.querySelector("button#share");
+const share_data = {
+    title: document.querySelector("article.article h1").innerText,
+    text: document.querySelector("article.article p.main").innerText,
+    url: window.location.href
+};
 
 share_button.addEventListener("click", async () => {
-    if (navigator.canShare()) {
+    if (navigator.canShare(share_data)) {
         try {
-            await navigator.share(shareData);
-            console.log("MDN shared successfully");
+            await navigator.share(share_data);
+            console.log("Shared successfully");
         } catch (err) {
             console.log(`Error: ${err}`);
         }
     };
 });
 
+// unload the share button if the page cannot be shared this way
 window.addEventListener("load", () => {
-    if (navigator.canShare()) {
+    if (navigator.canShare(share_data)) {
         console.log("Can share!");
     } else {
         console.log("Can't share!");

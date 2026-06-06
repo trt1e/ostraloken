@@ -162,7 +162,9 @@ a#return:hover {
 }
 @media (width < 52rem) {
     #share {
-        display: none; /*Main width is 100%*/
+        transform: translateX(0); /*Main width is 100%*/
+        position: static;
+        margin-bottom: 0.5rem;
     }
 }
 
