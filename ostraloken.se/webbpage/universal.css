@@ -40,6 +40,9 @@ body {
     top: 0;
     right: 0.5rem;
 }
+#dotdotdot {
+    color: var(--text-color);
+}
 #dropdown_button_container {
     background-color: var(--dark-bg-color);
     border: var(--darkest-bg-color) solid 2px;
@@ -50,6 +53,7 @@ body {
     min-width: 5rem;
     direction: rtl;
     flex-direction: column;
+    mix-blend-mode: normal;
     
     display: none;
 }
