@@ -88,6 +88,9 @@
 
 /* Action button */
 .action_button {
+    box-sizing: border-box;
+    width: 4.5rem;
+    height: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -117,8 +120,6 @@
 a#return {
     position: absolute;
     top: 6.4rem;
-    width: 2.5rem;
-    height: 2rem;
 }
 @media (width < 52rem) {
     a#return {
@@ -132,9 +133,7 @@ a#return {
     background-color: transparent;
     cursor: pointer;
     position: absolute;
-    top: calc(10.4rem + 4px + 2rem);
-    width: 4.5rem;
-    height: 4rem;
+    top: calc(10.4rem + 1.5rem);
 }
 @media (width < 52rem) {
     #share {
