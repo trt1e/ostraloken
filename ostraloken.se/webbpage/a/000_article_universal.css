@@ -1,8 +1,3 @@
-/* Main */
-main { /* since there is no h1 top text to hold the main up*/
-    padding-top: 1rem;
-}
-
 /* Content in main */
 .type_text {
     width: fit-content;
@@ -51,45 +46,10 @@ main { /* since there is no h1 top text to hold the main up*/
     color: var(--primary-color);
 }
 
-/* Back button */
-a#return {
-    position: absolute;
-    top: 6.4rem;
-    width: 2.5rem;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    right: calc(50%);
-    transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
-    border: var(--darker-bg-color) solid 2px;
-    padding: 1rem;
-    color: var(--secondary-color);
-    transition: border 0.3s, color 0.3s;
-}
-a#return:hover {
-    border: var(--darkest-bg-color) solid 2px;
-    color: var(--primary-color);
-}
-@media (80rem <= width <= 120rem) { 
-    a#return {
-        transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
-    }
-}
-@media (45rem <= width < 80rem) {
-    a#return {
-        transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
-    }
-}
-@media (width < 52rem) {
-    a#return {
-        display: none; /*Main width is 100%*/
-    }
-}
-
 /* Upplaga number and date */
 #upplaga_and_date {
     width: 72rem;
+    height: 1rem;
     z-index: 1;
     width: calc(100%);
     position: static; 
@@ -112,6 +72,7 @@ a#return:hover {
     #upplaga_and_date {
         transform: translateX(0rem); /*Main width is 100%*//* It is made static so that*/
         text-align: right;
+        height: fit-content;
     }
 }
 #upplaga_and_date p {
@@ -125,13 +86,8 @@ a#return:hover {
     color: var(--secondary-color);
 }
 
-/* Share */
-#share {
-    background-color: transparent;
-    cursor: pointer;
-    position: absolute;
-    top: 12rem;
-    height: 2rem;
+/* Action button */
+.action_button {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -142,19 +98,43 @@ a#return:hover {
     color: var(--secondary-color);
     transition: border 0.3s, color 0.3s;
 }
-#share:hover {
+.action_button:hover {
     border: var(--darkest-bg-color) solid 2px;
     color: var(--primary-color);
 }
 @media (80rem <= width <= 120rem) { 
-   #share {
+    .action_button {
         transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
     }
 }
 @media (45rem <= width < 80rem) {
-    #share {
+    .action_button {
         transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
     }
+}
+
+/* Back button */
+a#return {
+    position: absolute;
+    top: 6.4rem;
+    width: 2.5rem;
+    height: 2rem;
+}
+@media (width < 52rem) {
+    a#return {
+        display: none; /*Main width is 100%*/
+    }
+}
+
+
+/* Share button */
+#share {
+    background-color: transparent;
+    cursor: pointer;
+    position: absolute;
+    top: calc(10.4rem + 4px + 2rem);
+    width: 4.5rem;
+    height: 4rem;
 }
 @media (width < 52rem) {
     #share {

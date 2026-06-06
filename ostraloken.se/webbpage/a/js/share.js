@@ -1,6 +1,6 @@
 const share_button = document.querySelector("button#share");
 const share_data = {
-    title: document.querySelector("article.article h1").innerText,
+    title: document.querySelector("article.article .type_text").innerText + ": " + document.querySelector("article.article h1").innerText + " | Östra Löken",
     url: window.location.href
 };
 
