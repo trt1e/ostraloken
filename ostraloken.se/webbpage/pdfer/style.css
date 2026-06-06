@@ -14,23 +14,6 @@ main {
     max-height: 100rem;
     border: none;
 }
-/*
-#pdf_nav_UI {
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: space-around;
-    align-items: start;
-}
-@media (width <= 50rem) {
-    #pdf_nav_UI {
-        flex-direction: column;
-        justify-content: start;
-        align-items: center;
-        gap: 0.5rem;
-    }
-}
-*/
 #pdf_upplaga_number {
     height: 1.5rem;
     text-align: center;
@@ -46,22 +29,17 @@ main {
 .pdf_nav_buttons {
     background-color: var(--bg-color);
     width: 4.5rem;
-    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     top: 12.9rem; /*3.4rem + 1rem + 3rem + 1.5rem + 4rem = 12.9rem*/
-    cursor: pointer;
-    text-align: center;
     border: var(--darker-bg-color) solid 2px;
     padding: 1rem;
-    padding-top: 0.7rem;
     color: var(--secondary-color);
-    font-size: 1.5rem;
     cursor: pointer;
     transition: border 0.3s, color 0.3s;
 
-}
-.pdf_nav_buttons p {
-    font-size: 2rem;
 }
 .pdf_nav_buttons:hover {
     border: var(--darkest-bg-color) solid 2px;
@@ -89,21 +67,21 @@ main {
 }
 .pdf_nav_buttons#next {
     left: 50%;
-    transform: translateX(calc((72rem / 2) + 2rem)); /*width = 72rem*/
+    transform: translateX(calc((72rem / 2) + 2rem)) rotate(180deg); /*width = 72rem*/
 }
 @media (80rem <= width <= 120rem) { 
     .pdf_nav_buttons#next {
-        transform: translateX(calc((47rem / 2) + 2rem)); /*width = 47rem*/
+        transform: translateX(calc((47rem / 2) + 2rem)) rotate(180deg); /*width = 47rem*/
     }
 }
 @media (52rem <= width < 80rem) {
     .pdf_nav_buttons#next {
-        transform: translateX(calc((37rem / 2) + 2rem)); /*width = 37rem*/
+        transform: translateX(calc((37rem / 2) + 2rem)) rotate(180deg); /*width = 37rem*/
     }
 }
 @media (width < 52rem) {
     .pdf_nav_buttons#next {
-        transform: translateX(0); /*Main width is 100%*/
+        transform: translateX(0) rotate(180deg); /*Main width is 100%*/
         position: static;
     }
 }

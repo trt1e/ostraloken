@@ -55,14 +55,15 @@ main { /* since there is no h1 top text to hold the main up*/
 a#return {
     position: absolute;
     top: 6.4rem;
-    width: 2.3rem;
+    width: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     right: calc(50%);
     transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
     border: var(--darker-bg-color) solid 2px;
     padding: 1rem;
-    padding-top: 0.7rem;
     color: var(--secondary-color);
-    text-decoration: none;
     transition: border 0.3s, color 0.3s;
 }
 a#return:hover {
@@ -83,9 +84,6 @@ a#return:hover {
     a#return {
         display: none; /*Main width is 100%*/
     }
-}
-a#return p {
-    font-size: 2rem;
 }
 
 /* Upplaga number and date */

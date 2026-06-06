@@ -305,15 +305,16 @@ a.extra_info.user_prompt:hover {
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    width: 4rem;
+    width: 4.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(90deg);
     z-index: 2;
     cursor: pointer;
-    text-align: center;
     border: var(--darker-bg-color) solid 2px;
     padding: 1rem;
-    padding-top: 0.7rem;
     color: var(--secondary-color);
-    text-decoration: none;
     transition: border 0.3s, color 0.3s, opacity 0.3s, visibility 0.3s;
 
     /*Starting as this, changed later by JS. Therefor the #go_up.show class*/
@@ -339,9 +340,6 @@ a.extra_info.user_prompt:hover {
     opacity: 100%;
     pointer-events: auto;
     visibility: visible;
-}
-#go_up p {
-    font-size: 2rem;
 }
 
 /* Footer */
