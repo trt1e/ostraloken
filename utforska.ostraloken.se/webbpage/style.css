@@ -1,0 +1,317 @@
+/* Base */
+:root {
+    --bg-color: #fbf6f3; /*for the background*/
+    --dark-bg-color: #f3efec; /*for things with a clearly differant background than --bg-color*/
+    --darker-bg-color: #ece8e4; /*for outline before hover*/
+    --darkest-bg-color: #d3cecc; /*for outlines and for hover outline*/
+    --text-color: #130c09; /*for text*/
+    --lighter-text-color: #aba29e; /*for less inportant text*/
+    --header-text-color: #f8f4f2;
+    --primary-color: #EE7322; /*for header and hover*/
+    --secondary-color: #da8852; /*for orange color before hover*/
+    --highlight-color: yellow; /*for the article type*/
+}
+* {
+    margin: 0;
+}
+body {
+    background-color: var(--bg-color);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: var(--text-color);
+    overflow-wrap: anywhere;
+}
+
+/* Header */
+header {
+    background-color: var(--primary-color);
+    position: sticky;
+    z-index: 10;
+    width: 100%;
+    height: 3.4rem;
+    top: 0;
+    overflow: auto;
+    white-space: nowrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@media (width <= 21rem) {
+    header {
+        justify-content: space-around;
+    }
+}
+@media (width < 21rem) {
+    header {
+        position: static;
+    }
+}
+header p {
+    font-size: 1.2rem;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: var(--header-text-color);
+    cursor: default;
+    width: 33%;
+    text-align: center;
+}
+@media (width <= 56rem) {
+    header p {
+        font-size: 1rem;
+    }
+}
+@media (width <= 50rem) {
+    header p {
+        display: none;
+    }
+}
+#header_titel_image {
+    cursor: pointer;
+    width: 12rem;
+    padding: 0.4rem;
+}
+@media (width <= 13rem) {
+    #header_titel_image {
+        width: calc(100% - 1rem);
+    }
+}
+
+/* Header action buttons */
+.header_action {
+    box-sizing: border-box;
+    background-color: transparent;
+    color: var(--header-text-color);
+    width: 3.1rem;
+    height: 3.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    cursor: default;
+    margin: 0 1rem;
+}
+
+/* Search */
+header #search {
+    cursor: pointer;
+}
+@media (width <= 21rem) {
+    header #search {
+        display: none;
+    }
+}
+
+/* Dropdown */
+#dropdown {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 2rem;
+}
+@media (width < 21rem) {
+    #dropdown {
+        position: fixed;
+        z-index: 11;
+        top: 0;
+        right: 0.5rem;
+    }
+}
+#dotdotdot {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@media (width < 21rem) {
+    #dotdotdot {
+        color: var(--text-color);
+    }
+}
+#dropdown_transition_item {
+    background-color: transparent;
+    position: fixed;
+    top: 0;
+    right: 0.5rem;
+    width: 4.1rem;
+    height: 4rem;
+}
+#dropdown_button_container {
+    background-color: var(--dark-bg-color);
+    border: var(--darkest-bg-color) solid 2px;
+    position: fixed;
+    top: 4rem;
+    right: 0.6rem;
+    padding: 1rem;
+    min-width: 5rem;
+    direction: rtl;
+    flex-direction: column;
+    
+    display: none;
+}
+#dropdown:hover #dropdown_button_container, #dropdown_button_container:hover {
+    display: flex;
+}
+#dropdown:focus #dropdown_button_container {
+    display: flex;
+}
+@media (height < 30rem) {
+    #dropdown_button_container {
+        overflow-y: scroll;
+        width: calc(100% - 3rem);
+        height: calc(100% - 6.5rem);
+        grid-template-rows: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        justify-items: center;
+        align-items: center;
+        font-size: 4.5vw;
+        text-align: center;
+    }
+    #dropdown:hover #dropdown_button_container, #dropdown_button_container:hover {
+        display: grid;
+    }
+    #dropdown:focus #dropdown_button_container {
+        display: grid;
+    }
+}
+.dropdown_button {
+    padding: 0.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    text-align: start;
+    border-right: transparent solid 2px;
+    transition: border 0.3s;
+}
+@media (height < 26rem) {
+    .dropdown_button {
+        width: fit-content;
+    }
+}
+.dropdown_button:hover {
+    border-right: var(--primary-color) solid 2px;
+}
+@media (height < 30rem) {
+    .header_button {
+        font-size: 1.4rem;
+    }
+}
+@media (height < 23rem) {
+    #header_button_container {
+        flex-direction: row;
+    }
+}
+
+/* Main */
+main {
+    margin: 0 auto 0 auto;
+    padding: 3rem;
+    padding-top: 1rem;
+    width: calc(80rem - 8rem);
+    min-height: calc(100vh - 3.4rem - 4rem);
+    height: fit-content;
+    /*
+    border-left: var(--darker-bg-color) solid 2px;
+    border-right: var(--darker-bg-color) solid 2px;
+    */
+}
+@media (80rem <= width <= 120rem) {
+    main {
+        width: calc(55rem - 8rem);
+    }
+}
+@media (45rem <= width < 80rem) {
+    main {
+        width: calc(45rem - 8rem);
+    }
+}
+@media (width < 45rem) {
+    main {
+        width: calc(100% - 4rem);
+        padding: 2rem;
+    }
+}
+
+main img {
+    width: 100%;
+    max-height: 22rem;
+    object-fit: cover;
+    aspect-ratio: attr(width) / attr(height); /*To make sure frame exists*/
+}
+@media (width > 120rem) {
+    main img {
+        max-height: 38rem;
+    }
+}
+@media (width < 35rem) {
+    main img {
+        max-height: 12rem;
+    }
+}
+
+/* Search */
+#search_bar {
+    background-color: var(--dark-bg-color);
+    border: var(--darkest-bg-color) solid 2px;
+    box-shadow: var(--secondary-color) 0 0 6rem;
+    width: 80%;
+    height: 2rem;
+    font-size: 1.2rem;
+    margin: 0 calc(50% - 40%) 0 calc(50% - 40%);
+    transform: translateY(8rem);
+    transition: background-color 0.3s, border 0.3s;
+}
+#search_bar:hover {
+    border: var(--primary-color) solid 2px;
+}
+#search_bar:focus {
+    border: transparent solid 2px;
+}
+
+/* The feed */
+#feed {
+    transform: translateY(8rem);
+    width: 100%;
+    height: fit-content;
+}
+
+/* Text styling */
+h1.top_text {
+    width: 100%;
+    height: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+main h2 {
+    font-size: 2.2rem;
+}
+@media (width < 35rem) {
+    main h2 {
+        font-size: 1.8rem;
+    }
+}
+main p {
+    font-size: 1.2rem;
+}
+main li {
+    font-size: 1.2rem;
+}
+.redacted_text {
+    background-color: black;
+    color: black;
+}
+
+/* Content in main */
+.article {
+    background-color: var(--bg-color);
+    position: relative;
+    padding: 1rem;
+    display: block;
+    margin-bottom: 2.5rem;
+    color: var(--text-color);
+    text-decoration: none;
+    border: var(--darker-bg-color) solid 2px;
+    transition: 0.3s;
+}
+.article:not(:has(~ .article)) { /* Gör så bara sista .article har margin-bottom = 0 */
+    margin-bottom: 0;
+}
+
+/* Animation stopper */
+.resize_animation_stopper * {
+  transition: none !important;
+  animation: none !important;
+}

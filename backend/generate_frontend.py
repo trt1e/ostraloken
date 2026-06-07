@@ -535,6 +535,9 @@ omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\omoss\inde
 kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontakt.html")
 kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontakt\index.html")
 
+utforska_template_path = work_path(r"\ostraloken\utforska.ostraloken.se\templates\index.html")
+utforska_generated_path = work_path(r"\ostraloken\utforska.ostraloken.se\webbpage\index.html")
+
 # images
 def find_img(article_title, upplaga_nmr, base_url):
     all_img_title = "IMG-" + strip_string(article_title, 100)
@@ -955,7 +958,7 @@ def generate_hear_me_outs():
     
     print("Hear me outs successfully generated!")
 
-# the rest
+# the rest in main webbpage
 def copy_non_changing_sites():
     replacment_all = {}
     
@@ -974,6 +977,13 @@ def copy_non_changing_sites():
     # Kontakt
     generate_site(kontakt_template_path, kontakt_generated_path, replacment_all)
     print("Kontakt successfully copy:d!")
+
+# utforska
+def generate_utforska():
+
+    
+    print("Utforska successfully generated!")
+
 
 # UI for backend user
 def handle_backend_UI():
@@ -1103,7 +1113,6 @@ r"""
 Saker att lägga till
 - sökfunktion
 - gör tinder av hear me outs
-- lägg till share knapp
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
