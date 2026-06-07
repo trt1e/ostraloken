@@ -98,6 +98,8 @@ header p {
 /* Search */
 header #search {
     cursor: pointer;
+    opacity: 0;
+    cursor: default;
 }
 @media (width <= 21rem) {
     header #search {
