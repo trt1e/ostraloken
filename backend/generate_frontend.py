@@ -791,7 +791,7 @@ def generate_all_articles(): # PS images are also copyd here
         upplaga_extra_info = upplaga["Extra_upplaga_info"]
         progressbar_item.update(progressbar_ticker + 1)
         for article in upplaga["Content"]:
-            if article: # somethimes article is empty, this prevents that
+            if article: # somethimes article is empty, this prevents that       
                 generated_article = "" # where we put the article
                 has_extra_info = False
                 
@@ -813,10 +813,10 @@ def generate_all_articles(): # PS images are also copyd here
                 # copy over images and get the url to the right image
                 article_img_src = find_img(basic_article_title, upplaga_number, "./images/")
                 generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
-            
+
                 # generate the article id
                 article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-U" + str(upplaga_number)
-            
+
                 if article_type == "Insändare" and has_extra_info == False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
                     has_extra_info = True
                     # add prompt to write insändare if it is a insändare
@@ -826,7 +826,7 @@ def generate_all_articles(): # PS images are also copyd here
             <p>Vill du också skicka en insändare till Östra Löken? Fyll bara i denna korta enkät!</p>
         </a>
         """
-                
+
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
                     "[+url+]": f"https://ostraloken.se/a/{article_id}.html",
@@ -893,7 +893,7 @@ def generate_lone_short_storys(title, content):
     if content is None or content == "":
         content = "Null"
         
-    final_article = f"""<article class="article">
+    final_article = f"""<article class="article notis">
                 <h2>{title}</h2>
                 <p>{content}</p>
             </article>
@@ -901,7 +901,7 @@ def generate_lone_short_storys(title, content):
         
     return final_article
 
-def generate_short_storys():
+def get_short_story():
     generated_short_story = ""
     
     for short_story_bundle in reversed(read_short_storys()):
@@ -910,8 +910,11 @@ def generate_short_storys():
             article_title = content["Title"]
             article_main_content = content["Article"]
             generated_short_story += generate_lone_short_storys(article_title, article_main_content)
-    
-    replacment = {"[+short_storys+]": generated_short_story} # what gets replaced and with what
+            
+    return generated_short_story
+
+def generate_short_storys():
+    replacment = {"[+short_storys+]": get_short_story()} # what gets replaced and with what
     generate_site(short_storys_template_path, short_storys_generated_path, replacment)
     
     print("Short storys successfully generated!")
@@ -931,19 +934,19 @@ def generate_lone_hear_me_out(hear_me_out, description):
     if len(description) > 500:
         description = description[:500] + "..."
     
-    final_article = f"""<article class="article">
+    final_article = f"""<article class="article hear_me_out">
             <h2>{hear_me_out}</h2>
             <p>{description}</p>
             <div class="smash_pass_area">
-                <button class="smash_button"><i>SMASH</i></button>
-                <button class="pass_button"><i>PASS</i></button>
+                <button class="HMO_button smash_button"><i>SMASH</i></button>
+                <button class="HMO_button pass_button"><i>PASS</i></button>
             </div>
         </article>
         """
         
     return final_article
 
-def generate_hear_me_outs():
+def get_hear_me_outs():
     generated_hear_me_out = ""
     
     for hear_me_out_bundle in reversed(read_hear_me_outs()):
@@ -952,8 +955,11 @@ def generate_hear_me_outs():
             article_hear_me_out = content["Hear_me_out"]
             article_desc = content["Description"]
             generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_desc)
-    
-    replacment = {"[+hear_me_outs+]": generated_hear_me_out} # what gets replaced and with what
+            
+    return generated_hear_me_out
+
+def generate_hear_me_outs():
+    replacment = {"[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
     generate_site(hear_me_outs_template_path, hear_me_outs_generated_path, replacment)
     
     print("Hear me outs successfully generated!")
@@ -981,6 +987,23 @@ def copy_non_changing_sites():
 # utforska
 def generate_utforska():
 
+    whole_content_articles = ""
+    for upplaga in reversed(read_normal_storys()):
+        # go throught every article in the upplaga
+        upplaga_number = upplaga["Upplaga"]
+        for article in upplaga["Content"]:
+            if article: # somethimes article is empty, this prevents that
+                article_title = str(article["Title"])
+                basic_article_title = remove_html_elements(article_title)
+                article_main_text = str(article["Article"])
+                article_type = str(article["Type"])
+                article_author = str(article["Writer"])
+                # copy over images and get the url to the right image
+                article_img_src = find_img(basic_article_title, upplaga_number, "https://ostraloken.se/a/images/")
+                whole_content_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
+
+    replacment = {"[+articles+]": whole_content_articles, "[+short_storys+]": get_short_story(), "[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
+    generate_site(utforska_template_path, utforska_generated_path, replacment)
     
     print("Utforska successfully generated!")
 
@@ -1010,6 +1033,7 @@ def handle_backend_UI():
     $ gen notiser --> Generate just the notiser file
     $ gen articles --> Generate just all the article files
     $ gen not changing --> Generate just the non-changing files
+    $ gen utforska --> Generate just the utforska.ostraloken.se file
     
     COPY IMAGES
     $ copy images new --> Copy over only the new images
@@ -1062,6 +1086,7 @@ def handle_backend_UI():
                 generate_short_storys()
                 generate_all_articles()
                 copy_non_changing_sites()
+                generate_utforska()
             elif answer == "gen index":
                 generate_index()
             elif answer == "gen hear me outs":
@@ -1072,6 +1097,8 @@ def handle_backend_UI():
                 generate_all_articles()
             elif answer == "gen not changing":
                 generate_all_articles()
+            elif answer == "gen utforska":
+                generate_utforska()
                 
             # images
             elif answer == "copy images new":
@@ -1113,6 +1140,7 @@ r"""
 Saker att lägga till
 - sökfunktion
 - gör tinder av hear me outs
+- lägg till en custome scrollbar
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text

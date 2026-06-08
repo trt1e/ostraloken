@@ -14,7 +14,7 @@
     grid-template-columns: auto auto;
     grid-template-rows: auto;
 }
-.article button {
+.HMO_button {
     background-color: white;
     width: 90%;
     height: 4rem;
@@ -22,12 +22,12 @@
     margin: auto;
     transition: 0.2s;
 }
-.article button:hover {
+.HMO_button:hover {
     background-color: var(--dark-bg-color);
     transform: translate(-0.2rem, -0.2rem);
     box-shadow: var(--darker-bg-color) 0.2rem 0.2rem 0.8rem;
 }
-.article button.clicked {
+.HMO_button.clicked {
     background-color: var(--dark-bg-color);
     border: var(--secondary-color) solid 2px;
 }

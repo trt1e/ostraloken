@@ -1,4 +1,4 @@
-/* Content in main */
+/* Main */
 main #notiser_container {
     display: grid;
     grid-template-columns: 1fr 1fr;
