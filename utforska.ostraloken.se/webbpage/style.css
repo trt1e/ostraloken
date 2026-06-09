@@ -45,7 +45,7 @@ header {
 #search_bar:focus {
     border: var(--primary-color) solid 2px;
 }
-@media (width < 21rem) {
+@media (width < 30rem) {
     #search_bar {
         width: calc(110% - 0.8rem - 4px);
         margin: 2rem 0 4rem -5%;
@@ -141,7 +141,13 @@ header {
 
 #feed .article.notis {
     width: calc(60%);
-    margin-left: calc(50% - 30%);
+    margin-left: calc(50% - 30% - 1rem - 2px);
+}
+@media (width < 30rem) {
+    #feed .article.notis {
+        width: calc(80%);
+        margin-left: calc(50% - 40% - 0.5rem - 2px);
+    }
 }
 
 /* Text when empty search */
