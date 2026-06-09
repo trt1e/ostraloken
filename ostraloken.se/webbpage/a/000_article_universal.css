@@ -140,11 +140,21 @@
     color: var(--primary-color);
 }
 /* Star button */
+.action_button#star {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr;
+}
 .action_button #star_empty {
-    display: block;
+    grid-row: 1;
+    grid-column: 1;
 }
 .action_button #star_filled {
-    display: none;
+    transition: opacity 0.3s;
+    grid-row: 1;
+    grid-column: 1;
+    opacity: 0%;
+    z-index: 1; /* So it is above the other one */
 }
 
 /* Extra info */
