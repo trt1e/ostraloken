@@ -10,7 +10,10 @@ global base_path
 base_path = os.getcwd()
 img_extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
 
+# ---------------------------------
 # BASE COMMANDS
+# ---------------------------------
+
 def strip_string(string, max):
     if max == -1 or max == "" or max is None:
         return re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", string).replace(" ", "_")
@@ -125,7 +128,11 @@ def get_curant_upplaga_number():
             highest_upplaga_number = upplaga["Upplaga"]
     return highest_upplaga_number
 
+
+# ---------------------------------
 # READ TEXT
+# ---------------------------------
+
 normal_story_path = work_path(r"\ostraloken\backend\content\normal_storys_and_other")
 short_story_path = work_path(r"\ostraloken\backend\content\short_storys.txt")
 hear_me_outs_path = work_path(r"\ostraloken\backend\content\hear_me_outs.txt")
@@ -197,7 +204,10 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
     return output_sum
 
 
+# ---------------------------------
 # FIX ARTICLES
+# ---------------------------------
+
 def inspect_normal_storys(): # looks throught all files to se if something is wrong but doesnt change nothing
     print("↓ ARTICLES ↓")
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
@@ -444,7 +454,11 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
 
     print("Article names successfully fixed!")
 
+
+# ---------------------------------
 # SETUP TEMPLATES
+# ---------------------------------
+
 def setup_new_upplaga_folder(day, month, year):
     next_upplaga_number = get_curant_upplaga_number()
     next_upplaga_number += 1 # so highest_upplaga_number is one higher than what exists
@@ -513,30 +527,9 @@ def setup_new_hear_me_outs(count_hear_me_outs):
     print(f"Generated template hear me outs")
 
 
+# ---------------------------------
 # GENERATE SITES
-index_template_path = work_path(r"\ostraloken\ostraloken.se\templates\index.html")
-index_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\index.html")
-
-article_template_path = work_path(r"\ostraloken\ostraloken.se\templates\articles_pages.html")
-generated_articles_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a" + "\\")
-
-short_storys_template_path = work_path(r"\ostraloken\ostraloken.se\templates\notiser.html")
-short_storys_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\notiser\index.html")
-
-hear_me_outs_template_path = work_path(r"\ostraloken\ostraloken.se\templates\hear_me_outs.html")
-hear_me_outs_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hear_me_outs\index.html")
-
-pdfer_template_path = work_path(r"\ostraloken\ostraloken.se\templates\pdfer.html")
-pdfer_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\index.html")
-nav_template_path = work_path(r"\ostraloken\ostraloken.se\templates\nav.html")
-nav_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\nav\index.html")
-omoss_template_path = work_path(r"\ostraloken\ostraloken.se\templates\omoss.html")
-omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\omoss\index.html")
-kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontakt.html")
-kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontakt\index.html")
-
-utforska_template_path = work_path(r"\ostraloken\utforska.ostraloken.se\templates\index.html")
-utforska_generated_path = work_path(r"\ostraloken\utforska.ostraloken.se\webbpage\index.html")
+# ---------------------------------
 
 # images
 def find_img(article_title, upplaga_nmr, base_url):
@@ -555,6 +548,8 @@ def find_img(article_title, upplaga_nmr, base_url):
         return ""
 
 def copy_over_images(gen_type):
+    generated_images_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a\images" + "\\")
+    
     # go throught every upplaga
     for upplaga in read_normal_storys():
         # go throught every article in the upplaga
@@ -564,7 +559,7 @@ def copy_over_images(gen_type):
                 article_title = str(article["Title"])
                 all_img_title = "IMG-" + strip_string(remove_html_elements(article_title), 100)
                 old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + all_img_title
-                new_img_url_with_extention = generated_articles_path + handel_path_slash("images\\") + all_img_title + ".webp"
+                new_img_url_with_extention = generated_images_path + all_img_title + ".webp"
                 for ext in img_extentions:
                     if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
                         old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
@@ -756,7 +751,10 @@ def generate_preview_article(find_similar_articles_switch):
     else:
         return generated_articles_based_on_type
 
-def generate_index(): # PS images are copyd here
+def generate_index():
+    index_template_path = work_path(r"\ostraloken\ostraloken.se\templates\index.html")
+    index_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\index.html")
+    
     list_of_generated_articles = generate_preview_article(False)
     all_generated_articles = ""
     for generated_articles in list_of_generated_articles:
@@ -776,7 +774,10 @@ def generate_index(): # PS images are copyd here
     
     print("Index successfully generated!")
 
-def generate_all_articles(): # PS images are also copyd here
+def generate_all_articles():
+    article_template_path = work_path(r"\ostraloken\ostraloken.se\templates\articles_pages.html")
+    generated_articles_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a" + "\\")
+    
     list_of_articles_with_similer_type = generate_preview_article(True)
     
     print("Generating all articles:")
@@ -914,6 +915,9 @@ def get_short_story():
     return generated_short_story
 
 def generate_short_storys():
+    short_storys_template_path = work_path(r"\ostraloken\ostraloken.se\templates\notiser.html")
+    short_storys_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\notiser\index.html")
+    
     replacment = {"[+short_storys+]": get_short_story()} # what gets replaced and with what
     generate_site(short_storys_template_path, short_storys_generated_path, replacment)
     
@@ -959,6 +963,10 @@ def get_hear_me_outs():
     return generated_hear_me_out
 
 def generate_hear_me_outs():
+    hear_me_outs_template_path = work_path(r"\ostraloken\ostraloken.se\templates\hear_me_outs.html")
+    hear_me_outs_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hear_me_outs\index.html")
+
+    
     replacment = {"[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
     generate_site(hear_me_outs_template_path, hear_me_outs_generated_path, replacment)
     
@@ -966,6 +974,15 @@ def generate_hear_me_outs():
 
 # the rest in main webbpage
 def copy_non_changing_sites():
+    pdfer_template_path = work_path(r"\ostraloken\ostraloken.se\templates\pdfer.html")
+    pdfer_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\index.html")
+    nav_template_path = work_path(r"\ostraloken\ostraloken.se\templates\nav.html")
+    nav_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\nav\index.html")
+    omoss_template_path = work_path(r"\ostraloken\ostraloken.se\templates\omoss.html")
+    omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\omoss\index.html")
+    kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontakt.html")
+    kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontakt\index.html")
+    
     replacment_all = {}
     
     # PDF:er
@@ -984,8 +1001,23 @@ def copy_non_changing_sites():
     generate_site(kontakt_template_path, kontakt_generated_path, replacment_all)
     print("Kontakt successfully copy:d!")
 
+def copy_universal(): # copy over universal.css from ostraloken.se/webbpage to every other placec it should be
+    universal_pull_path = work_path(r"\ostraloken\ostraloken.se\webbpage\universal.css")
+    universal_place_paths = [ # just add more places to copy universal to too make them also get copy:d to
+        work_path(r"\ostraloken\utforska.ostraloken.se\webbpage\universal.css")
+    ]
+    replacment_all = {}
+    
+    for universal_path in universal_place_paths: 
+        generate_site(universal_pull_path, universal_path, replacment_all)
+        
+    print("Universal.css successfully copy:d!")
+        
+
 # utforska
 def generate_utforska():
+    utforska_template_path = work_path(r"\ostraloken\utforska.ostraloken.se\templates\index.html")
+    utforska_generated_path = work_path(r"\ostraloken\utforska.ostraloken.se\webbpage\index.html")
 
     whole_content_articles = ""
     for upplaga in reversed(read_normal_storys()):
@@ -1008,6 +1040,10 @@ def generate_utforska():
     print("Utforska successfully generated!")
 
 
+# ---------------------------------
+# BACKEND TERMINAL
+# ---------------------------------
+
 # UI for backend user
 def handle_backend_UI():
     global base_path
@@ -1021,6 +1057,7 @@ def handle_backend_UI():
                 print("""
     $ help --> Lists all commands
     $ close --> Terminate script
+    $ run all --> Generates all text files, copys all css files and copys all new images
     
     TEMPLATES
     $ new upplaga template --> Generates a new upplaga template with articles, notiser and hear me outs
@@ -1034,6 +1071,9 @@ def handle_backend_UI():
     $ gen articles --> Generate just all the article files
     $ gen not changing --> Generate just the non-changing files
     $ gen utforska --> Generate just the utforska.ostraloken.se file
+    
+    COPY CSS
+    $ copy universal --> Copy the universal.css file from ostraloken.se/webbpage/ to where it also should be
     
     COPY IMAGES
     $ copy images new --> Copy over only the new images
@@ -1051,7 +1091,18 @@ def handle_backend_UI():
                     """)
             elif answer == "close":
                 break
-            
+            elif answer == "run all":
+                copy_over_images("new")
+                
+                generate_index()
+                generate_hear_me_outs()
+                generate_short_storys()
+                generate_all_articles()
+                copy_non_changing_sites()
+                generate_utforska()
+                
+                copy_universal()
+                
             # new content
             elif answer == "new upplaga template":
                 amount_of_articles = input("Amount articles: ")
@@ -1099,6 +1150,10 @@ def handle_backend_UI():
                 generate_all_articles()
             elif answer == "gen utforska":
                 generate_utforska()
+            
+            # universal.css
+            elif answer == "copy universal":
+                copy_universal()
                 
             # images
             elif answer == "copy images new":
@@ -1138,7 +1193,6 @@ handle_backend_UI()
 
 r"""
 Saker att lägga till
-- sökfunktion
 - gör tinder av hear me outs
 - lägg till en custome scrollbar
 

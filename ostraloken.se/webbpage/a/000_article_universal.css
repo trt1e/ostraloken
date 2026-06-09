@@ -87,61 +87,64 @@
 }
 
 /* Action button */
-.action_button {
-    box-sizing: border-box;
+#right_column_items {
     width: 4.5rem;
+    position: absolute;
+    right: calc(50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
+
+}
+@media (80rem <= width <= 120rem) { 
+    #right_column_items {
+        transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
+    }
+}
+@media (52rem <= width < 80rem) {
+    #right_column_items {
+        transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
+    }
+}
+@media (width < 52rem) {
+    #right_column_items {
+        transform: translateX(0); /*width = 37rem*/
+        position: static;
+        width: 100%;
+        flex-direction: row;
+        margin-bottom: 1rem;
+    }
+}
+.action_button {
+    background-color: var(--bg-color);
+    box-sizing: border-box;
+    width: 100%;
     height: 4rem;
     display: flex;
     justify-content: center;
     align-items: center;
-    right: calc(50%);
-    transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
+    cursor: pointer;
     border: var(--darker-bg-color) solid 2px;
     padding: 1rem;
     color: var(--secondary-color);
     transition: border 0.3s, color 0.3s;
 }
+@media (width < 20rem) {
+    .action_button {
+        padding: 0.5rem;
+    }
+}
 .action_button:hover {
     border: var(--darkest-bg-color) solid 2px;
     color: var(--primary-color);
 }
-@media (80rem <= width <= 120rem) { 
-    .action_button {
-        transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
-    }
+/* Star button */
+.action_button #star_empty {
+    display: block;
 }
-@media (45rem <= width < 80rem) {
-    .action_button {
-        transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
-    }
-}
-
-/* Back button */
-a#return {
-    position: absolute;
-    top: 6.4rem;
-}
-@media (width < 52rem) {
-    a#return {
-        display: none; /*Main width is 100%*/
-    }
-}
-
-
-/* Share button */
-#share {
-    background-color: transparent;
-    cursor: pointer;
-    position: absolute;
-    top: calc(10.4rem + 1.5rem);
-}
-@media (width < 52rem) {
-    #share {
-        transform: translateX(0); /*Main width is 100%*/
-        position: static;
-        width: 100%;
-        margin-bottom: 1rem;
-    }
+.action_button #star_filled {
+    display: none;
 }
 
 /* Extra info */
