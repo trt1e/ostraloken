@@ -15,15 +15,16 @@ search_bar_element.addEventListener("input", () => {
         loading_element.style.display = "Block";
         const static_elements_array = Array.from(all_article_elements); // use this so we dont change the DOM
         const fixed_search_input = search_input.toLowerCase();
-        const all_article_strings = [];
-        let article_order = [];
         let no_articles = true;
+        all_article_strings = [];
+        article_order = [];
         static_elements_array.forEach(article => {
             const currant_article_string = String(article.innerText).toLowerCase();
             if (currant_article_string.search(fixed_search_input) != -1) {
                 article.style.display = "Block";
                 amount_of_search_match = (currant_article_string.match(new RegExp(fixed_search_input, "g")) || []).length; // how many times does the search word come up in the article
-                article_package = {"position": amount_of_search_match, "article": currant_article_string};
+
+                article_package = {"amount_of_input": amount_of_search_match, "article": currant_article_string};
                 article_order.push(article_package);
                 no_articles = false;
             } else {
@@ -31,11 +32,14 @@ search_bar_element.addEventListener("input", () => {
             };
             all_article_strings.push(currant_article_string);
         });
-        const article_order_sorted = article_order.sort((a, b) => (a.position - b.position)); // order the articles by the number they were given of how often the search term came up
-        const article_order_sorted_reversed = article_order_sorted.reverse();
+        const article_order_sorted = article_order.sort((a, b) => (a.amount_of_input - b.amount_of_input)); // order the articles by the number they were given of how often the search term came up
+        const article_order_sorted_reversed = article_order_sorted.reverse(); // reverse it so it is right
         article_order_sorted_reversed.forEach(article => {
             const currant_article = article.article;
-            feed_element.appendChild(static_elements_array[all_article_strings.indexOf(currant_article)]);
+
+            // place it at the top of the feed and since article_order_sorted is sorted, it automaticly adds them in the right order
+            const article_element = static_elements_array[all_article_strings.indexOf(currant_article)];
+            feed_element.appendChild(article_element);
         });
         
         feed_element.style.display = "Block";

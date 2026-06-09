@@ -7,6 +7,11 @@
 header {
     position: static;
 }
+@media (width < 21rem) {
+    #dropdown {
+        display: none;
+    }
+}
 #dropdown_transition_item {
     position: absolute;
     top: 0;
@@ -16,10 +21,6 @@ header {
     position: absolute;
     top: 4rem;
     right: 0.6rem;
-}
-
-/* Main */
-main {
 }
 
 /* Search */
@@ -44,6 +45,12 @@ main {
 #search_bar:focus {
     border: var(--primary-color) solid 2px;
 }
+@media (width < 21rem) {
+    #search_bar {
+        width: calc(110% - 0.8rem - 4px);
+        margin: 2rem 0 4rem -5%;
+    }
+}
 
 /* The feed */
 #feed {
@@ -52,9 +59,16 @@ main {
 }
 
 /* Content in main */
+@media (width < 21rem) {
+    .top_text {
+        display: none;
+    }
+}
+
 .article:not(:has(~ .article)) { /* Gör så bara sista .article har margin-bottom = 0 */
     margin-bottom: 2.5rem;
 }
+
 .type_text {
     width: fit-content;
     background-color: var(--highlight-color);
@@ -130,6 +144,7 @@ main {
     margin-left: calc(50% - 30%);
 }
 
+/* Text when empty search */
 .text_when_empty {
     width: 100%;
     font-size: 2rem;
