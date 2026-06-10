@@ -176,7 +176,27 @@ h3 {
 #read_also .article:hover {
     border: var(--darkest-bg-color) solid 2px;
 }
+#read_also .article.highlight {
+    border: var(--secondary-color) solid 2px;
+}
+#read_also .article.highlight:hover {
+    border: var(--primary-color) solid 2px;
+}
 /* Star */
 .stared_article_icon {
+    color: var(--secondary-color);
+    width: 5rem;
+    height: 5rem;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: rotate(3deg) translate(-2.2rem, 2.2rem);
+    transition: color 0.3s;
+    user-select: none;
+    pointer-events: none;
+
     display: none;
+}
+.article:hover .stared_article_icon {
+    color: var(--primary-color);
 }

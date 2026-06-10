@@ -18,7 +18,12 @@ window.addEventListener("DOMContentLoaded", () => {
         
         // make article highlighted if it is stared
         if (star_status == "filled") { // if filled
+            // add highlight class to article
             article.classList.add("highlight")
+
+            // show the star icon in the corner
+            const star_icon = document.querySelector("#" + article_id + " .stared_article_icon");
+            star_icon.style.display = "Block";
         };
     });
 });

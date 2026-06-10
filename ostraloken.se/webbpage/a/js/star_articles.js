@@ -37,3 +37,28 @@ function check_star_status(make_filled_when) {
         console.log("Star now empty");
     };
 };
+
+// star read also articles
+const read_also_article_elements = document.querySelectorAll("#read_also .article");
+
+window.addEventListener("DOMContentLoaded", () => {
+    read_also_article_elements.forEach(article => {
+        const article_id = article.id;
+
+        let star_status_storage = localStorage.getItem("star-status-" + article_id);
+        let star_status = "Empty";
+        if (star_status_storage) {
+            star_status = star_status_storage;
+        };
+
+        // make article highlighted if it is stared
+        if (star_status == "filled") { // if filled
+            // add highlight class to article
+            article.classList.add("highlight")
+
+            // show the star icon in the corner
+            const star_icon = document.querySelector("#" + article_id + " .stared_article_icon");
+            star_icon.style.display = "Block";
+        };
+    });
+});
