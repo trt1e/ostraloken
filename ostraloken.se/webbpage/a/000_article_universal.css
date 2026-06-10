@@ -176,3 +176,7 @@ h3 {
 #read_also .article:hover {
     border: var(--darkest-bg-color) solid 2px;
 }
+/* Star */
+.stared_article_icon {
+    display: none;
+}

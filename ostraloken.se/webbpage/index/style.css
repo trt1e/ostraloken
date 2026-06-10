@@ -93,77 +93,9 @@ main { /* since there is no h1 top text to hold the main up*/
     font-size: 1rem;
 }
 
-/* Action button */
-#right_column_items {
-    width: 4.5rem;
-    position: absolute;
-    right: calc(50%);
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    transform: translateX(calc((72rem / -2) - 2rem)); /*width = 72rem*/
-
-}
-@media (80rem <= width <= 120rem) { 
-    #right_column_items {
-        transform: translateX(calc((47rem / -2) - 2rem)); /*width = 47rem*/
-    }
-}
-@media (52rem <= width < 80rem) {
-    #right_column_items {
-        transform: translateX(calc((37rem / -2) - 2rem)); /*width = 37rem*/
-    }
-}
-@media (width < 52rem) {
-    #right_column_items {
-        transform: translateX(0); /*width = 37rem*/
-        position: static;
-        width: 100%;
-        flex-direction: row;
-        margin-bottom: 1rem;
-    }
-}
-.action_button {
-    background-color: var(--bg-color);
-    box-sizing: border-box;
-    width: 100%;
-    height: 4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: var(--darker-bg-color) solid 2px;
-    padding: 1rem;
-    color: var(--secondary-color);
-    transition: border 0.3s, color 0.3s;
-}
-@media (width < 20rem) {
-    .action_button {
-        padding: 0.5rem;
-    }
-}
-.action_button:hover {
-    border: var(--darkest-bg-color) solid 2px;
-    color: var(--primary-color);
-}
-/* Star button */
-.action_button#star {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
-
+/* Star */
+.stared_article_icon {
     display: none;
-}
-.action_button #star_empty {
-    grid-row: 1;
-    grid-column: 1;
-}
-.action_button #star_filled {
-    transition: opacity 0.3s;
-    grid-row: 1;
-    grid-column: 1;
-    opacity: 0%;
-    z-index: 1; /* So it is above the other one */
 }
 
 /* Text styling */
