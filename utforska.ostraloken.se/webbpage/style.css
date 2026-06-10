@@ -7,6 +7,9 @@
 header {
     position: static;
 }
+#dropdown {
+    z-index: 12;
+}
 @media (width < 21rem) {
     #dropdown {
         display: none;

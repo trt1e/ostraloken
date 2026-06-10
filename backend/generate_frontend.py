@@ -595,7 +595,7 @@ def copy_over_images(gen_type):
         print("No images left to copy")
 
 # basic for all generated text files
-def generate_site(template_path, generated_path, dictionary_of_replacment): # the sites that dont realy need to be generated
+def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated
     # pdf:er
     template = try_opening(template_path, "")
     
@@ -604,9 +604,20 @@ def generate_site(template_path, generated_path, dictionary_of_replacment): # th
         final_file = final_file.replace(str(item), str(dictionary_of_replacment[item]))
     
     # add something to notify the user that it is editing in the generated file instead of templates
-    row_endings = ["<head>", "</head>", "<body>", "</body>", "<header>", "</header>", "<main>", "</main>", "<footer>", "</footer>"]
+    row_endings = []
+    start_warning = ""
+    end_warning = ""
+    if file_type == "html":
+        row_endings = ["<head>", "</head>", "<body>", "</body>", "<header>", "</header>", "<main>", "</main>", "<footer>", "</footer>"]
+        start_warning = "<!--"
+        end_warning = "-->"
+    elif file_type == "css":
+        row_endings = ["{"]
+        start_warning = "/*"
+        end_warning = "*/"
+    
     for ending in row_endings:
-        final_file = final_file.replace(str(ending), f"{ending} <!--ATTENTION: YOU ARE RIGHT NOW IN THE GENERATED FILE!-->")
+        final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
     
     generated_file = open(generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(final_file) # write to it
@@ -770,7 +781,7 @@ def generate_index():
                     latest_title = remove_html_elements(article["Title"])
     
     replacment = {"[+articles+]": all_generated_articles, "[+latest_title+]": latest_title.replace('"', "&quot;")} # what gets replaced and with what
-    generate_site(index_template_path, index_generated_path, replacment)
+    generate_site(index_template_path, index_generated_path, replacment, "html")
     
     print("Index successfully generated!")
 
@@ -882,7 +893,7 @@ def generate_all_articles():
                     replacment[f"[+extra_article_link_2+]"] = ""
                     replacment[f"[+extra_article_link_3+]"] = ""
                 
-                generate_site(article_template_path, (generated_articles_path + article_id + ".html"), replacment)
+                generate_site(article_template_path, (generated_articles_path + article_id + ".html"), replacment, "html")
     
     progressbar_item.finish()
     print("All articles successfully generated!")
@@ -919,7 +930,7 @@ def generate_short_storys():
     short_storys_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\notiser\index.html")
     
     replacment = {"[+short_storys+]": get_short_story()} # what gets replaced and with what
-    generate_site(short_storys_template_path, short_storys_generated_path, replacment)
+    generate_site(short_storys_template_path, short_storys_generated_path, replacment, "html")
     
     print("Short storys successfully generated!")
 
@@ -968,7 +979,7 @@ def generate_hear_me_outs():
 
     
     replacment = {"[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
-    generate_site(hear_me_outs_template_path, hear_me_outs_generated_path, replacment)
+    generate_site(hear_me_outs_template_path, hear_me_outs_generated_path, replacment, "html")
     
     print("Hear me outs successfully generated!")
 
@@ -986,19 +997,19 @@ def copy_non_changing_sites():
     replacment_all = {}
     
     # PDF:er
-    generate_site(pdfer_template_path, pdfer_generated_path, replacment_all)
+    generate_site(pdfer_template_path, pdfer_generated_path, replacment_all, "html")
     print("PDF:s successfully copy:d!")
     
     # Nav
-    generate_site(nav_template_path, nav_generated_path, replacment_all)
+    generate_site(nav_template_path, nav_generated_path, replacment_all, "html")
     print("Nav successfully copy:d!")
 
     # Om oss
-    generate_site(omoss_template_path, omoss_generated_path, replacment_all)
+    generate_site(omoss_template_path, omoss_generated_path, replacment_all, "html")
     print("Om oss successfully copy:d!")
     
     # Kontakt
-    generate_site(kontakt_template_path, kontakt_generated_path, replacment_all)
+    generate_site(kontakt_template_path, kontakt_generated_path, replacment_all, "html")
     print("Kontakt successfully copy:d!")
 
 def copy_universal(): # copy over universal.css from ostraloken.se/webbpage to every other placec it should be
@@ -1009,7 +1020,7 @@ def copy_universal(): # copy over universal.css from ostraloken.se/webbpage to e
     replacment_all = {}
     
     for universal_path in universal_place_paths: 
-        generate_site(universal_pull_path, universal_path, replacment_all)
+        generate_site(universal_pull_path, universal_path, replacment_all, "css")
         
     print("Universal.css successfully copy:d!")
         
@@ -1035,7 +1046,7 @@ def generate_utforska():
                 whole_content_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
 
     replacment = {"[+articles+]": whole_content_articles, "[+short_storys+]": get_short_story(), "[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
-    generate_site(utforska_template_path, utforska_generated_path, replacment)
+    generate_site(utforska_template_path, utforska_generated_path, replacment, "html")
     
     print("Utforska successfully generated!")
 
@@ -1057,13 +1068,12 @@ def handle_backend_UI():
                 print("""
     $ help --> Lists all commands
     $ close --> Terminate script
-    $ run all --> Generates all text files, copys all css files and copys all new images
     
     TEMPLATES
     $ new upplaga template --> Generates a new upplaga template with articles, notiser and hear me outs
     
     GENERATE TEXT FILES
-    $ gen all --> Generate all webbpage files that are generated
+    $ gen all --> Generate all webbpage files that are generated and copy all css
     
     $ gen index --> Generate just the index file
     $ gen hear me outs --> Generate just the hear me outs file
@@ -1091,17 +1101,6 @@ def handle_backend_UI():
                     """)
             elif answer == "close":
                 break
-            elif answer == "run all":
-                copy_over_images("new")
-                
-                generate_index()
-                generate_hear_me_outs()
-                generate_short_storys()
-                generate_all_articles()
-                copy_non_changing_sites()
-                generate_utforska()
-                
-                copy_universal()
                 
             # new content
             elif answer == "new upplaga template":
@@ -1138,6 +1137,8 @@ def handle_backend_UI():
                 generate_all_articles()
                 copy_non_changing_sites()
                 generate_utforska()
+                
+                copy_universal()
             elif answer == "gen index":
                 generate_index()
             elif answer == "gen hear me outs":
