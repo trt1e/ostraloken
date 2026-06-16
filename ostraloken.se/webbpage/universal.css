@@ -201,13 +201,6 @@ header #search {
     }
 }
 
-/* Breaking news */
-#breaking {
-    width: 100%;
-    height: 2rem;
-    background-color: red;
-}
-
 /* Main */
 main {
     margin: 0 auto 0 auto;

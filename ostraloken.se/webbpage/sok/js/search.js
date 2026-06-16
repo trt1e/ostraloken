@@ -1,20 +1,34 @@
+const query_string = window.location.search;
 const search_bar_element = document.querySelector("#search_bar");
 const all_article_elements = document.querySelectorAll(".article");
 const feed_element = document.querySelector("#feed");
 const loading_element = document.querySelector("#loading_text");
 const empty_element = document.querySelector("#empty_text");
 
+const url_params = new URLSearchParams(query_string);
 const org_static_elements_array = Array.from(all_article_elements); // use this so we dont change the DOM
+
+window.addEventListener("DOMContentLoaded", () => {
+    // if there is a search term in the url, we search it
+    const url_input = url_params.get("s");
+    if (url_params.has("s")) {
+        search_bar_element.value = url_input;
+        search(url_input);
+    };
+});
 
 search_bar_element.addEventListener("input", () => {
     const search_input = search_bar_element.value;
     console.log("User wrote: " + search_input);
+    search(search_input);
+});
 
-    if (search_input.length >= 2) {
+function search(input) {
+    if (input.length >= 2) {
         feed_element.style.display = "None";
         loading_element.style.display = "Block";
         const static_elements_array = Array.from(all_article_elements); // use this so we dont change the DOM
-        const fixed_search_input = search_input.toLowerCase();
+        const fixed_search_input = input.toLowerCase();
         let no_articles = true;
         all_article_strings = [];
         article_order = [];
@@ -57,4 +71,8 @@ search_bar_element.addEventListener("input", () => {
             feed_element.appendChild(article);
         });
     };
-});
+
+    // add currant search to url
+    url_params.set("s", input);
+    history.replaceState(null, null, "?" + url_params.toString()); // uppdate url bar
+};
