@@ -1,3 +1,6 @@
+## DENNA README BEHÖVER UPPDATERAS!
+Just nu är den utdaterad och har information som ej längre stämmer
+
 # Hur fungerar ostraloken.se?
 Östra Lökens hemsida är skapad för att webbsidan enkelt ska kunna uppdateras då nya artiklar, notiser och hear me out:s skapas. Därmed har webbsidan tre distinkta mappar. Kortfattat kan man säga att **backend** används för att lagra allting, **templates** är för att ha en mall att lägga in backends content i och **webbpage** är där webbsidan är.
 

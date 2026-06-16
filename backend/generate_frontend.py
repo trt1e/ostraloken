@@ -670,19 +670,22 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
             {author_context}
         </article>
         """
-    else: # make article not anchor
+    else: # make article anchor
         final_article = f"""<a href="{redirect_src}" id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
                 <article>
                     {type_context}
                     {image_context}
-                    <h2>{title}</h2>
+                    <h2>
+                    <svg class="stared_article_icon" tabindex="-1" focusable="false" aria-hidden="true"  width="100%" height="100%" viewBox="0 0 250 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+                        <g transform="matrix(1.05943,0.081945,-0.081945,1.05943,-74.594118,-39.607834)">
+                            <path d="M200,37.994L225.147,115.388L306.524,115.388L240.689,163.221L265.836,240.615L200,192.783L134.164,240.615L159.311,163.221L93.476,115.388L174.853,115.388L200,37.994Z" style="fill:currentColor;stroke:currentColor;stroke-width:15.68px;"/>
+                        </g>
+                    </svg>
+                    
+                    {title}</h2>
                     <p>{content}</p>
                     <p class="author_text"><b>{author}</b></p>
                 </article>
-                
-                <svg class="stared_article_icon" tabindex="-1" focusable="false" aria-hidden="true" width="100%" height="100%" viewBox="0 0 400 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-                    <path d="M200,37.994L225.147,115.388L306.524,115.388L240.689,163.221L265.836,240.615L200,192.783L134.164,240.615L159.311,163.221L93.476,115.388L174.853,115.388L200,37.994Z" style="fill:currentColor;stroke:currentColor;stroke-width:16.67px;"/>
-                </svg>
             </a>
             """
 
