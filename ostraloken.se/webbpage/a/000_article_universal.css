@@ -182,6 +182,7 @@ h3 {
 #read_also .article.highlight:hover {
     border: var(--primary-color) solid 2px;
 }
+
 /* Star */
 .stared_article_icon {
     color: var(--secondary-color);

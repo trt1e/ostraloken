@@ -1,27 +1,11 @@
-/*
-html {
-    scroll-behavior: smooth;
-}
-*/
-* {
-    scroll-margin-top: calc(5dvh + 3.4rem); /*Centers it when getting there from another url via # */
-}
-
-/* Main */
-main { /* since there is no h1 top text to hold the main up*/
-    padding-top: 3rem;
-}
-
 /* Content in main */
+/*article*/
 .article {
     cursor: pointer;
     transition: 0.3s;
 }
 .article:hover {
     border: var(--darkest-bg-color) solid 2px;
-    
-    transform: translate(-0.2rem, -0.2rem);
-    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
 }
 @media (width <= 30rem) {
     .article .main_article_text {
@@ -69,34 +53,7 @@ main { /* since there is no h1 top text to hold the main up*/
     font-size: 1rem;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-
-/* Im feeling lucky button */
-#im_feeling_lucky {
-    position: absolute;
-    width: 15rem;
-    top: 4.4rem;
-    left: calc(50vw - 7.5rem);
-    text-align: center;
-    background-color: transparent;
-    border: none;
-    color: var(--lighter-text-color);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-@media (width < 45rem) {
-    #im_feeling_lucky {
-        width: 100%;
-        left: 0;
-    }
-}
-#im_feeling_lucky:hover {
-    color: var(--secondary-color);
-}
-#im_feeling_lucky p {
-    font-size: 1rem;
-}
-
-/* Star */
+/*Star*/
 .stared_article_icon {
     color: var(--secondary-color);
     /* 2.2rem is h2 font-size */
@@ -122,8 +79,77 @@ main { /* since there is no h1 top text to hold the main up*/
 .article:hover .stared_article_icon {
     color: var(--primary-color);
 }
+/*nav cards*/
+main .nav_card_container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(auto, 1fr);
+    column-gap: 1rem;
+    row-gap: 1.5rem;
+}
+@media (width < 35rem) {
+    main .nav_card_container {
+        display: block;
+    }
+}
 
-/* Text styling */
-main h1 {
-    display: none;
+.nav_card {
+    min-height: 4.5rem;
+    display: flex;
+    align-items: center;
+    border: var(--darkest-bg-color) solid 2px;
+    margin-bottom: 0;
+    overflow: hidden;
+}
+@media (width < 35rem) {
+    .nav_card {
+        margin-bottom: 2.5rem;
+        min-height: 0;
+    }
+}
+.nav_card:hover {
+    background-color: var(--darker-bg-color);
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+}
+.nav_card.highlight {
+    background-color: var(--dark-bg-color);
+    border: var(--secondary-color) solid 2px;
+}
+.nav_card.highlight:hover {
+    background-color: var(--darker-bg-color);
+    border: var(--primary-color) solid 2px;
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+}
+.nav_card h2 {
+    padding: 0.2rem;
+    width: fit-content;
+    font-size: 1.5rem;
+    text-align: center;
+    margin: 0.5rem auto;
+    z-index: 1;
+    transition: 0.3s;
+}
+
+.nav_card img {
+    width: 6rem;
+    position: absolute;
+    bottom: -0.6rem;
+    left: -0.6rem;
+    transform: rotate(4deg);
+}
+@media (width < 80rem) {
+    .nav_card img {
+        width: 4rem;
+    }
+}
+/*redirect*/
+#redirect_button_container {
+    background-color: var(--dark-bg-color);
+    border: var(--darkest-bg-color) solid 2px;
+    padding: 1rem;
+    min-width: 5rem;
+    direction: rtl;
+    flex-direction: column;
 }

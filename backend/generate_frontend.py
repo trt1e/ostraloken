@@ -655,7 +655,7 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
-        redirect_src = "./" # hide image
+        redirect_src = "./" # no redirect
     if img_src is None or img_src == "" or img_src == "NO_IMAGE_AVAILABLE":
         no_img_class = "no_img"
         image_context = "<!-- NO IMAGE HERE -->"
@@ -719,7 +719,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
 
     return final_article
 
-def generate_preview_article(find_similar_articles_switch):
+def generate_preview_article(base_redirect_html_url, find_similar_articles_switch):
     how_many_articles_generated = 0
     generated_articles = [] # for find_similar_articles == False
     generated_articles_based_on_type = {} # for find_similar_articles == True
@@ -783,8 +783,8 @@ def generate_preview_article(find_similar_articles_switch):
                 article_id = make_article_id(article_title, upplaga_number) # what is used to identefy the article
 
                 if find_similar_articles_switch is False:
-                    img_url = find_img(org_article_title, upplaga_number, "./a/images/") # get the url to the img as a html link
-                    generated_articles.append(generate_lone_article(("./a/" + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number))
+                    img_url = find_img(org_article_title, upplaga_number, f"{base_redirect_html_url}images/") # get the url to the img as a html link
+                    generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number))
                     how_many_articles_generated += 1
                 else:
                     # img_url = find_img(org_article_title, upplaga_number, "./images/") # get the url to the img as a html link
@@ -801,7 +801,7 @@ def generate_index():
     index_template_path = work_path(r"\ostraloken\ostraloken.se\templates\index.html")
     index_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\index.html")
     
-    list_of_generated_articles = generate_preview_article(False)
+    list_of_generated_articles = generate_preview_article("./a/", False)
     all_generated_articles = ""
     for generated_articles in list_of_generated_articles:
         all_generated_articles += str(generated_articles)
@@ -824,7 +824,7 @@ def generate_all_articles():
     article_template_path = work_path(r"\ostraloken\ostraloken.se\templates\articles_pages.html")
     generated_articles_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a" + "\\")
     
-    list_of_articles_with_similer_type = generate_preview_article(True)
+    list_of_articles_with_similer_type = generate_preview_article("./a/", True)
     
     print("Generating all articles:")
     progressbar_item = progressbar.ProgressBar(maxval=int(len(read_normal_storys())))
@@ -1043,6 +1043,18 @@ def generate_search():
     
     print("Search successfully generated!")
 
+# hej/welcome page
+def generate_hej():
+    hej_template_path = work_path(r"\ostraloken\ostraloken.se\templates\hej.html")
+    hej_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hej\index.html")
+    
+    latest_article = generate_preview_article("../a/", False)[0]
+
+    replacment = {"[+article+]": latest_article} # what gets replaced and with what
+    generate_site(hej_template_path, hej_generated_path, replacment, "html")
+    
+    print("Hej successfully generated!")
+
 # the rest in main webbpage
 def copy_non_changing_sites():
     pdfer_template_path = work_path(r"\ostraloken\ostraloken.se\templates\pdfer.html")
@@ -1101,6 +1113,7 @@ def handle_backend_UI():
     $ gen notiser --> Generate just the notiser file
     $ gen all articles --> Generate just all the article files
     $ gen search --> Generate just the search archive file
+    $ gen hej --> Generate just the hej greating file
     $ gen not changing --> Generate just the non-changing files
     
     COPY IMAGES
@@ -1153,8 +1166,9 @@ def handle_backend_UI():
                 generate_hear_me_outs()
                 generate_short_storys()
                 generate_all_articles()
-                copy_non_changing_sites()
                 generate_search()
+                generate_hej()
+                copy_non_changing_sites()
             elif answer == "gen index":
                 generate_index()
             elif answer == "gen hear me outs":
@@ -1165,6 +1179,8 @@ def handle_backend_UI():
                 generate_all_articles()
             elif answer == "gen search":
                 generate_search()
+            elif answer == "gen hej":
+                generate_hej()
             elif answer == "gen not changing":
                 generate_all_articles()
                 
