@@ -128,6 +128,23 @@ def get_curant_upplaga_number():
             highest_upplaga_number = upplaga["Upplaga"]
     return highest_upplaga_number
 
+def make_article_id(article_title, upplaga_number):
+    id_article = strip_string(remove_html_elements(article_title), 100)
+    replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
+    for letter in replace_letters:
+        if letter in id_article:
+            id_article = id_article.replace(letter, replace_letters[letter])
+    id_upplaga = "-U" + str(upplaga_number)
+    return id_article + id_upplaga
+
+def make_image_id(article_title, remove_åäö):
+    id = "IMG-" + strip_string(remove_html_elements(article_title), 100)
+    if remove_åäö:
+        replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
+        for letter in replace_letters:
+            if letter in id:
+                id = id.replace(letter, replace_letters[letter])
+    return id
 
 # ---------------------------------
 # READ TEXT
@@ -533,8 +550,9 @@ def setup_new_hear_me_outs(count_hear_me_outs):
 
 # images
 def find_img(article_title, upplaga_nmr, base_url):
-    all_img_title = "IMG-" + strip_string(article_title, 100)
-    old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + all_img_title
+    old_img_title = make_image_id(article_title, False)
+    new_img_title = make_image_id(article_title, True)
+    old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + old_img_title
     for ext in img_extentions:
         if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
             old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
@@ -543,7 +561,7 @@ def find_img(article_title, upplaga_nmr, base_url):
         old_img_path_with_extention = "NO_IMG" # article does not have image
         
     if old_img_path_with_extention != "NO_IMG":
-        return base_url + all_img_title + ".webp"
+        return base_url + new_img_title + ".webp"
     else:
         return ""
 
@@ -557,9 +575,10 @@ def copy_over_images(gen_type):
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 article_title = str(article["Title"])
-                all_img_title = "IMG-" + strip_string(remove_html_elements(article_title), 100)
-                old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + all_img_title
-                new_img_url_with_extention = generated_images_path + all_img_title + ".webp"
+                old_img_title = make_image_id(article_title, False)
+                new_img_title = make_image_id(article_title, True)
+                old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + old_img_title
+                new_img_url_with_extention = generated_images_path + new_img_title + ".webp"
                 for ext in img_extentions:
                     if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
                         old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
@@ -588,15 +607,14 @@ def copy_over_images(gen_type):
                             new_height = int((new_width / img_width) * img_height)
                             new_image = image.resize((new_width, new_height))
                             new_image.save(new_img_url_with_extention, quality=80)
-                            print(f"copied image: {all_img_title}")
+                            print(f"copied image: {new_img_title}")
                     else: # gen type == "new" and os.path.isfile(new_img_url_with_extention) is True
                         pass
     else:
         print("No images left to copy")
 
 # basic for all generated text files
-def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated
-    # pdf:er
+def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated    
     template = try_opening(template_path, "")
     
     final_file = template
@@ -618,6 +636,16 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     
     for ending in row_endings:
         final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
+    
+    header_path = work_path(r"\ostraloken\ostraloken.se\templates\base\header.html")
+    header_content = open(header_path, "r", encoding="utf-8") # get its content
+    final_file = final_file.replace("[+header+]", header_content.read()) # add header
+    header_content.close()
+    
+    footer_path = work_path(r"\ostraloken\ostraloken.se\templates\base\footer.html")
+    footer_content = open(footer_path, "r", encoding="utf-8") # get its content
+    final_file = final_file.replace("[+footer+]", footer_content.read()) # add footer
+    footer_content.close()
     
     generated_file = open(generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(final_file) # write to it
@@ -650,7 +678,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         type_context = f'<p class="type_text">{type}</p>'
         
     # generate the article id
-    article_id = strip_string(remove_html_elements(title), -1)[:100] + "-U" + str(upplaga_nmr)
+    article_id = make_article_id(title, upplaga_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     if redirect_src == "SHOULD_NOT_REDIRECT": # Not anchor
@@ -676,8 +704,8 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
                     {type_context}
                     {image_context}
                     <h2>
-                    <svg class="stared_article_icon" tabindex="-1" focusable="false" aria-hidden="true"  width="100%" height="100%" viewBox="0 0 250 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-                        <g transform="matrix(1.05943,0.081945,-0.081945,1.05943,-74.594118,-39.607834)">
+                    <svg class="stared_article_icon" tabindex="-1" focusable="false" aria-hidden="true" width="100%" height="100%" viewBox="0 0 250 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+                        <g transform="matrix(1.062594,-0,0,1.062594,-87.518794,-23.693451)">
                             <path d="M200,37.994L225.147,115.388L306.524,115.388L240.689,163.221L265.836,240.615L200,192.783L134.164,240.615L159.311,163.221L93.476,115.388L174.853,115.388L200,37.994Z" style="fill:currentColor;stroke:currentColor;stroke-width:15.68px;"/>
                         </g>
                     </svg>
@@ -752,7 +780,7 @@ def generate_preview_article(find_similar_articles_switch):
                 article_author = article["Writer"]
                 
                 # not basic_title since that has been shortend alredy
-                article_id = strip_string(org_article_title, -1)[:100] + "-U" + str(upplaga_number) # what is used to identefy the article
+                article_id = make_article_id(article_title, upplaga_number) # what is used to identefy the article
 
                 if find_similar_articles_switch is False:
                     img_url = find_img(org_article_title, upplaga_number, "./a/images/") # get the url to the img as a html link
@@ -834,7 +862,7 @@ def generate_all_articles():
                 generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
 
                 # generate the article id
-                article_id = strip_string(remove_html_elements(article_title), -1)[:100] + "-U" + str(upplaga_number)
+                article_id = make_article_id(article_title, upplaga_number)
 
                 if article_type == "Insändare" and has_extra_info == False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
                     has_extra_info = True
@@ -990,52 +1018,10 @@ def generate_hear_me_outs():
     
     print("Hear me outs successfully generated!")
 
-# the rest in main webbpage
-def copy_non_changing_sites():
-    pdfer_template_path = work_path(r"\ostraloken\ostraloken.se\templates\pdfer.html")
-    pdfer_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\index.html")
-    nav_template_path = work_path(r"\ostraloken\ostraloken.se\templates\nav.html")
-    nav_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\nav\index.html")
-    omoss_template_path = work_path(r"\ostraloken\ostraloken.se\templates\omoss.html")
-    omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\omoss\index.html")
-    kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontakt.html")
-    kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontakt\index.html")
-    
-    replacment_all = {}
-    
-    # PDF:er
-    generate_site(pdfer_template_path, pdfer_generated_path, replacment_all, "html")
-    print("PDF:s successfully copy:d!")
-    
-    # Nav
-    generate_site(nav_template_path, nav_generated_path, replacment_all, "html")
-    print("Nav successfully copy:d!")
-
-    # Om oss
-    generate_site(omoss_template_path, omoss_generated_path, replacment_all, "html")
-    print("Om oss successfully copy:d!")
-    
-    # Kontakt
-    generate_site(kontakt_template_path, kontakt_generated_path, replacment_all, "html")
-    print("Kontakt successfully copy:d!")
-
-def copy_universal(): # copy over universal.css from ostraloken.se/webbpage to every other placec it should be
-    universal_pull_path = work_path(r"\ostraloken\ostraloken.se\webbpage\universal.css")
-    universal_place_paths = [ # just add more places to copy universal to too make them also get copy:d to
-        work_path(r"\ostraloken\utforska.ostraloken.se\webbpage\universal.css")
-    ]
-    replacment_all = {}
-    
-    for universal_path in universal_place_paths: 
-        generate_site(universal_pull_path, universal_path, replacment_all, "css")
-        
-    print("Universal.css successfully copy:d!")
-        
-
-# utforska
-def generate_utforska():
-    utforska_template_path = work_path(r"\ostraloken\utforska.ostraloken.se\templates\index.html")
-    utforska_generated_path = work_path(r"\ostraloken\utforska.ostraloken.se\webbpage\index.html")
+# search archive
+def generate_search():
+    utforska_template_path = work_path(r"\ostraloken\ostraloken.se\templates\sok.html")
+    utforska_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\sok\index.html")
 
     whole_content_articles = ""
     for upplaga in reversed(read_normal_storys()):
@@ -1055,8 +1041,36 @@ def generate_utforska():
     replacment = {"[+articles+]": whole_content_articles, "[+short_storys+]": get_short_story(), "[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
     generate_site(utforska_template_path, utforska_generated_path, replacment, "html")
     
-    print("Utforska successfully generated!")
+    print("Search successfully generated!")
 
+# the rest in main webbpage
+def copy_non_changing_sites():
+    pdfer_template_path = work_path(r"\ostraloken\ostraloken.se\templates\pdfer.html")
+    pdfer_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\index.html")
+    nav_template_path = work_path(r"\ostraloken\ostraloken.se\templates\lank_nav.html")
+    nav_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\lank_nav\index.html")
+    omoss_template_path = work_path(r"\ostraloken\ostraloken.se\templates\om_oss.html")
+    omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\om_oss\index.html")
+    kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontaktinfo.html")
+    kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontaktinfo\index.html")
+    
+    replacment_all = {}
+    
+    # PDF:er
+    generate_site(pdfer_template_path, pdfer_generated_path, replacment_all, "html")
+    print("PDF:s successfully copy:d!")
+    
+    # Nav
+    generate_site(nav_template_path, nav_generated_path, replacment_all, "html")
+    print("Nav successfully copy:d!")
+
+    # Om oss
+    generate_site(omoss_template_path, omoss_generated_path, replacment_all, "html")
+    print("Om oss successfully copy:d!")
+    
+    # Kontakt
+    generate_site(kontakt_template_path, kontakt_generated_path, replacment_all, "html")
+    print("Kontakt successfully copy:d!")
 
 # ---------------------------------
 # BACKEND TERMINAL
@@ -1080,17 +1094,14 @@ def handle_backend_UI():
     $ new upplaga template --> Generates a new upplaga template with articles, notiser and hear me outs
     
     GENERATE TEXT FILES
-    $ gen all --> Generate all webbpage files that are generated and copy all css
+    $ gen all --> Generate all webbpage files that are generated
     
     $ gen index --> Generate just the index file
     $ gen hear me outs --> Generate just the hear me outs file
     $ gen notiser --> Generate just the notiser file
-    $ gen articles --> Generate just all the article files
+    $ gen all articles --> Generate just all the article files
+    $ gen search --> Generate just the search archive file
     $ gen not changing --> Generate just the non-changing files
-    $ gen utforska --> Generate just the utforska.ostraloken.se file
-    
-    COPY CSS
-    $ copy universal --> Copy the universal.css file from ostraloken.se/webbpage/ to where it also should be
     
     COPY IMAGES
     $ copy images new --> Copy over only the new images
@@ -1143,25 +1154,19 @@ def handle_backend_UI():
                 generate_short_storys()
                 generate_all_articles()
                 copy_non_changing_sites()
-                generate_utforska()
-                
-                copy_universal()
+                generate_search()
             elif answer == "gen index":
                 generate_index()
             elif answer == "gen hear me outs":
                 generate_hear_me_outs()
             elif answer == "gen notiser":
                 generate_short_storys()
-            elif answer == "gen articles":
+            elif answer == "gen all articles":
                 generate_all_articles()
+            elif answer == "gen search":
+                generate_search()
             elif answer == "gen not changing":
                 generate_all_articles()
-            elif answer == "gen utforska":
-                generate_utforska()
-            
-            # universal.css
-            elif answer == "copy universal":
-                copy_universal()
                 
             # images
             elif answer == "copy images new":

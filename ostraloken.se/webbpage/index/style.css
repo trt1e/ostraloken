@@ -99,7 +99,7 @@ main { /* since there is no h1 top text to hold the main up*/
     /* 2.2rem is h2 font-size */
     width: 1.65rem; /* 2.2*0.75=1.65rem */
     height: 1.65rem;
-    margin-top: 0.55rem; /* 2.2-1.65=0.55rem */
+    margin-top: 0.50rem; /* 2.2-1.65=0.55rem */
     margin-right: 0.4rem;
     float: left;
     transition: color 0.3s;
@@ -113,7 +113,7 @@ main { /* since there is no h1 top text to hold the main up*/
         /* 1.8rem is h2 font-size */
         width: 1.35rem; /* 1.8*0.75=1.35rem */
         height: 1.35rem;
-        margin-top: 0.45rem; /* 1.8-1.35=0.55rem */
+        margin-top: 0.42rem; /* 1.8-1.35=0.55rem */
     }
 }
 .article:hover .stared_article_icon {
