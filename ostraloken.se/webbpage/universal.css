@@ -344,6 +344,25 @@ a.extra_info.user_prompt:hover {
         transform: translate(-0.2rem, -0.2rem);
     }
 }
+.clickable_element {
+    border: var(--darker-bg-color) solid 2px;
+}
+.clickable_element:hover {
+    background-color: var(--darker-bg-color);
+    border: var(--darkest-bg-color) solid 2px;
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+}
+.clickable_element.highlight {
+    background-color: var(--dark-bg-color);
+    border: var(--secondary-color) solid 2px;
+}
+.clickable_element.highlight:hover {
+    background-color: var(--darker-bg-color);
+    border: var(--primary-color) solid 2px;
+    transform: translate(-0.2rem, -0.2rem);
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+}
 
 /* Up button */
 #go_up {

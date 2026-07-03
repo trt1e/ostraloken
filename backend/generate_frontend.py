@@ -629,7 +629,7 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
         row_endings = ["<head>", "</head>", "<body>", "</body>", "<header>", "</header>", "<main>", "</main>", "<footer>", "</footer>"]
         start_warning = "<!--"
         end_warning = "-->"
-    elif file_type == "css":
+    elif file_type == "css" or file_type == "js":
         row_endings = ["{"]
         start_warning = "/*"
         end_warning = "*/"
@@ -639,7 +639,9 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     
     header_path = work_path(r"\ostraloken\ostraloken.se\templates\base\header.html")
     header_content = open(header_path, "r", encoding="utf-8") # get its content
-    final_file = final_file.replace("[+header+]", header_content.read()) # add header
+    header_read = header_content.read()
+    final_file = final_file.replace("[+header+]", header_read) # add header
+    final_file = final_file.replace("[+index_header+]", header_read.replace("../", "./")) # add header for specificly index
     header_content.close()
     
     footer_path = work_path(r"\ostraloken\ostraloken.se\templates\base\footer.html")
@@ -652,7 +654,7 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     generated_file.close()
 
 # articles
-def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
+def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr, spaces):
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./" # no redirect
@@ -677,6 +679,10 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     else:
         type_context = f'<p class="type_text">{type}</p>'
         
+    amount_space = ""
+    for number in range(int(spaces)):
+        amount_space += "    "
+        
     # generate the article id
     article_id = make_article_id(title, upplaga_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
@@ -691,35 +697,35 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
             author_context = f'<p class="author_text"><a href="https://ostraloken.se/kontakt/#{author.replace(" ", "_")}"><b>{author}</b></a></p>'
         
         final_article = f"""<article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
-            {type_context}
-            {image_context}
-            <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
-            <p>{content}</p>
-            {author_context}
-        </article>
-        """
+{amount_space}    {type_context}
+{amount_space}    {image_context}
+{amount_space}    <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
+{amount_space}    <p>{content}</p>
+{amount_space}    {author_context}
+{amount_space}</article>
+{amount_space}"""
     else: # make article anchor
         final_article = f"""<a href="{redirect_src}" id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
-                <article>
-                    {type_context}
-                    {image_context}
-                    <h2>
-                    <svg class="stared_article_icon" tabindex="-1" focusable="false" aria-hidden="true" width="100%" height="100%" viewBox="0 0 250 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-                        <g transform="matrix(1.062594,-0,0,1.062594,-87.518794,-23.693451)">
-                            <path d="M200,37.994L225.147,115.388L306.524,115.388L240.689,163.221L265.836,240.615L200,192.783L134.164,240.615L159.311,163.221L93.476,115.388L174.853,115.388L200,37.994Z" style="fill:currentColor;stroke:currentColor;stroke-width:15.68px;"/>
-                        </g>
-                    </svg>
-                    
-                    {title}</h2>
-                    <p>{content}</p>
-                    <p class="author_text"><b>{author}</b></p>
-                </article>
-            </a>
-            """
+{amount_space}    <article>
+{amount_space}        {type_context}
+{amount_space}        {image_context}
+{amount_space}        <h2>
+{amount_space}        <svg class="stared_article_icon" tabindex="-1" focusable="false" aria-hidden="true" width="100%" height="100%" viewBox="0 0 250 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+{amount_space}            <g transform="matrix(1.062594,-0,0,1.062594,-87.518794,-23.693451)">
+{amount_space}                <path d="M200,37.994L225.147,115.388L306.524,115.388L240.689,163.221L265.836,240.615L200,192.783L134.164,240.615L159.311,163.221L93.476,115.388L174.853,115.388L200,37.994Z" style="fill:currentColor;stroke:currentColor;stroke-width:15.68px;"/>
+{amount_space}            </g>
+{amount_space}        </svg>
+
+{amount_space}        {title}</h2>
+{amount_space}        <p>{content}</p>
+{amount_space}        <p class="author_text"><b>{author}</b></p>
+{amount_space}    </article>
+{amount_space}</a>
+{amount_space}"""
 
     return final_article
 
-def generate_preview_article(base_redirect_html_url, find_similar_articles_switch):
+def generate_preview_article(base_redirect_html_url, find_similar_articles_switch, spaces_amount):
     how_many_articles_generated = 0
     generated_articles = [] # for find_similar_articles == False
     generated_articles_based_on_type = {} # for find_similar_articles == True
@@ -784,13 +790,13 @@ def generate_preview_article(base_redirect_html_url, find_similar_articles_switc
 
                 if find_similar_articles_switch is False:
                     img_url = find_img(org_article_title, upplaga_number, f"{base_redirect_html_url}images/") # get the url to the img as a html link
-                    generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number))
+                    generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number, spaces_amount))
                     how_many_articles_generated += 1
                 else:
                     # img_url = find_img(org_article_title, upplaga_number, "./images/") # get the url to the img as a html link
                     if article_type not in generated_articles_based_on_type:
                         generated_articles_based_on_type[article_type] = {} # initialize generated_articles_based_on_type[article_type]
-                    generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, upplaga_number)})
+                    generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, upplaga_number, spaces_amount)})
                     how_many_articles_generated += 1
     if find_similar_articles_switch is False:
         return generated_articles
@@ -801,7 +807,7 @@ def generate_index():
     index_template_path = work_path(r"\ostraloken\ostraloken.se\templates\index.html")
     index_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\index.html")
     
-    list_of_generated_articles = generate_preview_article("./a/", False)
+    list_of_generated_articles = generate_preview_article("./a/", False, 2)
     all_generated_articles = ""
     for generated_articles in list_of_generated_articles:
         all_generated_articles += str(generated_articles)
@@ -824,7 +830,7 @@ def generate_all_articles():
     article_template_path = work_path(r"\ostraloken\ostraloken.se\templates\articles_pages.html")
     generated_articles_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a" + "\\")
     
-    list_of_articles_with_similer_type = generate_preview_article("./a/", True)
+    list_of_articles_with_similer_type = generate_preview_article("./a/", True, 2)
     
     print("Generating all articles:")
     progressbar_item = progressbar.ProgressBar(maxval=int(len(read_normal_storys())))
@@ -859,7 +865,7 @@ def generate_all_articles():
                 article_author = str(article["Writer"])
                 # copy over images and get the url to the right image
                 article_img_src = find_img(basic_article_title, upplaga_number, "./images/")
-                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
+                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number, 2)
 
                 # generate the article id
                 article_id = make_article_id(article_title, upplaga_number)
@@ -877,7 +883,7 @@ def generate_all_articles():
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
                     "[+url+]": f"https://ostraloken.se/a/{article_id}.html",
-                    "[+home_url+]": "../#" + article_id,
+                    "[+home_url+]": f"../#{article_id}",
                     "[+title+]": article_title.replace('"', "&quot;"),
                     "[+title_basic+]": remove_html_elements(article_title).replace('"', "&quot;"),
                     "[+article_type+]": article_type,
@@ -934,21 +940,25 @@ def generate_all_articles():
     print("All articles successfully generated!")
 
 # short storys
-def generate_lone_short_storys(title, content):
+def generate_lone_short_storys(title, content, spaces):
     if title is None or title == "":
         title = "Null"
     if content is None or content == "":
         content = "Null"
         
+    amount_space = ""
+    for number in range(int(spaces)):
+        amount_space += "    "
+        
     final_article = f"""<article class="article notis">
-                <h2>{title}</h2>
-                <p>{content}</p>
-            </article>
-            """
+{amount_space}    <h2>{title}</h2>
+{amount_space}    <p>{content}</p>
+{amount_space}</article>
+{amount_space}"""
         
     return final_article
 
-def get_short_story():
+def get_short_story(amount_spaces):
     generated_short_story = ""
     
     for short_story_bundle in reversed(read_short_storys()):
@@ -956,7 +966,7 @@ def get_short_story():
         if content:
             article_title = content["Title"]
             article_main_content = content["Article"]
-            generated_short_story += generate_lone_short_storys(article_title, article_main_content)
+            generated_short_story += generate_lone_short_storys(article_title, article_main_content, amount_spaces)
             
     return generated_short_story
 
@@ -964,13 +974,13 @@ def generate_short_storys():
     short_storys_template_path = work_path(r"\ostraloken\ostraloken.se\templates\notiser.html")
     short_storys_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\notiser\index.html")
     
-    replacment = {"[+short_storys+]": get_short_story()} # what gets replaced and with what
+    replacment = {"[+short_storys+]": get_short_story(2)} # what gets replaced and with what
     generate_site(short_storys_template_path, short_storys_generated_path, replacment, "html")
     
     print("Short storys successfully generated!")
 
 # hear me outs
-def generate_lone_hear_me_out(hear_me_out, description):
+def generate_lone_hear_me_out(hear_me_out, description, spaces):
     if hear_me_out is None or hear_me_out == "":
         hear_me_out = "Null"
     if description is None:
@@ -983,20 +993,24 @@ def generate_lone_hear_me_out(hear_me_out, description):
         
     if len(description) > 500:
         description = description[:500] + "..."
+        
+    amount_space = ""
+    for number in range(int(spaces)):
+        amount_space += "    "
     
     final_article = f"""<article class="article hear_me_out">
-            <h2>{hear_me_out}</h2>
-            <p>{description}</p>
-            <div class="smash_pass_area">
-                <button class="HMO_button smash_button"><i>SMASH</i></button>
-                <button class="HMO_button pass_button"><i>PASS</i></button>
-            </div>
-        </article>
-        """
+{amount_space}    <h2>{hear_me_out}</h2>
+{amount_space}    <p>{description}</p>
+{amount_space}    <div class="smash_pass_area">
+{amount_space}        <button class="HMO_button smash_button"><i>SMASH</i></button>
+{amount_space}        <button class="HMO_button pass_button"><i>PASS</i></button>
+{amount_space}    </div>
+{amount_space}</article>
+{amount_space}"""
         
     return final_article
 
-def get_hear_me_outs():
+def get_hear_me_outs(amount_spaces):
     generated_hear_me_out = ""
     
     for hear_me_out_bundle in reversed(read_hear_me_outs()):
@@ -1004,7 +1018,7 @@ def get_hear_me_outs():
         if content:
             article_hear_me_out = content["Hear_me_out"]
             article_desc = content["Description"]
-            generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_desc)
+            generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_desc, amount_spaces)
             
     return generated_hear_me_out
 
@@ -1013,7 +1027,7 @@ def generate_hear_me_outs():
     hear_me_outs_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hear_me_outs\index.html")
 
     
-    replacment = {"[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
+    replacment = {"[+hear_me_outs+]": get_hear_me_outs(2)} # what gets replaced and with what
     generate_site(hear_me_outs_template_path, hear_me_outs_generated_path, replacment, "html")
     
     print("Hear me outs successfully generated!")
@@ -1036,9 +1050,9 @@ def generate_search():
                 article_author = str(article["Writer"])
                 # copy over images and get the url to the right image
                 article_img_src = find_img(basic_article_title, upplaga_number, "https://ostraloken.se/a/images/")
-                whole_content_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
+                whole_content_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number, 3)
 
-    replacment = {"[+articles+]": whole_content_articles, "[+short_storys+]": get_short_story(), "[+hear_me_outs+]": get_hear_me_outs()} # what gets replaced and with what
+    replacment = {"[+articles+]": whole_content_articles, "[+short_storys+]": get_short_story(3), "[+hear_me_outs+]": get_hear_me_outs(3)} # what gets replaced and with what
     generate_site(utforska_template_path, utforska_generated_path, replacment, "html")
     
     print("Search successfully generated!")
@@ -1048,7 +1062,7 @@ def generate_hej():
     hej_template_path = work_path(r"\ostraloken\ostraloken.se\templates\hej.html")
     hej_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hej\index.html")
     
-    latest_article = generate_preview_article("../a/", False)[0]
+    latest_article = generate_preview_article("../a/", False, 3)[0]
 
     replacment = {"[+article+]": latest_article} # what gets replaced and with what
     generate_site(hej_template_path, hej_generated_path, replacment, "html")

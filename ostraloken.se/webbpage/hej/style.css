@@ -1,10 +1,10 @@
 /* Content in main */
 /*article*/
-.article {
+a.article {
     cursor: pointer;
     transition: 0.3s;
 }
-.article:hover {
+a.article:hover {
     border: var(--darkest-bg-color) solid 2px;
 }
 @media (width <= 30rem) {
@@ -97,7 +97,6 @@ main .nav_card_container {
     min-height: 4.5rem;
     display: flex;
     align-items: center;
-    border: var(--darkest-bg-color) solid 2px;
     margin-bottom: 0;
     overflow: hidden;
 }
@@ -106,21 +105,6 @@ main .nav_card_container {
         margin-bottom: 2.5rem;
         min-height: 0;
     }
-}
-.nav_card:hover {
-    background-color: var(--darker-bg-color);
-    transform: translate(-0.2rem, -0.2rem);
-    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
-}
-.nav_card.highlight {
-    background-color: var(--dark-bg-color);
-    border: var(--secondary-color) solid 2px;
-}
-.nav_card.highlight:hover {
-    background-color: var(--darker-bg-color);
-    border: var(--primary-color) solid 2px;
-    transform: translate(-0.2rem, -0.2rem);
-    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
 }
 .nav_card h2 {
     padding: 0.2rem;
@@ -150,6 +134,25 @@ main .nav_card_container {
     border: var(--darkest-bg-color) solid 2px;
     padding: 1rem;
     min-width: 5rem;
-    direction: rtl;
-    flex-direction: column;
+    display: grid;
+    grid-template-rows: repeat(auto-fill, 1rem auto);
+    grid-template-columns: repeat(2, 1fr);
+}
+@media (width < 30rem) {
+    #redirect_button_container {
+        grid-template-columns: 1fr;
+    }
+}
+.redirect_button {
+    font-size: 2rem;
+    border-right: transparent solid 0px; /*Remove the right border*/
+    border-left: transparent solid 2px;
+}
+.redirect_button:hover {
+    border-right: transparent solid 0px; /*Remove the right border*/
+    border-left: var(--primary-color) solid 2px;
+}
+/*Margin under*/
+.margin_under {
+    margin-bottom: 2.5rem !important;
 }
