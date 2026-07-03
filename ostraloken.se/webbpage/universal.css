@@ -297,22 +297,6 @@ main li {
 .article:not(:has(~ .article)) { /* Gör så bara sista .article har margin-bottom = 0 */
     margin-bottom: 0;
 }
-.article.clickable {
-    cursor: pointer;
-}
-.article.clickable:hover {
-    border: var(--darkest-bg-color) solid 2px;
-    
-    transform: translate(-0.2rem, -0.2rem);
-    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
-}
-.article.clickable.highlight {
-    border: var(--secondary-color) solid 2px;
-}
-.article.clickable.highlight:hover {
-    background-color: var(--darker-bg-color);
-    border: var(--primary-color) solid 2px;
-}
 
 .extra_info {
     background-color: var(--dark-bg-color);

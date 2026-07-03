@@ -19,9 +19,6 @@ main { /* since there is no h1 top text to hold the main up*/
 }
 .article:hover {
     border: var(--darkest-bg-color) solid 2px;
-    
-    transform: translate(-0.2rem, -0.2rem);
-    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
 }
 @media (width <= 30rem) {
     .article .main_article_text {
