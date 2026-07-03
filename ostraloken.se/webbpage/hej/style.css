@@ -7,11 +7,6 @@ a.article {
 a.article:hover {
     border: var(--darkest-bg-color) solid 2px;
 }
-@media (width <= 30rem) {
-    .article .main_article_text {
-        display: none;
-    }
-}
 .article.highlight {
     border: var(--secondary-color) solid 2px;
 }
