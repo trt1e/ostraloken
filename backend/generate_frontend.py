@@ -709,14 +709,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
 {amount_space}    <article>
 {amount_space}        {type_context}
 {amount_space}        {image_context}
-{amount_space}        <h2>
-{amount_space}        <svg class="stared_article_icon" tabindex="-1" focusable="false" aria-hidden="true" width="100%" height="100%" viewBox="0 0 250 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
-{amount_space}            <g transform="matrix(1.062594,-0,0,1.062594,-87.518794,-23.693451)">
-{amount_space}                <path d="M200,37.994L225.147,115.388L306.524,115.388L240.689,163.221L265.836,240.615L200,192.783L134.164,240.615L159.311,163.221L93.476,115.388L174.853,115.388L200,37.994Z" style="fill:currentColor;stroke:currentColor;stroke-width:15.68px;"/>
-{amount_space}            </g>
-{amount_space}        </svg>
-
-{amount_space}        {title}</h2>
+{amount_space}        <h2>{title}</h2>
 {amount_space}        <p>{content}</p>
 {amount_space}        <p class="author_text"><b>{author}</b></p>
 {amount_space}    </article>
