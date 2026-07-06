@@ -1,3 +1,8 @@
+/* Main */
+main {
+    padding-top: 0.4rem;
+}
+
 /* Content in main */
 .type_text {
     width: fit-content;
@@ -53,7 +58,7 @@
     z-index: 1;
     width: calc(100%);
     position: static; 
-    margin-bottom: 1rem;
+    margin-bottom: 0.8rem;
     font-size: 1.6rem;
     display: flex;
     justify-content: space-between;
@@ -139,27 +144,41 @@
     border: var(--darkest-bg-color) solid 2px;
     color: var(--primary-color);
 }
-/* Star button */
-.action_button#star {
-    display: grid;
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr;
-}
-.action_button #star_empty {
-    grid-row: 1;
-    grid-column: 1;
-}
-.action_button #star_filled {
-    transition: opacity 0.3s;
-    grid-row: 1;
-    grid-column: 1;
-    opacity: 0%;
-    z-index: 1; /* So it is above the other one */
-}
 
 /* Extra info */
 .extra_info {
-    top: 6.4rem;
+    top: 7.1rem;
+}
+
+/* Scrolling news element */
+#scrolling_news_feed {
+    background-color: var(--bg-color);
+    border-bottom: 2px solid var(--darker-bg-color);
+    width: 100%;
+    height: 1.2rem;
+    text-wrap: nowrap;
+    cursor: default;
+    overflow: hidden;
+}
+#scrolling_news_feed a {
+    color: var(--secondary-color);
+    display: inline-block;
+    width: fit-content;
+    text-decoration: none;
+    white-space: nowarp;
+    transform: translateX(100vw);
+    animation: scroll_feed 20s linear 0s infinite;
+}
+#scrolling_news_feed a:hover {
+    animation-play-state: paused;
+}
+@keyframes scroll_feed {
+    0% {
+        transform: translateX(100vw);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
 }
 
 /* Recomended articles */
@@ -181,23 +200,4 @@ h3 {
 }
 #read_also .article.highlight:hover {
     border: var(--primary-color) solid 2px;
-}
-
-/* Star */
-.stared_article_icon {
-    color: var(--secondary-color);
-    width: 5rem;
-    height: 5rem;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    transform: rotate(3deg) translate(-2.2rem, 2.2rem);
-    transition: color 0.3s;
-    user-select: none;
-    pointer-events: none;
-
-    display: none;
-}
-.article:hover .stared_article_icon {
-    color: var(--primary-color);
 }

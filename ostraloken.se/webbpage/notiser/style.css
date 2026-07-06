@@ -1,3 +1,7 @@
+* {
+    scroll-margin-top: calc(5dvh + 3.4rem); /*Centers it when getting there from another url via # */
+}
+
 /* Main */
 main #notiser_container {
     display: grid;
@@ -9,5 +13,33 @@ main #notiser_container {
 @media (width < 35rem) {
     main #notiser_container {
         display: block;
+    }
+}
+
+/* Content in main */
+.article:target {
+    animation: articleSelected 0.8s ease-in-out 0.1s 2;
+}
+
+@keyframes articleSelected {
+    0% {
+        background-color: var(--bg-color);
+        border: var(--darker-bg-color) solid 2px;
+        transform: translate(0, 0);
+        box-shadow: none;
+    }
+
+    50% {
+        background-color: var(--darker-bg-color);
+        border: var(--primary-color) solid 2px;
+        transform: translate(0, -0.2rem);
+        box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+    }
+    
+    100% {
+        background-color: var(--bg-color);
+        border: var(--darker-bg-color) solid 2px;
+        transform: translate(0, 0);
+        box-shadow: none;
     }
 }

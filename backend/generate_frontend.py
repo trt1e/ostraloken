@@ -137,6 +137,19 @@ def make_article_id(article_title, upplaga_number):
     id_upplaga = "-U" + str(upplaga_number)
     return id_article + id_upplaga
 
+def make_short_story_id(article_title, article_content):
+    replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
+    
+    id_article = strip_string(remove_html_elements(article_title), 60)
+    id_content = strip_string(remove_html_elements(article_content), 120)
+    for letter in replace_letters:
+        if letter in id_article:
+            id_article = id_article.replace(letter, replace_letters[letter])
+        if letter in id_content:
+            id_content = id_content.replace(letter, replace_letters[letter])
+
+    return id_article + "+" + id_content
+
 def make_image_id(article_title, remove_åäö):
     id = "IMG-" + strip_string(remove_html_elements(article_title), 100)
     if remove_åäö:
@@ -637,6 +650,7 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     for ending in row_endings:
         final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
     
+    # add header
     header_path = work_path(r"\ostraloken\ostraloken.se\templates\base\header.html")
     header_content = open(header_path, "r", encoding="utf-8") # get its content
     header_read = header_content.read()
@@ -644,6 +658,7 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     final_file = final_file.replace("[+index_header+]", header_read.replace("../", "./")) # add header for specificly index
     header_content.close()
     
+    # add footer
     footer_path = work_path(r"\ostraloken\ostraloken.se\templates\base\footer.html")
     footer_content = open(footer_path, "r", encoding="utf-8") # get its content
     final_file = final_file.replace("[+footer+]", footer_content.read()) # add footer
@@ -873,6 +888,16 @@ def generate_all_articles():
         </a>
         """
 
+                # add scrolling news feed
+                all_short_storys = read_short_storys()
+                random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]["Content"]
+                final_random_short_story = f"<b>{random_short_story["Title"]}</b> • {random_short_story["Article"]}"
+                short_story_id = make_short_story_id(random_short_story["Title"], random_short_story["Article"])
+                feed_element = f"""<div id="scrolling_news_feed">
+                    <a href="../notiser/#{short_story_id}">{final_random_short_story}</a>
+                </div>
+                """
+
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
                     "[+url+]": f"https://ostraloken.se/a/{article_id}.html",
@@ -888,7 +913,8 @@ def generate_all_articles():
                     "[+upplaga_number+]": str(upplaga_number),
                     "[+upplaga_date+]": upplaga_date,
                     "[+h3_text_to_intorduce_section+]": "<h3>Läs liknande artiklar:</h3>", # so it can be removed
-                    "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png" # basic backup image
+                    "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
+                    "[+scrolling_news_feed+]": feed_element # add news feed
                 } # what gets replaced and with what
                 
                 if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists
@@ -942,11 +968,15 @@ def generate_lone_short_storys(title, content, spaces):
     amount_space = ""
     for number in range(int(spaces)):
         amount_space += "    "
+    
+    short_story_id = make_short_story_id(title, content)
         
-    final_article = f"""<article class="article notis">
-{amount_space}    <h2>{title}</h2>
-{amount_space}    <p>{content}</p>
-{amount_space}</article>
+    final_article = f"""<a class="article notis" id="{short_story_id}">
+{amount_space}    <article class="">
+{amount_space}        <h2>{title}</h2>
+{amount_space}        <p>{content}</p>
+{amount_space}    </article>
+{amount_space}</a>
 {amount_space}"""
         
     return final_article

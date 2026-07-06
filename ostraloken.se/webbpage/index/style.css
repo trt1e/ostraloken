@@ -7,11 +7,6 @@ html {
     scroll-margin-top: calc(5dvh + 3.4rem); /*Centers it when getting there from another url via # */
 }
 
-/* Main */
-main { /* since there is no h1 top text to hold the main up*/
-    padding-top: 3rem;
-}
-
 /* Content in main */
 .article {
     cursor: pointer;
@@ -69,12 +64,12 @@ main { /* since there is no h1 top text to hold the main up*/
 
 /* Im feeling lucky button */
 #im_feeling_lucky {
-    position: absolute;
-    width: 15rem;
-    top: 4.4rem;
-    left: calc(50vw - 7.5rem);
-    text-align: center;
     background-color: transparent;
+    width: 15rem;
+    height: 1rem;
+    margin-left: calc(50% - 7.5rem);
+    margin-bottom: 1rem;
+    text-align: center;
     border: none;
     color: var(--lighter-text-color);
     text-decoration: none;
