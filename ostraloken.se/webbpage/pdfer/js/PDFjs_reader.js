@@ -9,7 +9,12 @@ pdfjs.GlobalWorkerOptions.workerSrc = "./pdf.worker.mjs";
 const pdfContent = document.getElementById("main_pdf");
 const pdfNumber = document.getElementById("pdf_upplaga_number");
 const baseUrl = "\pdfs/";
-const amoutPDfs = 40; // Change this when adding new upplagor
+
+
+// DO NOT TOUCH!!!
+const amoutPDfs = 40; // This specific variable is changed with generate_frontend.py
+// DO NOT TOUCH!!!
+
 
 let numberOfPages;
 let counter = amoutPDfs;

@@ -409,7 +409,7 @@ a.extra_info.user_prompt:hover {
 
 /* Footer */
 footer {
-    min-width: 100%;
+    width: 100%;
     min-height: 4rem;
     height: fit-content;
     position: absolute;
@@ -432,10 +432,32 @@ footer {
     }
 }
 
-.footer_text {
-    padding: 0.7em;
+.footer_container {
+    width: calc(100% / 3);
 }
+@media (width < 50rem) {
+    .footer_container {
+        width: 100%;
+    }
+}
+
+.footer_text {
+    width: 15rem;
+    padding: 0.7em;
+    overflow-wrap: normal;
+    display: flex;
+    flex-direction: column;
+}
+@media (width < 15rem) {
+    .footer_text {
+        width: 100%;
+    }
+}
+
 .footer_text a {
+    display: block;
+    overflow-wrap: normal;
+    white-space: normal;
     color: var(--text-color);
     text-decoration: none;
     transition: color 0.3s;

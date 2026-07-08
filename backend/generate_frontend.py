@@ -2,6 +2,7 @@ import os
 import re
 import random
 from PIL import Image
+import shutil
 import progressbar
 
 is_linux = False
@@ -159,6 +160,12 @@ def make_image_id(article_title, remove_åäö):
                 id = id.replace(letter, replace_letters[letter])
     return id
 
+def add_spaces(amount):
+    amount_space = ""
+    for number in range(int(amount)):
+        amount_space += "    "
+    return amount_space
+
 # ---------------------------------
 # READ TEXT
 # ---------------------------------
@@ -166,6 +173,10 @@ def make_image_id(article_title, remove_åäö):
 normal_story_path = work_path(r"\ostraloken\backend\content\normal_storys_and_other")
 short_story_path = work_path(r"\ostraloken\backend\content\short_storys.txt")
 hear_me_outs_path = work_path(r"\ostraloken\backend\content\hear_me_outs.txt")
+
+staff_info_path = work_path(r"\ostraloken\backend\content\static\staff_info.txt")
+om_oss_content_path = work_path(r"\ostraloken\backend\content\static\om_oss_content.txt")
+lank_nav_content_path = work_path(r"\ostraloken\backend\content\static\lank_nav_content.txt")
 
 def read_normal_storys(): # To get the files and their content from all normal articals 
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
@@ -232,6 +243,65 @@ def read_hear_me_outs(): # To get the contents from all hear me outs
         output_sum.append(output)
         
     return output_sum
+
+def read_staff_info_content(): # To get the staff info
+    whole_text = try_opening(staff_info_path, "tr") # read it
+    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
+    output_sum = []
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
+        # find where diffrent parts are in the document
+        name = find_between(whole_text, "### ", " ##", last_final_pos)
+        title = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        email = find_between(whole_text, "@@@ ", " @@", last_final_pos)
+        image_src = find_between(whole_text, "§§§ ", " §§", last_final_pos)
+        last_final_pos = whole_text.find(" §§", last_final_pos) + 3
+        
+        output = {"Name": name, "Title": title, "Email": email, "Image_src": image_src}
+        output_sum.append(output)
+        
+    return output_sum
+
+def read_om_oss_content(): # To get the content of the the static informational text to be placed in
+    whole_text = try_opening(om_oss_content_path, "tr") # read it
+    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
+    output_sum = []
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
+        # find where diffrent parts are in the document
+        title = find_between(whole_text, "### ", " ##", last_final_pos)
+        article = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        image_src = find_between(whole_text, "§§§ ", " §§", last_final_pos)
+        last_final_pos = whole_text.find(" §§", last_final_pos) + 3
+        
+        output = {"Title": title, "Article": article, "Image_src": image_src}
+        output_sum.append(output)
+        
+    return output_sum
+
+def read_lank_nav_content(): # To get the external liks in länk nav
+    whole_text = try_opening(lank_nav_content_path, "tr") # read it
+    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
+    output_sum = []
+    for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
+        # find where diffrent parts are in the document
+        title = find_between(whole_text, "### ", " ##", last_final_pos)
+        link = find_between(whole_text, "@@@ ", " @@", last_final_pos)
+        image_src = find_between(whole_text, "§§§ ", " §§", last_final_pos)
+        important_statment = find_between(whole_text, "!!! ", " !!", last_final_pos)
+        last_final_pos = whole_text.find(" !!", last_final_pos) + 3
+        
+        output = {"Title": title, "Link": link, "Image_src": image_src, "Important": important_statment}
+        output_sum.append(output)
+        
+    return output_sum
+
+
+def read_Östra_Lökens_policy(): # Get the policy
+    Östra_Lökens_policy_path = work_path(r"\ostraloken\backend\content\static\Östra_Lökens_policy.txt")
+    return try_opening(Östra_Lökens_policy_path, "tr") # read it
+
+def read_Juridiskt(): # Get the policy
+    Juridiskt_path = work_path(r"\ostraloken\backend\content\static\Juridiskt.txt")
+    return try_opening(Juridiskt_path, "tr") # read it
 
 
 # ---------------------------------
@@ -558,6 +628,63 @@ def setup_new_hear_me_outs(count_hear_me_outs):
 
 
 # ---------------------------------
+# MAKE GENERAL REPLACMENT DICT
+# ---------------------------------
+
+def generate_dictionary():
+    replacment_dictionary = {}
+    
+    # Add header
+    header = get_header()
+    replacment_dictionary["[+header+]"] = header
+    replacment_dictionary["[+index_header+]"] = header.replace("../", "./") # add header for specificly index
+    
+    # Add footer
+    replacment_dictionary["[+footer+]"] = get_footer()
+    
+    # All normal articles preview that you can click and it brings you to that article page
+    list_of_generated_articles = generate_preview_article("./a/", False, 2)
+    all_generated_articles = ""
+    for generated_articles in list_of_generated_articles:
+        all_generated_articles += str(generated_articles)
+    replacment_dictionary["[+all_preview_articles+]"] = all_generated_articles
+    
+    # All normal articles fully printed
+    whole_content_articles = ""
+    for upplaga in reversed(read_normal_storys()):
+        # go throught every article in the upplaga
+        upplaga_number = upplaga["Upplaga"]
+        for article in upplaga["Content"]:
+            if article: # somethimes article is empty, this prevents that
+                article_title = str(article["Title"])
+                basic_article_title = remove_html_elements(article_title)
+                article_main_text = str(article["Article"])
+                article_type = str(article["Type"])
+                article_author = str(article["Writer"])
+                # copy over images and get the url to the right image
+                article_img_src = find_img(basic_article_title, upplaga_number, "https://ostraloken.se/a/images/")
+                whole_content_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number, 3)
+    replacment_dictionary["[+all_articles+]"] = whole_content_articles
+    
+    # All short storys
+    replacment_dictionary["[+short_storys+]"] = get_short_story(2)
+    
+    # All hear me outs
+    replacment_dictionary["[+hear_me_outs+]"] = get_hear_me_outs(2)
+    
+    # The latest story
+    most_recent_story = generate_preview_article("../a/", False, 3)[0]
+    replacment_dictionary["[+latest_article+]"] = most_recent_story
+    # The latest story title
+    replacment_dictionary["[+latest_title+]"] = remove_html_elements(most_recent_story["Title"]).replace('"', "&quot;")
+    
+    # Get the nav cards
+    replacment_dictionary["[+nav_cards+]"] = get_nav_element(3)
+    
+    return replacment_dictionary
+
+
+# ---------------------------------
 # GENERATE SITES
 # ---------------------------------
 
@@ -626,6 +753,52 @@ def copy_over_images(gen_type):
     else:
         print("No images left to copy")
 
+# Copy pdf:s
+def copy_over_pdfs(gen_type):
+    pdf_start_path = work_path(r"\ostraloken\backend\content\pdfs" + "\\")
+    pdf_end_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\pdfs" + "\\")
+    
+    amount_of_pdfs = 0
+    pdfs_list = os.listdir(pdf_start_path)
+    
+    for file_dir in pdfs_list:
+        amount_of_pdfs += 1
+        
+        full_start_file_dir = pdf_start_path + file_dir
+        full_end_file_dir = pdf_end_path + file_dir
+        
+        copy_file_switch = False
+        
+        if gen_type != "new" or os.path.isfile(full_end_file_dir) is False:
+            if "specific" in gen_type:
+                desired_upplaga_nmr = gen_type.split(": ")[1]
+                upplaga_number = file_dir.split("Östra_Löken_upplaga_")[1].split(".pdf")[0]
+                if int(upplaga_number) == int(desired_upplaga_nmr):
+                    copy_file_switch = True
+            else:
+                copy_file_switch = True
+
+        if copy_file_switch:
+            shutil.copyfile(full_start_file_dir, full_end_file_dir)
+            
+            print(f"copied pdf {file_dir}")
+    else:
+        print("No pdf:s left to copy")
+        
+    # change the PDFjs_reader.js in the /pdfer/js/ folder so that it has the correct amount of pdfs listed
+    pdf_js_program_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\js\PDFjs_reader.js")
+    
+    # get the content
+    js_file_content = try_opening(pdf_js_program_path, "tr") # read it
+    
+    # change the number
+    js_changed_content = re.sub(r"const amoutPDfs = \d+", f"const amoutPDfs = {amount_of_pdfs}", js_file_content)
+    
+    changed_js_file = open(pdf_js_program_path, "w", encoding="utf-8") # create / find the file
+    changed_js_file.write(js_changed_content) # write to it
+    changed_js_file.close()
+    
+
 # basic for all generated text files
 def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated    
     template = try_opening(template_path, "")
@@ -651,22 +824,33 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
         final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
     
     # add header
-    header_path = work_path(r"\ostraloken\ostraloken.se\templates\base\header.html")
-    header_content = open(header_path, "r", encoding="utf-8") # get its content
-    header_read = header_content.read()
+    header_read = get_header()
     final_file = final_file.replace("[+header+]", header_read) # add header
     final_file = final_file.replace("[+index_header+]", header_read.replace("../", "./")) # add header for specificly index
-    header_content.close()
     
     # add footer
-    footer_path = work_path(r"\ostraloken\ostraloken.se\templates\base\footer.html")
-    footer_content = open(footer_path, "r", encoding="utf-8") # get its content
-    final_file = final_file.replace("[+footer+]", footer_content.read()) # add footer
-    footer_content.close()
+    final_file = final_file.replace("[+footer+]", get_footer()) # add footer
     
     generated_file = open(generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(final_file) # write to it
     generated_file.close()
+
+# header & footer
+def get_header():
+    header_path = work_path(r"\ostraloken\ostraloken.se\templates\base\header.html")
+    header_content = open(header_path, "r", encoding="utf-8") # get its content
+    header_final = header_content.read()
+    header_content.close()
+    return header_final
+
+def get_footer():
+    footer_path = work_path(r"\ostraloken\ostraloken.se\templates\base\footer.html")
+    footer_content = open(footer_path, "r", encoding="utf-8") # get its content
+    footer_final = footer_content.read()
+    footer_content.close()
+    footer_final = footer_final.replace("[+Östra_Lökens_policy+]", read_Östra_Lökens_policy())
+    footer_final = footer_final.replace("[+Juridiskt+]", read_Juridiskt())
+    return footer_final
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr, spaces):
@@ -694,9 +878,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     else:
         type_context = f'<p class="type_text">{type}</p>'
         
-    amount_space = ""
-    for number in range(int(spaces)):
-        amount_space += "    "
+    amount_space = add_spaces(spaces)
         
     # generate the article id
     article_id = make_article_id(title, upplaga_nmr)
@@ -965,9 +1147,7 @@ def generate_lone_short_storys(title, content, spaces):
     if content is None or content == "":
         content = "Null"
         
-    amount_space = ""
-    for number in range(int(spaces)):
-        amount_space += "    "
+    amount_space = add_spaces(spaces)
     
     short_story_id = make_short_story_id(title, content)
         
@@ -1049,13 +1229,12 @@ def generate_hear_me_outs():
     hear_me_outs_template_path = work_path(r"\ostraloken\ostraloken.se\templates\hear_me_outs.html")
     hear_me_outs_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hear_me_outs\index.html")
 
-    
     replacment = {"[+hear_me_outs+]": get_hear_me_outs(2)} # what gets replaced and with what
     generate_site(hear_me_outs_template_path, hear_me_outs_generated_path, replacment, "html")
     
     print("Hear me outs successfully generated!")
 
-# search archive
+# search archive page
 def generate_search():
     utforska_template_path = work_path(r"\ostraloken\ostraloken.se\templates\sok.html")
     utforska_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\sok\index.html")
@@ -1092,34 +1271,111 @@ def generate_hej():
     
     print("Hej successfully generated!")
 
-# the rest in main webbpage
-def copy_non_changing_sites():
+# PDF:er page
+def generate_pdfer():
     pdfer_template_path = work_path(r"\ostraloken\ostraloken.se\templates\pdfer.html")
     pdfer_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\index.html")
+    
+    replacment = {}
+    generate_site(pdfer_template_path, pdfer_generated_path, replacment, "html")
+    print("PDF:s successfully copy:d!")
+    
+# Nav page
+def generate_lone_nav_element(title, link, image_src, important_status, spaces):
+    if title is None or title == "":
+        title = "Null"
+    if link is None or link == "":
+        link = "Null"
+    if image_src is None or image_src == "":
+        image_context = "<!-- NO IMAGE HERE -->"
+    else:
+        image_context = f'<img src="{image_src}" alt="{image_src}">'
+        
+    if important_status == "True":
+        highlight_context = " highlight"
+    else:
+        highlight_context = ""
+        
+    amount_space = add_spaces(spaces)
+    
+    final_article = f"""<a class="article clickable_element nav_card{highlight_context}" target="_blank" href="{link}">
+{amount_space}    <h2>{title}</h2>
+{amount_space}    {image_context}
+{amount_space}</a>
+{amount_space}"""
+        
+    return final_article
+
+def get_nav_element(amount_spaces):
+    generated_nav_element = ""
+    
+    for content in read_lank_nav_content():
+        nav_element_title = content["Title"]
+        nav_element_link = content["Link"]
+        nav_element_image_src = content["Image_src"]
+        nav_element_important_status = content["Important"]
+        generated_nav_element += generate_lone_nav_element(nav_element_title, nav_element_link, nav_element_image_src, nav_element_important_status, amount_spaces)
+        
+    return generated_nav_element
+
+def generate_nav():
     nav_template_path = work_path(r"\ostraloken\ostraloken.se\templates\lank_nav.html")
     nav_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\lank_nav\index.html")
+    
+    replacment = {"[+nav_cards+]": get_nav_element(3)}
+    generate_site(nav_template_path, nav_generated_path, replacment, "html")
+    print("Nav successfully generated!")
+    
+# Om oss page
+def generate_omoss_section(title, content, image_src, spaces):
+    if title is None or title == "":
+        title = "Null"
+    if content is None or content == "":
+        content = "Null"
+    if image_src is None or image_src == "":
+        image_context = "<!-- NO IMAGE HERE -->"
+    else:
+        image_context = f'<img src="{image_src}" alt="{image_src}" width="800" height="600">'
+        
+    amount_space = add_spaces(spaces)
+    
+    final_article = f"""<article class="article" id="{title.replace(" ", "_")}">
+{amount_space}    {image_context}
+{amount_space}    <h2>{title}</h2>
+{amount_space}    <p class="main_article_text">{content}</p>
+{amount_space}</article>
+{amount_space}"""
+        
+    return final_article
+
+def generate_omoss():
     omoss_template_path = work_path(r"\ostraloken\ostraloken.se\templates\om_oss.html")
     omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\om_oss\index.html")
+    
+    replacment = {}
+    
+    for content in read_om_oss_content():
+        section_title = content["Title"]
+        section_article = content["Article"]
+        section_image_src = content["Image_src"]
+        generated_section = generate_omoss_section(section_title, section_article, section_image_src, 2)
+        replacment[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
+        
+    replacment["[+Juridiskt+]"] = generate_omoss_section("Juridsikt", read_Juridiskt(), "", 2)
+    replacment["[+Östra_Lökens_policy+]"] = generate_omoss_section("Östra Lökens policy", read_Östra_Lökens_policy(), "", 2)
+    
+    generate_site(omoss_template_path, omoss_generated_path, replacment, "html")
+    print("Om oss successfully copy:d!")
+    
+# Kontakt page
+def generate_kontakt():
     kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontaktinfo.html")
     kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontaktinfo\index.html")
     
-    replacment_all = {}
-    
-    # PDF:er
-    generate_site(pdfer_template_path, pdfer_generated_path, replacment_all, "html")
-    print("PDF:s successfully copy:d!")
-    
-    # Nav
-    generate_site(nav_template_path, nav_generated_path, replacment_all, "html")
-    print("Nav successfully copy:d!")
-
-    # Om oss
-    generate_site(omoss_template_path, omoss_generated_path, replacment_all, "html")
-    print("Om oss successfully copy:d!")
-    
-    # Kontakt
-    generate_site(kontakt_template_path, kontakt_generated_path, replacment_all, "html")
+    replacment = {}
+    generate_site(kontakt_template_path, kontakt_generated_path, replacment, "html")
     print("Kontakt successfully copy:d!")
+
 
 # ---------------------------------
 # BACKEND TERMINAL
@@ -1144,19 +1400,16 @@ def handle_backend_UI():
     
     GENERATE TEXT FILES
     $ gen all --> Generate all webbpage files that are generated
-    
-    $ gen index --> Generate just the index file
-    $ gen hear me outs --> Generate just the hear me outs file
-    $ gen notiser --> Generate just the notiser file
-    $ gen all articles --> Generate just all the article files
-    $ gen search --> Generate just the search archive file
-    $ gen hej --> Generate just the hej greating file
-    $ gen not changing --> Generate just the non-changing files
-    
+
     COPY IMAGES
     $ copy images new --> Copy over only the new images
     $ copy images all --> Copy over all images, even if they alredy exists
     $ copy images specific --> Copy over all images in a specific upplaga
+    
+    COPY PDF:S
+    $ copy pdf new --> Copy over only the new pdf:s
+    $ copy pdf all --> Copy over all pdf:s, even if they alredy exists
+    $ copy pdf specific --> Copy over a specific upplagas pdf 
     
     FIX CONTENT
     $ inspect --> Looks through content so everything is as it should be, if not: it is reported   
@@ -1205,21 +1458,10 @@ def handle_backend_UI():
                 generate_all_articles()
                 generate_search()
                 generate_hej()
-                copy_non_changing_sites()
-            elif answer == "gen index":
-                generate_index()
-            elif answer == "gen hear me outs":
-                generate_hear_me_outs()
-            elif answer == "gen notiser":
-                generate_short_storys()
-            elif answer == "gen all articles":
-                generate_all_articles()
-            elif answer == "gen search":
-                generate_search()
-            elif answer == "gen hej":
-                generate_hej()
-            elif answer == "gen not changing":
-                generate_all_articles()
+                generate_pdfer()
+                generate_nav()
+                generate_omoss()
+                generate_kontakt()
                 
             # images
             elif answer == "copy images new":
@@ -1230,6 +1472,18 @@ def handle_backend_UI():
                 upplaga_to_copy = input("Copy over images in upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
                     copy_over_images(f"specific: {upplaga_to_copy}")
+                else:
+                    print(f"{upplaga_to_copy} not a number")
+                    
+            # pdfs
+            elif answer == "copy pdf new":
+                copy_over_pdfs("new")
+            elif answer == "copy pdf all":
+                copy_over_pdfs("all")
+            elif answer == "copy pdf specific":
+                upplaga_to_copy = input("Copy over pdf upplaga: ")
+                if re.search(r"[0-9]", upplaga_to_copy):
+                    copy_over_pdfs(f"specific: {upplaga_to_copy}")
                 else:
                     print(f"{upplaga_to_copy} not a number")
                     
@@ -1264,4 +1518,42 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+
+
+
+
+
+
+    <footer id="footer">
+        <div class="footer_text">
+            <p>Östra Lökens Policy:</p>
+            <a href="https://ostraloken.se/om_oss/#Östra_Lökens_policy">
+                <br>Alla elevers namn är påhittade. <br>
+                Östra Löken siktar på att slå <br>
+                uppåt med satiren, inte neråt. <br>
+                Alla artiklar är skrivna av människor. <br>
+                <b>Tidningen är satir.</b>
+            </a>
+        </div>
+        <div class="footer_text" style="text-align: center;">
+            <p>Östra Löken produceras av:</p>
+            <p>
+            <br><a href="https://ostraloken.se/kontaktinfo/#Vilhelm_Grill">Vilhelm Grill</a> <br>
+            <a href="https://ostraloken.se/kontaktinfo/#Joar_Stange">Joar Stange</a> <br>
+            <a href="https://ostraloken.se/kontaktinfo/#John_Ericson">John Ericson</a> <br>
+            <a href="https://ostraloken.se/kontaktinfo/#Magne_Nordström">Magne Nordström</a> <br>
+            <a href="https://ostraloken.se/kontaktinfo/#Elliot_Sandström">Elliot Sandström</a>
+            </p> 
+        </div>
+        <div class="footer_text" style="text-align: right;">
+            <p>Juridiskt:</p>
+            <a href="https://ostraloken.se/om_oss/#Juridiskt">
+                <br>© Östra Löken. Allt material <br>
+                ägs av Östra Löken och får inte <br>
+                kopieras utan tillstånd. Tidningen <br>
+                ansvarar ej för eventuella fel. <br>
+                Webbsidan har inga cookies.
+            </a>
+        </div>
+    </footer>
 """
