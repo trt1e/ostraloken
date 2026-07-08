@@ -850,6 +850,14 @@ def get_footer():
     footer_content.close()
     footer_final = footer_final.replace("[+Östra_Lökens_policy+]", read_Östra_Lökens_policy())
     footer_final = footer_final.replace("[+Juridiskt+]", read_Juridiskt())
+    
+    staff_list = ""
+    staff_content = read_staff_info_content()
+    for person in staff_content:
+        person_name = person["Name"]
+        staff_list += f'<a href="https://ostraloken.se/kontaktinfo/#{person_name.replace(" ", "_")}">{person_name}</a>'
+    footer_final = footer_final.replace("[+people_involved+]", staff_list)
+    
     return footer_final
 
 # articles
@@ -1365,16 +1373,47 @@ def generate_omoss():
     replacment["[+Östra_Lökens_policy+]"] = generate_omoss_section("Östra Lökens policy", read_Östra_Lökens_policy(), "", 2)
     
     generate_site(omoss_template_path, omoss_generated_path, replacment, "html")
-    print("Om oss successfully copy:d!")
+    print("Om oss successfully generated!")
     
 # Kontakt page
+def generate_kontakt_section(name, title, email, image_src, spaces):
+    if name is None or name == "":
+        name = "Null"
+    if title is None or title == "":
+        title = "Null"
+    if email is None or email == "":
+        email = "Null"
+    if image_src is None or image_src == "":
+        image_context = "<!-- NO IMAGE HERE -->"
+    else:
+        image_context = f'<img src="{image_src}" alt="{name}">'
+        
+    amount_space = add_spaces(spaces)
+    
+    final_article = f"""<a class="article clickable_element kontakt_card" id="{name.replace(" ", "_")}" href="mailto:{email}">
+{amount_space}    {image_context}
+{amount_space}    <h2>{title}: {name}</h2>
+{amount_space}</a>
+{amount_space}"""
+        
+    return final_article
+
 def generate_kontakt():
     kontakt_template_path = work_path(r"\ostraloken\ostraloken.se\templates\kontaktinfo.html")
     kontakt_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\kontaktinfo\index.html")
     
-    replacment = {}
+    generated_sections = ""
+    
+    for content in read_staff_info_content():
+        person_name = content["Name"]
+        person_title = content["Title"]
+        person_email = content["Email"]
+        person_image_src = content["Image_src"]
+        generated_sections += generate_kontakt_section(person_name, person_title, person_email, person_image_src, 2)
+    
+    replacment = {"[+all_people+]": generated_sections}
     generate_site(kontakt_template_path, kontakt_generated_path, replacment, "html")
-    print("Kontakt successfully copy:d!")
+    print("Kontakt successfully generated!")
 
 
 # ---------------------------------
@@ -1518,42 +1557,4 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-
-
-
-
-
-
-    <footer id="footer">
-        <div class="footer_text">
-            <p>Östra Lökens Policy:</p>
-            <a href="https://ostraloken.se/om_oss/#Östra_Lökens_policy">
-                <br>Alla elevers namn är påhittade. <br>
-                Östra Löken siktar på att slå <br>
-                uppåt med satiren, inte neråt. <br>
-                Alla artiklar är skrivna av människor. <br>
-                <b>Tidningen är satir.</b>
-            </a>
-        </div>
-        <div class="footer_text" style="text-align: center;">
-            <p>Östra Löken produceras av:</p>
-            <p>
-            <br><a href="https://ostraloken.se/kontaktinfo/#Vilhelm_Grill">Vilhelm Grill</a> <br>
-            <a href="https://ostraloken.se/kontaktinfo/#Joar_Stange">Joar Stange</a> <br>
-            <a href="https://ostraloken.se/kontaktinfo/#John_Ericson">John Ericson</a> <br>
-            <a href="https://ostraloken.se/kontaktinfo/#Magne_Nordström">Magne Nordström</a> <br>
-            <a href="https://ostraloken.se/kontaktinfo/#Elliot_Sandström">Elliot Sandström</a>
-            </p> 
-        </div>
-        <div class="footer_text" style="text-align: right;">
-            <p>Juridiskt:</p>
-            <a href="https://ostraloken.se/om_oss/#Juridiskt">
-                <br>© Östra Löken. Allt material <br>
-                ägs av Östra Löken och får inte <br>
-                kopieras utan tillstånd. Tidningen <br>
-                ansvarar ej för eventuella fel. <br>
-                Webbsidan har inga cookies.
-            </a>
-        </div>
-    </footer>
 """
