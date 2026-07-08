@@ -1369,7 +1369,7 @@ def generate_omoss():
         generated_section = generate_omoss_section(section_title, section_article, section_image_src, 2)
         replacment[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
         
-    replacment["[+Juridiskt+]"] = generate_omoss_section("Juridsikt", read_Juridiskt(), "", 2)
+    replacment["[+Juridiskt+]"] = generate_omoss_section("Juridiskt", read_Juridiskt(), "", 2)
     replacment["[+Östra_Lökens_policy+]"] = generate_omoss_section("Östra Lökens policy", read_Östra_Lökens_policy(), "", 2)
     
     generate_site(omoss_template_path, omoss_generated_path, replacment, "html")
