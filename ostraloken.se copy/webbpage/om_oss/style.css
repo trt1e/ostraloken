@@ -1,0 +1,39 @@
+* {
+    scroll-margin-top: 30vh; /*Centers it when getting there from another url via # */
+}
+
+/* Content in main */
+.article:target {
+    animation: articleSelected 0.8s ease-in-out 0.1s 2;
+}
+
+@keyframes articleSelected {
+    0% {
+        background-color: var(--bg-color);
+        border: var(--darker-bg-color) solid 2px;
+        transform: translate(0, 0);
+        box-shadow: none;
+    }
+
+    50% {
+        background-color: var(--darker-bg-color);
+        border: var(--primary-color) solid 2px;
+        transform: translate(0, -0.2rem);
+        box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+    }
+    
+    100% {
+        background-color: var(--bg-color);
+        border: var(--darker-bg-color) solid 2px;
+        transform: translate(0, 0);
+        box-shadow: none;
+    }
+}
+
+/*Images*/
+#our_history_article img {
+    width: 3vw;
+    height: 2vw;
+    object-fit: cover;
+    float: right;
+}

@@ -1,0 +1,94 @@
+/*
+html {
+    scroll-behavior: smooth;
+}
+*/
+* {
+    scroll-margin-top: calc(5dvh + 3.4rem); /*Centers it when getting there from another url via # */
+}
+
+/* Content in main */
+.article {
+    cursor: pointer;
+    transition: 0.3s;
+}
+.article:hover {
+    border: var(--darkest-bg-color) solid 2px;
+}
+@media (width <= 30rem) {
+    .article .main_article_text {
+        display: none;
+    }
+}
+.article.highlight {
+    border: var(--secondary-color) solid 2px;
+}
+.article.highlight:hover {
+    border: var(--primary-color) solid 2px;
+}
+.type_text {
+    width: fit-content;
+    background-color: var(--highlight-color);
+    font-size: 1.6rem;
+    padding: 0.2rem;
+    margin-left: 0.4rem;
+    margin-right: 0.6rem;
+    position: absolute;
+    top: 1.6rem;
+    right: 1rem;
+}
+.no_img .type_text { /* In the case that there is no image */
+    position: static;
+    float: right;
+}
+@media (width < 30rem) {
+    .type_text {
+        width: 100%;
+        text-align: center;
+        margin-left: 0;
+        margin-right: 0;
+        position: static;
+        top: 0;
+        right: 0;
+        padding: 0;
+    }
+}
+.no_img img {
+    display: none;
+}
+.author_text {
+    text-align: end;
+    font-size: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Im feeling lucky button */
+#im_feeling_lucky {
+    background-color: transparent;
+    width: 15rem;
+    height: 1rem;
+    margin-left: calc(50% - 7.5rem);
+    margin-bottom: 1rem;
+    text-align: center;
+    border: none;
+    color: var(--lighter-text-color);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+@media (width < 45rem) {
+    #im_feeling_lucky {
+        width: 100%;
+        left: 0;
+    }
+}
+#im_feeling_lucky:hover {
+    color: var(--secondary-color);
+}
+#im_feeling_lucky p {
+    font-size: 1rem;
+}
+
+/* Text styling */
+main h1 {
+    display: none;
+}

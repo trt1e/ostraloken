@@ -34,7 +34,7 @@
 !!! False !!
 
 ### Youtube ##
-@@@ https://www.youtube.com/@%C3%96straL%C3%B6ken?sub_confirmation=1 @@
+@@@ https://www.youtube.com/@%C3%96straL%C3%B6ken @@
 §§§ https://ostraloken.se/images/external_links/youtube.webp §§
 !!! False !!
 

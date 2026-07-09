@@ -622,7 +622,6 @@ def setup_new_hear_me_outs(count_hear_me_outs):
 # ---------------------------------
 # MAKE GENERAL REPLACMENT DICT
 # ---------------------------------
-"""
 def generate_dictionary():
     replacment_dictionary = {}
     
@@ -633,6 +632,27 @@ def generate_dictionary():
     
     # Add footer
     replacment_dictionary["[+footer+]"] = get_footer()
+    
+    # Add go up button
+    replacment_dictionary["[+go_up+]"] = """<button id="go_up">
+            <svg width="100%" height="100%" viewBox="0 0 400 300" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+                <g transform="matrix(1,0,0,1,1.28586,-100)">
+                    <g transform="matrix(1.232315,-0.038988,0.083035,1.234494,-33.300057,-56.518675)">
+                        <path d="M128.273,321.058L117.364,330.939C111.936,325.411 106.658,319.737 101.229,314.21C93.175,306.009 85.046,297.882 76.916,289.755C66.327,279.169 55.662,268.658 45.073,258.072L62.896,241.928C72.386,253.511 81.793,265.161 91.283,276.743C98.567,285.635 105.852,294.527 113.218,303.351C118.183,309.299 123.308,315.111 128.273,321.058Z" style="fill:currentColor;"/>
+                    </g>
+                    <g transform="matrix(0.575378,-0.866878,0.635263,0.785159,-135.892841,100.50832)">
+                        <path d="M297.669,507.928L286.604,517.95C243.179,470.858 199.689,423.829 156.265,376.738C134.554,353.193 112.432,330.016 91.197,306.041C76.476,289.42 63.173,271.631 48.452,255.011L59.517,244.989C74.603,261.278 90.993,276.272 106.079,292.561C127.841,316.059 148.722,340.36 170.009,364.289C212.585,412.149 255.093,460.068 297.669,507.928Z" style="fill:currentColor;"/>
+                    </g>
+                    <g transform="matrix(-0.038151,0.057479,-0.042121,-0.05206,86.735403,259.912122)">
+                        <path d="M53.984,250C71.791,255.317 89.585,259.88 107.392,265.197C122.369,269.669 235.991,303.593 294.619,324.189C305.694,328.079 418.997,367.882 431.632,386.83C450.231,414.719 473.499,440.962 487.404,470.51C500.894,499.176 509.26,529.486 512.234,558.107C515.209,586.729 512.916,614.851 504.927,639.11C504.853,639.333 464.405,703.17 464.306,703.22C441.78,714.547 422.386,731.415 396.691,737.142C371.762,742.699 343.551,742.205 315.363,736.42C287.175,730.635 257.839,719.319 230.643,703.066C223.042,698.523 164.198,663.354 145.108,627.585C120.644,581.748 91.814,444.048 88.487,428.155C79.859,386.945 71.804,345.789 63.836,304.646C60.303,286.402 57.518,268.245 53.984,250Z" style="fill:currentColor;"/>
+                    </g>
+                    <g transform="matrix(-0.038988,-1.232315,1.234494,-0.083035,-252.534198,337.284534)">
+                        <path d="M128.273,321.058L117.364,330.939C111.936,325.411 106.658,319.737 101.229,314.21C93.175,306.009 85.046,297.882 76.916,289.755C66.327,279.169 55.662,268.658 45.073,258.072L62.896,241.928C72.386,253.511 81.793,265.161 91.283,276.743C98.567,285.635 105.852,294.527 113.218,303.351C118.183,309.299 123.308,315.111 128.273,321.058Z" style="fill:currentColor;"/>
+                    </g>
+                </g>
+            </svg>
+        </button>
+        """
     
     # All normal articles preview that you can click and it brings you to that article page
     list_of_generated_articles = generate_preview_article("./a/", False, 2)
@@ -659,10 +679,46 @@ def generate_dictionary():
     replacment_dictionary["[+all_articles+]"] = whole_content_articles
     
     # All short storys
-    replacment_dictionary["[+short_storys+]"] = get_short_story(2)
+    replacment_dictionary["[+all_short_storys+]"] = get_short_story(2)
     
     # All hear me outs
-    replacment_dictionary["[+hear_me_outs+]"] = get_hear_me_outs(2)
+    replacment_dictionary["[+all_hear_me_outs+]"] = get_hear_me_outs(2)
+    
+    # Dynamicly add all static articles
+    for content in read_static_content():
+        section_title = content["Title"]
+        section_article = content["Article"]
+        section_image_src = content["Image_src"]
+        
+        # add just the article
+        replacment_dictionary[f"[+{section_title.replace(" ", "_")}_article+]"] = section_article
+        
+        # generate article
+        generated_section = generate_static_section(section_title, section_article, section_image_src, 2)
+        replacment_dictionary[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
+        
+        # generate without image
+        generated_section = generate_static_section(section_title, section_article, "", 2)
+        replacment_dictionary[f"[+no_image_{section_title.replace(" ", "_")}+]"] = generated_section
+    
+    # List of staff as links to their kontaktinfo page
+    staff_list = ""
+    staff_content = read_staff_info_content()
+    for person in staff_content:
+        person_name = person["Name"]
+        staff_list += f'<a href="https://ostraloken.se/kontaktinfo/#{person_name.replace(" ", "_")}">{person_name}</a>'
+    replacment_dictionary["[+staff_link_list+]"] = staff_list
+    
+    # List of staff as html button elements which lead to their email
+    generated_sections = ""
+    for content in read_staff_info_content():
+        person_name = content["Name"]
+        person_title = content["Title"]
+        person_email = content["Email"]
+        person_image_src = content["Image_src"]
+        generated_sections += generate_kontakt_section(person_name, person_title, person_email, person_image_src, 2)
+    
+    replacment = {"[+staff_email_buttons+]": generated_sections}
     
     # The latest story
     most_recent_story = generate_preview_article("../a/", False, 3)[0]
@@ -671,10 +727,23 @@ def generate_dictionary():
     replacment_dictionary["[+latest_title+]"] = remove_html_elements(most_recent_story["Title"]).replace('"', "&quot;")
     
     # Get the nav cards
-    replacment_dictionary["[+nav_cards+]"] = get_nav_element(3)
+    replacment_dictionary["[+nav_highlight_cards+]"] = get_nav_element(True, 3)
+    replacment_dictionary["[+nav_normal_cards+]"] = get_nav_element(False, 3)
     
     return replacment_dictionary
-"""
+
+def get_templates_and_destination(): # go throught every file in templates
+    replacment_for_all = generate_dictionary()
+    
+    template_base_path = work_path(r"\ostraloken\ostraloken.se copy\templates" + "\\")
+    basic_template_files_list = os.listdir(template_base_path) # list all folders in dir
+    for file_dir in basic_template_files_list:
+        whole_file = try_opening(file_dir, "tr")
+        destination_dir = find_between(whole_file, "<!--@( ", " )@-->", 0)
+        generate_site(file_dir, destination_dir, replacment_for_all, file_dir.split(".")[-1])
+
+
+get_templates_and_destination()
 
 # ---------------------------------
 # GENERATE SITES
