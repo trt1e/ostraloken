@@ -1,0 +1,49 @@
+### Skicka insändare ##
+@@@ https://forms.gle/9pViiBqyvUQM4QkMA @@
+§§§ https://ostraloken.se/images/external_links/loken.webp §§
+!!! True !!
+
+### Skicka <i>hear me out</i> ##
+@@@ https://forms.gle/vdshQEq62FrpFvkHA @@
+§§§ https://ostraloken.se/images/external_links/loken.webp §§
+!!! True !!
+
+### Podcast ##
+@@@ https://open.spotify.com/show/28Zu5yYdK6LARijjqPaNPf?si=d6558a31e44541d6 @@
+§§§ https://ostraloken.se/images/external_links/redaktionen.webp §§
+!!! False !!
+
+### Östragymnasiet.com ##
+@@@ https://östragymnasiet.ostraloken.se @@
+§§§ https://ostraloken.se/images/external_links/ostragymnasiet.webp §§
+!!! False !!
+
+### Gula broschyren ##
+@@@ https://ostraloken.se/extra/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/ @@
+§§§ https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp §§
+!!! False !!
+
+### Instagram ##
+@@@ https://www.instagram.com/ostra_loken @@
+§§§ https://ostraloken.se/images/external_links/instagram.webp §§
+!!! False !!
+
+### Tiktok ##
+@@@ https://www.tiktok.com/@ostra_loken @@
+§§§ https://ostraloken.se/images/external_links/tiktok.webp §§
+!!! False !!
+
+### Youtube ##
+@@@ https://www.youtube.com/@%C3%96straL%C3%B6ken?sub_confirmation=1 @@
+§§§ https://ostraloken.se/images/external_links/youtube.webp §§
+!!! False !!
+
+### Maps ##
+@@@ https://maps.app.goo.gl/nA7PduRYRjEiqyrG6 @@
+§§§ https://ostraloken.se/images/external_links/maps.webp §§
+!!! False !!
+
+### Skicka epost ##
+@@@ mailto:kontakt@ostraloken.se @@
+§§§ https://ostraloken.se/images/external_links/email.webp §§
+!!! False !!

@@ -174,9 +174,9 @@ normal_story_path = work_path(r"\ostraloken\backend\content\normal_storys_and_ot
 short_story_path = work_path(r"\ostraloken\backend\content\short_storys.txt")
 hear_me_outs_path = work_path(r"\ostraloken\backend\content\hear_me_outs.txt")
 
-staff_info_path = work_path(r"\ostraloken\backend\content\static\staff_info.txt")
-om_oss_content_path = work_path(r"\ostraloken\backend\content\static\om_oss_content.txt")
-lank_nav_content_path = work_path(r"\ostraloken\backend\content\static\lank_nav_content.txt")
+staff_info_path = work_path(r"\ostraloken\backend\content\static\staff.txt")
+static_articles_path = work_path(r"\ostraloken\backend\content\static\articles.txt")
+external_links_content_path = work_path(r"\ostraloken\backend\content\static\external_links.txt")
 
 def read_normal_storys(): # To get the files and their content from all normal articals 
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
@@ -261,8 +261,8 @@ def read_staff_info_content(): # To get the staff info
         
     return output_sum
 
-def read_om_oss_content(): # To get the content of the the static informational text to be placed in
-    whole_text = try_opening(om_oss_content_path, "tr") # read it
+def read_static_content(): # To get the content of the the static informational text to be placed in
+    whole_text = try_opening(static_articles_path, "tr") # read it
     last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
     output_sum = []
     for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
@@ -277,8 +277,8 @@ def read_om_oss_content(): # To get the content of the the static informational 
         
     return output_sum
 
-def read_lank_nav_content(): # To get the external liks in länk nav
-    whole_text = try_opening(lank_nav_content_path, "tr") # read it
+def read_external_links_content(): # To get the external liks in länk nav
+    whole_text = try_opening(external_links_content_path, "tr") # read it
     last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
     output_sum = []
     for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
@@ -294,19 +294,11 @@ def read_lank_nav_content(): # To get the external liks in länk nav
         
     return output_sum
 
-
-def read_Östra_Lökens_policy(): # Get the policy
-    Östra_Lökens_policy_path = work_path(r"\ostraloken\backend\content\static\Östra_Lökens_policy.txt")
-    return try_opening(Östra_Lökens_policy_path, "tr") # read it
-
-def read_Juridiskt(): # Get the policy
-    Juridiskt_path = work_path(r"\ostraloken\backend\content\static\Juridiskt.txt")
-    return try_opening(Juridiskt_path, "tr") # read it
-
-
 # ---------------------------------
 # FIX ARTICLES
 # ---------------------------------
+
+############### ADD CHECKING STATIC AND PDFS HERE!!! #################
 
 def inspect_normal_storys(): # looks throught all files to se if something is wrong but doesnt change nothing
     print("↓ ARTICLES ↓")
@@ -630,7 +622,7 @@ def setup_new_hear_me_outs(count_hear_me_outs):
 # ---------------------------------
 # MAKE GENERAL REPLACMENT DICT
 # ---------------------------------
-
+"""
 def generate_dictionary():
     replacment_dictionary = {}
     
@@ -682,7 +674,7 @@ def generate_dictionary():
     replacment_dictionary["[+nav_cards+]"] = get_nav_element(3)
     
     return replacment_dictionary
-
+"""
 
 # ---------------------------------
 # GENERATE SITES
@@ -835,6 +827,43 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     generated_file.write(final_file) # write to it
     generated_file.close()
 
+# static articles
+def generate_static_section(title, content, image_src, spaces):
+    if title is None or title == "":
+        title = "Null"
+    if content is None or content == "":
+        content = "Null"
+    if image_src is None or image_src == "":
+        image_context = "<!-- NO IMAGE HERE -->"
+    else:
+        image_context = f'<img src="{image_src}" alt="{image_src}" width="800" height="600">'
+        
+    amount_space = add_spaces(spaces)
+    
+    final_article = f"""<article class="article" id="{title.replace(" ", "_")}">
+{amount_space}    {image_context}
+{amount_space}    <h2>{title}</h2>
+{amount_space}    <p class="main_article_text">{content}</p>
+{amount_space}</article>
+{amount_space}"""
+        
+    return final_article
+
+def get_all_static_articles_replacments(image_switch, spaces):
+    replacment = {}
+    
+    for content in read_static_content():
+        section_title = content["Title"]
+        section_article = content["Article"]
+        if image_switch:
+            section_image_src = content["Image_src"]
+        else:
+            section_image_src = ""
+        generated_section = generate_static_section(section_title, section_article, section_image_src, spaces)
+        replacment[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
+    
+    return replacment
+
 # header & footer
 def get_header():
     header_path = work_path(r"\ostraloken\ostraloken.se\templates\base\header.html")
@@ -848,8 +877,13 @@ def get_footer():
     footer_content = open(footer_path, "r", encoding="utf-8") # get its content
     footer_final = footer_content.read()
     footer_content.close()
-    footer_final = footer_final.replace("[+Östra_Lökens_policy+]", read_Östra_Lökens_policy())
-    footer_final = footer_final.replace("[+Juridiskt+]", read_Juridiskt())
+    
+    for content in read_static_content():
+        section_title = content["Title"]
+        section_article = content["Article"]
+        replace_segment = f"[+{section_title.replace(" ", "_")}+]"
+        if replace_segment in footer_final:
+            footer_final = footer_final.replace(replace_segment, section_article)
     
     staff_list = ""
     staff_content = read_staff_info_content()
@@ -1028,7 +1062,7 @@ def generate_all_articles():
     article_template_path = work_path(r"\ostraloken\ostraloken.se\templates\articles_pages.html")
     generated_articles_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a" + "\\")
     
-    list_of_articles_with_similer_type = generate_preview_article("./a/", True, 2)
+    list_of_articles_with_similer_type = generate_preview_article("./a/", True, 3)
     
     print("Generating all articles:")
     progressbar_item = progressbar.ProgressBar(maxval=int(len(read_normal_storys())))
@@ -1084,9 +1118,9 @@ def generate_all_articles():
                 final_random_short_story = f"<b>{random_short_story["Title"]}</b> • {random_short_story["Article"]}"
                 short_story_id = make_short_story_id(random_short_story["Title"], random_short_story["Article"])
                 feed_element = f"""<div id="scrolling_news_feed">
-                    <a href="../notiser/#{short_story_id}">{final_random_short_story}</a>
-                </div>
-                """
+        <a href="../notiser/#{short_story_id}">{final_random_short_story}</a>
+    </div>
+    """
 
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
@@ -1185,7 +1219,7 @@ def generate_short_storys():
     short_storys_template_path = work_path(r"\ostraloken\ostraloken.se\templates\notiser.html")
     short_storys_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\notiser\index.html")
     
-    replacment = {"[+short_storys+]": get_short_story(2)} # what gets replaced and with what
+    replacment = {"[+short_storys+]": get_short_story(3)} # what gets replaced and with what
     generate_site(short_storys_template_path, short_storys_generated_path, replacment, "html")
     
     print("Short storys successfully generated!")
@@ -1273,8 +1307,9 @@ def generate_hej():
     hej_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\hej\index.html")
     
     latest_article = generate_preview_article("../a/", False, 3)[0]
-
-    replacment = {"[+article+]": latest_article} # what gets replaced and with what
+    
+    replacment = get_all_static_articles_replacments(False, 2)
+    replacment |= {"[+article+]": latest_article, "[+nav_highlight_cards+]": get_nav_element(True, 3), "[+nav_normal_cards+]": get_nav_element(False, 3)}
     generate_site(hej_template_path, hej_generated_path, replacment, "html")
     
     print("Hej successfully generated!")
@@ -1314,15 +1349,16 @@ def generate_lone_nav_element(title, link, image_src, important_status, spaces):
         
     return final_article
 
-def get_nav_element(amount_spaces):
+def get_nav_element(highlight_switch, amount_spaces):
     generated_nav_element = ""
     
-    for content in read_lank_nav_content():
-        nav_element_title = content["Title"]
-        nav_element_link = content["Link"]
-        nav_element_image_src = content["Image_src"]
+    for content in read_external_links_content():
         nav_element_important_status = content["Important"]
-        generated_nav_element += generate_lone_nav_element(nav_element_title, nav_element_link, nav_element_image_src, nav_element_important_status, amount_spaces)
+        if str(nav_element_important_status) == str(highlight_switch):
+            nav_element_title = content["Title"]
+            nav_element_link = content["Link"]
+            nav_element_image_src = content["Image_src"]
+            generated_nav_element += generate_lone_nav_element(nav_element_title, nav_element_link, nav_element_image_src, nav_element_important_status, amount_spaces)
         
     return generated_nav_element
 
@@ -1330,47 +1366,16 @@ def generate_nav():
     nav_template_path = work_path(r"\ostraloken\ostraloken.se\templates\lank_nav.html")
     nav_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\lank_nav\index.html")
     
-    replacment = {"[+nav_cards+]": get_nav_element(3)}
+    replacment = {"[+nav_highlight_cards+]": get_nav_element(True, 3), "[+nav_normal_cards+]": get_nav_element(False, 3)}
     generate_site(nav_template_path, nav_generated_path, replacment, "html")
     print("Nav successfully generated!")
     
 # Om oss page
-def generate_omoss_section(title, content, image_src, spaces):
-    if title is None or title == "":
-        title = "Null"
-    if content is None or content == "":
-        content = "Null"
-    if image_src is None or image_src == "":
-        image_context = "<!-- NO IMAGE HERE -->"
-    else:
-        image_context = f'<img src="{image_src}" alt="{image_src}" width="800" height="600">'
-        
-    amount_space = add_spaces(spaces)
-    
-    final_article = f"""<article class="article" id="{title.replace(" ", "_")}">
-{amount_space}    {image_context}
-{amount_space}    <h2>{title}</h2>
-{amount_space}    <p class="main_article_text">{content}</p>
-{amount_space}</article>
-{amount_space}"""
-        
-    return final_article
-
 def generate_omoss():
     omoss_template_path = work_path(r"\ostraloken\ostraloken.se\templates\om_oss.html")
     omoss_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\om_oss\index.html")
     
-    replacment = {}
-    
-    for content in read_om_oss_content():
-        section_title = content["Title"]
-        section_article = content["Article"]
-        section_image_src = content["Image_src"]
-        generated_section = generate_omoss_section(section_title, section_article, section_image_src, 2)
-        replacment[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
-        
-    replacment["[+Juridiskt+]"] = generate_omoss_section("Juridiskt", read_Juridiskt(), "", 2)
-    replacment["[+Östra_Lökens_policy+]"] = generate_omoss_section("Östra Lökens policy", read_Östra_Lökens_policy(), "", 2)
+    replacment = get_all_static_articles_replacments(True, 2)
     
     generate_site(omoss_template_path, omoss_generated_path, replacment, "html")
     print("Om oss successfully generated!")
@@ -1415,6 +1420,14 @@ def generate_kontakt():
     generate_site(kontakt_template_path, kontakt_generated_path, replacment, "html")
     print("Kontakt successfully generated!")
 
+# extra page(s)
+def generate_extra():
+    extra_template_path = work_path(r"\ostraloken\ostraloken.se\templates\extra\Om_krisen_kriget_eller_Ulf_Kristersson_kommer.html")
+    extra_generated_path = work_path(r"\ostraloken\ostraloken.se\webbpage\extra\Om_krisen_kriget_eller_Ulf_Kristersson_kommer\index.html")
+    
+    replacment = {}
+    generate_site(extra_template_path, extra_generated_path, replacment, "html")
+    print("Om kriget krisen eller Ulf Kristersson kommer successfully generated!")
 
 # ---------------------------------
 # BACKEND TERMINAL
@@ -1492,15 +1505,16 @@ def handle_backend_UI():
             # generate text files
             elif answer == "gen all":
                 generate_index()
-                generate_hear_me_outs()
-                generate_short_storys()
-                generate_all_articles()
                 generate_search()
-                generate_hej()
                 generate_pdfer()
+                generate_short_storys()
+                generate_hear_me_outs()
                 generate_nav()
                 generate_omoss()
                 generate_kontakt()
+                generate_hej()
+                generate_extra()
+                generate_all_articles()
                 
             # images
             elif answer == "copy images new":

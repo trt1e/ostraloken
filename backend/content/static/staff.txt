@@ -1,24 +1,24 @@
 ### Vilhelm Grill ##
 +++ Redaktör & skribent ++
 @@@ vilhelm.grill@ostraloken.se @@
-§§§ ./images/Vilhelm.webp §§
+§§§ https://ostraloken.se/images/people/Vilhelm.webp §§
 
 ### Joar Stange ##
 +++ Skribent ++
 @@@ joar.stange@ostraloken.se @@
-§§§ ./images/Joar.webp §§
+§§§ https://ostraloken.se/images/people/Joar.webp §§
 
 ### John Ericson ##
 +++ Skribent ++
 @@@ john.ericson@ostraloken.se @@
-§§§ ./images/John.webp §§
+§§§ https://ostraloken.se/images/people/John.webp §§
 
 ### Magne Nordström ##
 +++ Skribent ++
 @@@ magne.nordström@ostraloken.se @@
-§§§ ./images/Magne.webp §§
+§§§ https://ostraloken.se/images/people/Magne.webp §§
 
 ### Elliot Sandström ##
 +++ Fotograf & skribent ++
 @@@ elliot.sandström@ostraloken.se @@
-§§§ ./images/Elliot.webp §§
+§§§ https://ostraloken.se/images/people/Elliot.webp §§
