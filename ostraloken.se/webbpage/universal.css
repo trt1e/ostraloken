@@ -441,6 +441,7 @@ footer #nav_cards_container {
 @media (width < 35rem) {
     #footer_left_section {
         width: 100%;
+        margin-bottom: 0;
     }
 }
 footer #loken_image {
