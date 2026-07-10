@@ -16,6 +16,7 @@
 }
 body {
     background-color: var(--bg-color);
+    background-image: linear-gradient(to bottom right, var(--bg-color), var(--dark-bg-color));
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     color: var(--text-color);
     overflow-wrap: anywhere;

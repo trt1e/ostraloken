@@ -807,6 +807,10 @@ def get_header():
     header_content = open(header_path, "r", encoding="utf-8") # get its content
     header_final = header_content.read()
     header_content.close()
+    
+    for replacment in replacment_for_all:
+        header_final = header_final.replace(replacment, replacment_for_all[replacment])
+    
     return header_final
 
 def get_footer():
@@ -952,23 +956,19 @@ def generate_preview_article(base_redirect_html_url, get_what_articles):
                     generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number))
                     how_many_articles_generated += 1
                 elif get_what_articles == "Similar":
-                    # img_url = find_img(org_article_title, upplaga_number, "./images/") # get the url to the img as a html link
                     if article_type not in generated_articles_based_on_type:
                         generated_articles_based_on_type[article_type] = {} # initialize generated_articles_based_on_type[article_type]
                     generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, upplaga_number)})
                     how_many_articles_generated += 1
-                elif get_what_articles == "List":
+                else: # get_what_articles == "List"
                     generated_list.append(article)
                     
     if get_what_articles == "All":
         return generated_articles
     elif get_what_articles == "Similar":
         return generated_articles_based_on_type
-    elif get_what_articles == "List":
+    else: # get_what_articles == "List"
         return generated_list
-    else:
-        print('ERROR: generate_preview_article must have get_what_articles set to "All", "Similar" or "List"')
-        return "ERROR"
 
 def generate_all_articles():
     article_template_path = work_path(r"\ostraloken\ostraloken.se\templates\a\articles_pages.html")
