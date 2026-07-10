@@ -436,6 +436,7 @@ footer #nav_cards_container {
     width: 40%;
     max-width: 30rem;
     float: left;
+    margin-bottom: 1.5rem;
 }
 @media (width < 35rem) {
     #footer_left_section {
@@ -458,6 +459,7 @@ footer #loken_image {
     grid-template-rows: repeat(auto-fill, 1fr);
     gap: 1.5rem;
     direction: rtl;
+    margin-bottom: 1.5rem;
 }
 @media (width < 35rem) {
     #footer_right_section {
