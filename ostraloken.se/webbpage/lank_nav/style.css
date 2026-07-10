@@ -12,7 +12,7 @@ main #nav_card_container {
     }
 }
 
-.nav_card {
+main .nav_card {
     min-height: 4.5rem;
     display: flex;
     align-items: center;
@@ -20,12 +20,12 @@ main #nav_card_container {
     overflow: hidden;
 }
 @media (width < 35rem) {
-    .nav_card {
+    main .nav_card {
         margin-bottom: 2.5rem;
         min-height: 0;
     }
 }
-.nav_card h2 {
+main .nav_card h2 {
     padding: 0.2rem;
     width: fit-content;
     font-size: 1.5rem;
@@ -35,7 +35,7 @@ main #nav_card_container {
     transition: 0.3s;
 }
 
-.nav_card img {
+main .nav_card img {
     width: 6rem;
     position: absolute;
     bottom: -0.6rem;
@@ -43,7 +43,7 @@ main #nav_card_container {
     transform: rotate(4deg);
 }
 @media (width < 80rem) {
-    .nav_card img {
+    main .nav_card img {
         width: 4rem;
     }
 }
