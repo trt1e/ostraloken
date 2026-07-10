@@ -1215,7 +1215,7 @@ def generate_lone_nav_element(title, link, image_src, important_status):
         
     return final_article
 
-def get_nav_element(highlight_switch):
+def get_nav_element(img_switch, highlight_switch):
     generated_nav_element = ""
     
     for content in read_external_links_content():
@@ -1223,7 +1223,10 @@ def get_nav_element(highlight_switch):
         if str(nav_element_important_status) == str(highlight_switch):
             nav_element_title = content["Title"]
             nav_element_link = content["Link"]
-            nav_element_image_src = content["Image_src"]
+            if img_switch: # has image
+                nav_element_image_src = content["Image_src"]
+            else: # no image
+                nav_element_image_src = ""
             generated_nav_element += generate_lone_nav_element(nav_element_title, nav_element_link, nav_element_image_src, nav_element_important_status)
         
     return generated_nav_element
@@ -1297,9 +1300,6 @@ def create_dictionary():
         section_article = content["Article"]
         section_image_src = content["Image_src"]
         
-        # add just the article
-        replacment_dictionary[f"[+{section_title.replace(" ", "_")}_article+]"] = section_article
-        
         # generate article
         generated_section = generate_static_section(section_title, section_article, section_image_src)
         replacment_dictionary[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
@@ -1307,6 +1307,9 @@ def create_dictionary():
         # generate without image
         generated_section = generate_static_section(section_title, section_article, "")
         replacment_dictionary[f"[+no_img_{section_title.replace(" ", "_")}+]"] = generated_section
+        
+        # add just the article
+        replacment_dictionary[f"[+{section_title.replace(" ", "_")}_article+]"] = section_article
     
     # Add content from staff
     generated_sections = ""
@@ -1331,8 +1334,10 @@ def create_dictionary():
     replacment_dictionary["[+latest_title+]"] = remove_html_elements(most_recent_story_list["Title"]).replace('"', "&quot;")
     
     # Get the nav cards
-    replacment_dictionary["[+nav_highlight_cards+]"] = get_nav_element(True)
-    replacment_dictionary["[+nav_normal_cards+]"] = get_nav_element(False)
+    replacment_dictionary["[+nav_highlight_cards+]"] = get_nav_element(True, True)
+    replacment_dictionary["[+no_img_nav_highlight_cards+]"] = get_nav_element(False, True)
+    replacment_dictionary["[+nav_normal_cards+]"] = get_nav_element(True, False)
+    replacment_dictionary["[+no_img_nav_normal_cards+]"] = get_nav_element(False, False)
     
     return replacment_dictionary
 
