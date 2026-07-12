@@ -246,12 +246,13 @@ def read_staff_info_content(): # To get the staff info
     for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
         # find where diffrent parts are in the document
         name = find_between(whole_text, "### ", " ##", last_final_pos)
-        title = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        desc = find_between(whole_text, "+++ ", " ++", last_final_pos)
+        title = find_between(whole_text, '""" ', ' ""', last_final_pos)
         email = find_between(whole_text, "@@@ ", " @@", last_final_pos)
         image_src = find_between(whole_text, "§§§ ", " §§", last_final_pos)
         last_final_pos = whole_text.find(" §§", last_final_pos) + 3
         
-        output = {"Name": name, "Title": title, "Email": email, "Image_src": image_src}
+        output = {"Name": name, "Description": desc, "Title": title, "Email": email, "Image_src": image_src}
         output_sum.append(output)
         
     return output_sum
@@ -761,6 +762,11 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     # add footer
     final_file = final_file.replace("[+footer+]", get_footer()) # add footer
     
+    # add general scripts
+    scripts_read = get_general_scripts()
+    final_file = final_file.replace("[+general_scripts+]", scripts_read)
+    final_file = final_file.replace("[+index_general_scripts+]", scripts_read.replace("../", "./")) # add scripts for specificly index
+    
     generated_file = open(generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(final_file) # write to it
     generated_file.close()
@@ -823,6 +829,17 @@ def get_footer():
         footer_final = footer_final.replace(replacment, replacment_for_all[replacment])
     
     return footer_final
+
+def get_general_scripts():
+    scripts_path = work_path(r"\ostraloken\ostraloken.se\templates\base\general_scripts.html")
+    scripts_content = open(scripts_path, "r", encoding="utf-8") # get its content
+    scripts_final = scripts_content.read()
+    scripts_content.close()
+    
+    for replacment in replacment_for_all:
+        scripts_final = scripts_final.replace(replacment, replacment_for_all[replacment])
+    
+    return scripts_final
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
@@ -1232,7 +1249,7 @@ def get_nav_element(img_switch, highlight_switch):
     return generated_nav_element
 
 # Kontakt page
-def generate_kontakt_section(name, title, email, image_src):
+def generate_kontakt_section(name, desc, title, email, image_src):
     if name is None or name == "":
         name = "Null"
     if title is None or title == "":
@@ -1245,10 +1262,16 @@ def generate_kontakt_section(name, title, email, image_src):
         image_context = f'<img src="{image_src}" alt="{name}">'
     
     final_article = f"""
-<a class="article clickable_element kontakt_card" id="{name.replace(" ", "_")}" href="mailto:{email}">
-    {image_context}
-    <h2>{title}: {name}</h2>
-</a>
+<div class="article kontakt_card" id="{name.replace(" ", "_")}">
+    <div class="kontakt_card_not_link_section">
+        {image_context}
+        <div class="kontakt_card_text_section">
+            <h2>{title}: {name}</h2>
+            <p>{desc}</p>
+        </div>
+    </div>
+    <a class="article clickable_element highlight" href="mailto:{email}"><p><b>Skicka epost till {name}</b></p></a>
+</div>
 """
     return final_article
 
@@ -1316,11 +1339,12 @@ def create_dictionary():
     staff_list = ""
     for content in read_staff_info_content():
         person_name = content["Name"]
+        person_desc = content["Description"]
         person_title = content["Title"]
         person_email = content["Email"]
         person_image_src = content["Image_src"]
-        generated_sections += generate_kontakt_section(person_name, person_title, person_email, person_image_src)
-        staff_list += f'<a href="https://ostraloken.se/kontaktinfo/#{person_name.replace(" ", "_")}">{person_name}</a>'
+        generated_sections += generate_kontakt_section(person_name, person_desc, person_title, person_email, person_image_src)
+        staff_list += f'<a href="https://ostraloken.se/omoss/#{person_name.replace(" ", "_")}">{person_name}</a>'
     # List of staff as html button elements which lead to their email
     replacment_dictionary["[+staff_email_buttons+]"] = generated_sections
     # List of staff as links to their kontaktinfo page
@@ -1338,6 +1362,8 @@ def create_dictionary():
     replacment_dictionary["[+no_img_nav_highlight_cards+]"] = get_nav_element(False, True)
     replacment_dictionary["[+nav_normal_cards+]"] = get_nav_element(True, False)
     replacment_dictionary["[+no_img_nav_normal_cards+]"] = get_nav_element(False, False)
+    
+    print("Dictionary created")
     
     return replacment_dictionary
 
@@ -1363,6 +1389,7 @@ def generate_all_normal_pages(): # go throught every file in templates
 # UI for backend user
 def handle_backend_UI():
     global base_path
+    global replacment_for_all
     
     print("Welcome to the backend terminal!")
     print('(Print "help" for commands)')
@@ -1431,6 +1458,7 @@ def handle_backend_UI():
             
             # generate text files
             elif answer == "gen all":
+                replacment_for_all = create_dictionary()
                 generate_all_normal_pages()
                 generate_all_articles()
                 

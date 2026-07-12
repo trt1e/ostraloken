@@ -7,10 +7,10 @@ Exempel: Titel: "Test artikel WHOOOO" sätts in i om oss om du har en "[+Test_ar
 §§§ https://ostraloken.se/om_oss/images/many_1april_upplagor.webp §§
 
 ### Östra Lökens policy ##
-+++ Alla elevers namn är påhittade. Östra Löken siktar på att slå uppåt med satiren, inte neråt. Alla artiklar är skrivna av människor. Tidningen är satir. ++
++++ Alla elevers och lärares namn är påhittade. Östra Löken siktar mot att slå uppåt med satire, inte neråt. Redaktionen har full kontroll över vad som publiceras och vad som inte publiceras. Östra Löken är strikt mot AI inom kreativitet och konstnärskap. Tidningen är satir. ++
 §§§  §§
 
-### Vår historia ##
+### Lökens historia ##
 +++ 
 Östra Löken grundades den 6 maj 2025 av Vilhelm Grill och Joar Stange på Östra gymnasiet. Under en längre tid hade Grill haft en idé om att utveckla någon typ av skoltidning, men problemet var att det helt enkelt inte fanns mycket att skriva om i skolvärlden. Det var först när tidningsidén, under en tekniklektion, blandades med det satiriska innehållet från satirsajten "The Onion" som Östra Löken föddes.<br><br>
 Efter att den första upplagan publicerats och delats ut var skaparna mycket motiverade att fortsätta projektet. Det är på grund av detta tidigt starka engagemang som det bestämdes att Löken skulle publiceras varje måndag. Under den här tiden var upplagorna utvecklade i Google Docs där artiklarnas längd avgjordes av hur mycket plats som fanns. Efter att den andra upplagan kom ut blev redaktionen, då endast Grill och Stange, inkallade till möte med då rektor Stefan Vilkman, men på grund av att Vilkman var upptagen blev mötet istället med biträdande rektor Sofia Falldén Rahim och blev den första av många möten med skolans ledning.<br><br>
@@ -22,7 +22,7 @@ Tidningen återkom efter lovet med en ny, kontroversiell, design som finslipats 
 Efter upplaga nr. 27 gjorde redaktören Grill den andra stora ändringen sedan tidningen lanserades då varje artikel nu uttryckligen skulle ha skribentens namn på. Innan dess hade alla upplagor signerats med alla medverkandes namn i slutet, och det fanns inget sätt att veta vem som skrev en individuell artikel. Inför 1 april skapade Löken-personal intrycket av att interna konflikter hade bubblat över genom att ladda upp en rad inlägg på Instagram som pratades om över hela skolan. Under 1 april-upplagan släpptes också alla tyglar när det kom till både artiklar och layout med, bland annat, en nära helt överstruken artikel, en artikel låst bakom en betalvägg och en artikel bestående av endast Lorem Ipsum-text.<br><br>
 Den 4 maj 2026 firade Östra Löken sin födelsedag. Visserligen var det inte exakt rätt datum, men nära nog. På firandet kom många elever efter att det utlovats fika och saft och även en eller två lärare. Utlagt över det stora rummet där firandet hölls låg det utskrivet alla upplagor, reklamer och event som Löken hade gjort under året nu förbi. Grädden på moset blev att lokaltidningen Mitt i gjorde en artikel om det hela.
  ++
-§§§  §§
+§§§ https://ostraloken.se/om_oss/images/all_loken_over_table.webp §§
 
 ### Juridiskt ##
 +++ © Östra Löken. Allt material ägs av Östra Löken och får inte kopieras utan tillstånd. Tidningen ansvarar ej för eventuella fel. Webbsidan har inga cookies. ++

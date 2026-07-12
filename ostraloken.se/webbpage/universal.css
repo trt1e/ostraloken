@@ -43,6 +43,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: transform 0.3s;
 }
 @media (width <= 21rem) {
     header {
@@ -53,6 +54,9 @@ header {
     header {
         position: static;
     }
+}
+.header_hidden {
+    transform: translateY(-105%);
 }
 header p {
     font-size: 1.2rem;
@@ -231,6 +235,7 @@ main {
     main {
         width: calc(100% - 4rem);
         padding: 2rem;
+        padding-top: 0.7rem;
     }
 }
 
@@ -418,6 +423,8 @@ footer {
     background-color: var(--dark-bg-color);
     border-top: var(--darkest-bg-color) solid 2px;
     padding: 2rem;
+    position: relative; /* So z-index works */
+    z-index: 9;
 }
 footer #nav_cards_container {
     display: grid;

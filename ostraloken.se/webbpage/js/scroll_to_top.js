@@ -8,10 +8,13 @@ go_up_button_element.addEventListener("click", () => {
     }, 10);
 });
 
-document.addEventListener("scroll", () => {
+document.addEventListener("DOMContentLoaded", () => { check_if_show() });
+document.addEventListener("scroll", () => { check_if_show() });
+
+function check_if_show() {
     if (window.scrollY <= window.innerHeight) {
         go_up_button_element.classList.remove("show")
     } else {
         go_up_button_element.classList.add("show")
     };
-});
+};

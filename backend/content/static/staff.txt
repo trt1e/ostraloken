@@ -1,24 +1,35 @@
 ### Vilhelm Grill ##
-+++ Redaktör & skribent ++
++++ Som grundare för Östra Löken är Vilhelm Grill ansvarig för mycket. Han är bland annat chefredaktör, Instagram-ansvarig, ansvarig utgivare, fixar tidningens layout och är självfallet en regelbunden skribent. ++
+""" Redaktör & skribent ""
 @@@ vilhelm.grill@ostraloken.se @@
 §§§ https://ostraloken.se/images/people/Vilhelm.webp §§
 
 ### Joar Stange ##
-+++ Skribent ++
++++ Joar Stange var med och grundade Löken tillsammans med Grill och tar därmed fortfarande mycket ansvar inom redaktionen. Vidare skriver han regelbundet och debatterar gladeligen i tidningens kolumner. ++
+""" Skribent ""
 @@@ joar.stange@ostraloken.se @@
 §§§ https://ostraloken.se/images/people/Joar.webp §§
 
 ### John Ericson ##
-+++ Skribent ++
++++ Den erfarna reportern John Ericson utgör en självklar del av Lökens redaktion. Han skriver mycket om vad som händer med skolan och är väl känd för att sällan låta sina praktikanter överleva i artiklarna. ++
+""" Skribent ""
 @@@ john.ericson@ostraloken.se @@
 §§§ https://ostraloken.se/images/people/John.webp §§
 
 ### Magne Nordström ##
-+++ Skribent ++
++++ Magne Nordström är tidningens yngsta skribent som först gjorde sig känd för sina insändare under annat namn. Sedan dess har Nordström anställts av redaktionen och skriver idag alltid under sitt riktiga namn. ++
+""" Skribent ""
 @@@ magne.nordström@ostraloken.se @@
 §§§ https://ostraloken.se/images/people/Magne.webp §§
 
 ### Elliot Sandström ##
-+++ Fotograf & skribent ++
++++ För att säkerställa att alla viktiga ögonblick i Östra Lökens historia plåtas finns Elliot Sandström där med kameran ute. Han har också skrivit en och annan artikel. ++
+""" Fotograf & skribent ""
 @@@ elliot.sandström@ostraloken.se @@
 §§§ https://ostraloken.se/images/people/Elliot.webp §§
+
+### Miguel Aguirre Castillo ##
++++ I rollen som Tiktok-ansvarig hittar vi Miguel Aguirre Castillo. Med en förmåga att nå ut till unga sköter han kontot genom att ladda upp då och då. ++
+""" Tiktok ""
+@@@ miguel.aguirre.castillo@ostraloken.se @@
+§§§ https://ostraloken.se/images/people/Miguel.png §§
