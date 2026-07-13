@@ -878,7 +878,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         head_writers = ["Vilhelm Grill", "Joar Stange", "John Ericson", "Magne Nordström", "Elliot Sandström"]
         # if author is one of head Löken writers: point their name to their part of kontaktinfo 
         if author in head_writers:
-            author_context = f'<p class="author_text"><a href="https://ostraloken.se/kontakt/#{author.replace(" ", "_")}"><b>{author}</b></a></p>'
+            author_context = f'<p class="author_text"><a href="https://ostraloken.se/om_oss/#{author.replace(" ", "_")}"><b>{author}</b></a></p>'
         
         final_article = f"""
 <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
@@ -1262,7 +1262,7 @@ def generate_kontakt_section(name, desc, title, email, image_src):
         image_context = f'<img src="{image_src}" alt="{name}">'
     
     final_article = f"""
-<div class="article kontakt_card" id="{name.replace(" ", "_")}">
+<div class="kontakt_card" id="{name.replace(" ", "_")}">
     <div class="kontakt_card_not_link_section">
         {image_context}
         <div class="kontakt_card_text_section">
@@ -1270,7 +1270,9 @@ def generate_kontakt_section(name, desc, title, email, image_src):
             <p>{desc}</p>
         </div>
     </div>
+    <!--
     <a class="article clickable_element highlight" href="mailto:{email}"><p><b>Skicka epost till {name}</b></p></a>
+    -->
 </div>
 """
     return final_article
@@ -1344,11 +1346,11 @@ def create_dictionary():
         person_email = content["Email"]
         person_image_src = content["Image_src"]
         generated_sections += generate_kontakt_section(person_name, person_desc, person_title, person_email, person_image_src)
-        staff_list += f'<a href="https://ostraloken.se/omoss/#{person_name.replace(" ", "_")}">{person_name}</a>'
+        staff_list += f'<p>{person_name}</p>'
     # List of staff as html button elements which lead to their email
     replacment_dictionary["[+staff_email_buttons+]"] = generated_sections
     # List of staff as links to their kontaktinfo page
-    replacment_dictionary["[+staff_link_list+]"] = staff_list
+    replacment_dictionary["[+staff_list+]"] = staff_list
     
     # The latest story
     most_recent_story = generate_preview_article("../a/", "All")[0]
@@ -1517,4 +1519,7 @@ Saker att lägga till
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+
+
+Gör så extra info popups överallt genereras baserat på external liks
 """
