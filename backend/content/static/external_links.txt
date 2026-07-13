@@ -23,10 +23,10 @@
 §§§ https://ostraloken.se/images/external_links/ostragymnasiet.webp §§
 !!! False !!
 
-### Gula broschyren ##
-@@@ https://ostraloken.se/extra/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/ @@
-§§§ https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp §§
-!!! False !!
+#-## Gula broschyren #-#
+@-@@ https://ostraloken.se/extra/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/ @-@
+§-§§ https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp §-§
+!-!! False !-!
 
 ### Instagram ##
 @@@ https://www.instagram.com/ostra_loken @@

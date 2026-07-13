@@ -160,7 +160,6 @@ def make_image_id(article_title, remove_åäö):
                 id = id.replace(letter, replace_letters[letter])
     return id
 
-
 # ---------------------------------
 # READ TEXT
 # ---------------------------------
