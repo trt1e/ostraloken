@@ -58,6 +58,9 @@ header {
 .header_hidden {
     transform: translateY(-105%);
 }
+.header_during_scroll {
+    position: static;
+}
 header p {
     font-size: 1.2rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
@@ -211,7 +214,7 @@ header #search {
 /* Scrollbar */
 #scrollbar_area {
     background-color: transparent;
-    width: 20%;
+    width: 10%;
     height: 100%;
     position: fixed;
     top: 0;
@@ -234,7 +237,7 @@ header #search {
     transition: transform 0.3s;
 }
 .scrollbar_hidden {
-    transform: translateX(20%);
+    transform: translateX(120%);
 }
 
 /* Main */
