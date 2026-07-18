@@ -29,6 +29,12 @@ body {
 }
 */
 
+/* Scrollbar */
+html {
+  scrollbar-color: var(--secondary-color) var(--darker-bg-color); /* Thumb color and color of background */
+  scrollbar-width: auto; /* Can also be "thin" or "none" */
+}
+
 /* Header */
 header {
     /*background-color: var(--primary-color);*/
