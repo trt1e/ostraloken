@@ -6,8 +6,7 @@ let negative_counter = 0; // how long you have scrolled down
 
 document.addEventListener("scroll", () => {
     const header_element = document.querySelector("header");
-    const scrollbar_element = document.querySelector("#scrollbar");
-    
+
     scroll_position = window.scrollY;
     position_diffrance = scroll_position - old_scroll_position;
     if (position_diffrance > 0) {
@@ -20,7 +19,6 @@ document.addEventListener("scroll", () => {
     if (positive_counter >= 1) {
         if (!header_element.classList.contains("header_during_scroll")) {
             header_element.classList.remove("header_hidden");
-            console.log(header_element.classList.value)
         }
     } else if (negative_counter >= 80) {
         header_element.classList.add("header_hidden");

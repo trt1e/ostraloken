@@ -766,9 +766,6 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     final_file = final_file.replace("[+general_scripts+]", scripts_read)
     final_file = final_file.replace("[+index_general_scripts+]", scripts_read.replace("../", "./")) # add scripts for specificly index
     
-    # add scrollbar
-    final_file = final_file.replace("[+scrollbar+]", get_scrollbar()) # add scrollbar
-    
     generated_file = open(generated_path, "w", encoding="utf-8") # create / find the file
     generated_file.write(final_file) # write to it
     generated_file.close()
@@ -842,17 +839,6 @@ def get_general_scripts():
         scripts_final = scripts_final.replace(replacment, replacment_for_all[replacment])
     
     return scripts_final
-
-def get_scrollbar():
-    scrollbar_path = work_path(r"\ostraloken\ostraloken.se\templates\base\scrollbar.html")
-    scrollbar_content = open(scrollbar_path, "r", encoding="utf-8") # get its content
-    scrollbar_final = scrollbar_content.read()
-    scrollbar_content.close()
-    
-    for replacment in replacment_for_all:
-        scrollbar_final = scrollbar_final.replace(replacment, replacment_for_all[replacment])
-    
-    return scrollbar_final
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
@@ -1528,7 +1514,6 @@ handle_backend_UI()
 r"""
 Saker att lägga till
 - gör tinder av hear me outs
-- lägg till en custome scrollbar
 
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text

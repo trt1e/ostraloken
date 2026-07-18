@@ -23,10 +23,11 @@ body {
 }
 
 /* Hide scrollbar */
+/*
 ::-webkit-scrollbar {
     display: none;
 }
-
+*/
 
 /* Header */
 header {
@@ -209,35 +210,6 @@ header #search {
     #header_button_container {
         flex-direction: row;
     }
-}
-
-/* Scrollbar */
-#scrollbar_area {
-    background-color: transparent;
-    width: 10%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    right: 0;
-}
-#scrollbar {
-    background-image: linear-gradient(to left, var(--primary-color), color-mix(in srgb, var(--primary-color) 30%, transparent));
-    /*box-shadow: 0 0 0.6rem var(--primary-color);*/
-    width: 0.8rem;
-    height: 7rem;
-    min-height: 2rem;
-    max-width: 100%;
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-    position: fixed;
-    top: 0;
-    right: 0;
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.3s;
-}
-.scrollbar_hidden {
-    transform: translateX(120%);
 }
 
 /* Main */
