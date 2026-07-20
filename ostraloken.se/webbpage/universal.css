@@ -31,8 +31,8 @@ body {
 
 /* Scrollbar */
 html {
-  scrollbar-color: var(--secondary-color) var(--darker-bg-color); /* Thumb color and color of background */
-  scrollbar-width: auto; /* Can also be "thin" or "none" */
+    scrollbar-color: var(--secondary-color) var(--darker-bg-color); /* Thumb color and color of background */
+    scrollbar-width: auto; /* Can also be "thin" or "none" */
 }
 
 /* Header */
@@ -427,10 +427,10 @@ a.extra_info.user_prompt:hover {
 
 /* Footer */
 footer {
+    background-color: var(--dark-bg-color);
     width: calc(100% - 4rem);
     min-height: calc(100vh - 4rem);
     height: fit-content;
-    background-color: var(--dark-bg-color);
     border-top: var(--darkest-bg-color) solid 2px;
     padding: 2rem;
     position: relative; /* So z-index works */
@@ -449,10 +449,18 @@ footer #nav_cards_container {
         grid-template-columns: 1fr;
     }
 }
+#footer_lower {
+    display: flex;
+    justify-content: space-between;
+}
+@media (width < 35rem) {
+    #footer_lower {
+        flex-direction: column;
+    }
+}
 #footer_left_section {
     width: 40%;
     max-width: 30rem;
-    float: left;
     margin-bottom: 1.5rem;
 }
 @media (width < 35rem) {
@@ -468,22 +476,22 @@ footer #loken_image {
     margin-top: 1.5rem;
 }
 #footer_right_section {
-    width: calc(60% - 2rem);
-    float: right;
+    width: 60%;
     text-align: right;
-    margin-left: 2rem;
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, 15rem);
     grid-template-rows: repeat(auto-fill, 1fr);
     gap: 1.5rem;
     direction: rtl;
-    margin-bottom: 1.5rem;
 }
 @media (width < 35rem) {
     #footer_right_section {
         width: 100%;
         text-align: left;
         display: block;
+        margin-left: 0;
     }
 }
 #footer_right_section .footer_text {

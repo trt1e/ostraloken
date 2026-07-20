@@ -726,8 +726,7 @@ def copy_over_pdfs(gen_type):
     
     changed_js_file = open(pdf_js_program_path, "w", encoding="utf-8") # create / find the file
     changed_js_file.write(js_changed_content) # write to it
-    changed_js_file.close()
-    
+    changed_js_file.close()    
 
 # basic for all generated text files
 def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated    
@@ -1041,6 +1040,7 @@ def generate_all_articles():
 
                 # add scrolling news feed
                 all_short_storys = read_short_storys()
+                random.seed(str(all_short_storys) + str(list_of_articles_with_similer_type))
                 random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]["Content"]
                 final_random_short_story = f"<b>{random_short_story["Title"]}</b> • {random_short_story["Article"]}"
                 short_story_id = make_short_story_id(random_short_story["Title"], random_short_story["Article"])
@@ -1049,6 +1049,7 @@ def generate_all_articles():
     <a href="../notiser/#{short_story_id}">{final_random_short_story}</a>
 </div>
 """
+                random.seed()
 
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
@@ -1093,7 +1094,6 @@ def generate_all_articles():
                             random.seed(str(new_list_of_similar_articles) + "3")
                             chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
                             replacment[f"[+extra_article_link_3+]"] = chosen_article
-                            random.seed()
                         else:
                             replacment[f"[+extra_article_link_3+]"] = ""
                     else:
@@ -1104,6 +1104,8 @@ def generate_all_articles():
                     replacment[f"[+extra_article_link_1+]"] = ""
                     replacment[f"[+extra_article_link_2+]"] = ""
                     replacment[f"[+extra_article_link_3+]"] = ""
+                
+                random.seed()
                 
                 generate_site(article_template_path, (generated_articles_path + article_id + ".html"), replacment, "html")
     
