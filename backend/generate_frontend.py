@@ -990,6 +990,9 @@ def generate_all_articles():
     generated_articles_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a" + "\\")
     
     list_of_articles_with_similer_type = generate_preview_article("./a/", "Similar")
+    all_short_storys = read_short_storys()
+    
+    random.seed(hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
     
     print("Generating all articles:")
     progressbar_item = progressbar.ProgressBar(maxval=int(len(read_normal_storys())))
@@ -1039,8 +1042,6 @@ def generate_all_articles():
 """
 
                 # add scrolling news feed
-                all_short_storys = read_short_storys()
-                random.seed(str(all_short_storys) + str(list_of_articles_with_similer_type))
                 random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]["Content"]
                 final_random_short_story = f"<b>{random_short_story["Title"]}</b> • {random_short_story["Article"]}"
                 short_story_id = make_short_story_id(random_short_story["Title"], random_short_story["Article"])
@@ -1049,7 +1050,6 @@ def generate_all_articles():
     <a href="../notiser/#{short_story_id}">{final_random_short_story}</a>
 </div>
 """
-                random.seed()
 
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
@@ -1079,19 +1079,19 @@ def generate_all_articles():
                 dict_of_similar_articles_copy.pop(article_id) # remove the article (the one you are adding "read also" too) from the dict
                 new_list_of_similar_articles = list(dict_of_similar_articles_copy.values())
                 if new_list_of_similar_articles != []:
-                    random.seed(str(new_list_of_similar_articles) + "1") # we set the seed so that if we are to make a small change and push it it doesnt change everything, only when we add, remove or change articles of that type does this change
+                    random.seed(hash(str(new_list_of_similar_articles) + "1")) # we set the seed so that if we are to make a small change and push it it doesnt change everything, only when we add, remove or change articles of that type does this change
                     chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)] # this random function is determaistic so if we enter the same seed and same command it will give the same result which we want!
                     replacment[f"[+extra_article_link_1+]"] = chosen_article
                     new_list_of_similar_articles.remove(chosen_article) # we remove it so it isn't listed again
                     
                     if new_list_of_similar_articles != []:
-                        random.seed(str(new_list_of_similar_articles) + "2")
+                        random.seed(hash(str(new_list_of_similar_articles) + "2"))
                         chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
                         replacment[f"[+extra_article_link_2+]"] = chosen_article
                         new_list_of_similar_articles.remove(chosen_article)
                         
                         if new_list_of_similar_articles != []:
-                            random.seed(str(new_list_of_similar_articles) + "3")
+                            random.seed(hash(str(new_list_of_similar_articles) + "3"))
                             chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
                             replacment[f"[+extra_article_link_3+]"] = chosen_article
                         else:
@@ -1105,10 +1105,9 @@ def generate_all_articles():
                     replacment[f"[+extra_article_link_2+]"] = ""
                     replacment[f"[+extra_article_link_3+]"] = ""
                 
-                random.seed()
-                
                 generate_site(article_template_path, (generated_articles_path + article_id + ".html"), replacment, "html")
     
+    random.seed()
     progressbar_item.finish()
     print("All articles successfully generated!")
 
@@ -1373,16 +1372,20 @@ def create_dictionary():
 replacment_for_all = create_dictionary()
 
 def generate_all_normal_pages(): # go throught every file in templates
-    template_base_path = work_path(r"\ostraloken\ostraloken.se\templates" + "\\")
-    basic_template_files_list = os.listdir(template_base_path) # list all folders in dir
-    for file_dir in basic_template_files_list:
-        if "." in file_dir: # If it is not a folder
-            whole_file_dir = template_base_path + file_dir
-            whole_file = try_opening(whole_file_dir, "tr")
-            destination_dir = find_between(whole_file, "<!--@( ", " )@-->", 0)
-            whole_destination_dir = work_path(destination_dir)
-            generate_site(whole_file_dir, whole_destination_dir, replacment_for_all, file_dir.split(".")[-1])
-            print(f"Generated {file_dir}")
+    template_base_paths = [
+        work_path(r"\ostraloken\nyhetsflode.ostraloken.se\templates" + "\\"),
+        work_path(r"\ostraloken\ostraloken.se\templates" + "\\")
+    ]
+    for template_path in template_base_paths:
+        basic_template_files_list = os.listdir(template_path) # list all folders in dir
+        for file_dir in basic_template_files_list:
+            if "." in file_dir: # If it is not a folder
+                whole_file_dir = template_path + file_dir
+                whole_file = try_opening(whole_file_dir, "tr")
+                destination_dir = find_between(whole_file, "<!--@( ", " )@-->", 0)
+                whole_destination_dir = work_path(destination_dir)
+                generate_site(whole_file_dir, whole_destination_dir, replacment_for_all, file_dir.split(".")[-1])
+                print(f"Generated {template_path.split("\\")[-3]}: {file_dir}")
 
 
 # ---------------------------------

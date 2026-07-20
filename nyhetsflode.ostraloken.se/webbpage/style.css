@@ -1,0 +1,127 @@
+/* Base */
+:root {
+    --bg-color: #fbf6f3; /*for the background*/
+    --dark-bg-color: #f3efec; /*for things with a clearly differant background than --bg-color*/
+    --darker-bg-color: #ece8e4; /*for outline before hover*/
+    --darkest-bg-color: #d3cecc; /*for outlines and for hover outline*/
+    --text-color: #130c09; /*for text*/
+    --lighter-text-color: #aba29e; /*for less inportant text*/
+    --header-text-color: #f8f4f2;
+    --primary-color: #EE7322; /*for header and hover*/
+    --secondary-color: #da8852; /*for orange color before hover*/
+    --highlight-color: yellow; /*for the article type*/
+}
+* {
+    margin: 0;
+}
+body {
+    background-color: var(--bg-color);
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: var(--text-color);
+    overflow: hidden;
+}
+
+/* Main */
+main {
+    width: 100%;
+    height: 100%;
+}
+
+#temp_test_bg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    object-fit: cover;
+}
+
+/*Live*/
+#live {
+    background-color: var(--highlight-color);
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    padding: 0.5rem;
+    z-index: 3;
+}
+
+/*Main image*/
+#main_image {
+    object-fit: cover;
+    z-index: 2;
+}
+#main_image.pos_1 {
+    width: 28rem;
+    height: 20rem;
+    position: absolute;
+    top: 3rem;
+    right: 4rem;
+}
+#main_image.pos_2 {
+    width: 90%;
+    height: calc(95% - 2rem);
+    position: absolute;
+    top: 5%;
+    right: 5%;
+}
+#main_image.pos_3 {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+/*Bottom content*/
+#loken_img_container {
+    background-color: var(--primary-color);
+    width: fit-content;
+    position: fixed;
+    bottom: calc(1rem + 4rem + 0.3rem);
+    left: 1rem;
+    padding: 0.3rem 2rem 0 0.3rem;
+    clip-path: polygon(0 0, calc(100% - 1.8rem) 0, 100% 100%, 0 100%);
+    z-index: 4;
+}
+#loken_img_container img {
+    height: 2.5rem;
+}
+#text_main_bottom_content {
+    background-color: var(--primary-color);
+    color: white;
+    width: calc(100% - 2rem - 0.6rem);
+    height: 4rem;
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    padding: 0.3rem;
+    z-index: 3;
+}
+#text_main_bottom_content #big_text {
+    width: 100%;
+    display: block;
+    font-size: 2.6rem;
+    text-wrap: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+#text_main_bottom_content #small_text_container {
+    height: 1rem;
+    font-size: 0.8rem;
+    overflow: hidden;
+    text-wrap: nowrap;
+}
+#text_main_bottom_content #small_text_container p {
+    width: fit-content;
+    transform: translateX(100vw);
+    animation: scroll_feed 60s linear 0s infinite;
+}
+@keyframes scroll_feed {
+    0% {
+        transform: translateX(100vw);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
