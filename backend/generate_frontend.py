@@ -11,6 +11,7 @@ global base_path
 base_path = os.getcwd()
 img_extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
 
+
 # ---------------------------------
 # BASE COMMANDS
 # ---------------------------------
@@ -141,8 +142,8 @@ def make_article_id(article_title, upplaga_number):
 def make_short_story_id(article_title, article_content):
     replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
     
-    id_article = strip_string(remove_html_elements(article_title), 60)
-    id_content = strip_string(remove_html_elements(article_content), 120)
+    id_article = strip_string(remove_html_elements(str(article_title)), 60)
+    id_content = strip_string(remove_html_elements(str(article_content)), 120)
     for letter in replace_letters:
         if letter in id_article:
             id_article = id_article.replace(letter, replace_letters[letter])
@@ -160,6 +161,7 @@ def make_image_id(article_title, remove_åäö):
                 id = id.replace(letter, replace_letters[letter])
     return id
 
+
 # ---------------------------------
 # READ TEXT
 # ---------------------------------
@@ -172,7 +174,7 @@ staff_info_path = work_path(r"\ostraloken\backend\content\static\staff.txt")
 static_articles_path = work_path(r"\ostraloken\backend\content\static\articles.txt")
 external_links_content_path = work_path(r"\ostraloken\backend\content\static\external_links.txt")
 
-def read_normal_storys(): # To get the files and their content from all normal articals 
+def read_normal_storys(): # !!! This one is treated diffrantly !!! To get the files and their content from all normal articals 
     upplaga_list = os.listdir(normal_story_path) # list all folders in dir
     output_sum = [] # all the output
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
@@ -208,86 +210,49 @@ def read_normal_storys(): # To get the files and their content from all normal a
     return output_sum
 
 def read_short_storys(): # To get the files and their content from all short articals
-    whole_text = try_opening(short_story_path, "tr") # read it
-    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
-    output_sum = []
-    for number_of_articles in range(whole_text.count("### ")): # repeat for how many short storys there are in the txt
-        # find where diffrent parts are in the document
-        title = find_between(whole_text, "### ", " ##", last_final_pos)
-        article = find_between(whole_text, "+++ ", " ++", last_final_pos)
-        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
-        
-        output = ({"Number": number_of_articles, "Content": {"Title": title, "Article": article}})
-        output_sum.append(output)
-        
-    return output_sum
+    selection = {"Title": {"start": "### ", "end": " ##"}, "Article": {"start": "+++ ", "end": " ++"}}
+    return read_txt(short_story_path, selection)
 
 def read_hear_me_outs(): # To get the contents from all hear me outs
-    whole_text = try_opening(hear_me_outs_path, "tr")
-    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "
-    output_sum = []
-    for number_of_hear_me_outs in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
-
-        # find where diffrent parts are in the document
-        hear_me_out = find_between(whole_text, "### ", " ##", last_final_pos)
-        desc = find_between(whole_text, "+++ ", " ++", last_final_pos)
-        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
-        
-        output = ({"Number": int(number_of_hear_me_outs), "Content": {"Hear_me_out": hear_me_out, "Description": desc}})
-        output_sum.append(output)
-        
-    return output_sum
+    selection = {"Hear_me_out": {"start": "### ", "end": " ##"}, "Description": {"start": "+++ ", "end": " ++"}}
+    return read_txt(hear_me_outs_path, selection)
 
 def read_staff_info_content(): # To get the staff info
-    whole_text = try_opening(staff_info_path, "tr") # read it
-    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
-    output_sum = []
-    for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
-        # find where diffrent parts are in the document
-        name = find_between(whole_text, "### ", " ##", last_final_pos)
-        desc = find_between(whole_text, "+++ ", " ++", last_final_pos)
-        title = find_between(whole_text, '""" ', ' ""', last_final_pos)
-        email = find_between(whole_text, "@@@ ", " @@", last_final_pos)
-        image_src = find_between(whole_text, "§§§ ", " §§", last_final_pos)
-        last_final_pos = whole_text.find(" §§", last_final_pos) + 3
-        
-        output = {"Name": name, "Description": desc, "Title": title, "Email": email, "Image_src": image_src}
-        output_sum.append(output)
-        
-    return output_sum
+    selection = {"Name": {"start": "### ", "end": " ##"}, "Description": {"start": "+++ ", "end": " ++"}, "Title": {"start": '""" ', "end": ' ""'}, "Email": {"start": "@@@ ", "end": " @@"}, "Image_src": {"start": "§§§ ", "end": " §§"}}
+    return read_txt(staff_info_path, selection)
 
 def read_static_content(): # To get the content of the the static informational text to be placed in
-    whole_text = try_opening(static_articles_path, "tr") # read it
-    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
+    selection = {"Title": {"start": "### ", "end": " ##"}, "Article": {"start": "+++ ", "end": " ++"}, "Image_src": {"start": "§§§ ", "end": " §§"}}
+    return read_txt(static_articles_path, selection)
+
+def read_external_links_content(): # To get the external liks in länk nav
+    selection = {"Title": {"start": "### ", "end": " ##"}, "Link": {"start": "@@@ ", "end": " @@"}, "Image_src": {"start": "§§§ ", "end": " §§"}, "Important": {"start": "!!! ", "end": " !!"}}
+    return read_txt(external_links_content_path, selection)
+
+def read_txt(txt_path, dictionary_of_selection):
+    # example of dictionary_of_selection = {"title": {"start": "### ", "end": " ##"}, "article": {"start": "+++ ", "end": " ++"}}
+    # extract dictionary_of_selection
+    selection_abs_start = list(dictionary_of_selection.values())[0]["start"] # the start of the whole element
+    selection_abs_end = list(dictionary_of_selection.values())[-1]["end"] # the end if the whole element
+    
+    whole_text = try_opening(txt_path, "tr") # read it
+    last_final_pos = whole_text.find(selection_abs_start) # start at the first title aka the first selection_start
     output_sum = []
-    for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
+    for number_of_articles in range(whole_text.count(selection_abs_start)): # repeat for how many short storys there are in the txt
         # find where diffrent parts are in the document
-        title = find_between(whole_text, "### ", " ##", last_final_pos)
-        article = find_between(whole_text, "+++ ", " ++", last_final_pos)
-        image_src = find_between(whole_text, "§§§ ", " §§", last_final_pos)
-        last_final_pos = whole_text.find(" §§", last_final_pos) + 3
+        content_output = {}
+        for element_number, element_name in enumerate(dictionary_of_selection): # go through dictionary_of_selection to find this elements start and end selectors, then extract whats in between
+            start_selector = list(dictionary_of_selection.values())[element_number]["start"] # find start selector (ex "### ")
+            end_selector = list(dictionary_of_selection.values())[element_number]["end"] # find end selector (ex " ##")
+            in_between_selectors = find_between(whole_text, start_selector, end_selector, last_final_pos) # find what is in between these selectors
+            content_output[element_name] = in_between_selectors # add this to content_output
+        last_final_pos = whole_text.find(selection_abs_end, last_final_pos) + 3
         
-        output = {"Title": title, "Article": article, "Image_src": image_src}
+        output = ({"Number": number_of_articles, "Content": content_output})
         output_sum.append(output)
         
     return output_sum
 
-def read_external_links_content(): # To get the external liks in länk nav
-    whole_text = try_opening(external_links_content_path, "tr") # read it
-    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
-    output_sum = []
-    for number_of_articles in range(whole_text.count("### ")): # repeat for how many bits of content there are in the txt
-        # find where diffrent parts are in the document
-        title = find_between(whole_text, "### ", " ##", last_final_pos)
-        link = find_between(whole_text, "@@@ ", " @@", last_final_pos)
-        image_src = find_between(whole_text, "§§§ ", " §§", last_final_pos)
-        important_statment = find_between(whole_text, "!!! ", " !!", last_final_pos)
-        last_final_pos = whole_text.find(" !!", last_final_pos) + 3
-        
-        output = {"Title": title, "Link": link, "Image_src": image_src, "Important": important_statment}
-        output_sum.append(output)
-        
-    return output_sum
 
 # ---------------------------------
 # FIX ARTICLES
@@ -753,15 +718,16 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
         final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
     
     # add header
-    header_read = get_header()
+    header_read = get_base(r"\ostraloken\ostraloken.se\templates\base\header.html")
     final_file = final_file.replace("[+header+]", header_read) # add header
     final_file = final_file.replace("[+index_header+]", header_read.replace("../", "./")) # add header for specificly index
     
     # add footer
-    final_file = final_file.replace("[+footer+]", get_footer()) # add footer
+    footer_read = get_base(r"\ostraloken\ostraloken.se\templates\base\footer.html")
+    final_file = final_file.replace("[+footer+]", footer_read) # add footer
     
     # add general scripts
-    scripts_read = get_general_scripts()
+    scripts_read = get_base(r"\ostraloken\ostraloken.se\templates\base\general_scripts.html")
     final_file = final_file.replace("[+general_scripts+]", scripts_read)
     final_file = final_file.replace("[+index_general_scripts+]", scripts_read.replace("../", "./")) # add scripts for specificly index
     
@@ -790,54 +756,17 @@ def generate_static_section(title, content, image_src):
         
     return final_article
 
-def get_all_static_articles_replacments(image_switch):
-    replacment = {}
-    
-    for content in read_static_content():
-        section_title = content["Title"]
-        section_article = content["Article"]
-        if image_switch:
-            section_image_src = content["Image_src"]
-        else:
-            section_image_src = ""
-        generated_section = generate_static_section(section_title, section_article, section_image_src)
-        replacment[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
-    
-    return replacment
-
-# header & footer
-def get_header():
-    header_path = work_path(r"\ostraloken\ostraloken.se\templates\base\header.html")
-    header_content = open(header_path, "r", encoding="utf-8") # get its content
-    header_final = header_content.read()
-    header_content.close()
+# base elements (like header and footer)
+def get_base(path):
+    worked_path = work_path(path)
+    content = open(worked_path, "r", encoding="utf-8") # get its content
+    final = content.read()
+    content.close()
     
     for replacment in replacment_for_all:
-        header_final = header_final.replace(replacment, replacment_for_all[replacment])
+        final = final.replace(replacment, replacment_for_all[replacment])
     
-    return header_final
-
-def get_footer():
-    footer_path = work_path(r"\ostraloken\ostraloken.se\templates\base\footer.html")
-    footer_content = open(footer_path, "r", encoding="utf-8") # get its content
-    footer_final = footer_content.read()
-    footer_content.close()
-    
-    for replacment in replacment_for_all:
-        footer_final = footer_final.replace(replacment, replacment_for_all[replacment])
-    
-    return footer_final
-
-def get_general_scripts():
-    scripts_path = work_path(r"\ostraloken\ostraloken.se\templates\base\general_scripts.html")
-    scripts_content = open(scripts_path, "r", encoding="utf-8") # get its content
-    scripts_final = scripts_content.read()
-    scripts_content.close()
-    
-    for replacment in replacment_for_all:
-        scripts_final = scripts_final.replace(replacment, replacment_for_all[replacment])
-    
-    return scripts_final
+    return final
 
 # articles
 def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
@@ -1053,7 +982,7 @@ def generate_all_articles():
 
                 replacment = {
                     "[+description+]": remove_html_elements(article_main_text)[:200].replace('"', "&quot;") + "...",
-                    "[+url+]": f"https://ostraloken.se/a/{article_id}.html",
+                    "[+url+]": f"https://ostraloken.se/a/{article_id}",
                     "[+home_url+]": f"../#{article_id}",
                     "[+title+]": article_title.replace('"', "&quot;"),
                     "[+title_basic+]": remove_html_elements(article_title).replace('"', "&quot;"),
@@ -1111,171 +1040,34 @@ def generate_all_articles():
     progressbar_item.finish()
     print("All articles successfully generated!")
 
-def get_all_articles_previews():
-    list_of_generated_articles = generate_preview_article("./a/", "All")
-    all_generated_articles = ""
-    for generated_articles in list_of_generated_articles:
-        all_generated_articles += str(generated_articles)
-    return all_generated_articles
-
-def get_all_articles_full():
-    whole_content_articles = ""
-    for upplaga in reversed(read_normal_storys()):
-        # go throught every article in the upplaga
-        upplaga_number = upplaga["Upplaga"]
-        for article in upplaga["Content"]:
-            if article: # somethimes article is empty, this prevents that
-                article_title = str(article["Title"])
-                basic_article_title = remove_html_elements(article_title)
-                article_main_text = str(article["Article"])
-                article_type = str(article["Type"])
-                article_author = str(article["Writer"])
-                # copy over images and get the url to the right image
-                article_img_src = find_img(basic_article_title, upplaga_number, "https://ostraloken.se/a/images/")
-                whole_content_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
-    return whole_content_articles
-
-# short storys
-def generate_lone_short_storys(title, content):
-    if title is None or title == "":
-        title = "Null"
-    if content is None or content == "":
-        content = "Null"
-    
-    short_story_id = make_short_story_id(title, content)
-        
-    final_article = f"""
-<a class="article notis" id="{short_story_id}">
-    <article class="">
-        <h2>{title}</h2>
-        <p>{content}</p>
-    </article>
-</a>
-"""
-        
-    return final_article
-
-def get_short_story():
-    generated_short_story = ""
-    
-    for short_story_bundle in reversed(read_short_storys()):
-        content = short_story_bundle["Content"]
-        if content:
-            article_title = content["Title"]
-            article_main_content = content["Article"]
-            generated_short_story += generate_lone_short_storys(article_title, article_main_content)
-            
-    return generated_short_story
-
-# hear me outs
-def generate_lone_hear_me_out(hear_me_out, description):
-    if hear_me_out is None or hear_me_out == "":
-        hear_me_out = "Null"
-    if description is None:
-        description = "Null"
-    if description != "":
-        description = "<b>Förklaring:</b> " + description
-    
-    if len(hear_me_out) > 70:
-        hear_me_out = hear_me_out[:70] + "..."
-        
-    if len(description) > 500:
-        description = description[:500] + "..."
-    
-    final_article = f"""
-<article class="article hear_me_out">
-    <h2>{hear_me_out}</h2>
-    <p>{description}</p>
-    <div class="smash_pass_area">
-        <button class="HMO_button smash_button"><i>SMASH</i></button>
-        <button class="HMO_button pass_button"><i>PASS</i></button>
-    </div>
-</article>
-"""
-        
-    return final_article
-
-def get_hear_me_outs():
-    generated_hear_me_out = ""
-    
-    for hear_me_out_bundle in reversed(read_hear_me_outs()):
-        content = hear_me_out_bundle["Content"]
-        if content:
-            article_hear_me_out = content["Hear_me_out"]
-            article_desc = content["Description"]
-            generated_hear_me_out += generate_lone_hear_me_out(article_hear_me_out, article_desc)
-            
-    return generated_hear_me_out
-
 # Nav page
-def generate_lone_nav_element(title, link, image_src, important_status):
-    if title is None or title == "":
-        title = "Null"
-    if link is None or link == "":
-        link = "Null"
-    if image_src is None or image_src == "":
-        image_context = "<!-- NO IMAGE HERE -->"
-    else:
-        image_context = f'<img src="{image_src}" alt="{image_src}">'
-        
-    if important_status == "True":
-        highlight_context = " highlight"
-    else:
-        highlight_context = ""
-    
-    final_article = f"""
-<a class="article clickable_element nav_card{highlight_context}" target="_blank" href="{link}">
-    <h2>{title}</h2>
-    {image_context}
-</a>
-"""
-        
-    return final_article
-
 def get_nav_element(img_switch, highlight_switch):
     generated_nav_element = ""
     
-    for content in read_external_links_content():
-        nav_element_important_status = content["Important"]
-        if str(nav_element_important_status) == str(highlight_switch):
-            nav_element_title = content["Title"]
-            nav_element_link = content["Link"]
-            if img_switch: # has image
+    for links_bundle in read_external_links_content():
+        content = links_bundle["Content"]
+        if content:
+            nav_element_important_status = content["Important"]
+            if str(nav_element_important_status) == str(highlight_switch):
                 nav_element_image_src = content["Image_src"]
-            else: # no image
-                nav_element_image_src = ""
-            generated_nav_element += generate_lone_nav_element(nav_element_title, nav_element_link, nav_element_image_src, nav_element_important_status)
-        
-    return generated_nav_element
-
-# Kontakt page
-def generate_kontakt_section(name, desc, title, email, image_src):
-    if name is None or name == "":
-        name = "Null"
-    if title is None or title == "":
-        title = "Null"
-    if email is None or email == "":
-        email = "Null"
-    if image_src is None or image_src == "":
-        image_context = "<!-- NO IMAGE HERE -->"
-    else:
-        image_context = f'<img src="{image_src}" alt="{name}">'
-    
-    final_article = f"""
-<div class="kontakt_card" id="{name.replace(" ", "_")}">
-    <div class="kontakt_card_not_link_section">
-        {image_context}
-        <div class="kontakt_card_text_section">
-            <h2>{title}: {name}</h2>
-            <p>{desc}</p>
-        </div>
-    </div>
-    <!--
-    <a class="article clickable_element highlight" href="mailto:{email}"><p><b>Skicka epost till {name}</b></p></a>
-    -->
-</div>
+                if img_switch and not (nav_element_image_src is None or nav_element_image_src == ""):
+                    image_context = f'<img src="{nav_element_image_src}" alt="{nav_element_image_src}">'
+                else:
+                    image_context = "<!-- NO IMAGE HERE -->"
+                    
+                if nav_element_important_status == "True":
+                    highlight_context = " highlight"
+                else:
+                    highlight_context = ""
+                
+                generated_nav_element += f"""
+<a class="article clickable_element nav_card{highlight_context}" target="_blank" href="{content["Link"]}">
+    <h2>{content["Title"]}</h2>
+    {image_context}
+</a>
 """
-    return final_article
+
+    return generated_nav_element
 
 
 # ---------------------------------
@@ -1308,62 +1100,123 @@ def create_dictionary():
 """
     
     # All normal articles preview that you can click and it brings you to that article page
-    replacment_dictionary["[+all_preview_articles+]"] = get_all_articles_previews()
+    list_of_generated_articles = generate_preview_article("./a/", "All")
+    all_generated_articles = ""
+    for generated_articles in list_of_generated_articles:
+        all_generated_articles += str(generated_articles)
+    replacment_dictionary["[+all_preview_articles+]"] = all_generated_articles
     
     # All normal articles fully printed
-    replacment_dictionary["[+all_articles+]"] = get_all_articles_full()
+    whole_content_articles = ""
+    for upplaga in reversed(read_normal_storys()):
+        # go throught every article in the upplaga
+        upplaga_number = upplaga["Upplaga"]
+        for article in upplaga["Content"]:
+            if article: # somethimes article is empty, this prevents that
+                article_img_src = find_img(remove_html_elements(str(article["Title"])), upplaga_number, "https://ostraloken.se/a/images/") # get the url to the right image
+                whole_content_articles += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, str(article["Title"]), str(article["Article"]), str(article["Type"]), str(article["Writer"]), 0, upplaga_number)
+    replacment_dictionary["[+all_articles+]"] = whole_content_articles
     
     # All short storys
-    replacment_dictionary["[+all_short_storys+]"] = get_short_story()
+    generated_short_storys = ""
+    for short_story_bundle in reversed(read_short_storys()):
+        content = short_story_bundle["Content"]
+        short_story_id = make_short_story_id(content["Title"], content["Article"])
+        generated_short_storys += f"""
+<a class="article notis" id="{short_story_id}">
+    <article class="">
+        <h2>{content["Title"]}</h2>
+        <p>{content["Article"]}</p>
+    </article>
+</a>
+"""
+    replacment_dictionary["[+all_short_storys+]"] = generated_short_storys
     
     # All hear me outs
-    replacment_dictionary["[+all_hear_me_outs+]"] = get_hear_me_outs()
+    generated_hear_me_outs = ""
+    for hear_me_out_bundle in reversed(read_hear_me_outs()):
+        content = hear_me_out_bundle["Content"]
+        article_hear_me_out = content["Hear_me_out"]
+        article_desc = content["Description"]
+        if article_desc != "":
+            article_desc = "<b>Förklaring:</b> " + article_desc
+        if len(article_hear_me_out) > 70:
+            article_hear_me_out = article_hear_me_out[:70] + "..."
+        if len(article_desc) > 500:
+            article_desc = article_desc[:500] + "..."
+        generated_hear_me_outs += f"""
+<article class="article hear_me_out">
+    <h2>{article_hear_me_out}</h2>
+    <p>{article_desc}</p>
+    <div class="smash_pass_area">
+        <button class="HMO_button smash_button"><i>SMASH</i></button>
+        <button class="HMO_button pass_button"><i>PASS</i></button>
+    </div>
+</article>
+"""
+    replacment_dictionary["[+all_hear_me_outs+]"] = generated_hear_me_outs
     
     # Dynamicly add all static articles
-    for content in read_static_content():
-        section_title = content["Title"]
-        section_article = content["Article"]
-        section_image_src = content["Image_src"]
-        
+    for static_bundle in reversed(read_static_content()):
+        content = static_bundle["Content"]
+        replacment_name = content["Title"].replace(" ", "_")
         # generate article
-        generated_section = generate_static_section(section_title, section_article, section_image_src)
-        replacment_dictionary[f"[+{section_title.replace(" ", "_")}+]"] = generated_section
+        generated_section = generate_static_section(content["Title"], content["Article"], content["Image_src"])
+        replacment_dictionary[f"[+{replacment_name}+]"] = generated_section # like ex "[+test+]"
         
         # generate without image
-        generated_section = generate_static_section(section_title, section_article, "")
-        replacment_dictionary[f"[+no_img_{section_title.replace(" ", "_")}+]"] = generated_section
+        generated_section = generate_static_section(content["Title"], content["Article"], "")
+        replacment_dictionary[f"[+no_img_{replacment_name}+]"] = generated_section # like ex "[+no_img_test+]"
         
         # add just the article
-        replacment_dictionary[f"[+{section_title.replace(" ", "_")}_article+]"] = section_article
+        replacment_dictionary[f"[+{replacment_name}_article+]"] = content["Article"] # like ex "[+test_article+]"
     
     # Add content from staff
     generated_sections = ""
     staff_list = ""
-    for content in read_staff_info_content():
-        person_name = content["Name"]
-        person_desc = content["Description"]
-        person_title = content["Title"]
-        person_email = content["Email"]
-        person_image_src = content["Image_src"]
-        generated_sections += generate_kontakt_section(person_name, person_desc, person_title, person_email, person_image_src)
-        staff_list += f'<p>{person_name}</p>'
+    for staff_bundle in read_staff_info_content():
+        content = staff_bundle["Content"]
+        staff_list += f'<p>{content["Name"]}</p>'
+        
+        name = content["Name"]
+        image_src = content["Image_src"]
+        if image_src is None or image_src == "":
+            image_context = "<!-- NO IMAGE HERE -->"
+        else:
+            image_context = f'<img src="{image_src}" alt="{name}">'
+        
+        generated_sections += f"""
+<div class="kontakt_card" id="{name.replace(" ", "_")}">
+    <div class="kontakt_card_not_link_section">
+        {image_context}
+        <div class="kontakt_card_text_section">
+            <h2>{content["Title"]}: {name}</h2>
+            <p>{content["Description"]}</p>
+        </div>
+    </div>
+    <!--
+    <a class="article clickable_element highlight" href="mailto:{content["Email"]}"><p><b>Skicka epost till {name}</b></p></a>
+    -->
+</div>
+"""
+        
+        
     # List of staff as html button elements which lead to their email
     replacment_dictionary["[+staff_email_buttons+]"] = generated_sections
     # List of staff as links to their kontaktinfo page
     replacment_dictionary["[+staff_list+]"] = staff_list
     
     # The latest story
-    most_recent_story = generate_preview_article("../a/", "All")[0]
-    replacment_dictionary["[+latest_article+]"] = most_recent_story
+    replacment_dictionary["[+latest_article+]"] = generate_preview_article("../a/", "All")[0]
     # The latest story title
     most_recent_story_list = generate_preview_article("../a/", "List")[0]
     replacment_dictionary["[+latest_title+]"] = remove_html_elements(most_recent_story_list["Title"]).replace('"', "&quot;")
     
     # Get the nav cards
-    replacment_dictionary["[+nav_highlight_cards+]"] = get_nav_element(True, True)
-    replacment_dictionary["[+no_img_nav_highlight_cards+]"] = get_nav_element(False, True)
-    replacment_dictionary["[+nav_normal_cards+]"] = get_nav_element(True, False)
-    replacment_dictionary["[+no_img_nav_normal_cards+]"] = get_nav_element(False, False)
+    replacment_dictionary["[+nav_highlight_cards+]"] = get_nav_element(True, True) # image and highlight
+    replacment_dictionary["[+no_img_nav_highlight_cards+]"] = get_nav_element(False, True) # no image but highlight
+    replacment_dictionary["[+nav_normal_cards+]"] = get_nav_element(True, False) # image but not highlight
+    replacment_dictionary["[+no_img_nav_normal_cards+]"] = get_nav_element(False, False) # no image or highlight
     
     print("Dictionary created")
     
@@ -1523,6 +1376,9 @@ Saker att lägga till
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
 
+GÖR MER MODULÄR!!!
 
-Gör så extra info popups överallt genereras baserat på external liks
+
+Lock_TF_in+Title_Lock_TF_in_Article_Lockin_narmar_sig_ar_du_redo_Kolla_Lokens_eller_Elevkarens_Instagram_for_mer_information
+Lock_TF_in+Lockin_narmar_sig_ar_du_redo_Kolla_Lokens_eller_Elevkarens_Instagram_for_mer_information
 """
