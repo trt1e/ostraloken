@@ -2,6 +2,8 @@ import os
 import re
 import random
 import math
+import datetime
+import subprocess
 from PIL import Image, ImageOps, ImageDraw, ImageFont # To handle the images copyd and instagram images
 import shutil
 import progressbar
@@ -1343,11 +1345,13 @@ def create_dictionary():
     replacment_dictionary["[+nav_normal_cards+]"] = get_nav_element(True, False) # image but not highlight
     replacment_dictionary["[+no_img_nav_normal_cards+]"] = get_nav_element(False, False) # no image or highlight
     
+    # Last uppdated aka the currant date at which you run this
+    date_today = datetime.datetime.now()
+    replacment_dictionary["[+last_updated+]"] = f"{date_today.strftime(r"%d")}-{date_today.strftime(r"%m")}-{date_today.strftime(r"%Y")} {date_today.strftime(r"%H")}:{date_today.strftime(r"%M")}"
+    
     print("Dictionary created")
     
     return replacment_dictionary
-
-replacment_for_all = create_dictionary()
 
 def generate_all_normal_pages(): # go throught every file in templates
     template_base_paths = [
@@ -1380,41 +1384,49 @@ def handle_backend_UI():
     while True:
         answer = input("$ ")
         try:
-            if answer == "help":
-                print("""
-    $ help --> Lists all commands
-    $ close --> Terminate script
+            if answer == "help" or answer == "h":
+                print("""--------------------------------------------------
+    $ help (h) --> Lists all commands
+    $ close (c) --> Terminate script
+    $ restart (r) --> Terminate, then restart script
     
     TEMPLATES
-    $ new upplaga template --> Generates a new upplaga template with articles, notiser and hear me outs
+    $ new upplaga template (new ut) --> Generates a new upplaga template with articles, notiser and hear me outs
     
     GENERATE TEXT FILES
-    $ gen all --> Generate all webbpage files that are generated
+    $ gen all (g) --> Generate all webbpage files that are generated
 
     COPY IMAGES
-    $ copy images new --> Copy over only the new images
-    $ copy images all --> Copy over all images, even if they alredy exists
-    $ copy images specific --> Copy over all images in a specific upplaga
+    $ copy images (ci) ...
+    ... = new (n) --> Copy over only the new images
+    ... = all (a) --> Copy over all images, even if they alredy exists
+    ... = specific (s) --> Copy over all images in a specific upplaga
     
     COPY PDF:S
-    $ copy pdf new --> Copy over only the new pdf:s
-    $ copy pdf all --> Copy over all pdf:s, even if they alredy exists
-    $ copy pdf specific --> Copy over a specific upplagas pdf 
+    $ copy pdfs (cp) ...
+    ... = new (n) --> Copy over only the new pdf:s
+    ... = all (a) --> Copy over all pdf:s, even if they alredy exists
+    ... = specific (s) --> Copy over a specific upplagas pdf 
     
     FIX CONTENT
     $ inspect --> Looks through content so everything is as it should be, if not: it is reported   
-    $ fix citationmarks --> Replace all “ and ” with ", as they should be
-    $ fix article names --> Rename normal storys to their title (keeping them in the same order)
- 
+    $ fix ...
+    ... = citationmarks (c) --> Replace all “ and ” with ", as they should be
+    ... = article names (an) --> Rename normal storys to their title (keeping them in the same order)
+
     OTHER
     $ get dir --> Print the currant base dir
     $ set dir --> Set the base dir
-                    """)
-            elif answer == "close":
+--------------------------------------------------""")
+            elif answer == "close" or answer == "c":
+                break
+            elif answer == "restart" or answer == "r":
+                print(base_path)
+                subprocess.run(f'python -u "{work_path(r"\ostraloken\backend\generate_frontend.py")}"')
                 break
                 
             # new content
-            elif answer == "new upplaga template":
+            elif answer == "new upplaga template" or answer == "new ut":
                 amount_of_articles = input("Amount articles: ")
                 if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
                     amount_of_articles = 0
@@ -1441,17 +1453,17 @@ def handle_backend_UI():
                 setup_new_hear_me_outs(amount_of_hear_me_outs)
             
             # generate text files
-            elif answer == "gen all":
+            elif answer == "gen all" or answer == "g":
                 replacment_for_all = create_dictionary()
                 generate_all_normal_pages()
                 generate_all_articles()
                 
             # images
-            elif answer == "copy images new":
+            elif answer == "copy images new" or answer == "ci new" or answer == "ci n":
                 copy_over_images("new")
-            elif answer == "copy images all":
+            elif answer == "copy images all" or answer == "ci all" or answer == "ci a":
                 copy_over_images("all")
-            elif answer == "copy images specific":
+            elif answer == "copy images specific" or answer == "ci specific" or answer == "ci s":
                 upplaga_to_copy = input("Copy over images in upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
                     copy_over_images(f"specific: {upplaga_to_copy}")
@@ -1459,11 +1471,11 @@ def handle_backend_UI():
                     print(f"{upplaga_to_copy} not a number")
                     
             # pdfs
-            elif answer == "copy pdf new":
+            elif answer == "copy pdfs new" or answer == "cp new" or answer == "cp n":
                 copy_over_pdfs("new")
-            elif answer == "copy pdf all":
+            elif answer == "copy pdfs all" or answer == "cp all" or answer == "cp a":
                 copy_over_pdfs("all")
-            elif answer == "copy pdf specific":
+            elif answer == "copy pdfs specific" or answer == "cp specific" or answer == "cp s":
                 upplaga_to_copy = input("Copy over pdf upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
                     copy_over_pdfs(f"specific: {upplaga_to_copy}")
@@ -1475,11 +1487,11 @@ def handle_backend_UI():
                 inspect_normal_storys()
                 inspect_short_storys()
                 inspect_hear_me_outs()
-            elif answer == "fix citationmarks":
+            elif answer == "fix citationmarks" or answer == "fix c":
                 fix_citationmarks()
-            elif answer == "fix article names":
+            elif answer == "fix article names" or answer == "fix an":
                 fix_all_backend_articles_names()
-                
+            
             # other
             elif answer == "get dir":
                 print(base_path)
@@ -1502,6 +1514,4 @@ Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
 
 GÖR MER MODULÄR!!!
-
-Gör så pdf:er blir till bilder av py och sedan tagna som bilder i /pdfer/index.html 
 """
