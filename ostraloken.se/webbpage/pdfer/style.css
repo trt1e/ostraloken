@@ -108,8 +108,16 @@ main {
 }
 
 /*Image rendered PDF*/
+#pdf_img_container {
+    width: 100%;
+    height: fit-content;
+}
 .pdf_page {
     width: 100%;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    padding-bottom: 1rem;
 }
 
 /*Text styling*/

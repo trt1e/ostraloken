@@ -2,10 +2,11 @@ import os
 import re
 import random
 import math
-from PIL import Image, ImageOps, ImageDraw, ImageFont
+from PIL import Image, ImageOps, ImageDraw, ImageFont # To handle the images copyd and instagram images
 import shutil
 import progressbar
-from pdf2image import convert_from_path
+from pdf2image import convert_from_path # To extract the pdfs to images
+from pypdf import PdfReader # To get how many pages
 
 is_linux = False
 
@@ -125,6 +126,13 @@ def fix_cut_of_html_elements(text):
     # this returns what should be added at the end of the text given 
     return extra_at_end
 
+def remove_åäö(string):
+    replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
+    for letter in replace_letters:
+        if letter in string:
+            string = string.replace(letter, replace_letters[letter])
+    return string
+
 def get_curant_upplaga_number():
     highest_upplaga_number = 1
     for upplaga in reversed(read_normal_storys()):
@@ -133,35 +141,22 @@ def get_curant_upplaga_number():
     return highest_upplaga_number
 
 def make_article_id(article_title, upplaga_number):
-    id_article = strip_string(remove_html_elements(article_title), 100)
-    replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
-    for letter in replace_letters:
-        if letter in id_article:
-            id_article = id_article.replace(letter, replace_letters[letter])
+    id_article = remove_åäö(article_title)
+    id_article = strip_string(remove_html_elements(id_article), 100)
     id_upplaga = "-U" + str(upplaga_number)
     return id_article + id_upplaga
 
 def make_short_story_id(article_title, article_content):
-    replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
+    id_article = remove_åäö(article_title)
+    id_article = remove_åäö(article_content)
     
     id_article = strip_string(remove_html_elements(str(article_title)), 60)
     id_content = strip_string(remove_html_elements(str(article_content)), 120)
-    for letter in replace_letters:
-        if letter in id_article:
-            id_article = id_article.replace(letter, replace_letters[letter])
-        if letter in id_content:
-            id_content = id_content.replace(letter, replace_letters[letter])
 
     return id_article + "+" + id_content
 
-def make_image_id(article_title, remove_åäö):
-    id = "IMG-" + strip_string(remove_html_elements(article_title), 100)
-    if remove_åäö:
-        replace_letters = {"å": "a", "Å": "A", "ä": "a", "Ä": "A", "ö": "o", "Ö": "O"}
-        for letter in replace_letters:
-            if letter in id:
-                id = id.replace(letter, replace_letters[letter])
-    return id
+def make_image_id(article_title):
+    return "IMG-" + strip_string(remove_html_elements(article_title), 100)
 
 
 # ---------------------------------
@@ -588,8 +583,8 @@ def setup_new_hear_me_outs(count_hear_me_outs):
 
 # images
 def find_img(article_title, upplaga_nmr, base_url):
-    old_img_title = make_image_id(article_title, False)
-    new_img_title = make_image_id(article_title, True)
+    old_img_title = make_image_id(article_title)
+    new_img_title = remove_åäö(make_image_id(article_title))
     old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_nmr}" + handel_path_slash("\\") + old_img_title
     for ext in img_extentions:
         if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
@@ -616,8 +611,8 @@ def copy_over_images(gen_type):
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 article_title = str(article["Title"])
-                old_img_title = make_image_id(article_title, False)
-                new_img_title = make_image_id(article_title, True)
+                old_img_title = make_image_id(article_title)
+                new_img_title = remove_åäö(make_image_id(article_title))
                 old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + old_img_title
                 for ext in img_extentions:
                     if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
@@ -743,47 +738,85 @@ def copy_over_images(gen_type):
 # Copy pdf:s
 def copy_over_pdfs(gen_type):
     pdf_start_path = work_path(r"\ostraloken\backend\content\pdfs" + "\\")
-    pdf_end_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\pdfs" + "\\")
+    pdf_file_end_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\pdf_files" + "\\")
+    pdf_images_end_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\pdf_images" + "\\")
     
     amount_of_pdfs = 0
+    all_amount_pages = {}
     pdfs_list = os.listdir(pdf_start_path)
     
     for file_dir in pdfs_list:
-        amount_of_pdfs += 1
-        
         full_start_file_dir = pdf_start_path + file_dir
-        full_end_file_dir = pdf_end_path + file_dir
         
+        amount_of_pdfs += 1
+        upplaga_number = file_dir.split("Östra_Löken_upplaga_")[1].split(".pdf")[0]
+        
+        pdf_reader = PdfReader(open(full_start_file_dir, "rb"))
+        amount_of_pages = len(pdf_reader.pages)
+        all_amount_pages[upplaga_number] = (amount_of_pages)
+        
+        full_pdf_file_end_path = pdf_file_end_path + remove_åäö(file_dir)
         copy_file_switch = False
         
-        if gen_type != "new" or os.path.isfile(full_end_file_dir) is False:
+        if gen_type != "new" or os.path.isfile(full_pdf_file_end_path) is False:
             if "specific" in gen_type:
                 desired_upplaga_nmr = gen_type.split(": ")[1]
-                upplaga_number = file_dir.split("Östra_Löken_upplaga_")[1].split(".pdf")[0]
                 if int(upplaga_number) == int(desired_upplaga_nmr):
                     copy_file_switch = True
             else:
                 copy_file_switch = True
 
+        # Copy the file
         if copy_file_switch:
-            shutil.copyfile(full_start_file_dir, full_end_file_dir)
+            shutil.copyfile(full_start_file_dir, full_pdf_file_end_path)
             
-            print(f"copied pdf {file_dir}")
+            print(f"Copied pdf file {file_dir}")
+
+        pdf_image_folder_path = pdf_images_end_path + f"Upplaga_{upplaga_number}" + handel_path_slash("\\")
+        create_images_switch = False
+        
+        if gen_type != "new" or os.path.isdir(pdf_image_folder_path) is False: # if gen_type = "specific" we check if the folder for that pdf exists, not if it has image files inside
+            if "specific" in gen_type:
+                desired_upplaga_nmr = gen_type.split(": ")[1]
+                if int(upplaga_number) == int(desired_upplaga_nmr):
+                    create_images_switch = True
+            else:
+                create_images_switch = True
+
+        # Create the images from pdf
+        if create_images_switch:
+            os.makedirs(pdf_image_folder_path, exist_ok=True) # generate the folder
+            
+            created_pdf_images = convert_from_path(full_start_file_dir)
+            for image_nr in range(len(created_pdf_images)):
+                created_pdf_images[image_nr].save(pdf_image_folder_path + "page_"+ str(image_nr + 1) +".webp", "WEBP")
+            
+            print(f"Created pdf images for upplaga {upplaga_number}")
     else:
         print("No pdf:s left to copy")
         
     # change the PDFjs_reader.js in the /pdfer/js/ folder so that it has the correct amount of pdfs listed
-    pdf_js_program_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\js\PDFjs_reader.js")
+    pdf_js_program_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\js\PDF_reader.js")
     
     # get the content
     js_file_content = try_opening(pdf_js_program_path, "tr") # read it
     
-    # change the number
-    js_changed_content = re.sub(r"const amoutPDfs = \d+", f"const amoutPDfs = {amount_of_pdfs}", js_file_content)
+    # Sort amount all pages
+    all_amount_pages_sorted = dict(sorted(all_amount_pages.items(), key=lambda item: int(item[0])))
+    
+    # change the number of amount of pdfs
+    js_changed_content = re.sub(r"const amoutPDfs = \d+", f"const amoutPDFs = {amount_of_pdfs}", js_file_content)
+    # change how many are max pages
+    js_changed_content = re.sub(r"const maxPages = \d+", f"const maxPages = {max(list(all_amount_pages_sorted.values()))}", js_changed_content) 
+    # change how many are max pages
+    list_there_alredy = find_between(js_changed_content, "const pagesPerPDF = [", "] // ID=pagesPerPDF", 0)
+    js_changed_content = js_changed_content.replace(f"const pagesPerPDF = [{str(list_there_alredy)}]", f"const pagesPerPDF = {list(all_amount_pages_sorted.values())}")
     
     changed_js_file = open(pdf_js_program_path, "w", encoding="utf-8") # create / find the file
     changed_js_file.write(js_changed_content) # write to it
-    changed_js_file.close()    
+    changed_js_file.close()
+    
+    print("Uppdated amoutPDFs, maxPages and pagesPerPDF in PDF_reader.js ")
 
 # basic for all generated text files
 def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated    
