@@ -1,15 +1,17 @@
 import os
 import re
 import random
-from PIL import Image
+import math
+from PIL import Image, ImageOps, ImageDraw, ImageFont
 import shutil
 import progressbar
+from pdf2image import convert_from_path
 
 is_linux = False
 
 global base_path
 base_path = os.getcwd()
-img_extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp"]
+img_extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp", "WEBP"]
 
 
 # ---------------------------------
@@ -273,7 +275,8 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
         for file in file_list: # Go througth every file in the list
             if file[:4] != "IMG-":
                 # check if there are img files that do not start with IMG-
-                if file[-3:] in img_extentions or file[-4:] in img_extentions:
+                # OLD: if file[-3:] in img_extentions or file[-4:] in img_extentions:
+                if file.endswith(tuple(img_extentions)):
                     print(f'WARNING: {file} is image but does not start with "IMG-" as it should')
                     printed_something = True
                 else:
@@ -601,7 +604,10 @@ def find_img(article_title, upplaga_nmr, base_url):
         return ""
 
 def copy_over_images(gen_type):
+    instagram_images_template_path = work_path(r"\ostraloken\instagram_images\templates\Normal_article.png")
+    
     generated_images_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a\images" + "\\")
+    generated_instagram_images_path = work_path(r"\ostraloken\instagram_images\final_images" + "\\")
     
     # go throught every upplaga
     for upplaga in read_normal_storys():
@@ -613,19 +619,105 @@ def copy_over_images(gen_type):
                 old_img_title = make_image_id(article_title, False)
                 new_img_title = make_image_id(article_title, True)
                 old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + old_img_title
-                new_img_url_with_extention = generated_images_path + new_img_title + ".webp"
                 for ext in img_extentions:
                     if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
                         old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
                         break
                 else:
                     old_img_path_with_extention = "NO_IMG" # article does not have image
+                
+                if old_img_path_with_extention != "NO_IMG":                    # Copy over image to destination
+                    # if all and no file: YES
+                    # if all and file: YES
+                    # if new and no file: YES
+                    # if new and file: NO                        
+                    instagram_destination_folder = generated_instagram_images_path + f"Upplaga_{upplaga_number}" + handel_path_slash("\\")
+                    instagram_image_destination_dir = instagram_destination_folder + new_img_title + ".webp"
+                    if gen_type != "new" or os.path.isfile(instagram_image_destination_dir) is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
+                        create_image_switch = False
+                        if "specific" in gen_type:
+                            desired_upplaga_nmr = gen_type.split(": ")[1]
+                            if int(upplaga_number) == int(desired_upplaga_nmr):
+                                create_image_switch = True
+                        else:
+                            create_image_switch = True
+
+                        if create_image_switch:
+                            os.makedirs(instagram_destination_folder, exist_ok=True) # generate the folder / make sure it exists
+                            
+                            # Copy over image to instagram format
+                            old_insta_image = Image.open(old_img_path_with_extention)
+                            insta_overlay = Image.open(instagram_images_template_path)
+                            
+                            # create a blac slate of orange 1000x1000px
+                            insta_image = Image.new("RGB", (1000, 1000), color=(238, 115, 34)) # Have full canvas that is just orange
+                            
+                            # Add text
+                            text_to_place = remove_html_elements(article_title)
+                            textarea_width = 950 # px
+                            draw_insta_image = ImageDraw.Draw(insta_image)
+                            # Import impact
+                            impact_font = work_path(r"\ostraloken\instagram_images\templates\impact.ttf")
+                            insta_font = ImageFont.truetype(impact_font, 64)
+                            # Split up the son-to-be-drawn-text
+                            currant_x_length = 0
+                            words_on_row = ""
+                            how_many_rows = math.ceil(insta_font.getlength(text_to_place) / textarea_width)
+                            currant_y = 1000 - ((70 * how_many_rows) + 20)
+                            org_y = currant_y
+                            length_of_blank = insta_font.getlength(" ")
+                            for word_number, word in enumerate(text_to_place.split(" "), 1):
+                                word_length = insta_font.getlength(word + " ") # get the pixel length of the word
+                                if word_length + currant_x_length >= textarea_width or word_number == len(text_to_place.split(" ")):
+                                    # if its the last word, make sure its counted in
+                                    last_word_and_too_long = False
+                                    if word_number == len(text_to_place.split(" ")):
+                                        if not word_length + currant_x_length >= textarea_width: # only if the new word doesnt make the row too long
+                                            words_on_row += word + " "
+                                            currant_x_length += word_length
+                                        else:
+                                            last_word_and_too_long = True # This makes so later the last word is added on a new row
+
+                                    # Print the currant row
+                                    # calculate the x
+                                    currant_x = 500 - ((currant_x_length - length_of_blank) / 2)
+                                    # Draw the row
+                                    draw_insta_image.text((currant_x, currant_y), words_on_row[0:-1], (255, 255, 255), font=insta_font)
+                                    
+                                    # In the case that this last word makes the row too long
+                                    # Then we go through and add the last word on a new row!
+                                    if last_word_and_too_long:
+                                        # calculate the x
+                                        currant_extra_x = 500 - (word_length / 2)
+                                        currant_extra_y = currant_y + 70
+                                        # Draw the row
+                                        draw_insta_image.text((currant_extra_x, currant_extra_y), word, (255, 255, 255), font=insta_font)
+                                    
+                                    # go to the next row
+                                    currant_x_length = 0
+                                    currant_y += 70
+                                    words_on_row = ""
+                                    
+                                # Add word to word row and to row length
+                                words_on_row += word + " "
+                                currant_x_length += word_length
+                            
+                            
+                            # Zoom in the image to a 1000x1000 aspect ratio
+                            height_of_undersection = (org_y - 20) # px (old: 217px)
+                            old_insta_image = ImageOps.fit(old_insta_image, (1000, height_of_undersection), method=0, bleed=0.0, centering=(0.5, 0.5))
+                            insta_image.paste(old_insta_image, (0, 0)) # Paste the old
+                            insta_image.paste(insta_overlay, (0,0), mask = insta_overlay) # Add the template for a normal article as overlay
+                            
+                            insta_image.save(instagram_image_destination_dir, quality=100)
+                            print(f"Created Instagram image: {new_img_title}")
                     
-                if old_img_path_with_extention != "NO_IMG":
+                    # Copy over image to destination
                     # if all and no file: YES
                     # if all and file: YES
                     # if new and no file: YES
                     # if new and file: NO
+                    new_img_url_with_extention = generated_images_path + new_img_title + ".webp"
                     if gen_type != "new" or os.path.isfile(new_img_url_with_extention) is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                         create_image_switch = False
                         if "specific" in gen_type:
@@ -642,7 +734,7 @@ def copy_over_images(gen_type):
                             new_height = int((new_width / img_width) * img_height)
                             new_image = image.resize((new_width, new_height))
                             new_image.save(new_img_url_with_extention, quality=80)
-                            print(f"copied image: {new_img_title}")
+                            print(f"Copied image: {new_img_title}")
                     else: # gen type == "new" and os.path.isfile(new_img_url_with_extention) is True
                         pass
     else:
@@ -1378,7 +1470,5 @@ Att fixa senare:
 
 GÖR MER MODULÄR!!!
 
-
-Lock_TF_in+Title_Lock_TF_in_Article_Lockin_narmar_sig_ar_du_redo_Kolla_Lokens_eller_Elevkarens_Instagram_for_mer_information
-Lock_TF_in+Lockin_narmar_sig_ar_du_redo_Kolla_Lokens_eller_Elevkarens_Instagram_for_mer_information
+Gör så pdf:er blir till bilder av py och sedan tagna som bilder i /pdfer/index.html 
 """
