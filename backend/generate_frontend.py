@@ -6,6 +6,8 @@ import datetime
 import subprocess
 from PIL import Image, ImageOps, ImageDraw, ImageFont # To handle the images copyd and instagram images
 import shutil
+import qrcode
+from qrcode.image.pil import PilImage
 import progressbar
 from pdf2image import convert_from_path # To extract the pdfs to images
 from pypdf import PdfReader # To get how many pages
@@ -34,6 +36,7 @@ def handel_path_slash(string): # needs to be own function cause some parts just 
         return string
 
 def work_path(path): # input a path that works on windows and it then works in linux if needed
+    global base_path
     if is_linux == True:
         new_path = handel_path_slash(path)
         new_path_start = new_path.find("/", 1)
@@ -601,35 +604,44 @@ def find_img(article_title, upplaga_nmr, base_url):
         return ""
 
 def copy_over_images(gen_type):
-    instagram_images_template_path = work_path(r"\ostraloken\instagram_images\templates\Normal_article.png")
+    instagram_article_image_template_path = work_path(r"\ostraloken\instagram_images\templates\Normal_article.png")
+    instagram_upplaga_image_template_1_path = work_path(r"\ostraloken\instagram_images\templates\Upplaga_1.png")
+    instagram_upplaga_image_template_2_path = work_path(r"\ostraloken\instagram_images\templates\Upplaga_2.png")
     
     generated_images_path = work_path(r"\ostraloken\ostraloken.se\webbpage\a\images" + "\\")
+    generated_upplaga_images_path = work_path(r"\ostraloken\ostraloken.se\webbpage\pdfer\pdf_images" + "\\")
+    
     generated_instagram_images_path = work_path(r"\ostraloken\instagram_images\final_images" + "\\")
     
+    all_articles = read_normal_storys()
+    
     # go throught every upplaga
-    for upplaga in read_normal_storys():
+    for upplaga in all_articles:
         # go throught every article in the upplaga
         upplaga_number = upplaga["Upplaga"]
+        image_number = 0
         for article in upplaga["Content"]:
             if article: # somethimes article is empty, this prevents that
                 article_title = str(article["Title"])
                 old_img_title = make_image_id(article_title)
-                new_img_title = remove_åäö(make_image_id(article_title))
+                new_img_title = remove_åäö(make_image_id(article_title)) + ".webp"
+                new_img_title_insta = f"{image_number + 1}-" + remove_åäö(make_image_id(article_title))[4:].split(".")[0] + ".png"
                 old_img_path_no_extention = normal_story_path + handel_path_slash("\\") + f"upplaga_{upplaga_number}" + handel_path_slash("\\") + old_img_title
                 for ext in img_extentions:
                     if os.path.isfile(f"{old_img_path_no_extention}.{ext}") is True:
                         old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+                        image_number += 1
                         break
                 else:
                     old_img_path_with_extention = "NO_IMG" # article does not have image
                 
-                if old_img_path_with_extention != "NO_IMG":                    # Copy over image to destination
+                if old_img_path_with_extention != "NO_IMG": # Create insta image
                     # if all and no file: YES
                     # if all and file: YES
                     # if new and no file: YES
                     # if new and file: NO                        
                     instagram_destination_folder = generated_instagram_images_path + f"Upplaga_{upplaga_number}" + handel_path_slash("\\")
-                    instagram_image_destination_dir = instagram_destination_folder + new_img_title + ".webp"
+                    instagram_image_destination_dir = instagram_destination_folder + new_img_title_insta
                     if gen_type != "new" or os.path.isfile(instagram_image_destination_dir) is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                         create_image_switch = False
                         if "specific" in gen_type:
@@ -639,12 +651,13 @@ def copy_over_images(gen_type):
                         else:
                             create_image_switch = True
 
-                        if create_image_switch:
+                        # Instagram image
+                        if create_image_switch: 
                             os.makedirs(instagram_destination_folder, exist_ok=True) # generate the folder / make sure it exists
                             
                             # Copy over image to instagram format
                             old_insta_image = Image.open(old_img_path_with_extention)
-                            insta_overlay = Image.open(instagram_images_template_path)
+                            insta_overlay = Image.open(instagram_article_image_template_path)
                             
                             # create a blac slate of orange 1000x1000px
                             insta_image = Image.new("RGB", (1000, 1000), color=(238, 115, 34)) # Have full canvas that is just orange
@@ -704,17 +717,117 @@ def copy_over_images(gen_type):
                             height_of_undersection = (org_y - 20) # px (old: 217px)
                             old_insta_image = ImageOps.fit(old_insta_image, (1000, height_of_undersection), method=0, bleed=0.0, centering=(0.5, 0.5))
                             insta_image.paste(old_insta_image, (0, 0)) # Paste the old
-                            insta_image.paste(insta_overlay, (0,0), mask = insta_overlay) # Add the template for a normal article as overlay
+                            insta_image.paste(insta_overlay, (0, 0), mask = insta_overlay) # Add the template for a normal article as overlay
+                            
+                            # Add a qr-code to the image
+                            upplaga_qr = qrcode.QRCode(
+                                box_size=50,
+                                border=1.5
+                            )
+                            upplaga_qr.add_data(f"https://ostraloken.se/a/{make_article_id(article_title, upplaga_number)}")
+                            upplaga_qr.make(fit=True)
+                            upplaga_img_qr = upplaga_qr.make_image(
+                                fill_color="white",
+                                back_color="#EE7322", 
+                                image_factory=PilImage
+                            ).convert("RGB")
+                            length = 250
+                            upplaga_img_qr = upplaga_img_qr.resize((length, length))
+                            insta_image.paste(upplaga_img_qr, ((1000 - length), (height_of_undersection - length))) # Add the qr code to the article
                             
                             insta_image.save(instagram_image_destination_dir, quality=100)
-                            print(f"Created Instagram image: {new_img_title}")
+                            print(f"Created Instagram image: {new_img_title_insta}")
+                            
+                            # create a upplaga image
+                            if image_number == 1: # if its the first article, so it only does this once per upplaga
+                                upplaga_first_page_dir = generated_upplaga_images_path + f"Upplaga_{upplaga_number}" + handel_path_slash("\\") + "page_1.webp"
+                                instagram_image_upplaga_destination_dir = instagram_destination_folder + f"Read_upplaga_{upplaga_number}-1" + ".png"
+                                
+                                # Have the image (1000x1000px)
+                                insta_upplaga_image = Image.open(instagram_upplaga_image_template_1_path)
+                                
+                                # add first page
+                                insta_upplaga_first_page = Image.open(upplaga_first_page_dir)
+                                width, height = insta_upplaga_first_page.size
+                                new_width = 800
+                                new_height = int(height * (new_width / width))
+                                insta_upplaga_first_page = insta_upplaga_first_page.resize((new_width, new_height))
+                                # insta_upplaga_first_page = insta_upplaga_first_page.rotate(-30)
+                                insta_upplaga_image.paste(insta_upplaga_first_page, (100, 150)) # Add the upplagas first page
+                                
+                                # Add a qr-code to the image
+                                upplaga_qr = qrcode.QRCode(
+                                    box_size=50,
+                                    border=1.5
+                                )
+                                upplaga_qr.add_data(f"https://ostraloken.se/pdfer/?upplaga={upplaga_number}")
+                                upplaga_qr.make(fit=True)
+                                upplaga_img_qr = upplaga_qr.make_image(
+                                    fill_color="white", 
+                                    back_color="#E97C26", 
+                                    image_factory=PilImage
+                                ).convert("RGB")
+                                length = 325
+                                upplaga_img_qr = upplaga_img_qr.resize((length, length))
+                                insta_upplaga_image.paste(upplaga_img_qr, ((1000 - length), (1000 - length))) # Add the upplagas first page
+                                
+                                insta_upplaga_image.save(instagram_image_upplaga_destination_dir, quality=100)
+                                print(f"Created Instagram upplaga image 1 for upplaga {upplaga_number}")
+                                
+                                # Create the second instagram image
+                                instagram_image_upplaga_destination_dir = instagram_destination_folder + f"Read_upplaga_{upplaga_number}-2" + ".png"
+                                
+                                # Have the image (1000x1000px)
+                                insta_upplaga_image = Image.open(instagram_upplaga_image_template_2_path)
+                                draw_insta_upplaga_image = ImageDraw.Draw(insta_upplaga_image)
+                                
+                                # Import impact
+                                impact_font = work_path(r"\ostraloken\instagram_images\templates\impact.ttf")
+                                insta_font = ImageFont.truetype(impact_font, 48)
+                                
+                                # Add some articles
+                                currant_y = 140
+                                constant_x = 70
+                                for new_upplaga in all_articles:
+                                    if upplaga_number == new_upplaga["Upplaga"]:
+                                        for new_article_number, new_article in enumerate(new_upplaga["Content"]):
+                                            if new_article: # somethimes article is empty, this prevents that
+                                                # this now we get all article titles from the currant upplaga
+                                                new_article_title = "● " + str(remove_html_elements(new_article["Title"]))
+                                                
+                                                # check so it fits, if it doesnt, we cut it down and add ... at the end
+                                                if insta_font.getlength(new_article_title) >= (1000 - (constant_x * 1.5)): # we check if the articles titles length is smaller than half constant_x to the right
+                                                    # article title doesnt fit :(
+                                                    dont_use_letters_amount = len(new_article_title) # we keep a list of how many of the letters we disgard
+                                                    for letter in reversed(str(new_article_title)): # we go through every letter to find how many we need to remove!
+                                                        if insta_font.getlength(new_article_title[:dont_use_letters_amount] + "...") < (1000 - (constant_x * 1.5)):
+                                                            # Ok, it was enought, now we just remove the dont use letters and add ... at the end!
+                                                            new_article_title = new_article_title[:dont_use_letters_amount] + "..."
+                                                            break
+                                                        else: # not enought, to the next letter
+                                                            dont_use_letters_amount -= 1
+                                                
+                                                # Draw the article title as text
+                                                draw_insta_upplaga_image.text((constant_x, currant_y), new_article_title, (255, 255, 255), font=insta_font)
+
+                                                currant_y += 90
+                                                
+                                                if new_article_number >= 6: # on the fith run
+                                                    break
+                                                
+                                draw_insta_upplaga_image.text((70, currant_y), "● Och mycket mer!", (255, 255, 255), font=insta_font)
+
+                                
+                                insta_upplaga_image.save(instagram_image_upplaga_destination_dir, quality=100)
+                                print(f"Created Instagram upplaga image 2 for upplaga {upplaga_number}")
+                                
                     
-                    # Copy over image to destination
+                    # Copy over image to destination in /a/images/
                     # if all and no file: YES
                     # if all and file: YES
                     # if new and no file: YES
                     # if new and file: NO
-                    new_img_url_with_extention = generated_images_path + new_img_title + ".webp"
+                    new_img_url_with_extention = generated_images_path + new_img_title
                     if gen_type != "new" or os.path.isfile(new_img_url_with_extention) is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                         create_image_switch = False
                         if "specific" in gen_type:
@@ -1421,7 +1534,6 @@ def handle_backend_UI():
             elif answer == "close" or answer == "c":
                 break
             elif answer == "restart" or answer == "r":
-                print(base_path)
                 subprocess.run(f'python -u "{work_path(r"\ostraloken\backend\generate_frontend.py")}"')
                 break
                 
@@ -1514,4 +1626,5 @@ Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
 
 GÖR MER MODULÄR!!!
+Gör så set dir fungerar och så den fungerar bättre på flera platser oavsätt var man kör den!!!
 """

@@ -1,4 +1,5 @@
 const pdfContent = document.querySelector("#main_pdf");
+const pdfImgContainer = document.querySelector("#pdf_img_container");
 const pdfNumber = document.querySelector("#pdf_upplaga_number");
 const baseFileUrl = "\pdf_files/";
 const baseImagesUrl = "\pdf_images/";
@@ -74,6 +75,8 @@ function render() {
     const loadingText = document.querySelector("#pdf_loading_text");
     // Start render
     loadingText.style.display = "block";
+    pdfNumber.style.display = "none";
+    pdfImgContainer.style.display = "none";
 
     // Uppdate the text saying what upplaga it is
     pdfNumber.innerText = `Upplaga ${currant_upplaga} / ${amoutPDFs}`;
@@ -101,6 +104,8 @@ function render() {
     };
 
     // End render
+    pdfNumber.style.display = "block";
+    pdfImgContainer.style.display = "block";
     loadingText.style.display = "none";
     
     console.log("Renderd upplaga " + currant_upplaga)
