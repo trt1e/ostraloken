@@ -96,6 +96,10 @@ header p {
         width: calc(100% - 1rem);
     }
 }
+/*Header holidays*/
+.header_pride {
+    background-image: linear-gradient(to right, red, orange, yellow, green, blue, purple);
+}
 
 /* Header action buttons */
 .header_action {
