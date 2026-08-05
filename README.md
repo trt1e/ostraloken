@@ -1,4 +1,8 @@
 # Hur fungerar ostraloken?
+
+## DENNA ÄR UTDATERAD!!!!
+
+
 Östra Lökens webbsida är skapad för att enkelt kunna uppdateras då nytt innehåll läggs till. Den är skapad med en modulär struktur. Det här gör det enkelt att inte bara lägga till nya artiklar i backend:en utan man kan också enkelt lägga till en ny sida på ostraloken.se eller till och med en helt ny webbsida.
 
 All kod är helt skriven av Vilhelm Grill som också jobbar på Östra Lökens redaktion. Om du vill kontakta honom kan du göra det på vilhelm.grill@ostraloken.se!

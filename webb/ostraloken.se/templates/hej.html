@@ -1,0 +1,58 @@
+<!--@( \ostraloken\webb\ostraloken.se\webbpage\hej\index.html )@-->
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Hej och välkommen till Östra Lökens hemsida!">
+    <meta property="og:description" content="Hej och välkommen till Östra Lökens hemsida!">
+    <meta property="og:image" content="https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ostraloken.se/hej/">
+    <meta property="og:title" content="Hej | Östra Lökens">
+    <title>Hej | Östra Löken</title>
+    
+    <link rel="stylesheet" href="../universal.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/x-icon" href="../images/meta/lök_bild_cirkel_48.ico">
+</head>
+<body>
+    <div> <!--This div is to make the header not go into the footer-->
+        [+header+]
+
+        <main>
+            <h1 class="top_text">Hej där, välkommen till Östra Lökens webbsida!</h1>
+
+            <div class="margin_under">
+                [+no_img_Kort_om_Löken+]
+            </div>
+
+            <div class="nav_card_container margin_under">
+                [+nav_highlight_cards+]
+            </div>
+
+            <div class="margin_under">
+                [+latest_article+]
+            </div>
+
+            <nav class="margin_under" id="redirect_button_container">
+                <a href="../" class="dropdown_button redirect_button">Hem</a>
+                <a href="../pdfer/" class="dropdown_button redirect_button">PDF:er</a>
+                <a href="../notiser/" class="dropdown_button redirect_button">Notiser</a>
+                <a href="../hear_me_outs/" class="dropdown_button redirect_button">Hear me out:s</a>
+                <a href="../lank_nav/" class="dropdown_button redirect_button">Länk nav</a>
+                <a href="../om_oss/" class="dropdown_button redirect_button">Om oss</a>
+            </nav>
+
+            <div class="nav_card_container">
+                [+nav_normal_cards+]
+            </div>
+
+        </main>
+    </div>
+    
+    [+footer+]
+
+    [+general_scripts+]
+</body>
+</html>

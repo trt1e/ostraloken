@@ -1,0 +1,43 @@
+<!--@( \ostraloken\webb\ostraloken.se\webbpage\index.html )@-->
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Östra Lökens hemsida med alla Lökens artiklar sammanställda! Senaste nytt: [+latest_title+]">
+    <meta property="og:description" content="Östra Lökens hemsida med alla Lökens artiklar sammanställda! Senaste nytt: [+latest_title+]">
+    <meta property="og:image" content="https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ostraloken.se">
+    <meta property="og:title" content="Östra Löken">
+    <title>Östra Löken</title>
+    
+    <link rel="stylesheet" href="./universal.css">
+    <link rel="stylesheet" href="./index/style.css">
+    <link rel="icon" type="image/x-icon" href="./images/meta/lök_bild_cirkel_48.ico">
+</head>
+<body>
+    <div> <!--This div is to make the header not go into the footer-->
+        [+index_header+]
+
+        <main>
+            <h1 class="top_text">Välkomen till Östra Lökens hemsida</h1>
+            
+            <button id="im_feeling_lucky">
+                <p>Ge mig en slumpmässig artikel</p>
+            </button>
+
+            [+go_up+]
+
+            [+all_preview_articles+]
+
+        </main>
+    </div>
+
+    [+footer+]
+
+    [+index_general_scripts+]
+    <script src="./js/scroll_to_top.js"></script>
+    <script src="./index/js/go_to_random_article.js"></script>
+</body>
+</html>
