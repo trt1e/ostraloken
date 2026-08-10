@@ -85,31 +85,31 @@ def handle_backend_UI():
             
             # generate text files
             elif answer == "gen all" or answer == "g":
-                generate_site_pats.replacment_for_all = generate_site_pats.create_dictionary()
-                generate_site_pats.generate_all_normal_pages()
-                generate_site_pats.generate_all_articles()
+                generate_site_parts.replacment_for_all = generate_site_parts.create_dictionary()
+                generate_site_parts.generate_all_normal_pages()
+                generate_site_parts.generate_all_articles()
                 
             # images
             elif answer == "copy images new" or answer == "ci new" or answer == "ci n":
-                generate_site_pats.copy_over_images("new")
+                generate_site_parts.copy_over_images("new")
             elif answer == "copy images all" or answer == "ci all" or answer == "ci a":
-                generate_site_pats.copy_over_images("all")
+                generate_site_parts.copy_over_images("all")
             elif answer == "copy images specific" or answer == "ci specific" or answer == "ci s":
                 upplaga_to_copy = input("Copy over images in upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
-                    generate_site_pats.copy_over_images(f"specific: {upplaga_to_copy}")
+                    generate_site_parts.copy_over_images(f"specific: {upplaga_to_copy}")
                 else:
                     print(f"{upplaga_to_copy} not a number")
                     
             # pdfs
             elif answer == "copy pdfs new" or answer == "cp new" or answer == "cp n":
-                generate_site_pats.copy_over_pdfs("new")
+                generate_site_parts.copy_over_pdfs("new")
             elif answer == "copy pdfs all" or answer == "cp all" or answer == "cp a":
-                generate_site_pats.copy_over_pdfs("all")
+                generate_site_parts.copy_over_pdfs("all")
             elif answer == "copy pdfs specific" or answer == "cp specific" or answer == "cp s":
                 upplaga_to_copy = input("Copy over pdf upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
-                    generate_site_pats.copy_over_pdfs(f"specific: {upplaga_to_copy}")
+                    generate_site_parts.copy_over_pdfs(f"specific: {upplaga_to_copy}")
                 else:
                     print(f"{upplaga_to_copy} not a number")
                     
@@ -158,7 +158,7 @@ if __name__ == "__main__":
     # import scripts
     import fix_content
     import setup_templates
-    import generate_site_pats
+    import generate_site_parts
     import discord_bot
     
     handle_backend_UI()

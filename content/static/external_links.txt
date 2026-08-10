@@ -13,6 +13,11 @@
 §§§ https://ostraloken.se/images/external_links/loken.webp §§
 !!! True !!
 
+### Skicka <i>röd flagga</i> ##
+@@@ https://forms.gle/ms2kgc64kQ27dU2VA @@
+§§§ https://ostraloken.se/images/external_links/loken.webp §§
+!!! True !!
+
 ### Podcast ##
 @@@ https://open.spotify.com/show/28Zu5yYdK6LARijjqPaNPf?si=d6558a31e44541d6 @@
 §§§ https://ostraloken.se/images/external_links/redaktionen.webp §§
@@ -23,10 +28,10 @@
 §§§ https://ostraloken.se/images/external_links/ostragymnasiet.webp §§
 !!! False !!
 
-#-## Gula broschyren #-#
-@-@@ https://ostraloken.se/extra/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/ @-@
-§-§§ https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp §-§
-!-!! False !-!
+### Gula broschyren ##
+@@@ https://ostraloken.se/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/ @@
+§§§ https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp §§
+!!! False !!
 
 ### Instagram ##
 @@@ https://www.instagram.com/ostra_loken @@

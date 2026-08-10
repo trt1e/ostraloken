@@ -287,7 +287,7 @@ def copy_over_images(gen_type):
 
 # Copy pdf:s
 def copy_over_pdfs(gen_type):
-    pdf_start_path = base_path / Path("content/pdfs")
+    pdf_start_path = base_path / Path("content/upplagor_pdfs")
     pdf_file_end_path = base_path / Path("webb/ostraloken.se/webbpage/pdfer/pdf_files")
     pdf_images_end_path = base_path / Path("webb/ostraloken.se/webbpage/pdfer/pdf_images")
     
@@ -366,7 +366,16 @@ def copy_over_pdfs(gen_type):
     changed_js_file.write(js_changed_content) # write to it
     changed_js_file.close()
     
-    print("Uppdated amoutPDFs, maxPages and pagesPerPDF in PDF_reader.js ")
+    print("Uppdated amoutPDFs, maxPages and pagesPerPDF in PDF_reader.js")
+    
+    # Copy over Om_krisen_kriget_eller_Ulf_Kristersson_kommer
+    pdf_start_path = base_path / Path("content/extra/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.pdf")
+    pdf_file_end_path = base_path / Path("webb/ostraloken.se/webbpage/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/pdf_files/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.pdf")
+    
+    os.makedirs(os.path.dirname(pdf_file_end_path), exist_ok=True) # generate the folder
+    shutil.copyfile(pdf_start_path, pdf_file_end_path)
+    
+    print(f"Copied pdf file {str(pdf_start_path).split("\\")[-1]}")
 
 # basic for all generated text files
 def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated    
@@ -904,6 +913,7 @@ replacment_for_all = create_dictionary()
 def generate_all_normal_pages(): # go throught every file in templates
     template_base_paths = [
         base_path / Path("webb/nyhetsflode.ostraloken.se/templates"),
+        base_path / Path("webb/ostraloken.se/templates/extra"),
         base_path / Path("webb/ostraloken.se/templates")
     ]
     for template_path in template_base_paths:
@@ -913,6 +923,8 @@ def generate_all_normal_pages(): # go throught every file in templates
                 whole_file_dir = template_path / file_dir
                 whole_file = base_commands.try_opening(whole_file_dir, "tr")
                 destination_dir = base_commands.find_between(whole_file, "<!--@( ", " )@-->", 0)
-                whole_destination_dir = base_path / Path(destination_dir)
-                generate_site(whole_file_dir, whole_destination_dir, replacment_for_all, file_dir.split(".")[-1])
-                print(f"Generated {str(template_path).split("\\")[-2]}: {file_dir}")
+                full_destination_dir = base_path / Path(destination_dir)
+                os.makedirs(os.path.dirname(full_destination_dir), exist_ok=True) # make sure the folder exists, else: generate the folder
+                generate_site(whole_file_dir, full_destination_dir, replacment_for_all, file_dir.split(".")[-1])
+                generated_site_name = (str(template_path).replace(str(base_path), "")).split("\\")[2]
+                print(f"Generated {generated_site_name}: {file_dir}")
