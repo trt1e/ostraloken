@@ -1,59 +1,61 @@
-### Skicka insändare ##
-@@@ https://forms.gle/9pViiBqyvUQM4QkMA @@
-§§§ https://ostraloken.se/images/external_links/loken.webp §§
-!!! True !!
+>>Title: Skicka insändare
+>>Link: https://forms.gle/9pViiBqyvUQM4QkMA
+>>Image_src: https://ostraloken.se/images/external_links/loken.webp
+>>Important: True
 
-### Skicka debattartikel ##
-@@@ https://forms.gle/tSzmEd8LDX6YAdMu8 @@
-§§§ https://ostraloken.se/images/external_links/loken.webp §§
-!!! True !!
+>>Title: Skicka debattartikel
+>>Link: https://forms.gle/tSzmEd8LDX6YAdMu8
+>>Image_src: https://ostraloken.se/images/external_links/loken.webp
+>>Important: True
 
-### Skicka <i>hear me out</i> ##
-@@@ https://forms.gle/vdshQEq62FrpFvkHA @@
-§§§ https://ostraloken.se/images/external_links/loken.webp §§
-!!! True !!
+>>Title: Skicka <i>hear me out</i>
+>>Link: https://forms.gle/vdshQEq62FrpFvkHA
+>>Image_src: https://ostraloken.se/images/external_links/loken.webp
+>>Important: True
 
-### Skicka <i>röd flagga</i> ##
-@@@ https://forms.gle/ms2kgc64kQ27dU2VA @@
-§§§ https://ostraloken.se/images/external_links/loken.webp §§
-!!! True !!
+>>Title: Skicka <i>röd flagga</i>
+>>Link: https://forms.gle/ms2kgc64kQ27dU2VA
+>>Image_src: https://ostraloken.se/images/external_links/loken.webp
+>>Important: True
 
-### Podcast ##
-@@@ https://open.spotify.com/show/28Zu5yYdK6LARijjqPaNPf?si=d6558a31e44541d6 @@
-§§§ https://ostraloken.se/images/external_links/redaktionen.webp §§
-!!! False !!
+>>Title: Podcast
+>>Link: https://open.spotify.com/show/28Zu5yYdK6LARijjqPaNPf?si=d6558a31e44541d6
+>>Image_src: https://ostraloken.se/images/external_links/redaktionen.webp
+>>Important: False
 
-### Östragymnasiet.com ##
-@@@ https://östragymnasiet.ostraloken.se @@
-§§§ https://ostraloken.se/images/external_links/ostragymnasiet.webp §§
-!!! False !!
+>>Title: Östragymnasiet.com
+>>Link: https://östragymnasiet.ostraloken.se
+>>Image_src: https://ostraloken.se/images/external_links/ostragymnasiet.webp
+>>Important: False
 
-### Gula broschyren ##
-@@@ https://ostraloken.se/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/ @@
-§§§ https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp §§
-!!! False !!
+>>Title: Gula broschyren
+>>Link: https://ostraloken.se/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/
+>>Image_src: https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp
+>>Important: False
 
-### Instagram ##
-@@@ https://www.instagram.com/ostra_loken @@
-§§§ https://ostraloken.se/images/external_links/instagram.webp §§
-!!! False !!
+>>Title: Instagram
+>>Link: https://www.instagram.com/ostra_loken
+>>Image_src: https://ostraloken.se/images/external_links/instagram.webp
+>>Important: False
 
-### Tiktok ##
-@@@ https://www.tiktok.com/@ostra_loken @@
-§§§ https://ostraloken.se/images/external_links/tiktok.webp §§
-!!! False !!
+>>Title: Tiktok
+>>Link: https://www.tiktok.com/@ostra_loken
+>>Image_src: https://ostraloken.se/images/external_links/tiktok.webp
+>>Important: False
 
-### Youtube ##
-@@@ https://www.youtube.com/@%C3%96straL%C3%B6ken @@
-§§§ https://ostraloken.se/images/external_links/youtube.webp §§
-!!! False !!
+>>Title: Youtube
+>>Link: https://www.youtube.com/@%C3%96straL%C3%B6ken
+>>Image_src: https://ostraloken.se/images/external_links/youtube.webp
+>>Important: False
 
-### Maps ##
-@@@ https://maps.app.goo.gl/nA7PduRYRjEiqyrG6 @@
-§§§ https://ostraloken.se/images/external_links/maps.webp §§
-!!! False !!
+>>Title: Maps
+>>Link: https://maps.app.goo.gl/nA7PduRYRjEiqyrG6
+>>Image_src: https://ostraloken.se/images/external_links/maps.webp
+>>Important: False
 
-### Skicka epost ##
-@@@ mailto:kontakt@ostraloken.se @@
-§§§ https://ostraloken.se/images/external_links/email.webp §§
-!!! False !!
+>>Title: Skicka epost
+>>Link: mailto:kontakt@ostraloken.se
+>>Image_src: https://ostraloken.se/images/external_links/email.webp
+>>Important: False
+
+END OF TXT

@@ -1,7 +1,6 @@
 import re
 
 # import scripts
-import main
 import read_content
 
 

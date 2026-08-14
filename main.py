@@ -155,6 +155,8 @@ Tack på förhand :heart: :heart: """
             print(f"ERROR: {e}")
 
 if __name__ == "__main__":
+    print("BOOTING: main.py")
+    
     # import scripts
     import fix_content
     import setup_templates

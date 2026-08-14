@@ -1,35 +1,37 @@
-### Vilhelm Grill ##
-+++ Som grundare för Östra Löken är Vilhelm Grill ansvarig för mycket. Han är bland annat chefredaktör, Instagram-ansvarig, ansvarig utgivare, fixar tidningens layout och är självfallet en regelbunden skribent. ++
-""" Redaktör & skribent ""
-@@@ vilhelm.grill@ostraloken.se @@
-§§§ https://ostraloken.se/images/people/Vilhelm.webp §§
+>>Name: Vilhelm Grill
+>>Description: Som grundare för Östra Löken är Vilhelm Grill ansvarig för mycket. Han är bland annat chefredaktör, Instagram-ansvarig, ansvarig utgivare, fixar tidningens layout och är självfallet en regelbunden skribent.
+>>Title: Redaktör & skribent
+>>Email: vilhelm.grill@ostraloken.se
+>>Image_src: https://ostraloken.se/images/people/Vilhelm.webp
 
-### Joar Stange ##
-+++ Joar Stange var med och grundade Löken tillsammans med Grill och tar därmed fortfarande mycket ansvar inom redaktionen. Vidare skriver han regelbundet och debatterar gladeligen i tidningens kolumner. ++
-""" Skribent ""
-@@@ joar.stange@ostraloken.se @@
-§§§ https://ostraloken.se/images/people/Joar.webp §§
+>>Name: Joar Stange
+>>Description: Joar Stange var med och grundade Löken tillsammans med Grill och tar därmed fortfarande mycket ansvar inom redaktionen. Vidare skriver han regelbundet och debatterar gladeligen i tidningens kolumner.
+>>Title: Skribent
+>>Email: joar.stange@ostraloken.se
+>>Image_src: https://ostraloken.se/images/people/Joar.webp
 
-### John Ericson ##
-+++ Den erfarna reportern John Ericson utgör en självklar del av Lökens redaktion. Han skriver mycket om vad som händer med skolan och är väl känd för att sällan låta sina praktikanter överleva i artiklarna. ++
-""" Skribent ""
-@@@ john.ericson@ostraloken.se @@
-§§§ https://ostraloken.se/images/people/John.webp §§
+>>Name: John Ericson
+>>Description: Den erfarna reportern John Ericson utgör en självklar del av Lökens redaktion. Han skriver mycket om vad som händer med skolan och är väl känd för att sällan låta sina praktikanter överleva i artiklarna.
+>>Title: Skribent
+>>Email: john.ericson@ostraloken.se
+>>Image_src: https://ostraloken.se/images/people/John.webp
 
-### Magne Nordström ##
-+++ Magne Nordström är tidningens yngsta skribent som först gjorde sig känd för sina insändare under annat namn. Sedan dess har Nordström anställts av redaktionen och skriver idag alltid under sitt riktiga namn. ++
-""" Skribent ""
-@@@ magne.nordström@ostraloken.se @@
-§§§ https://ostraloken.se/images/people/Magne.webp §§
+>>Name: Magne Nordström
+>>Description: Magne Nordström är tidningens yngsta skribent som först gjorde sig känd för sina insändare under annat namn. Sedan dess har Nordström anställts av redaktionen och skriver idag alltid under sitt riktiga namn.
+>>Title: Skribent
+>>Email: magne.nordström@ostraloken.se
+>>Image_src: https://ostraloken.se/images/people/Magne.webp
 
-### Elliot Sandström ##
-+++ För att säkerställa att alla viktiga ögonblick i Östra Lökens historia plåtas finns Elliot Sandström där med kameran ute. Han har också skrivit en och annan artikel. ++
-""" Fotograf & skribent ""
-@@@ elliot.sandström@ostraloken.se @@
-§§§ https://ostraloken.se/images/people/Elliot.webp §§
+>>Name: Elliot Sandström
+>>Description: För att säkerställa att alla viktiga ögonblick i Östra Lökens historia plåtas finns Elliot Sandström där med kameran ute. Han har också skrivit en och annan artikel.
+>>Title: Fotograf & skribent
+>>Email: elliot.sandström@ostraloken.se
+>>Image_src: https://ostraloken.se/images/people/Elliot.webp
 
-### Miguel Aguirre Castillo ##
-+++ I rollen som Tiktok-ansvarig hittar vi Miguel Aguirre Castillo. Med en förmåga att nå ut till unga sköter han kontot genom att ladda upp då och då. ++
-""" Tiktok ""
-@@@ miguel.aguirre.castillo@ostraloken.se @@
-§§§ https://ostraloken.se/images/people/Miguel.png §§
+>>Name: Miguel Aguirre Castillo
+>>Description: I rollen som Tiktok-ansvarig hittar vi Miguel Aguirre Castillo. Med en förmåga att nå ut till unga sköter han kontot genom att ladda upp då och då.
+>>Title: Tiktok
+>>Email: miguel.aguirre.castillo@ostraloken.se
+>>Image_src: https://ostraloken.se/images/people/Miguel.png
+
+END OF TXT

@@ -1,149 +1,151 @@
-### Datormus ##
-+++ Curvy ++
+>>Hear_me_out: Datormus
+>>Description: Curvy
 
-### Kolsyrad nyponsoppa ##
-+++ När kolsyran reagerar med nyponen och syret i vattnet skapas föreningen Nyponiumkarbonat samt vätgas (Ny + CO2 + H2O --> Ny2CO3 + H2). Detta ämne har en syrlig, något stark och SKITGOD smak som är olik något annat du nånsin smakat (såvida du inte smakat nyponläsk, nu i affärer nära dig!). Tyvärr är det högst explosivt i reaktion med enzymer i din magsäck, så doktorn har rekommenderat maximalt 12 liter kolsyrad nyponsoppa om dagen för de med fungerande matsmältning. ++
+>>Hear_me_out: Kolsyrad nyponsoppa
+>>Description: När kolsyran reagerar med nyponen och syret i vattnet skapas föreningen Nyponiumkarbonat samt vätgas (Ny + CO2 + H2O --> Ny2CO3 + H2). Detta ämne har en syrlig, något stark och SKITGOD smak som är olik något annat du nånsin smakat (såvida du inte smakat nyponläsk, nu i affärer nära dig!). Tyvärr är det högst explosivt i reaktion med enzymer i din magsäck, så doktorn har rekommenderat maximalt 12 liter kolsyrad nyponsoppa om dagen för de med fungerande matsmältning.
 
-### Ica Skogås ##
-+++ Den enda anledningen att komma till skolan ++
+>>Hear_me_out: Ica Skogås
+>>Description: Den enda anledningen att komma till skolan
 
-### Nocco ##
-+++ Dubbel c är attraktivt ++
+>>Hear_me_out: Nocco
+>>Description: Dubbel c är attraktivt
 
-### miu miu loggans font ##
-+++ Den är så kurvig och tillfredsställande ++
+>>Hear_me_out: miu miu loggans font
+>>Description: Den är så kurvig och tillfredsställande
 
-### Kirby ##
-+++ gawk gawk 500 ++
+>>Hear_me_out: Kirby
+>>Description: gawk gawk 500
 
-### Typsnittet på alla skyltar i hela skolan ##
-+++ Nice kurvor - rätt grisch asså ++
+>>Hear_me_out: Typsnittet på alla skyltar i hela skolan
+>>Description: Nice kurvor - rätt grisch asså
 
-### Petburk-korgen i naturkorridoren ##
-+++ The hole... It's tight... ++
+>>Hear_me_out: Petburk-korgen i naturkorridoren
+>>Description: The hole... It's tight...
 
-### Toyota corolla 2006(blå) ##
-+++ Vädligt fin ++
+>>Hear_me_out: Toyota corolla 2006(blå)
+>>Description: Vädligt fin
 
-### The lorax ##
-+++ Eco daddy😮‍💨 ++
+>>Hear_me_out: The lorax
+>>Description: Eco daddy😮‍💨
 
-### Saab 9-3 NG Gripen Aero 2.8T XWD Röd ##
-+++ Curvy spicy röd snabb 🤤🤤🤤 ++
+>>Hear_me_out: Saab 9-3 NG Gripen Aero 2.8T XWD Röd
+>>Description: Curvy spicy röd snabb 🤤🤤🤤
 
-### Finn McMissil ##
-+++ Mustaschen😫💦🫃 ++
+>>Hear_me_out: Finn McMissil
+>>Description: Mustaschen😫💦🫃
 
-### Oboy ##
-+++ Bbc ++
+>>Hear_me_out: Oboy
+>>Description: Bbc
 
-### Kevin från Minioner ##
-+++ Stjäla månen ++
+>>Hear_me_out: Kevin från Minioner
+>>Description: Stjäla månen
 
-### aulan ##
-+++ för den är stor och låter mycket ++
+>>Hear_me_out: aulan
+>>Description: för den är stor och låter mycket
 
-### tom från hayday ##
-+++ Han e husband material som hittar saker åt mig ++
+>>Hear_me_out: tom från hayday
+>>Description: Han e husband material som hittar saker åt mig
 
-### Russin ##
-+++ Gott ++
+>>Hear_me_out: Russin
+>>Description: Gott
 
-### uppdelade stycken ##
-+++ ger texten fina strukturerade hål. texten spreadar ++
+>>Hear_me_out: uppdelade stycken
+>>Description: ger texten fina strukturerade hål. texten spreadar
 
-### Biltemas lövblåsare ##
-+++ Billig korv ++
+>>Hear_me_out: Biltemas lövblåsare
+>>Description: Billig korv
 
-### Saieds Blandning ##
-+++ Mystisk och svår att få tag på ++
+>>Hear_me_out: Saieds Blandning
+>>Description: Mystisk och svår att få tag på
 
-### Scrub Daddy ##
-+++ Jag tror det talar för sig självt ;) ++
+>>Hear_me_out: Scrub Daddy
+>>Description: Jag tror det talar för sig självt ;)
 
-### Teknik - korridoren ##
-+++  ++
+>>Hear_me_out: Teknik - korridoren
+>>Description: 
 
-### Borden vid anpassade gymnasium ##
-+++ Mys och isolerad ++
+>>Hear_me_out: Borden vid anpassade gymnasium
+>>Description: Mys och isolerad
 
-### Juni ##
-+++ Lång och varm ++
+>>Hear_me_out: Juni
+>>Description: Lång och varm
 
-### Östra Löknens Linktree ##
-+++ Rätt så orange y'know eh eh? ++
+>>Hear_me_out: Östra Löknens Linktree
+>>Description: Rätt så orange y'know eh eh?
 
-### Josip Broz Tito ##
-+++ Rätt grisch glasögon ++
+>>Hear_me_out: Josip Broz Tito
+>>Description: Rätt grisch glasögon
 
-### Skoldator ##
-+++ En dator ++
+>>Hear_me_out: Skoldator
+>>Description: En dator
 
-### Stefans tal (RIP) ##
-+++ Alltid banger ++
+>>Hear_me_out: Stefans tal (RIP)
+>>Description: Alltid banger
 
-### Nobeldagen ##
-+++ Vill man ens gå på den? ++
+>>Hear_me_out: Nobeldagen
+>>Description: Vill man ens gå på den?
 
-### Skåne ##
-+++ ... de e skåne.... ++
+>>Hear_me_out: Skåne
+>>Description: ... de e skåne....
 
-### Gröna linjen damen ##
-+++ jättehet röst😍😍 ++
+>>Hear_me_out: Gröna linjen damen
+>>Description: jättehet röst😍😍
 
-### Kycklingcurry mackorna i caféet ##
-+++ Otroligt goda, rätt så kladdiga men värt det. ++
+>>Hear_me_out: Kycklingcurry mackorna i caféet
+>>Description: Otroligt goda, rätt så kladdiga men värt det.
 
-### https://www.temu.com/se/f%C3%A4llbar-kl%C3%A4dh%C3%A4ngare-i--lager-metallversion-polerat-rostfritt-st%C3%A5l-garderobsarrang%C3%B6r-butiksdisplayst%C3%A4ll-standardh%C3%A4ngare-g-601099623599049.html?_oak_name_id=2683542428391396106&_oak_mp_inf=EMmXqMym1ogBGiAzNzBlYWY1YmFhMTY0NTgwOGRiZmI3M2U0NWNhODZiNSDYjePcuzM%3D&thumb_url=https%3A%2F%2Fimg.kwcdn.com%2Fproduct%2F1f79704ca8%2F95e77c12-e129-4bfa-b8c6-4d09c2def3aa_2000x2000.jpeg%3FimageView2%2F2%2Fw%2F500%2Fq%2F60%2Fformat%2Favif&_web_cover=thumb_url&pic_h=375&pic_w=375&spec_gallery_id=601099623599049&refer_page_sn=10009&refer_source=10001&freesia_scene=2&_oak_freesia_scene=2&_oak_rec_ext_1=MTM3NDE&_oak_gallery_order=1948546653%2C709661494%2C1657399712%2C722391586%2C1672087339&refer_page_el_sn=200049&from_rec=1&enable_cache=1&_x_vst_scene=adg&_x_ads_channel=google&_x_ads_sub_channel=search&_x_ads_account=8611588798&_x_ads_set=20162502661&_x_ads_id=149142228213&_x_ads_creative_id=659081029423&_x_ns_source=g&_x_ns_gclid=EAIaIQobChMIsZyvz8yKkgMVLVSRBR15-gG5EAAYASAAEgKoA_D_BwE&_x_ns_placement=&_x_ns_match_type=e&_x_ns_ad_position=&_x_ns_product_id=&_x_ns_target=&_x_ns_devicemodel=&_x_ns_wbraid=Cj4KCAiA95fLBhBFEi4AeDU3_-jE31aZZdX4MvimZVxoaTz6PMYBL2RcMyRjfcsBirTuQ4Su8B_a42MkGgIDEQ&_x_ns_gbraid=0AAAAAo4mICHHaTt7oLqtUExoUJGaNgdCs&_x_ns_keyword=temu&_x_ns_targetid=kwd-4583699489&_x_ns_adg_trc=ta-c822_6f08b478731029fe1ede223330edb350fa7d63f0682000669296efc69be16446&_x_sessn_id=b4u8hyz7i2&refer_page_name=search_result&refer_page_id=10009_1768378899699_ekmoq5w9hi Temu UF ##
-+++ Detta är en skandal! Hur kan ett sådant företag ljuga om deras produkt!! ++
+>>Hear_me_out: https://www.temu.com/se/f%C3%A4llbar-kl%C3%A4dh%C3%A4ngare-i--lager-metallversion-polerat-rostfritt-st%C3%A5l-garderobsarrang%C3%B6r-butiksdisplayst%C3%A4ll-standardh%C3%A4ngare-g-601099623599049.html?_oak_name_id=2683542428391396106&_oak_mp_inf=EMmXqMym1ogBGiAzNzBlYWY1YmFhMTY0NTgwOGRiZmI3M2U0NWNhODZiNSDYjePcuzM%3D&thumb_url=https%3A%2F%2Fimg.kwcdn.com%2Fproduct%2F1f79704ca8%2F95e77c12-e129-4bfa-b8c6-4d09c2def3aa_2000x2000.jpeg%3FimageView2%2F2%2Fw%2F500%2Fq%2F60%2Fformat%2Favif&_web_cover=thumb_url&pic_h=375&pic_w=375&spec_gallery_id=601099623599049&refer_page_sn=10009&refer_source=10001&freesia_scene=2&_oak_freesia_scene=2&_oak_rec_ext_1=MTM3NDE&_oak_gallery_order=1948546653%2C709661494%2C1657399712%2C722391586%2C1672087339&refer_page_el_sn=200049&from_rec=1&enable_cache=1&_x_vst_scene=adg&_x_ads_channel=google&_x_ads_sub_channel=search&_x_ads_account=8611588798&_x_ads_set=20162502661&_x_ads_id=149142228213&_x_ads_creative_id=659081029423&_x_ns_source=g&_x_ns_gclid=EAIaIQobChMIsZyvz8yKkgMVLVSRBR15-gG5EAAYASAAEgKoA_D_BwE&_x_ns_placement=&_x_ns_match_type=e&_x_ns_ad_position=&_x_ns_product_id=&_x_ns_target=&_x_ns_devicemodel=&_x_ns_wbraid=Cj4KCAiA95fLBhBFEi4AeDU3_-jE31aZZdX4MvimZVxoaTz6PMYBL2RcMyRjfcsBirTuQ4Su8B_a42MkGgIDEQ&_x_ns_gbraid=0AAAAAo4mICHHaTt7oLqtUExoUJGaNgdCs&_x_ns_keyword=temu&_x_ns_targetid=kwd-4583699489&_x_ns_adg_trc=ta-c822_6f08b478731029fe1ede223330edb350fa7d63f0682000669296efc69be16446&_x_sessn_id=b4u8hyz7i2&refer_page_name=search_result&refer_page_id=10009_1768378899699_ekmoq5w9hi Temu UF
+>>Description: Detta är en skandal! Hur kan ett sådant företag ljuga om deras produkt!!
 
-### Floptropikanska flaggan ##
-+++ den är färggladd och stärker elevernas självkänsla. den förvarar även demokratin och de mänskliga rättigheterna i landet. ❤️ ++
+>>Hear_me_out: Floptropikanska flaggan
+>>Description: den är färggladd och stärker elevernas självkänsla. den förvarar även demokratin och de mänskliga rättigheterna i landet. ❤️
 
-### Fisk med frasigt täcke ##
-+++ Den är rik o fruktig! ++
+>>Hear_me_out: Fisk med frasigt täcke
+>>Description: Den är rik o fruktig!
 
-### Excel ##
-+++ Kolla vilket fint rutnät ++
+>>Hear_me_out: Excel
+>>Description: Kolla vilket fint rutnät
 
-### Lars Rådvall huvudform ##
-+++ Perfekt på alla sätt ++
+>>Hear_me_out: Lars Rådvall huvudform
+>>Description: Perfekt på alla sätt
 
-### Bojkotta vego lasagnen ##
-+++  ++
+>>Hear_me_out: Bojkotta vego lasagnen
+>>Description: 
 
-### Östragymnasiet.com ##
-+++ (inte Östragymnasiet.se) ++
+>>Hear_me_out: Östragymnasiet.com
+>>Description: (inte Östragymnasiet.se)
 
-### Kex choklad ##
-+++ Brun och god ++
+>>Hear_me_out: Kex choklad
+>>Description: Brun och god
 
-### Saint Patrick’s day ##
-+++ Behövs förklaring ++
+>>Hear_me_out: Saint Patrick’s day
+>>Description: Behövs förklaring
 
-### Gustav Vasa ##
-+++ Aura kungen, stora vader ++
+>>Hear_me_out: Gustav Vasa
+>>Description: Aura kungen, stora vader
 
-### Billys pan pizza i mackjärn ##
-+++  ++
+>>Hear_me_out: Billys pan pizza i mackjärn
+>>Description: 
 
-### Naturkorridoren ##
-+++ Akvarium, kylskåp med margarin och mikro ++
+>>Hear_me_out: Naturkorridoren
+>>Description: Akvarium, kylskåp med margarin och mikro
 
-### Floptropica Flag ##
-+++ Det är en viktig inspirationskälla för mänskligheten ++
+>>Hear_me_out: Floptropica Flag
+>>Description: Det är en viktig inspirationskälla för mänskligheten
 
-### 3T ##
-+++ Tung ++
+>>Hear_me_out: 3T
+>>Description: Tung
 
-### finlands president ##
-+++ vad han nu heter ++
+>>Hear_me_out: finlands president
+>>Description: vad han nu heter
 
-### Den politiska enkäten som nyligen skickades ut ##
-+++ grafiskt frästande ++
+>>Hear_me_out: Den politiska enkäten som nyligen skickades ut
+>>Description: grafiskt frästande
 
-### Polynomdivision ##
-+++ Ba för skön ++
+>>Hear_me_out: Polynomdivision
+>>Description: Ba för skön
 
-### Fridtjuv Berg ##
-+++ Tog bort fv, hv & dt ur svensk stavning😍 ++
+>>Hear_me_out: Fridtjuv Berg
+>>Description: Tog bort fv, hv & dt ur svensk stavning😍
+
+END OF TXT

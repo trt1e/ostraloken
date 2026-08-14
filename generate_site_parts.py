@@ -401,6 +401,10 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     for ending in row_endings:
         final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
     
+    # add head data
+    head_data_read = get_base("webb/ostraloken.se/templates/base/head_data.html")
+    final_file = final_file.replace("[+head_data+]", head_data_read) # add head data
+    
     # add header
     header_read = get_base("webb/ostraloken.se/templates/base/header.html")
     final_file = final_file.replace("[+header+]", header_read) # add header
@@ -600,10 +604,10 @@ def generate_preview_article(base_redirect_html_url, get_what_articles):
 
 def generate_all_articles():
     article_template_path = base_path / Path("webb/ostraloken.se/templates/a/articles_pages.html")
-    generated_articles_path = base_path / Path("webb/ostraloken.se/webbpage/a")
+    generated_articles_path = base_path / Path("webb/ostraloken.se/webbsite/a")
     
     list_of_articles_with_similer_type = generate_preview_article("./a/", "Similar")
-    all_short_storys = read_content.read_txt(read_content.short_story_path, read_content.short_story_selection)
+    all_short_storys = read_content.read_txt("short_storys.txt")
     
     random.seed(hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
     
@@ -655,7 +659,7 @@ def generate_all_articles():
 """
 
                 # add scrolling news feed
-                random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]["Content"]
+                random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]
                 final_random_short_story = f"<b>{random_short_story["Title"]}</b> • {random_short_story["Article"]}"
                 short_story_id = base_commands.make_short_story_id(random_short_story["Title"], random_short_story["Article"])
                 feed_element = f"""
@@ -728,8 +732,7 @@ def generate_all_articles():
 def get_nav_element(img_switch, highlight_switch):
     generated_nav_element = ""
     
-    for links_bundle in read_content.read_txt(read_content.external_links_content_path, read_content.external_links_content_selection):
-        content = links_bundle["Content"]
+    for content in read_content.read_txt("static/external_links.txt"):
         if content:
             nav_element_important_status = content["Important"]
             if str(nav_element_important_status) == str(highlight_switch):
@@ -800,8 +803,7 @@ def create_dictionary():
     
     # All short storys
     generated_short_storys = ""
-    for short_story_bundle in reversed(read_content.read_txt(read_content.short_story_path, read_content.short_story_selection)):
-        content = short_story_bundle["Content"]
+    for content in reversed(read_content.read_txt("short_storys.txt")):
         short_story_id = base_commands.make_short_story_id(content["Title"], content["Article"])
         generated_short_storys += f"""
 <a class="article notis" id="{short_story_id}">
@@ -815,8 +817,7 @@ def create_dictionary():
     
     # All hear me outs
     generated_hear_me_outs = ""
-    for hear_me_out_bundle in reversed(read_content.read_txt(read_content.hear_me_outs_path, read_content.hear_me_outs_selection)):
-        content = hear_me_out_bundle["Content"]
+    for content in reversed(read_content.read_txt("hear_me_outs.txt")):
         article_hear_me_out = content["Hear_me_out"]
         article_desc = content["Description"]
         if article_desc != "":
@@ -838,8 +839,7 @@ def create_dictionary():
     replacment_dictionary["[+all_hear_me_outs+]"] = generated_hear_me_outs
     
     # Dynamicly add all static articles
-    for static_bundle in reversed(read_content.read_txt(read_content.static_articles_path, read_content.static_articles_selection)):
-        content = static_bundle["Content"]
+    for content in read_content.read_txt("static/articles.txt"):
         replacment_name = content["Title"].replace(" ", "_")
         # generate article
         generated_section = generate_static_section(content["Title"], content["Article"], content["Image_src"])
@@ -855,8 +855,7 @@ def create_dictionary():
     # Add content from staff
     generated_sections = ""
     staff_list = ""
-    for staff_bundle in read_content.read_txt(read_content.staff_info_path, read_content.staff_info_selection):
-        content = staff_bundle["Content"]
+    for content in read_content.read_txt("static/staff.txt"):
         staff_list += f'<p>{content["Name"]}</p>'
         
         name = content["Name"]
@@ -880,8 +879,6 @@ def create_dictionary():
     -->
 </div>
 """
-        
-        
     # List of staff as html button elements which lead to their email
     replacment_dictionary["[+staff_email_buttons+]"] = generated_sections
     # List of staff as links to their kontaktinfo page

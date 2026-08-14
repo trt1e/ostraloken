@@ -4,7 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex, nofollow"> <!--Make sure articles do not show up in search-->
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "NewsArticle",
+        "headline": "[+title_basic+]",
+        "image": ["[+thumb_image_url+]"],
+        "datePublished": "[+upplaga_date_ISO_8601+]T09:00:00+01:00",
+        "author": [{
+            "@type": "Person",
+            "name": "[+article_author_basic+]"
+        }],
+        "publisher": {
+            "@type": "NewsMediaOrganization",
+            "name": "Östra Löken",
+            "url": "https://ostraloken.se"
+        },
+        "description": "[+description+]"
+    }
+    </script>
+
+    <meta name="robots" content="index, follow">
+    <!--<meta name="robots" content="noindex, nofollow"> <!-.- Make sure articles do not show up in search -->
     <meta name="description" content="[+description+]">
     <meta property="og:description" content="[+description+]">
     <meta property="og:image" content="[+thumb_image_url+]">
@@ -18,6 +40,7 @@
     <meta property="og:url" content="[+url+]">
     <meta property="og:title" content="Östra Löken | [+title_basic+]">
     <title>[+title_basic+] | Östra Löken</title>
+    <link rel="canonical" href="[+url+]">
 
     <link rel="stylesheet" href="../universal.css">
     <link rel="stylesheet" href="./000_article_universal.css">

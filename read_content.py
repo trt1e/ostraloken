@@ -1,4 +1,5 @@
 import os
+import re
 from pathlib import Path
 
 # import scripts
@@ -6,23 +7,9 @@ import base_commands
 
 base_path = Path(__file__).resolve().parent
 
+
 # List the storys paths
 normal_story_path = base_path / Path("content/normal_storys_and_other")
-# Path(main.base_path) / Path(path)
-short_story_path = base_path / Path("content/short_storys.txt")
-short_story_selection = {"Title": {"start": "### ", "end": " ##"}, "Article": {"start": "+++ ", "end": " ++"}}
-
-hear_me_outs_path = base_path / Path("content/hear_me_outs.txt")
-hear_me_outs_selection = {"Hear_me_out": {"start": "### ", "end": " ##"}, "Description": {"start": "+++ ", "end": " ++"}}
-
-staff_info_path = base_path / Path("content/static/staff.txt")
-staff_info_selection = {"Name": {"start": "### ", "end": " ##"}, "Description": {"start": "+++ ", "end": " ++"}, "Title": {"start": '""" ', "end": ' ""'}, "Email": {"start": "@@@ ", "end": " @@"}, "Image_src": {"start": "§§§ ", "end": " §§"}}
-
-static_articles_path = base_path / Path("content/static/articles.txt")
-static_articles_selection = {"Title": {"start": "### ", "end": " ##"}, "Article": {"start": "+++ ", "end": " ++"}, "Image_src": {"start": "§§§ ", "end": " §§"}}
-
-external_links_content_path = base_path / Path("content/static/external_links.txt")
-external_links_content_selection = {"Title": {"start": "### ", "end": " ##"}, "Link": {"start": "@@@ ", "end": " @@"}, "Image_src": {"start": "§§§ ", "end": " §§"}, "Important": {"start": "!!! ", "end": " !!"}}
 
 # Read the normal storys
 def read_normal_storys(): # !!! This one is treated diffrantly !!! To get the files and their content from all normal articals 
@@ -60,27 +47,28 @@ def read_normal_storys(): # !!! This one is treated diffrantly !!! To get the fi
     output_sum.sort(key=lambda x: int(x["Upplaga"])) # sort all articles based on upplaga_number so it orders correct
     return output_sum
 
+
 # Read any other story
-def read_txt(txt_path, dictionary_of_selection):
-    # example of dictionary_of_selection = {"title": {"start": "### ", "end": " ##"}, "article": {"start": "+++ ", "end": " ++"}}
-    # extract dictionary_of_selection
-    selection_abs_start = list(dictionary_of_selection.values())[0]["start"] # the start of the whole element
-    selection_abs_end = list(dictionary_of_selection.values())[-1]["end"] # the end if the whole element
+def read_txt(txt_path):
+    content_path = base_path / Path("content") / Path(txt_path)
+    whole_text = base_commands.try_opening(content_path, "tr") # read it
     
-    whole_text = base_commands.try_opening(txt_path, "tr") # read it
-    last_final_pos = whole_text.find(selection_abs_start) # start at the first title aka the first selection_start
+    all_packages = re.findall(r">>(\w+): (.*?)(?=>>|END OF TXT)", whole_text, re.S)
+    # Here we look for anything that starts with >>, then we get what is between >> and :, then we get the rest after ": "
+    # This then stops if we find >> or END OF TXT
+    
     output_sum = []
-    for number_of_articles in range(whole_text.count(selection_abs_start)): # repeat for how many short storys there are in the txt
-        # find where diffrent parts are in the document
-        content_output = {}
-        for element_number, element_name in enumerate(dictionary_of_selection): # go through dictionary_of_selection to find this elements start and end selectors, then extract whats in between
-            start_selector = list(dictionary_of_selection.values())[element_number]["start"] # find start selector (ex "### ")
-            end_selector = list(dictionary_of_selection.values())[element_number]["end"] # find end selector (ex " ##")
-            in_between_selectors = base_commands.find_between(whole_text, start_selector, end_selector, last_final_pos) # find what is in between these selectors
-            content_output[element_name] = in_between_selectors # add this to content_output
-        last_final_pos = whole_text.find(selection_abs_end, last_final_pos) + 3
+    currant_bundle = {}
+    number_of_articles = 0
+    last_element = all_packages[-1][0]
+    for package in all_packages: # go throught all the packages
+        section_title = package[0].replace("\n", "")
+        section_text = package[1].replace("\n", "")
+        currant_bundle[section_title] = section_text # Ex: currant_bundle["Title"] = "What is the meaning of life?"
         
-        output = ({"Number": number_of_articles, "Content": content_output})
-        output_sum.append(output)
-        
+        if package[0] == last_element: # Then we have looped
+            output_sum.append(currant_bundle)
+            currant_bundle = {}
+            number_of_articles += 1
+    
     return output_sum
