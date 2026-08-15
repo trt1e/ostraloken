@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ostraloken"
+version = "1.0.0"
+description = "Webbsidan för Östra gymnasiets skolsatirtidning: Östra Löken!"
+requires-python = ">=3.8"
+readme = "README.md"
+dependencies = [
+    "python-dotenv", # För "dotenv"
+    "pillow", # För "PIL"
+    "qrcode[pil]", # För "qrcode" och "qrcode.image.pil"
+    "progressbar2", # För "progressbar"
+    "pdf2image", # För "convert_from_path"
+    "pypdf", # För "PdfReader"
+    "discord.py", # För "discord"
+]
+
+[project.scripts]
+ostraloken = "engine.main:run"

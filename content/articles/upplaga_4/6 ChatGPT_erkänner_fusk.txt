@@ -1,0 +1,5 @@
+>>Rubrik: ChatGPT: erkänner fusk
+>>Texttyp: Artikel
+>>Skribent: Vilhelm Grill
+>>Artikel: 
+Miljoner av elever jorden runt använder dagligen AI chatboten ChatGPT för att fuska, men en ny årslång undersökning från WSJ avslöjar att ChatGPT fuskar på många av frågorna. Undersökningen visade att om chatboten inte kunde svaret på en fråga; började den, bland annat, smygtitta på personen bredvids svar. WSJ rapportering har fått OpenAI, botens skapare, att lansera en egen undersökning in i validiteten av påståendet. "Vi är inte arga, bara besvikna" sa OpenAI i en kommentar till Löken. ChatGPT kontrar med att de faktiskt visste svaren på frågorna, men var bara så trött på allt skolarbete.

@@ -1,37 +1,35 @@
->>Name: Vilhelm Grill
->>Description: Som grundare för Östra Löken är Vilhelm Grill ansvarig för mycket. Han är bland annat chefredaktör, Instagram-ansvarig, ansvarig utgivare, fixar tidningens layout och är självfallet en regelbunden skribent.
->>Title: Redaktör & skribent
->>Email: vilhelm.grill@ostraloken.se
->>Image_src: https://ostraloken.se/images/people/Vilhelm.webp
+>>Namn: Vilhelm Grill
+>>Beskrivning: Som grundare för Östra Löken är Vilhelm Grill ansvarig för mycket. Han är bland annat chefredaktör, Instagram-ansvarig, ansvarig utgivare, fixar tidningens layout och är självfallet en regelbunden skribent.
+>>Titel: Redaktör & skribent
+>>Epost: vilhelm.grill@ostraloken.se
+>>Bild_källa: https://ostraloken.se/images/people/Vilhelm.webp
 
->>Name: Joar Stange
->>Description: Joar Stange var med och grundade Löken tillsammans med Grill och tar därmed fortfarande mycket ansvar inom redaktionen. Vidare skriver han regelbundet och debatterar gladeligen i tidningens kolumner.
->>Title: Skribent
->>Email: joar.stange@ostraloken.se
->>Image_src: https://ostraloken.se/images/people/Joar.webp
+>>Namn: Joar Stange
+>>Beskrivning: Joar Stange var med och grundade Löken tillsammans med Grill och tar därmed fortfarande mycket ansvar inom redaktionen. Vidare skriver han regelbundet och debatterar gladeligen i tidningens kolumner.
+>>Titel: Skribent
+>>Epost: joar.stange@ostraloken.se
+>>Bild_källa: https://ostraloken.se/images/people/Joar.webp
 
->>Name: John Ericson
->>Description: Den erfarna reportern John Ericson utgör en självklar del av Lökens redaktion. Han skriver mycket om vad som händer med skolan och är väl känd för att sällan låta sina praktikanter överleva i artiklarna.
->>Title: Skribent
->>Email: john.ericson@ostraloken.se
->>Image_src: https://ostraloken.se/images/people/John.webp
+>>Namn: John Ericson
+>>Beskrivning: Den erfarna reportern John Ericson utgör en självklar del av Lökens redaktion. Han skriver mycket om vad som händer med skolan och är väl känd för att sällan låta sina praktikanter överleva i artiklarna.
+>>Titel: Skribent
+>>Epost: john.ericson@ostraloken.se
+>>Bild_källa: https://ostraloken.se/images/people/John.webp
 
->>Name: Magne Nordström
->>Description: Magne Nordström är tidningens yngsta skribent som först gjorde sig känd för sina insändare under annat namn. Sedan dess har Nordström anställts av redaktionen och skriver idag alltid under sitt riktiga namn.
->>Title: Skribent
->>Email: magne.nordström@ostraloken.se
->>Image_src: https://ostraloken.se/images/people/Magne.webp
+>>Namn: Magne Nordström
+>>Beskrivning: Magne Nordström är tidningens yngsta skribent som först gjorde sig känd för sina insändare under annat namn. Sedan dess har Nordström anställts av redaktionen och skriver idag alltid under sitt riktiga namn.
+>>Titel: Skribent
+>>Epost: magne.nordström@ostraloken.se
+>>Bild_källa: https://ostraloken.se/images/people/Magne.webp
 
->>Name: Elliot Sandström
->>Description: För att säkerställa att alla viktiga ögonblick i Östra Lökens historia plåtas finns Elliot Sandström där med kameran ute. Han har också skrivit en och annan artikel.
->>Title: Fotograf & skribent
->>Email: elliot.sandström@ostraloken.se
->>Image_src: https://ostraloken.se/images/people/Elliot.webp
+>>Namn: Elliot Sandström
+>>Beskrivning: För att säkerställa att alla viktiga ögonblick i Östra Lökens historia plåtas finns Elliot Sandström där med kameran ute. Han har också skrivit en och annan artikel.
+>>Titel: Fotograf & skribent
+>>Epost: elliot.sandström@ostraloken.se
+>>Bild_källa: https://ostraloken.se/images/people/Elliot.webp
 
->>Name: Miguel Aguirre Castillo
->>Description: I rollen som Tiktok-ansvarig hittar vi Miguel Aguirre Castillo. Med en förmåga att nå ut till unga sköter han kontot genom att ladda upp då och då.
->>Title: Tiktok
->>Email: miguel.aguirre.castillo@ostraloken.se
->>Image_src: https://ostraloken.se/images/people/Miguel.png
-
-END OF TXT
+>>Namn: Miguel Aguirre Castillo
+>>Beskrivning: I rollen som Tiktok-ansvarig hittar vi Miguel Aguirre Castillo. Med en förmåga att nå ut till unga sköter han kontot genom att ladda upp då och då.
+>>Titel: Tiktok
+>>Epost: miguel.aguirre.castillo@ostraloken.se
+>>Bild_källa: https://ostraloken.se/images/people/Miguel.png
