@@ -1,7 +1,10 @@
 import re
+from pathlib import Path
 
 # import scripts
+from engine import config
 from engine.handle_content import content_reader
+
 
 def file_parser(file):
     # find where diffrent parts are in the document
@@ -121,3 +124,37 @@ def make_short_story_id(article_title, article_content):
 
 def make_image_id(article_title):
     return "IMG-" + strip_string(remove_html_elements(article_title), 100)
+
+def find_img(article_title, upplaga_nmr, base_url):
+    old_img_title = make_image_id(article_title)
+    new_img_title = remove_åäö(make_image_id(article_title))
+    old_img_path_no_extention = content_reader.articles_path / f"upplaga_{upplaga_nmr}" / old_img_title
+    for ext in config.img_extentions:
+        if Path(f"{old_img_path_no_extention}.{ext}").is_file():
+            old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+            break
+    else:
+        old_img_path_with_extention = "NO_IMG" # article does not have image
+        
+    if old_img_path_with_extention != "NO_IMG":
+        return base_url + new_img_title + ".webp"
+    else:
+        return ""
+
+
+# Get head writers
+head_writers = [] # list Löken head writers
+# These are the names that if they wrote a article will redirect on click to the omoss page!
+with open(config.base_path / "content/static/staff.txt", "tr", encoding="utf-8") as file:  
+    staff_file_content = file.read() # read it
+formated_staff_file_content = make_regex_list_to_dict(file_parser(staff_file_content))
+for person in formated_staff_file_content:
+    head_writers.append(person["Namn"])
+# Get head writers
+head_writers = [] # list Löken head writers
+# These are the names that if they wrote a article will redirect on click to the omoss page!
+with open(config.base_path / "content/static/staff.txt", "tr", encoding="utf-8") as file:  
+    staff_file_content = file.read() # read it
+formated_staff_file_content = make_regex_list_to_dict(file_parser(staff_file_content))
+for person in formated_staff_file_content:
+    head_writers.append(person["Namn"])

@@ -15,7 +15,10 @@ import threading # for discord bot to run separetly
 from engine import config
 from engine.handle_content import content_fixer
 from engine.handle_content import template_generator
-from engine.build import builder
+from engine.build import gen_replacment_dict
+from engine.build import build_articles
+from engine.build import build_imgs
+from engine.build import build_pdfs
 from engine.discord_bot import bot
 
 # UI for backend user
@@ -97,31 +100,31 @@ def run():
             
             # generate text files
             elif answer == "gen all" or answer == "g":
-                builder.replacment_for_all = builder.create_dictionary()
-                builder.generate_all_normal_pages()
-                builder.generate_all_articles()
+                gen_replacment_dict.replacment_for_all = gen_replacment_dict.create_dictionary()
+                gen_replacment_dict.generate_all_normal_pages()
+                build_articles.generate_all_articles()
                 
             # images
             elif answer == "copy images new" or answer == "ci new" or answer == "ci n":
-                builder.copy_over_images("new")
+                build_imgs.copy_over_images("new")
             elif answer == "copy images all" or answer == "ci all" or answer == "ci a":
-                builder.copy_over_images("all")
+                build_imgs.copy_over_images("all")
             elif answer == "copy images specific" or answer == "ci specific" or answer == "ci s":
                 upplaga_to_copy = input("Copy over images in upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
-                    builder.copy_over_images(f"specific: {upplaga_to_copy}")
+                    build_imgs.copy_over_images(f"specific: {upplaga_to_copy}")
                 else:
                     print(f"{upplaga_to_copy} not a number")
                     
             # pdfs
             elif answer == "copy pdfs new" or answer == "cp new" or answer == "cp n":
-                builder.copy_over_pdfs("new")
+                build_pdfs.copy_over_pdfs("new")
             elif answer == "copy pdfs all" or answer == "cp all" or answer == "cp a":
-                builder.copy_over_pdfs("all")
+                build_pdfs.copy_over_pdfs("all")
             elif answer == "copy pdfs specific" or answer == "cp specific" or answer == "cp s":
                 upplaga_to_copy = input("Copy over pdf upplaga: ")
                 if re.search(r"[0-9]", upplaga_to_copy):
-                    builder.copy_over_pdfs(f"specific: {upplaga_to_copy}")
+                    build_pdfs.copy_over_pdfs(f"specific: {upplaga_to_copy}")
                 else:
                     print(f"{upplaga_to_copy} not a number")
                     
