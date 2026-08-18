@@ -16,10 +16,8 @@ from engine.build import gen_replacment_dict
 
 # base elements (like header or footer)
 def get_base(path):
-    worked_path = config.base_path / Path(path)
-
     # get its content
-    with open(worked_path, "r", encoding="utf-8") as file:
+    with open(Path(path), "r", encoding="utf-8") as file:
         content = file.read() # read the content
     
     for replacment in gen_replacment_dict.replacment_for_all:
@@ -52,28 +50,12 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     for ending in row_endings:
         final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
     
-    # add head data
-    head_data_read = get_base("generated/webb/ostraloken.se/templates/base/head_data.html")
-    final_file = final_file.replace("[+head_data+]", head_data_read) # add head data
-    
-    # add header
-    header_read = get_base("generated/webb/ostraloken.se/templates/base/header.html")
-    final_file = final_file.replace("[+header+]", header_read) # add header
-    final_file = final_file.replace("[+index_header+]", header_read.replace("../", "./")) # add header for specificly index
-    
-    # add go up
-    go_up_read = get_base("generated/webb/ostraloken.se/templates/base/go_up.html")
-    final_file = final_file.replace("[+go_up+]", go_up_read) # add footer
-    
-    
-    # add footer
-    footer_read = get_base("generated/webb/ostraloken.se/templates/base/footer.html")
-    final_file = final_file.replace("[+footer+]", footer_read) # add footer
-    
-    # add general scripts
-    scripts_read = get_base("generated/webb/ostraloken.se/templates/base/general_scripts.html")
-    final_file = final_file.replace("[+general_scripts+]", scripts_read)
-    final_file = final_file.replace("[+index_general_scripts+]", scripts_read.replace("../", "./")) # add scripts for specificly index
+    # Add the base elements
+    base_dir_path = config.base_path / Path("generated/webb/ostraloken.se/templates/base/")
+    for file in Path(base_dir_path).iterdir():
+        data_read = get_base(base_dir_path / file.name)
+        final_file = final_file.replace(f"[+{file.stem}+]", data_read) # add data to final file
+        final_file = final_file.replace(f"[+{file.stem}:index_version+]", data_read.replace("../", "./")) # add index version of data to final file (for index.html)
     
     # create / find the file
     with open(generated_path, "w", encoding="utf-8") as file:

@@ -52,14 +52,9 @@ header {
     align-items: center;
     transition: transform 0.3s;
 }
-@media (width <= 21rem) {
+@media (width <= 22rem) {
     header {
         justify-content: space-around;
-    }
-}
-@media (width < 21rem) {
-    header {
-        position: static;
     }
 }
 .header_hidden {
@@ -76,9 +71,19 @@ header p {
     width: 33%;
     text-align: center;
 }
-@media (width <= 56rem) {
+@media (56rem < width <= 60rem) {
     header p {
-        font-size: 1rem;
+        font-size: 1.1rem;
+    }
+}
+@media (52rem < width <= 56rem) {
+    header p {
+        font-size: 1.0rem;
+    }
+}
+@media (width <= 52rem) {
+    header p {
+        font-size: 0.9rem;
     }
 }
 @media (width <= 50rem) {
@@ -86,14 +91,19 @@ header p {
         display: none;
     }
 }
-#header_titel_image {
+#header_title_image {
     cursor: pointer;
     width: 12rem;
     padding: 0.4rem;
 }
-@media (width <= 13rem) {
-    #header_titel_image {
-        width: calc(100% - 1rem);
+@media (14rem < width <= 18rem) {
+    #header_title_image {
+        width: calc(100% - 2rem);
+    }
+}
+@media (width <= 14rem) {
+    #header_title_image {
+        display: none;
     }
 }
 /*Header holidays*/
@@ -120,7 +130,7 @@ header p {
 header #search {
     cursor: pointer;
 }
-@media (width <= 21rem) {
+@media (width <= 22rem) {
     header #search {
         display: none;
     }
@@ -131,23 +141,10 @@ header #search {
     font-family: 'Times New Roman', Times, serif;
     font-size: 2rem;
 }
-@media (width < 21rem) {
-    #dropdown {
-        position: fixed;
-        z-index: 11;
-        top: 0;
-        right: 0.5rem;
-    }
-}
 #dotdotdot {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-@media (width < 21rem) {
-    #dotdotdot {
-        color: var(--text-color);
-    }
 }
 #dropdown_transition_item {
     background-color: transparent;
@@ -180,7 +177,7 @@ header #search {
     #dropdown_button_container {
         overflow-y: scroll;
         width: calc(100% - 3rem);
-        height: calc(100% - 6.5rem);
+        height: calc(100vh - 6.5rem);
         grid-template-rows: repeat(3, minmax(0, 1fr));
         grid-template-columns: repeat(3, minmax(0, 1fr));
         justify-items: center;
@@ -214,11 +211,6 @@ header #search {
 @media (height < 30rem) {
     .header_button {
         font-size: 1.4rem;
-    }
-}
-@media (height < 23rem) {
-    #header_button_container {
-        flex-direction: row;
     }
 }
 

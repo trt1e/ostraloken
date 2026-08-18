@@ -60,8 +60,8 @@
         </svg>
     </a>
 
-    <p><b>Hotfullt nära verkligheten</b></p>
-    <a href="../"><img id="header_titel_image" alt="Östra Löken logo" src="https://ostraloken.se/images/logo/östra_löken_i_östra_format_rak_vit_text.webp"></a>
+    <p><b id="slogan"></b></p>
+    <a href="../"><img id="header_title_image" alt="Östra Löken logo" src="https://ostraloken.se/images/logo/östra_löken_i_östra_format_rak_vit_text.webp"></a>
     <p><b id="header_date"></b></p> <!-- Example: Söndag 29 mars -->
 
     <button class="header_action" id="dropdown">
@@ -90,7 +90,7 @@
 
         
 <div id="scrolling_news_feed">
-    <a href="../notiser/#Tågnörden_fattar_fysiken+En_tågnörd_rapporterar_att_de_äntligen_fattar_fysiken_efter_att_ha_fått_tag_på_fjärde_upplagan_av_boken_ÅNGLOKLÄRA_1949_"><b>Tågnörden fattar fysiken</b> • En tågnörd rapporterar att de äntligen fattar fysiken efter att ha fått tag på fjärde upplagan av boken ÅNGLOKLÄRA, 1949. De har nu lärt sig mer än deras musiklärare, se gärna: A. Naturlära sida 3-32.</a>
+    <a href="../notiser/#Busch_portad_från_afterski+Löken_kan_rapportera_att_Ebba_Busch_KD_blev_portad_från_en_afterski_fest_efter_att_ha_försökt_göra_en_backflip_från_ett_"><b>Busch portad från afterski</b> • Löken kan rapportera att Ebba Busch (KD) blev portad från en afterski fest efter att ha försökt göra en backflip från ett bord. Busch sa senare i en intervju att hon försökte visa hur mycket energi kärnkraft skulle ge Sverige.</a>
 </div>
 
 
@@ -156,23 +156,12 @@
             <h3>Läs liknande artiklar:</h3> <!--This is generated so that it can be removed in case read_also is empty-->
             <div id="read_also">
                 
-<a href="./Studie_finner_datorer_kan_anvandas_for_att_fuska-U12.html" id="Studie_finner_datorer_kan_anvandas_for_att_fuska-U12" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
+<a href="./Loken_avslojar_Graset_ar_gronare_pa_andra_sidan-U36.html" id="Loken_avslojar_Graset_ar_gronare_pa_andra_sidan-U36" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
     <article>
         <!-- NO TYPE HERE -->
         <!-- NO IMAGE HERE -->
-        <h2>Studie finner: datorer kan användas för att fuska</h2>
-        <p>En ny studie publicerad av Harvard Business Review avslöjar ett nytt sätt för elever att fuska: datorer. Den över trehundra sidor långa rapporten går igenom hur datorer, som vanligtvis speglas som vänliga och ofarliga, egentligen är ett fuskverktyg...</p>
-        <p class="author_text"><b>Vilhelm Grill</b></p>
-    </article>
-</a>
-
-                
-<a href="./Altman_Det_var_Chatgpt_som_lurade_mig-U30.html" id="Altman_Det_var_Chatgpt_som_lurade_mig-U30" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
-    <article>
-        <!-- NO TYPE HERE -->
-        <!-- NO IMAGE HERE -->
-        <h2>Altman: "Det var Chatgpt som lurade mig"</h2>
-        <p>OpenAI är ett icke-vinstdrivande företag med uttryckliga mål att förbättra AI för alla världens människor, men tidigare under månaden bröts dessa mål när företaget tecknade avtal med amerikanska försvarsmakten...</p>
+        <h2>Löken avslöjar: Gräset är grönare på andra sidan</h2>
+        <p>Länge har elever spekulerat, undrat och funderat på om gräset faktiskt är grönare på andra sidan eller inte. Nu kan Löken avslöja, med över 96,3 % säkerhet, att gräset är grönare på andra sidan...</p>
         <p class="author_text"><b>Vilhelm Grill</b></p>
     </article>
 </a>
@@ -185,6 +174,17 @@
         <h2>Förslag: Subway surfers på alla skärmar</h2>
         <p>Elevernas uppmärksamhetsförmåga har blivit sämre och sämre de senaste åren. Det visar flera oberoende undersökningar gjorda av Folkhälsomyndigheten. Det har lett till att många elever känner sig uttråkade och omotiverade under långa lektioner - något som detta förslag hoppas förebygga...</p>
         <p class="author_text"><b>Joar Stange</b></p>
+    </article>
+</a>
+
+                
+<a href="./Grov_rasism_inom_matematik_2-U12.html" id="Grov_rasism_inom_matematik_2-U12" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
+    <article>
+        <!-- NO TYPE HERE -->
+        <!-- NO IMAGE HERE -->
+        <h2>Grov rasism inom matematik #2</h2>
+        <p>Naturlagsbrytande nyheter - Grovt bakslag mot mednummerrättsrörelsen $\sqrt{-4}$, som Löken intervjuade i föregående nummer*, blev på tisdagsnatten brutalt upphöjd till fyra av några våldsamma tontalingar...</p>
+        <p class="author_text"><b>Love Rabnor</b></p>
     </article>
 </a>
 
@@ -228,7 +228,7 @@
 
             <div class="footer_text">
                 <p>Östra Lökens webbsida är utvecklad av Vilhelm Grill.</p>
-                <p>Webbsidan uppdaterades senast: 15-08-2026 18:45</p>
+                <p>Webbsidan uppdaterades senast: 18-08-2026 19:12</p>
             </div>
         </div>
 
@@ -252,6 +252,7 @@
     <script src="../js/dont_animate_when_rezising.js"></script>
 <script src="../js/handle_header.js"></script>
 <script src="../js/set_date.js"></script>
+<script src="../js/handle_slogan.js"></script>
     <script src="./js/share.js"></script>
 </body> <!--ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!-->
 </html>

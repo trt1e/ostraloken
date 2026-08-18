@@ -28,9 +28,9 @@ for content in content_reader.read_txt("static/staff.txt"):
 </div>
 """
 
-combined_output = {}
+output = {}
 
 # List of staff as html button elements which lead to their email
-combined_output["[+staff_email_buttons+]"] = generated_sections
+output["[+staff_email_buttons+]"] = generated_sections
 # List of staff as links to their kontaktinfo page
-combined_output["[+staff_list+]"] = staff_list
+output["[+staff_list+]"] = staff_list

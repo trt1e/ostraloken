@@ -22,4 +22,5 @@ for content in reversed(content_reader.read_txt("hear_me_outs.txt")):
 </article>
 """
 
-output = generated_hear_me_outs
+output = {}
+output[f"[+all_hear_me_outs+]"] = generated_hear_me_outs

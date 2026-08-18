@@ -60,8 +60,8 @@
         </svg>
     </a>
 
-    <p><b>Hotfullt nära verkligheten</b></p>
-    <a href="../"><img id="header_titel_image" alt="Östra Löken logo" src="https://ostraloken.se/images/logo/östra_löken_i_östra_format_rak_vit_text.webp"></a>
+    <p><b id="slogan"></b></p>
+    <a href="../"><img id="header_title_image" alt="Östra Löken logo" src="https://ostraloken.se/images/logo/östra_löken_i_östra_format_rak_vit_text.webp"></a>
     <p><b id="header_date"></b></p> <!-- Example: Söndag 29 mars -->
 
     <button class="header_action" id="dropdown">
@@ -90,7 +90,7 @@
 
         
 <div id="scrolling_news_feed">
-    <a href="../notiser/#Vart_ligger_A21+Jag_har_irrat_runt_i_flera_timmar_nu_vart_fan_ligger_A21_Den_som_hittar_den_ger_jag_100_000_stefansdaler_personligenUppl"><b>Vart ligger A21?</b> • Jag har irrat runt i flera timmar nu, vart fan ligger A21? Den som hittar den ger jag 100 000 stefansdaler personligen.Upplaga 36 (4/5/2026):</a>
+    <a href="../notiser/#Segregerande_matköer+En_ny_studie_från_ÖTH_finner_att_över_60__av_alla_Östras_elever_tar_den_längre_matkön_bredvid_den_stora_trappan_Forskarn"><b>Segregerande matköer</b> • En ny studie från ÖTH finner att över 60 % av alla Östras elever tar den längre matkön bredvid den stora trappan. Forskarna påpekar dock att det skulle vara orimligt att orka gå till den andra kön.</a>
 </div>
 
 
@@ -156,13 +156,24 @@
             <h3>Läs liknande artiklar:</h3> <!--This is generated so that it can be removed in case read_also is empty-->
             <div id="read_also">
                 
-<a href="./Ostra_gymnasiet_satter_hard_inte_vejpa_under_provregel-U24.html" id="Ostra_gymnasiet_satter_hard_inte_vejpa_under_provregel-U24" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
+<a href="./Kemikalieinspektionen_overvager_riva_muren_till_samkorridoren-U27.html" id="Kemikalieinspektionen_overvager_riva_muren_till_samkorridoren-U27" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
     <article>
         <!-- NO TYPE HERE -->
         <!-- NO IMAGE HERE -->
-        <h2>Östra gymnasiet sätter hård "inte vejpa under prov"-regel</h2>
-        <p>Skolan Östra gymnasiets ledning förklarade under utvecklingsrådet den 12 januari att det nu inte är tillåtet att vejpa under prov. Det här följer en rad radikala reformer införda sedan den nya rektorn kom till makten...</p>
-        <p class="author_text"><b>Vilhelm Grill</b></p>
+        <h2>Kemikalieinspektionen överväger riva muren till sam-korridoren</h2>
+        <p>Kemikalieinspektionen gjorde under veckan ett besök till Östra Gymnasiet för att överväga om situationen i samkorridoren har förbättrats till den grad att man kan riva muren och låta sameleverna blandas med de andra eleverna på skolan, utan sträckningar, svimmningar, nysningar eller allergiska reaktioner...</p>
+        <p class="author_text"><b>John Ericson</b></p>
+    </article>
+</a>
+
+                
+<a href="./SKANDAL_Torr_kyckling_pa_balen-U5.html" id="SKANDAL_Torr_kyckling_pa_balen-U5" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
+    <article>
+        <!-- NO TYPE HERE -->
+        <!-- NO IMAGE HERE -->
+        <h2>SKANDAL: Torr kyckling på balen</h2>
+        <p>I onsdags förra veckan hade treorna sin studentbal. På menyn var kyckling med potatisgratäng och sparris. Allting gick bra fram tills det var dags för huvudrätten, när det visade sig att kycklingen var torr...</p>
+        <p class="author_text"><b>Joar Stange</b></p>
     </article>
 </a>
 
@@ -173,17 +184,6 @@
         <!-- NO IMAGE HERE -->
         <h2>Volleybollturneringens brist på regler: "En stor fara"</h2>
         <p>På måndagen som den här tidningen trycks kommer Östras (ö)kända volleybollturnering 2026 gå av stapeln. Turneringen, som är hyllad av många elever, är en manifestation av Östra-andan som Stefan brukade prata om...</p>
-        <p class="author_text"><b>Joar Stange</b></p>
-    </article>
-</a>
-
-                
-<a href="./FIASKO_Spelade_bara_100_latar_pa_Eastnight-U5.html" id="FIASKO_Spelade_bara_100_latar_pa_Eastnight-U5" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
-    <article>
-        <!-- NO TYPE HERE -->
-        <!-- NO IMAGE HERE -->
-        <h2>FIASKO: Spelade bara 100 låtar på Eastnight</h2>
-        <p>Det här årets Eastnight har väckt starka känslor efter att de bara spelade 100 låtar under kvällen. "Jag förväntade mig minst 300", säger Maximilian som såg hela föreställningen. Förra året spelades inte mindre än 408 låtar upp, framförda av alla esteter...</p>
         <p class="author_text"><b>Joar Stange</b></p>
     </article>
 </a>
@@ -228,7 +228,7 @@
 
             <div class="footer_text">
                 <p>Östra Lökens webbsida är utvecklad av Vilhelm Grill.</p>
-                <p>Webbsidan uppdaterades senast: 15-08-2026 18:45</p>
+                <p>Webbsidan uppdaterades senast: 18-08-2026 19:12</p>
             </div>
         </div>
 
@@ -252,6 +252,7 @@
     <script src="../js/dont_animate_when_rezising.js"></script>
 <script src="../js/handle_header.js"></script>
 <script src="../js/set_date.js"></script>
+<script src="../js/handle_slogan.js"></script>
     <script src="./js/share.js"></script>
 </body> <!--ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!-->
 </html>

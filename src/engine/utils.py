@@ -8,9 +8,9 @@ from engine.handle_content import content_reader
 
 def file_parser(file):
     # find where diffrent parts are in the document
-    return re.findall(r">>(\w+): (.*?)(?=>>|$)", file, re.S)
+    return re.findall(r">>(\w+): (.*?)(?=>>|\/\~|$)", file, re.S)
     # Here we look for anything that starts with >>, then we get what is between >> and :, then we get the rest after ": "
-    # This then stops if we find >> or the end of the document
+    # This then stops if we find ">>", "/~" or the end of the document
 
 def make_regex_list_to_dict(list):
     output_sum = []

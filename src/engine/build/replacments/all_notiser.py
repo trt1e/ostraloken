@@ -14,4 +14,5 @@ for content in reversed(content_reader.read_txt("notiser.txt")):
 </a>
 """
 
-output = generated_short_storys
+output = {}
+output[f"[+all_notiser+]"] = generated_short_storys

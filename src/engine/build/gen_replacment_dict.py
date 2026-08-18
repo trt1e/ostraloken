@@ -7,24 +7,18 @@ import pkgutil
 # import scripts
 from engine import config
 from engine.build import build_articles
-from engine.build import replacments_singular
-from engine.build import replacments_multiple
+from engine.build import replacments
 
 
 # Create the dictionary where all articles (exept /a/ articles) are run through to see and replace using the dict generated here
 def create_dictionary():
     replacment_dictionary = {}
-    
-    # Import the singular replacment components in the replacment dictionary
-    # For singular replacment components their filename is their dictionaryname
-    for module_bundle in pkgutil.iter_modules(replacments_singular.__path__):
-        module = importlib.import_module(f"{replacments_singular.__name__}.{module_bundle.name}")
-        replacment_dictionary[f"[+{module_bundle.name}+]"] = module.output
         
-    # Import the multiple replacment components in the replacment dictionary
-    for module_bundle in pkgutil.iter_modules(replacments_multiple.__path__):
-        module = importlib.import_module(f"{replacments_multiple.__name__}.{module_bundle.name}")
-        replacment_dictionary = replacment_dictionary | module.combined_output # Merge the dicts
+    # Import the replacment components in the replacment dictionary
+    # The files in /replacments/ output a dict which is named "output"
+    for module_bundle in pkgutil.iter_modules(replacments.__path__):
+        module = importlib.import_module(f"{replacments.__name__}.{module_bundle.name}")
+        replacment_dictionary = replacment_dictionary | module.output # Merge the dicts
     
     print("Dictionary created")
     

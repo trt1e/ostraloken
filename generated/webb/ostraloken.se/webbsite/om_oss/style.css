@@ -29,7 +29,12 @@
 .kontakt_card_not_link_section {
     width: 100%;
     display: flex;
-    margin-bottom: 1rem;
+    padding: 0.2rem 0;
+    margin-bottom: 0.6rem;
+    outline: transparent solid 2px;
+}
+.kontakt_card:target .kontakt_card_not_link_section {
+    animation: kontaktCardNotLinkSectionSelected 0.8s ease-in-out 0.1s 2;
 }
 @media (width < 35rem) {
     .kontakt_card_not_link_section {
@@ -45,24 +50,24 @@
     }
 }
 
-@keyframes articleSelected {
+@keyframes kontaktCardNotLinkSectionSelected {
     0% {
         background-color: var(--bg-color);
-        border: var(--darker-bg-color) solid 2px;
+        outline: transparent solid 2px;
         transform: translate(0, 0);
         box-shadow: none;
     }
 
     50% {
         background-color: var(--darker-bg-color);
-        border: var(--primary-color) solid 2px;
+        outline: var(--primary-color) solid 2px;
         transform: translate(0, -0.2rem);
         box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
     }
     
     100% {
         background-color: var(--bg-color);
-        border: var(--darker-bg-color) solid 2px;
+        outline: transparent solid 2px;
         transform: translate(0, 0);
         box-shadow: none;
     }
