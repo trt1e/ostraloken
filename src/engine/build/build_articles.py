@@ -321,7 +321,7 @@ def generate_all_articles():
                     "[+article+]": generated_article,
                     "[+upplaga_number+]": str(upplaga_number),
                     "[+upplaga_date+]": upplaga_date,
-                    "[+text_to_intorduce_section+]": "<h2>Läs liknande artiklar:</h2>", # so it can be removed
+                    "[+text_to_intorduce_section+]": '<h2 id="read_similar">Läs liknande artiklar:</h2>', # so it can be removed
                     "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
                     "[+scrolling_news_feed+]": feed_element # add news feed
                 } # what gets replaced and with what

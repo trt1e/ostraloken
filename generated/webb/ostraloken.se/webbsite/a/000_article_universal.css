@@ -182,7 +182,7 @@ main {
 }
 
 /* Recomended articles */
-h3 {
+h2#read_similar {
     font-size: 2.2rem;
     margin: 2rem 0;
     text-align: center;

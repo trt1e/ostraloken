@@ -1,8 +1,6 @@
 r"""
 Att fixa senare:
 - Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-
-Gör så namnen som är hårdkodade tas från content
 """
 print("BOOTING OSTRALOKEN!")
 

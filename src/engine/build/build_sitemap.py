@@ -69,4 +69,4 @@ def gen_sitemap(webb_path):
         with open(sitemap_path, "w", encoding="utf-8") as sitemap_file:
             sitemap_file.write(sitemap) # Write the file
         
-    print(f"Generated sitemap for {webb_address_root}")
+    print(f"Created sitemap for {webb_address_root}")
