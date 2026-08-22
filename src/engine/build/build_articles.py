@@ -26,7 +26,7 @@ def get_base(path):
     return content
 
 # basic for all generated text files
-def generate_site(template_path, generated_path, dictionary_of_replacment, file_type): # the sites that dont realy need to be generated    
+def generate_site(template_path, generated_path, dictionary_of_replacment): # the sites that dont realy need to be generated    
     with open(template_path, "tr", encoding="utf-8") as file:  
         template = file.read() # read it
     
@@ -38,12 +38,13 @@ def generate_site(template_path, generated_path, dictionary_of_replacment, file_
     row_endings = []
     start_warning = ""
     end_warning = ""
-    if file_type == "html":
-        row_endings = ["<head>", "</head>", "<body>", "</body>", "<header>", "</header>", "<main>", "</main>", "<footer>", "</footer>"]
+    file_type = Path(generated_path).suffix
+    if file_type == ".html":
+        row_endings = ["<head>", "</head>", "<body>", "</body>", "<header>", "</header>", "<main>", "</main>", "<footer>", "</footer>", "</p>"]
         start_warning = "<!--"
         end_warning = "-->"
-    elif file_type == "css" or file_type == "js":
-        row_endings = ["{"]
+    elif file_type == ".css" or file_type == ".js":
+        row_endings = ["}"]
         start_warning = "/*"
         end_warning = "*/"
     
@@ -361,7 +362,7 @@ def generate_all_articles():
                     replacment[f"[+extra_article_link_2+]"] = ""
                     replacment[f"[+extra_article_link_3+]"] = ""
                 
-                generate_site(article_template_path, (generated_articles_path / (article_id + ".html")), replacment, "html")
+                generate_site(article_template_path, (generated_articles_path / (article_id + ".html")), replacment)
     
     random.seed()
     progressbar_item.finish()

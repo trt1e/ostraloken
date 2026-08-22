@@ -34,10 +34,17 @@ def generate_webbsite(webb_path, template_path):
         if Path(file_dir).is_file(): # If it is not a folder
             with open(file_dir, "tr", encoding="utf-8") as file:  
                 whole_file = file.read() # read it
-            destination_dir = re.findall(r"<!--@\( (.*?) \)@-->", whole_file)[0]
+            file_type = Path(file_dir).suffix
+            if file_type == ".html":
+                destination_dir = re.findall(r"<!--@\( (.*?) \)@-->", whole_file)[0]
+            elif file_type == ".css" or file_type == ".js":
+                destination_dir = re.findall(r"\/\*@\( (.*?) \)@\*\/", whole_file)[0]
+            else:
+                print(f"WARNING: {file_dir} does not have a destination dir! Please add one. This file is skiped.")
+                continue
             full_destination_dir = webb_path / "webbsite" / Path(str(destination_dir)) 
             os.makedirs(full_destination_dir.parent, exist_ok=True) # make sure the folder exists, else: generate the folder
-            build_articles.generate_site(file_dir, full_destination_dir, replacment_for_all, file_dir.stem)
+            build_articles.generate_site(file_dir, full_destination_dir, replacment_for_all)
             generated_site_name = (str(template_path).replace(str(config.base_path), "")).split("\\")[3]
             print(f"Generated {generated_site_name}: {file_dir.stem}{file_dir.suffix}")
 
