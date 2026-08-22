@@ -47,7 +47,7 @@
     <link rel="icon" type="image/x-icon" href="../images/meta/lök_bild_cirkel_48.ico">
 </head> <!--ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!-->
 <body> <!--ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!-->
-    <div> <!--This div is to make the header not go into the footer-->
+    <div id="main_conteiner"> <!--This div is to make the header not go into the footer-->
         <header class=""> <!--Class alts: header_pride (for pride)-->
     <a class="header_action" id="search" href="../sok/" aria-label="Sök i Lökens arkiv">
         <svg width="100%" height="100%" viewBox="0 0 400 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
@@ -61,7 +61,7 @@
     </a>
 
     <p><b id="slogan"></b></p>
-    <a href="../"><img id="header_title_image" alt="Östra Löken logo" src="https://ostraloken.se/images/logo/östra_löken_i_östra_format_rak_vit_text.webp"></a>
+    <a href="../"><img class="loken_image" alt="Östra Löken logo" src="https://ostraloken.se/images/logo/östra_löken_i_östra_format_rak_vit_text.webp"></a>
     <p><b id="header_date"></b></p> <!-- Example: Söndag 29 mars -->
 
     <button class="header_action" id="dropdown">
@@ -90,7 +90,7 @@
 
         
 <div id="scrolling_news_feed">
-    <a href="../notiser/#Bilvecka_på_Östra+Ett_nytt_förslag_har_dykt_upp_på_skolledningens_bord_att_alla_elever_åker_bil_till_skolan_Det_efter_att_många_skolor_i_k"><b>Bilvecka på Östra</b> • Ett nytt förslag har dykt upp på skolledningens bord: att alla elever åker bil till skolan. Det efter att många skolor i kommunen har "bilfri vecka" just nu.</a>
+    <a href="../notiser/#Cyklist_säger_Fuck_it__tar_pendeltåg+En_sen_kväll_igår_tillsammans_med_höstlovets_bedrövliga_sovschema_får_cyklisten_att_säga_Fuck_it_och_ta_pendeltåget_till"><b>Cyklist säger "Fuck it" – tar pendeltåg</b> • En sen kväll igår tillsammans med höstlovets bedrövliga sovschema får cyklisten att säga "Fuck it" och ta pendeltåget till skolan på morgonen istället.</a>
 </div>
 
 
@@ -153,8 +153,19 @@
 </article>
 
 
-            <h3>Läs liknande artiklar:</h3> <!--This is generated so that it can be removed in case read_also is empty-->
+            <h2>Läs liknande artiklar:</h2> <!--This is generated so that it can be removed in case read_also is empty-->
             <div id="read_also">
+                
+<a href="./Lokens_reporter_skriver_artikel_istallet_for_att_plugga_for_morgondagens_matteprov-U19.html" id="Lokens_reporter_skriver_artikel_istallet_for_att_plugga_for_morgondagens_matteprov-U19" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
+    <article>
+        <!-- NO TYPE HERE -->
+        <!-- NO IMAGE HERE -->
+        <h2>Lökens reporter skriver artikel istället för att plugga för morgondagens matteprov</h2>
+        <p>Söndag den 30 november 2025 sitter en Östra Löken reporter i vardagsrummet och skriver på tidningens nästa artikel – fastän han har prov dagen efter. Och det här är inte första gången det händer, efter en stickprovsundersökning av Östra Löken hittades det att över hälften av alla skribenter på Östra Löken har någon gång skrivit en artikel under stress för ett prov...</p>
+        <p class="author_text"><b>Vilhelm Grill</b></p>
+    </article>
+</a>
+
                 
 <a href="./Varfor_asbest_gor_en_comeback-U16.html" id="Varfor_asbest_gor_en_comeback-U16" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
     <article>
@@ -163,17 +174,6 @@
         <h2>Varför asbest gör en comeback</h2>
         <p>Trender kommer och går som vågor på öppna havet. Ingen vet varför något blir populärt igen men ändå är alla säkra på att de vet det. Kan det vara nostalgi eller retro, någon kändis som gillar det eller en ny trend på TikTok...</p>
         <p class="author_text"><b>Vilhelm Grill</b></p>
-    </article>
-</a>
-
-                
-<a href="./Varlden_kommer_ga_under-U37.html" id="Varlden_kommer_ga_under-U37" class="article no_img"> <!--Add the "no_img" class to article if it has no image-->
-    <article>
-        <!-- NO TYPE HERE -->
-        <!-- NO IMAGE HERE -->
-        <h2>Världen kommer gå under!</h2>
-        <p>Men kom igen. Vi har knappt återhämtat oss från corona och nu har ett nytt du-kommer-spy-upp-dina-inälvor-tills-du-dör-virus dykt upp som kommer lamslå hela världen. Man kan ju lika gärna stänga in sig i sitt hus redan nu, för världen kommer ju att gå under (igen)...</p>
-        <p class="author_text"><b>Joar Stange</b></p>
     </article>
 </a>
 
@@ -228,7 +228,7 @@
 
             <div class="footer_text">
                 <p>Östra Lökens webbsida är utvecklad av Vilhelm Grill.</p>
-                <p>Webbsidan uppdaterades senast: 18-08-2026 22:48</p>
+                <p>Webbsidan uppdaterades senast: 22-08-2026 18:25</p>
             </div>
         </div>
 
@@ -253,6 +253,7 @@
 <script src="../js/handle_header.js"></script>
 <script src="../js/set_date.js"></script>
 <script src="../js/handle_slogan.js"></script>
+<script src="../js/handle_dialog.js"></script>
     <script src="./js/share.js"></script>
 </body> <!--ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!-->
 </html>

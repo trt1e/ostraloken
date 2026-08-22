@@ -6,7 +6,7 @@
     --darkest-bg-color: #d3cecc; /*for outlines and for hover outline*/
     --text-color: #130c09; /*for text*/
     --lighter-text-color: #aba29e; /*for less inportant text*/
-    --header-text-color: #f8f4f2;
+    --lightest-text-color: #f8f4f2;
     --primary-color: #EE7322; /*for header and hover*/
     --secondary-color: #da8852; /*for orange color before hover*/
     --highlight-color: yellow; /*for the article type*/
@@ -66,7 +66,7 @@ header {
 header p {
     font-size: 1.2rem;
     font-family: Georgia, 'Times New Roman', Times, serif;
-    color: var(--header-text-color);
+    color: var(--lightest-text-color);
     cursor: default;
     width: 33%;
     text-align: center;
@@ -91,18 +91,18 @@ header p {
         display: none;
     }
 }
-#header_title_image {
+header .loken_image {
     cursor: pointer;
     width: 12rem;
     padding: 0.4rem;
 }
 @media (14rem < width <= 18rem) {
-    #header_title_image {
+    header .loken_image {
         width: calc(100% - 2rem);
     }
 }
 @media (width <= 14rem) {
-    #header_title_image {
+    header .loken_image {
         display: none;
     }
 }
@@ -115,7 +115,7 @@ header p {
 .header_action {
     box-sizing: border-box;
     background-color: transparent;
-    color: var(--header-text-color);
+    color: var(--lightest-text-color);
     width: 3.1rem;
     height: 3.1rem;
     display: flex;
@@ -178,12 +178,13 @@ header #search {
         overflow-y: scroll;
         width: calc(100% - 3rem);
         height: calc(100vh - 6.5rem);
-        grid-template-rows: repeat(3, minmax(0, 1fr));
+        grid-template-rows: repeat(auto, minmax(0, 1fr));
         grid-template-columns: repeat(3, minmax(0, 1fr));
         justify-items: center;
         align-items: center;
         font-size: 4.5vw;
         text-align: center;
+        overflow: hidden;
     }
     #dropdown:hover #dropdown_button_container, #dropdown_button_container:hover {
         display: grid;
@@ -318,7 +319,7 @@ main li {
     width: 12.5rem;
     position: absolute;
     top: 7.9rem;
-    left: calc(50%);
+    left: 50%;
     transform: translateX(calc((72rem / 2) + 2rem)); /*width = 72rem*/
     transition: none;
     text-align: center;
@@ -421,11 +422,74 @@ a.extra_info.user_prompt:hover {
     visibility: visible;
 }
 
+/* Popup screen */
+.popup {
+    background-color: var(--primary-color);
+    color: var(--lightest-text-color);
+    box-sizing: border-box;
+    width: 60%;
+    height: 80%;
+    position: fixed;
+    top: 10%;
+    left: 20%;
+    padding: 2rem;
+    text-align: center;
+}
+@media (width < 70rem) {
+    .popup {
+        width: 80%;
+        height: 90%;
+        top: 5%;
+        left: 10%;
+    }
+}
+.popup::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+    overscroll-behavior: contain;
+}
+.popup:focus-visible {
+    outline: none;
+}
+.popup .loken_image {
+    width: 50%;
+    margin-bottom: 1rem;
+}
+.popup h2 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+.popup_button {
+    color: var(--lightest-text-color);
+    display: block;
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: var(--darker-bg-color) solid 2px;
+    transition: 0.3s;
+}
+#popup_buy_button {
+    background-color: rgb(12, 208, 12);
+    width: 28rem;
+    height: 6rem;
+    margin: 2rem auto 0 auto;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 2.5rem;
+}
+#popup_deny_button {
+    background-color: rgb(227, 14, 14);
+    width: 12rem;
+    height: 2rem;
+    margin: 1.5rem auto 0 auto;
+}
+
 /* Footer */
 footer {
     background-color: var(--dark-bg-color);
-    width: calc(100% - 4rem);
-    min-height: calc(100vh - 4rem);
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 100vh;
     height: fit-content;
     border-top: var(--darkest-bg-color) solid 2px;
     padding: 2rem;
@@ -466,7 +530,7 @@ footer #nav_cards_container {
     }
 }
 footer #loken_image {
-    width: calc(100%);
+    width: 100%;
 }
 #footer_left_section .footer_text {
     margin-top: 1.5rem;

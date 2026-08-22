@@ -17,7 +17,7 @@ from engine.build import gen_replacment_dict
 # base elements (like header or footer)
 def get_base(path):
     # get its content
-    with open(Path(path), "r", encoding="utf-8") as file:
+    with open(Path(path), "tr", encoding="utf-8") as file:
         content = file.read() # read the content
     
     for replacment in gen_replacment_dict.replacment_for_all:
@@ -93,7 +93,7 @@ def generate_static_section(title, content, image_src):
 # ---------------------------------------------
 
 # create the article for preview or /a/ articles
-def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr):
+def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr): # upplaga_nmr should be -1 if its the only/primary article
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./" # no redirect
@@ -103,10 +103,8 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     else:
         no_img_class = ""
         image_extra = f'alt="{utils.strip_string(title, -1).replace("_", " ")}"' # add the alt text
-        if article_nmr != 0: # this is so the first image dosn't have loading lazy so it dosnt pop in
+        if article_nmr != 0 and article_nmr != -1: # this is so the first image dosn't have loading lazy so it dosnt pop in
             image_extra += ' loading="lazy"'
-        else:
-            image_extra += ' fetchpriority="high"'
             
         image_context = f'<img src="{img_src}" {image_extra} width="800" height="600">'
     if title is None or title == "":
@@ -124,17 +122,19 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     
     if redirect_src == "SHOULD_NOT_REDIRECT": # Not anchor
         author_context = f'<p class="author_text"><b>{author}</b></p>'
-        
-        
         # if author is one of head Löken writers: point their name to their part of kontaktinfo 
         if author in utils.head_writers:
             author_context = f'<p class="author_text"><a href="https://ostraloken.se/om_oss/#{author.replace(" ", "_")}"><b>{author}</b></a></p>'
+        
+        h_tag = "h2"
+        if article_nmr == -1:
+            h_tag = "h1"
         
         final_article = f"""
 <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
     {type_context}
     {image_context}
-    <h1>{title}</h1> <!-- This is the h1 since nothing else is on this page -->
+    <{h_tag}>{title}</{h_tag}> <!-- This is the h1 since nothing else is on this page -->
     <p>{content}</p>
     {author_context}
 </article>
@@ -155,7 +155,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     return final_article
 
 # Generate the preview articles in index and sok
-def generate_preview_article(base_redirect_html_url, get_what_articles):
+def get_all_articles(base_redirect_html_url, get_what_articles):
     how_many_articles_generated = 0
     generated_articles = [] # for get_what_articles == "All"
     generated_articles_based_on_type = {} # for get_what_articles == "Similar"
@@ -244,7 +244,7 @@ def generate_all_articles():
     article_template_path = config.base_path / Path("generated/webb/ostraloken.se/templates/a/articles_pages.html")
     generated_articles_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/a")
     
-    list_of_articles_with_similer_type = generate_preview_article("./a/", "Similar")
+    list_of_articles_with_similer_type = get_all_articles("./a/", "Similar")
     all_short_storys = content_reader.read_txt("notiser.txt")
     
     random.seed(hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
@@ -282,7 +282,7 @@ def generate_all_articles():
                 article_author = article["Skribent"]
                 # copy over images and get the url to the right image
                 article_img_src = utils.find_img(basic_article_title, upplaga_number, "./images/")
-                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, 0, upplaga_number)
+                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, -1, upplaga_number)
 
                 # generate the article id
                 article_id = utils.make_article_id(article_title, upplaga_number)
@@ -321,7 +321,7 @@ def generate_all_articles():
                     "[+article+]": generated_article,
                     "[+upplaga_number+]": str(upplaga_number),
                     "[+upplaga_date+]": upplaga_date,
-                    "[+h3_text_to_intorduce_section+]": "<h3>Läs liknande artiklar:</h3>", # so it can be removed
+                    "[+text_to_intorduce_section+]": "<h2>Läs liknande artiklar:</h2>", # so it can be removed
                     "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
                     "[+scrolling_news_feed+]": feed_element # add news feed
                 } # what gets replaced and with what

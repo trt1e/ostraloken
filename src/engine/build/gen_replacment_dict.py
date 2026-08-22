@@ -7,6 +7,7 @@ import pkgutil
 # import scripts
 from engine import config
 from engine.build import build_articles
+from engine.build import build_sitemap
 from engine.build import replacments
 
 
@@ -54,3 +55,4 @@ def generate_all_normal_pages(): # go throught every file in templates
             generate_webbsite(webb_path, extra_template_path)
             
         generate_webbsite(webb_path, template_path)
+        build_sitemap.gen_sitemap(webb_path)

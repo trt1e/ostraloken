@@ -8,9 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
     let set_slogan_to = "";
 
     if (type_text_elements.length == 1) {
-        set_slogan_to = "Hotfullt nära " + type_text.innerText.toLowerCase();
+        let text = type_text.innerText
+        if (text.length > 15) {
+            text = text.substring(0, 12) + "...";
+        };
+        set_slogan_to = "Hotfullt nära " + text.toLowerCase().replace("östra", "Östra");
     } else if (file_name != "Östra Löken") {
-        set_slogan_to = "Hotfullt nära " + file_name.toLowerCase();
+        let text = file_name
+        if (text.length > 15) {
+            text = text.substring(0, 12) + "...";
+        };
+        set_slogan_to = "Hotfullt nära " + text.toLowerCase().replace("östra", "Östra");
     } else {
         set_slogan_to = "Hotfullt nära verkligheten";
     };
