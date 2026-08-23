@@ -318,7 +318,7 @@ main li {
     border: var(--secondary-color) solid 2px;
     width: 12.5rem;
     position: absolute;
-    top: 7.9rem;
+    top: 7.9rem; /* FIIIIIIIIIIIXXXXXXXXXXXXXXX TTTTTTTTTTHHHHHHHHHHIIIIIIIIIIIISSSSSSSSSSSSSSS!!!!!!!!!!!*/
     left: 50%;
     transform: translateX(calc((72rem / 2) + 2rem)); /*width = 72rem*/
     transition: none;

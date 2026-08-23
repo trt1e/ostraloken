@@ -6,11 +6,11 @@ const baseImagesUrl = "\pdf_images/";
 
 
 // DO NOT TOUCH!!!
-const amoutPDFs = 40; // This specific variable is changed with generate_frontend.py
 const maxPages = 4; // This specific variable is changed with generate_frontend.py
-const pagesPerPDF = [1, 2, 2, 2, 2, 3, 2, 2, 4, 2, 3, 3, 4, 3, 3, 4, 4, 3, 3, 4, 4, 2, 3, 3, 3, 2, 2, 3, 3, 4, 3, 4, 3, 3, 2, 4, 3, 2, 2, 3] // ID=pagesPerPDF // <-- DONT TOUCH ID!!! This specific variable is changed with generate_frontend.py
+const pagesPerPDF = [1, 2, 2, 2, 2, 3, 2, 2, 4, 2, 3, 3, 4, 3, 3, 4, 4, 3, 3, 4, 4, 2, 3, 3, 3, 2, 2, 3, 3, 4, 3, 4, 3, 3, 2, 4, 3, 2, 2, 3, 3] // <-- DONT TOUCH ID!!! This specific variable is changed with generate_frontend.py
 // DO NOT TOUCH!!!
 
+const amoutPDFs = pagesPerPDF.length;
 
 let numberOfPages;
 let currant_upplaga = amoutPDFs;

@@ -8,17 +8,18 @@ from engine.handle_content import content_reader
 
 
 ############### ADD CHECKING STATIC AND PDFS HERE!!! #################
+############## ALSO FIX OLD STUFF LIKE FIND_BETWEEN() ###############
 
 def inspect_normal_storys(): # looks throught all files to se if something is wrong but doesnt change nothing
     print("↓ ARTICLES ↓")
-    upplaga_list = os.listdir(content_reader.articles_path) # list all folders in dir
+    upplaga_list = os.listdir(config.articles_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         printed_something = False
         exists_upplaga_info_file = False
         images_list = []
         titles_list = []
         # list all files in dir
-        file_list = os.listdir(content_reader.articles_path / upplaga)
+        file_list = os.listdir(config.articles_path / upplaga)
         for file in file_list: # Go througth every file in the list
             if file[:4] != "IMG-":
                 # check if there are img files that do not start with IMG-
@@ -28,7 +29,9 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
                     printed_something = True
                 else:
                     try:
-                        whole_text = utils.try_opening(content_reader.articles_path / upplaga / file, "tr")
+                        # read the file
+                        with open(config.articles_path / upplaga / file, "tr", encoding="utf-8") as file:  
+                            whole_text = file.read() # read it
                         if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
                             print(f'NOTE: {file} contains “ and/or ”. Instead you should use "')
                             printed_something = True
@@ -121,7 +124,9 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
             print(f'WARNING: {upplaga} does not have a upplaga_info.txt file')
 
 def inspect_short_storys():
-    whole_text = utils.try_opening(content_reader.short_story_path, "tr") # read it
+    # read the file
+    with open(config.notiser_path, "tr", encoding="utf-8") as file:  
+        whole_text = file.read() # read it
     print("\n↓ NOTISER ↓")
     if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
         print(f'NOTE: Notiser contains “ and/or ”. Instead you should use "')
@@ -153,7 +158,9 @@ def inspect_short_storys():
         last_final_pos = whole_text.find(" ++", last_final_pos) + 3
         
 def inspect_hear_me_outs():
-    whole_text = utils.try_opening(content_reader.hear_me_outs_path, "tr") # read it
+    # read the file
+    with open(config.hear_me_outs_path, "tr", encoding="utf-8") as file:  
+        whole_text = file.read() # read it
     print("\n↓ HEAR ME OUTS ↓")
     if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
         print(f'NOTE: Hear me outs contains “ and/or ”. Instead you should use "')
@@ -185,18 +192,20 @@ def inspect_hear_me_outs():
 def fix_citationmarks():
     # normal storys
     fixed_something = False
-    upplaga_list = os.listdir(content_reader.articles_path) # list all folders in dir
+    upplaga_list = os.listdir(config.articles_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         # list all files in dir
-        file_list = os.listdir(content_reader.articles_path / upplaga)
+        file_list = os.listdir(config.articles_path / upplaga)
         for file in file_list: # Go througth every file in the list
             if file[:4] != "IMG-":
-                whole_text = utils.try_opening(content_reader.articles_path / upplaga / file, "tr")
+                # read the file
+                with open(config.articles_path / upplaga / file, "tr", encoding="utf-8") as file:  
+                    whole_text = file.read() # read it
                 if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
                     new_text = whole_text.replace("“", '"')
                     new_text = new_text.replace("”", '"')
                     
-                    with open(content_reader.articles_path / upplaga / file, "w", encoding="utf-8") as file:
+                    with open(config.articles_path / upplaga / file, "w", encoding="utf-8") as file:
                         file.write(new_text) # write to it
                     
                     fixed_something = True
@@ -207,11 +216,13 @@ def fix_citationmarks():
 
     # short storys
     fixed_something = False
-    whole_text = utils.try_opening(content_reader.short_story_path, "tr") # read it
+    # read the file
+    with open(config.notiser_path, "tr", encoding="utf-8") as file:  
+        whole_text = file.read() # read it
     if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
         new_text = whole_text.replace("“", '"')
         new_text = new_text.replace("”", '"')
-        with open(content_reader.short_story_path, "w", encoding="utf-8") as file:
+        with open(config.notiser_path, "w", encoding="utf-8") as file:
             file.write(new_text) # write to it
         
         fixed_something = True
@@ -222,11 +233,14 @@ def fix_citationmarks():
 
     # hear me outs
     fixed_something = False
-    whole_text = utils.try_opening(content_reader.hear_me_outs_path, "tr") # read it
+
+    # read
+    with open(config.hear_me_outs_path, "tr", encoding="utf-8") as file:  
+        whole_text = file.read() # read it
     if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
         new_text = whole_text.replace("“", '"')
         new_text = new_text.replace("”", '"')
-        with open(content_reader.hear_me_outs_path, "w", encoding="utf-8") as file:
+        with open(config.hear_me_outs_path, "w", encoding="utf-8") as file:
             file.write(new_text) # write to it
         
         fixed_something = True
@@ -236,20 +250,22 @@ def fix_citationmarks():
         print("No citationmarks to fix in hear me outs")
 
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
-    upplaga_list = os.listdir(content_reader.articles_path) # list all folders in dir
+    upplaga_list = os.listdir(config.articles_path) # list all folders in dir
     for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
         # list all files in dir 
-        file_list = os.listdir(content_reader.articles_path / upplaga)
+        file_list = os.listdir(config.articles_path / upplaga)
         for file_number, file in enumerate(file_list, 1): # Go througth every file in the list and extract the content
             if file != "upplaga_info.txt" and file[:4] != "IMG-":
                 # extract
-                whole_text = utils.try_opening(content_reader.articles_path / upplaga / file, "tr")
+                with open(config.articles_path / upplaga / file, "tr", encoding="utf-8") as file:  
+                    whole_text = file.read() # read it
                 # find where title is in the document
-                title = utils.find_between(whole_text, "### ", " ##", 0)
-                basic_title = utils.remove_html_elements(title)
+                parsed_file = utils.file_parser(whole_text)
+                formated_file = utils.make_regex_list_to_dict(parsed_file)
+                basic_title = utils.remove_html_elements(formated_file[0]["Rubrik"])
                 
                 new_file_name = str(file_number) + " " + utils.strip_string(basic_title, 100) + ".txt"
-                
-                os.rename((content_reader.articles_path / upplaga / file), (content_reader.articles_path / upplaga / new_file_name))
+
+                os.rename(file.name, (config.articles_path / upplaga / new_file_name))
 
     print("Article names successfully fixed!")

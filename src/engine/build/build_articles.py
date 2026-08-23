@@ -338,29 +338,29 @@ def generate_all_articles():
                 if new_list_of_similar_articles != []:
                     random.seed(hash(str(new_list_of_similar_articles) + "1")) # we set the seed so that if we are to make a small change and push it it doesnt change everything, only when we add, remove or change articles of that type does this change
                     chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)] # this random function is determaistic so if we enter the same seed and same command it will give the same result which we want!
-                    replacment[f"[+extra_article_link_1+]"] = chosen_article
+                    replacment["[+extra_article_link_1+]"] = chosen_article
                     new_list_of_similar_articles.remove(chosen_article) # we remove it so it isn't listed again
                     
                     if new_list_of_similar_articles != []:
                         random.seed(hash(str(new_list_of_similar_articles) + "2"))
                         chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
-                        replacment[f"[+extra_article_link_2+]"] = chosen_article
+                        replacment["[+extra_article_link_2+]"] = chosen_article
                         new_list_of_similar_articles.remove(chosen_article)
                         
                         if new_list_of_similar_articles != []:
                             random.seed(hash(str(new_list_of_similar_articles) + "3"))
                             chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
-                            replacment[f"[+extra_article_link_3+]"] = chosen_article
+                            replacment["[+extra_article_link_3+]"] = chosen_article
                         else:
-                            replacment[f"[+extra_article_link_3+]"] = ""
+                            replacment["[+extra_article_link_3+]"] = ""
                     else:
-                        replacment[f"[+extra_article_link_2+]"] = ""
-                        replacment[f"[+extra_article_link_3+]"] = ""
+                        replacment["[+extra_article_link_2+]"] = ""
+                        replacment["[+extra_article_link_3+]"] = ""
                 else:
-                    replacment["[+h3_text_to_intorduce_section+]"] = "" # make so there is no h3 text if there are no extra links
-                    replacment[f"[+extra_article_link_1+]"] = ""
-                    replacment[f"[+extra_article_link_2+]"] = ""
-                    replacment[f"[+extra_article_link_3+]"] = ""
+                    replacment["[+text_to_intorduce_section+]"] = "" # make so there is no h3 text if there are no extra links
+                    replacment["[+extra_article_link_1+]"] = ""
+                    replacment["[+extra_article_link_2+]"] = ""
+                    replacment["[+extra_article_link_3+]"] = ""
                 
                 generate_site(article_template_path, (generated_articles_path / (article_id + ".html")), replacment)
     
