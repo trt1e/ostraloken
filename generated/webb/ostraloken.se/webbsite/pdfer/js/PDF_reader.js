@@ -1,30 +1,30 @@
 const pdfContent = document.querySelector("#main_pdf");
 const pdfImgContainer = document.querySelector("#pdf_img_container");
-const pdfNumber = document.querySelector("#pdf_upplaga_number");
+const pdfNumber = document.querySelector("#pdf_utgava_number");
 const baseFileUrl = "\pdf_files/";
 const baseImagesUrl = "\pdf_images/";
 
 
 // DO NOT TOUCH!!!
-const maxPages = 4; // This specific variable is changed with generate_frontend.py
-const pagesPerPDF = [1, 2, 2, 2, 2, 3, 2, 2, 4, 2, 3, 3, 4, 3, 3, 4, 4, 3, 3, 4, 4, 2, 3, 3, 3, 2, 2, 3, 3, 4, 3, 4, 3, 3, 2, 4, 3, 2, 2, 3, 3] // <-- DONT TOUCH ID!!! This specific variable is changed with generate_frontend.py
+const maxPages = 4; // This specific variable is changed with engine/build/build_pdfs.py
+const pagesPerPDF = [1, 2, 2, 2, 2, 3, 2, 2, 4, 2, 3, 3, 4, 3, 3, 4, 4, 3, 3, 4, 4, 2, 3, 3, 3, 2, 2, 3, 3, 4, 3, 4, 3, 3, 2, 4, 3, 2, 2, 3, 3] // This specific variable is changed with engine/build/generate_frontend.py
 // DO NOT TOUCH!!!
 
 const amoutPDFs = pagesPerPDF.length;
 
 let numberOfPages;
-let currant_upplaga = amoutPDFs;
+let currant_utgava = amoutPDFs;
 let renderMode = "image"; // "browser" vs "image", we start on image since it is faster and better for viewing
 
 window.addEventListener("load", () => {
-    // get query info in the url (like ostraloken.se/pdfer/?upplaga=15)
+    // get query info in the url (like ostraloken.se/pdfer/?utgava=15)
     const queryString = window.location.search;
     const urlParameters = new URLSearchParams(queryString);
     // extract
-    const wantedUpplagaNumber = urlParameters.get("upplaga")
-    // if there is a upplaga request in url it sets it as the first 
-    if (wantedUpplagaNumber) {
-        currant_upplaga = parseInt(wantedUpplagaNumber);
+    const wantedutgavaNumber = urlParameters.get("utgava")
+    // if there is a utgava request in url it sets it as the first 
+    if (wantedutgavaNumber) {
+        currant_utgava = parseInt(wantedutgavaNumber);
     };
 
     // Load the right amount of image elements so that images can be placed inside them
@@ -41,9 +41,9 @@ window.addEventListener("load", () => {
 
 // back button
 document.querySelector(".pdf_nav_buttons#previous").addEventListener("click", async () => {
-    currant_upplaga -= 1;
-    if (currant_upplaga < 1) {
-        currant_upplaga = amoutPDFs;
+    currant_utgava -= 1;
+    if (currant_utgava < 1) {
+        currant_utgava = amoutPDFs;
     };
     render();
 });
@@ -64,9 +64,9 @@ document.querySelector("#pdf_nav_switch_render").addEventListener("click", async
 
 // next button
 document.querySelector(".pdf_nav_buttons#next").addEventListener("click", async () => {
-    currant_upplaga += 1;
-    if (currant_upplaga > amoutPDFs) {
-        currant_upplaga = 1;
+    currant_utgava += 1;
+    if (currant_utgava > amoutPDFs) {
+        currant_utgava = 1;
     };
     render();
 });
@@ -78,25 +78,25 @@ function render() {
     pdfNumber.style.display = "none";
     pdfImgContainer.style.display = "none";
 
-    // Uppdate the text saying what upplaga it is
-    pdfNumber.innerText = `Upplaga ${currant_upplaga} / ${amoutPDFs}`;
+    // Uppdate the text saying what utgava it is
+    pdfNumber.innerText = `utgava ${currant_utgava} / ${amoutPDFs}`;
 
-    // Render the upplaga for browser view
-    pdfContent.src = `./pdf_files/Ostra_Loken_upplaga_${currant_upplaga}.pdf`;
+    // Render the utgava for browser view
+    pdfContent.src = `./pdf_files/Ostra_Loken_utgava-${currant_utgava}.pdf`;
     if (renderMode == "browser") {
         pdfContent.style.display = "block"
     } else { // renderMode == "image"
         pdfContent.style.display = "none"
     };
 
-    // Render the upplaga for image view
-    const howManyPages = pagesPerPDF[currant_upplaga - 1] // How many pages this upplaga has
+    // Render the utgava for image view
+    const howManyPages = pagesPerPDF[currant_utgava - 1] // How many pages this utgava has
     for (let page = 1; page <= maxPages; page++) { // go through all pages elements (even them with no image)
         const currantPageElement = document.querySelector(`.pdf_page#page_${page}`)
 
         // If renderMode is image and page is a image: renders
         if ((renderMode == "image") && (page <= howManyPages)) {
-            currantPageElement.src = `./pdf_images/Upplaga_${currant_upplaga}/page_${page}.webp`;
+            currantPageElement.src = `./pdf_images/Utgava_${currant_utgava}/page_${page}.webp`;
             currantPageElement.style.display = "block";
         } else { // If renderMode is browser or page does not have a image
             currantPageElement.style.display = "none"; // Do not render
@@ -108,5 +108,5 @@ function render() {
     pdfImgContainer.style.display = "block";
     loadingText.style.display = "none";
     
-    console.log("Renderd upplaga " + currant_upplaga)
+    console.log("Renderd utgava " + currant_utgava)
 };

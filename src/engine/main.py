@@ -1,6 +1,23 @@
 r"""
 Att fixa senare:
-- Alla artiklar innan upplaga 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+- Alla artiklar innan utgava 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+
+
+<!--
+    <dialog class="popup">
+        <img class="loken_image" alt="Östra Löken logo" src="./images/logo/östra_löken_i_östra_format_rak_vit_text.webp">
+        <h2>Hjälp Löken tjäna övervinster</h2>
+        <p>
+Just nu går jättemånga företag med rekordvinst, men inte vi – tills nu!
+Hjälp oss betala av våra enorma SMS-lån genom att prenumerera på Östra Löken Premium++ Basic.
+Vi tar gladerligen emot alla stora mängder av pengar, vare sig det är jättestora mängder pengar eller bara ganska stora mängder pengar.
+Allt stöd kommer varmhjärtat ignoreras av oss på Löken ❤️.
+<br><br>Östra Löken Premium++ Basic kostar just nu <b>bara 43 990 kr per månad</b>!
+</p>
+        <button class="popup_button clickable_element" id="popup_buy_button"><p><b>Prenumerera idag!</b></p></button>
+        <button class="popup_button clickable_element" id="popup_deny_button"><p><b>Nej, jag är fattig och töntig.</b></p></button>
+    </dialog>
+-->
 """
 print("BOOTING OSTRALOKEN!")
 
@@ -33,7 +50,7 @@ def run():
     $ restart (r) --> Terminate, then restart script
     
     TEMPLATES
-    $ new upplaga template (new ut) --> Generates a new upplaga template with articles, notiser and hear me outs
+    $ new utgava template (new ut) --> Generates a new utgava template with articles, notiser and hear me outs
     
     GENERATE TEXT FILES
     $ gen all (g) --> Generate all webbpage files that are generated
@@ -42,13 +59,13 @@ def run():
     $ copy images (ci) ...
     ... = new (n) --> Copy over only the new images
     ... = all (a) --> Copy over all images, even if they alredy exists
-    ... = specific (s) --> Copy over all images in a specific upplaga
+    ... = specific (s) --> Copy over all images in a specific utgava
     
     COPY PDF:S
     $ copy pdfs (cp) ...
     ... = new (n) --> Copy over only the new pdf:s
     ... = all (a) --> Copy over all pdf:s, even if they alredy exists
-    ... = specific (s) --> Copy over a specific upplagas pdf 
+    ... = specific (s) --> Copy over a specific utgavas pdf 
     
     FIX CONTENT
     $ inspect --> Looks through content so everything is as it should be, if not: it is reported   
@@ -70,7 +87,7 @@ def run():
                 break
                 
             # new content
-            elif answer == "new upplaga template" or answer == "new ut":
+            elif answer == "new utgava template" or answer == "new ut":
                 amount_of_articles = input("Amount articles: ")
                 if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
                     amount_of_articles = 0
@@ -91,8 +108,8 @@ def run():
                 if year is None or year == "" or not re.search(r"[0-9]", year):
                     year = "ÅÅÅÅ"
                     
-                template_generator.setup_new_upplaga_folder(day, month, year)
-                template_generator.setup_new_upplaga_articles(amount_of_articles)
+                template_generator.setup_new_utgava_folder(day, month, year)
+                template_generator.setup_new_utgava_articles(amount_of_articles)
                 template_generator.setup_new_notiser(amount_of_notiser, day, month, year)
                 template_generator.setup_new_hear_me_outs(amount_of_hear_me_outs)
             
@@ -108,11 +125,11 @@ def run():
             elif answer == "copy images all" or answer == "ci all" or answer == "ci a":
                 build_imgs.copy_over_images("all")
             elif answer == "copy images specific" or answer == "ci specific" or answer == "ci s":
-                upplaga_to_copy = input("Copy over images in upplaga: ")
-                if re.search(r"[0-9]", upplaga_to_copy):
-                    build_imgs.copy_over_images(f"specific: {upplaga_to_copy}")
+                utgava_to_copy = input("Copy over images in utgava: ")
+                if re.search(r"[0-9]", utgava_to_copy):
+                    build_imgs.copy_over_images(f"specific: {utgava_to_copy}")
                 else:
-                    print(f"{upplaga_to_copy} not a number")
+                    print(f"{utgava_to_copy} not a number")
                     
             # pdfs
             elif answer == "copy pdfs new" or answer == "cp new" or answer == "cp n":
@@ -120,11 +137,11 @@ def run():
             elif answer == "copy pdfs all" or answer == "cp all" or answer == "cp a":
                 build_pdfs.copy_over_pdfs("all")
             elif answer == "copy pdfs specific" or answer == "cp specific" or answer == "cp s":
-                upplaga_to_copy = input("Copy over pdf upplaga: ")
-                if re.search(r"[0-9]", upplaga_to_copy):
-                    build_pdfs.copy_over_pdfs(f"specific: {upplaga_to_copy}")
+                utgava_to_copy = input("Copy over pdf utgava: ")
+                if re.search(r"[0-9]", utgava_to_copy):
+                    build_pdfs.copy_over_pdfs(f"specific: {utgava_to_copy}")
                 else:
-                    print(f"{upplaga_to_copy} not a number")
+                    print(f"{utgava_to_copy} not a number")
                     
             # fix content
             elif answer == "inspect":
@@ -148,7 +165,7 @@ def run():
                     bot_message = f"""# Bara {days_left} kvar!!!
 Om du inte har skrivit din/dina artiklar än bör du kanske göra det snart!
 <@&{config.discord_role_taged_in_reminders}>, skriv skriv skriv!!!
-Om du inte kan skriva denna upplaga, vänligen meddela det.
+Om du inte kan skriva denna utgava, vänligen meddela det.
 
 [Dokumentet hittar du här](https://drive.google.com/drive/folders/1AoPutNvMHKQpdiVQZescx4kgKbubEwPF)
 

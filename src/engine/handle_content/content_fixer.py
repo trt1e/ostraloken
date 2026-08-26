@@ -1,10 +1,10 @@
 import os
 import re
+from pathlib import Path
 
 # import scripts
 from engine import config
 from engine import utils
-from engine.handle_content import content_reader
 
 
 ############### ADD CHECKING STATIC AND PDFS HERE!!! #################
@@ -12,14 +12,14 @@ from engine.handle_content import content_reader
 
 def inspect_normal_storys(): # looks throught all files to se if something is wrong but doesnt change nothing
     print("↓ ARTICLES ↓")
-    upplaga_list = os.listdir(config.articles_path) # list all folders in dir
-    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
+    utgava_list = os.listdir(config.articles_path) # list all folders in dir
+    for utgava in utgava_list: # go thrpguth every folder to get all the upplagor
         printed_something = False
-        exists_upplaga_info_file = False
+        exists_utgava_info_file = False
         images_list = []
         titles_list = []
         # list all files in dir
-        file_list = os.listdir(config.articles_path / upplaga)
+        file_list = os.listdir(config.articles_path / utgava)
         for file in file_list: # Go througth every file in the list
             if file[:4] != "IMG-":
                 # check if there are img files that do not start with IMG-
@@ -30,7 +30,7 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
                 else:
                     try:
                         # read the file
-                        with open(config.articles_path / upplaga / file, "tr", encoding="utf-8") as file:  
+                        with open(config.articles_path / utgava / file, "tr", encoding="utf-8") as file:  
                             whole_text = file.read() # read it
                         if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
                             print(f'NOTE: {file} contains “ and/or ”. Instead you should use "')
@@ -40,7 +40,7 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
                             print(f'NOTE: {file} has a uneven amount of "<" and ">"')
                             printed_something = True
                             
-                        if file != "upplaga_info.txt":
+                        if file != "utgava_info.txt":
                             if whole_text.find("### ") == -1:
                                 print(f'WARNING: {file} does not have a "### " as it should')
                                 printed_something = True
@@ -92,18 +92,18 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
                                 print(f'WARNING: {file} does not have content after " @@"')
                                 printed_something = True
                         else:
-                            exists_upplaga_info_file = True
-                            upplaga_number = utils.find_between(whole_text, "=== ", " ==", 0)
-                            upplaga_date = utils.find_between(whole_text, "$$$ ", " $$", 0)
+                            exists_utgava_info_file = True
+                            utgava_number = utils.find_between(whole_text, "=== ", " ==", 0)
+                            utgava_date = utils.find_between(whole_text, "$$$ ", " $$", 0)
                             
-                            if not re.search(r"^[0-9]+$", upplaga_number):
-                                print(f'WARNING: {file} upplaga number is not number')
+                            if not re.search(r"^[0-9]+$", utgava_number):
+                                print(f'WARNING: {file} utgava number is not number')
                                 printed_something = True
-                            if not re.search(r"^[0-9 \-]+$", upplaga_date):
-                                print(f'WARNING: {file} upplaga date are not numbers')
+                            if not re.search(r"^[0-9 \-]+$", utgava_date):
+                                print(f'WARNING: {file} utgava date are not numbers')
                                 printed_something = True
-                            if upplaga_date == "DD/MM/ÅÅÅÅ":
-                                print(f'WARNING: {file} upplaga date is still the template')
+                            if utgava_date == "DD/MM/ÅÅÅÅ":
+                                print(f'WARNING: {file} utgava date is still the template')
                                 printed_something = True
                             
                             for image in images_list:
@@ -113,15 +113,15 @@ def inspect_normal_storys(): # looks throught all files to se if something is wr
                                     printed_something = True
                             
                             if printed_something is True:
-                                print(f"↑ Upplaga number: {upplaga_number} ↑\n")
+                                print(f"↑ utgava number: {utgava_number} ↑\n")
                     except Exception as e:
                         print(f"ERROR: {e}")
                         printed_something = True
             else: # starts with IMG-
                 images_list.append(file) # add the file to a list so we can check if it has article by same name
             
-        if exists_upplaga_info_file is False:
-            print(f'WARNING: {upplaga} does not have a upplaga_info.txt file')
+        if exists_utgava_info_file is False:
+            print(f'WARNING: {utgava} does not have a utgava_info.txt file')
 
 def inspect_short_storys():
     # read the file
@@ -192,20 +192,18 @@ def inspect_hear_me_outs():
 def fix_citationmarks():
     # normal storys
     fixed_something = False
-    upplaga_list = os.listdir(config.articles_path) # list all folders in dir
-    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
-        # list all files in dir
-        file_list = os.listdir(config.articles_path / upplaga)
-        for file in file_list: # Go througth every file in the list
-            if file[:4] != "IMG-":
+    utgava_list = os.listdir(config.articles_path) # list all folders in dir
+    for utgava in utgava_list: # go thrpguth every folder to get all the upplagor
+        for file_dir in Path(utgava).iterdir(): # Go througth every file in the list
+            if file_dir.name.startswith("IMG-"):
                 # read the file
-                with open(config.articles_path / upplaga / file, "tr", encoding="utf-8") as file:  
+                with open(file_dir, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it
                 if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
                     new_text = whole_text.replace("“", '"')
                     new_text = new_text.replace("”", '"')
                     
-                    with open(config.articles_path / upplaga / file, "w", encoding="utf-8") as file:
+                    with open(config.articles_path / utgava / Path(file.name), "w", encoding="utf-8") as file:
                         file.write(new_text) # write to it
                     
                     fixed_something = True
@@ -250,22 +248,22 @@ def fix_citationmarks():
         print("No citationmarks to fix in hear me outs")
 
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
-    upplaga_list = os.listdir(config.articles_path) # list all folders in dir
-    for upplaga in upplaga_list: # go thrpguth every folder to get all the upplagor
+    utgava_list = os.listdir(config.articles_path) # list all folders in dir
+    for utgava in utgava_list: # go thrpguth every folder to get all the upplagor
         # list all files in dir 
-        file_list = os.listdir(config.articles_path / upplaga)
+        file_list = os.listdir(config.articles_path / utgava)
         for file_number, file in enumerate(file_list, 1): # Go througth every file in the list and extract the content
-            if file != "upplaga_info.txt" and file[:4] != "IMG-":
+            if file != "utgava_info.txt" and file[:4] != "IMG-":
                 # extract
-                with open(config.articles_path / upplaga / file, "tr", encoding="utf-8") as file:  
+                with open(config.articles_path / utgava / file, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it
                 # find where title is in the document
                 parsed_file = utils.file_parser(whole_text)
                 formated_file = utils.make_regex_list_to_dict(parsed_file)
                 basic_title = utils.remove_html_elements(formated_file[0]["Rubrik"])
                 
-                new_file_name = str(file_number) + " " + utils.strip_string(basic_title, 100) + ".txt"
+                new_file_name = str(file_number) + "-" + utils.strip_string(basic_title, 100) + ".txt"
 
-                os.rename(file.name, (config.articles_path / upplaga / new_file_name))
+                os.rename(file.name, (config.articles_path / utgava / new_file_name))
 
     print("Article names successfully fixed!")

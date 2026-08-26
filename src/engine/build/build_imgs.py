@@ -13,29 +13,29 @@ from engine.handle_content import content_reader
 
 # images
 def copy_over_images(gen_type):
-    instagram_article_image_template_path = config.base_path / Path("generated/social_media_imgs/templates/Normal_article.png")
-    instagram_upplaga_image_template_1_path = config.base_path / Path("generated/social_media_imgs/templates/Upplaga_1.png")
-    instagram_upplaga_image_template_2_path = config.base_path / Path("generated/social_media_imgs/templates/Upplaga_2.png")
+    instagram_article_image_template_path = config.base_path / Path("content/social_media_imgs_templates/Normal_article.png")
+    instagram_utgava_image_template_1_path = config.base_path / Path("content/social_media_imgs_templates/Utgava_1.png")
+    instagram_utgava_image_template_2_path = config.base_path / Path("content/social_media_imgs_templates/Utgava_2.png")
     
     generated_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/a/images")
-    generated_upplaga_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")
+    generated_utgava_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")
     
-    generated_social_media_imgs_path = config.base_path / Path("generated/social_media_imgs/output")
+    generated_social_media_imgs_path = config.base_path / Path("generated/social_media_imgs")
     
     all_articles = content_reader.read_articles()
     
-    # go throught every upplaga
-    for upplaga in all_articles:
-        # go throught every article in the upplaga
-        upplaga_number = upplaga["Upplaga"]
+    # go throught every utgava
+    for utgava in all_articles:
+        # go throught every article in the utgava
+        utgava_number = utgava["Editionsnummer"]
         image_number = 0
-        for article in upplaga["Content"]:
+        for article in utgava["Content"]:
             if article: # somethimes article is empty, this prevents that
                 article_title = str(article[0]["Rubrik"])
                 old_img_title = utils.make_image_id(article_title)
                 new_img_title = utils.remove_åäö(utils.make_image_id(article_title)) + ".webp"
                 new_img_title_insta = f"{image_number + 1}-" + utils.remove_åäö(utils.make_image_id(article_title))[4:].split(".")[0] + ".png"
-                old_img_path_no_extention = content_reader.articles_path / f"upplaga_{upplaga_number}" / old_img_title
+                old_img_path_no_extention = content_reader.articles_path / f"utgava_{utgava_number}" / old_img_title
                 for ext in config.img_extentions:
                     if Path(f"{old_img_path_no_extention}.{ext}").is_file():
                         old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
@@ -49,13 +49,13 @@ def copy_over_images(gen_type):
                     # if all and file: YES
                     # if new and no file: YES
                     # if new and file: NO                        
-                    instagram_destination_folder = generated_social_media_imgs_path / f"Upplaga_{upplaga_number}"
+                    instagram_destination_folder = generated_social_media_imgs_path / f"Utgava_{utgava_number}"
                     instagram_image_destination_dir = instagram_destination_folder / new_img_title_insta
                     if gen_type != "new" or Path(instagram_image_destination_dir).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                         create_image_switch = False
                         if "specific" in gen_type:
-                            desired_upplaga_nmr = gen_type.split(": ")[1]
-                            if int(upplaga_number) == int(desired_upplaga_nmr):
+                            desired_utgava_nmr = gen_type.split(": ")[1]
+                            if int(utgava_number) == int(desired_utgava_nmr):
                                 create_image_switch = True
                         else:
                             create_image_switch = True
@@ -129,67 +129,67 @@ def copy_over_images(gen_type):
                             insta_image.paste(insta_overlay, (0, 0), mask = insta_overlay) # Add the template for a normal article as overlay
                             
                             # Add a qr-code to the image
-                            upplaga_qr = qrcode.QRCode(
+                            utgava_qr = qrcode.QRCode(
                                 box_size=50,
                                 border=1.5
                             )
-                            upplaga_qr.add_data(f"https://ostraloken.se/a/{utils.make_article_id(article_title, upplaga_number)}")
-                            upplaga_qr.make(fit=True)
-                            upplaga_img_qr = upplaga_qr.make_image(
+                            utgava_qr.add_data(f"https://ostraloken.se/a/{utils.make_article_id(article_title, utgava_number)}")
+                            utgava_qr.make(fit=True)
+                            utgava_img_qr = utgava_qr.make_image(
                                 fill_color="white",
                                 back_color="#EE7322", 
                                 image_factory=PilImage
                             ).convert("RGB")
                             length = 250
-                            upplaga_img_qr = upplaga_img_qr.resize((length, length))
-                            insta_image.paste(upplaga_img_qr, ((1000 - length), (height_of_undersection - length))) # Add the qr code to the article
+                            utgava_img_qr = utgava_img_qr.resize((length, length))
+                            insta_image.paste(utgava_img_qr, ((1000 - length), (height_of_undersection - length))) # Add the qr code to the article
                             
                             insta_image.save(instagram_image_destination_dir, quality=100)
                             print(f"Created social media image: {new_img_title_insta}")
                             
-                            # create a upplaga image
-                            if image_number == 1: # if its the first article, so it only does this once per upplaga
-                                upplaga_first_page_dir = generated_upplaga_images_path / f"Upplaga_{upplaga_number}" / "page_1.webp"
-                                instagram_image_upplaga_destination_dir = instagram_destination_folder / f"Read_upplaga_{upplaga_number}-1.png"
+                            # create a utgava image
+                            if image_number == 1: # if its the first article, so it only does this once per utgava
+                                utgava_first_page_dir = generated_utgava_images_path / f"Utgava_{utgava_number}" / "page_1.webp"
+                                instagram_image_utgava_destination_dir = instagram_destination_folder / f"Read_utgava_{utgava_number}-1.png"
 
-                                if upplaga_first_page_dir.is_file():
+                                if utgava_first_page_dir.is_file():
                                     # Have the image (1000x1000px)
-                                    insta_upplaga_image = Image.open(instagram_upplaga_image_template_1_path)
+                                    insta_utgava_image = Image.open(instagram_utgava_image_template_1_path)
                                     
                                     # add first page
-                                    insta_upplaga_first_page = Image.open(upplaga_first_page_dir)
-                                    width, height = insta_upplaga_first_page.size
+                                    insta_utgava_first_page = Image.open(utgava_first_page_dir)
+                                    width, height = insta_utgava_first_page.size
                                     new_width = 800
                                     new_height = int(height * (new_width / width))
-                                    insta_upplaga_first_page = insta_upplaga_first_page.resize((new_width, new_height))
-                                    # insta_upplaga_first_page = insta_upplaga_first_page.rotate(-30)
-                                    insta_upplaga_image.paste(insta_upplaga_first_page, (100, 150)) # Add the upplagas first page
+                                    insta_utgava_first_page = insta_utgava_first_page.resize((new_width, new_height))
+                                    # insta_utgava_first_page = insta_utgava_first_page.rotate(-30)
+                                    insta_utgava_image.paste(insta_utgava_first_page, (100, 150)) # Add the utgavas first page
                                     
                                     # Add a qr-code to the image
-                                    upplaga_qr = qrcode.QRCode(
+                                    utgava_qr = qrcode.QRCode(
                                         box_size=50,
                                         border=1.5
                                     )
-                                    upplaga_qr.add_data(f"https://ostraloken.se/pdfer/?upplaga={upplaga_number}")
-                                    upplaga_qr.make(fit=True)
-                                    upplaga_img_qr = upplaga_qr.make_image(
+                                    utgava_qr.add_data(f"https://ostraloken.se/pdfer/?utgava={utgava_number}")
+                                    utgava_qr.make(fit=True)
+                                    utgava_img_qr = utgava_qr.make_image(
                                         fill_color="white", 
                                         back_color="#E97C26", 
                                         image_factory=PilImage
                                     ).convert("RGB")
                                     length = 325
-                                    upplaga_img_qr = upplaga_img_qr.resize((length, length))
-                                    insta_upplaga_image.paste(upplaga_img_qr, ((1000 - length), (1000 - length))) # Add the upplagas first page
+                                    utgava_img_qr = utgava_img_qr.resize((length, length))
+                                    insta_utgava_image.paste(utgava_img_qr, ((1000 - length), (1000 - length))) # Add the utgavas first page
                                     
-                                    insta_upplaga_image.save(instagram_image_upplaga_destination_dir, quality=100)
-                                    print(f"Created social media upplaga image 1 for upplaga {upplaga_number}")
+                                    insta_utgava_image.save(instagram_image_utgava_destination_dir, quality=100)
+                                    print(f"Created social media utgava image 1 for utgava {utgava_number}")
                                     
                                     # Create the second instagram image
-                                    instagram_image_upplaga_destination_dir = instagram_destination_folder / f"Read_upplaga_{upplaga_number}-2.png"
+                                    instagram_image_utgava_destination_dir = instagram_destination_folder / f"Read_utgava_{utgava_number}-2.png"
                                     
                                     # Have the image (1000x1000px)
-                                    insta_upplaga_image = Image.open(instagram_upplaga_image_template_2_path)
-                                    draw_insta_upplaga_image = ImageDraw.Draw(insta_upplaga_image)
+                                    insta_utgava_image = Image.open(instagram_utgava_image_template_2_path)
+                                    draw_insta_utgava_image = ImageDraw.Draw(insta_utgava_image)
                                     
                                     # Import impact
                                     impact_font = config.base_path / Path("generated/social_media_imgs/templates/impact.ttf")
@@ -198,11 +198,11 @@ def copy_over_images(gen_type):
                                     # Add some articles
                                     currant_y = 140
                                     constant_x = 70
-                                    for new_upplaga in all_articles:
-                                        if upplaga_number == new_upplaga["Upplaga"]:
-                                            for new_article_number, new_article in enumerate(new_upplaga["Content"]):
+                                    for new_utgava in all_articles:
+                                        if utgava_number == new_utgava["Editionsnummer"]:
+                                            for new_article_number, new_article in enumerate(new_utgava["Content"]):
                                                 if new_article: # somethimes article is empty, this prevents that
-                                                    # this now we get all article titles from the currant upplaga
+                                                    # this now we get all article titles from the currant utgava
                                                     new_article_title = "● " + str(utils.remove_html_elements(new_article[0]["Rubrik"]))
                                                     
                                                     # check so it fits, if it doesnt, we cut it down and add ... at the end
@@ -218,20 +218,20 @@ def copy_over_images(gen_type):
                                                                 dont_use_letters_amount -= 1
                                                     
                                                     # Draw the article title as text
-                                                    draw_insta_upplaga_image.text((constant_x, currant_y), new_article_title, (255, 255, 255), font=insta_font)
+                                                    draw_insta_utgava_image.text((constant_x, currant_y), new_article_title, (255, 255, 255), font=insta_font)
 
                                                     currant_y += 90
                                                     
                                                     if new_article_number >= 6: # on the fith run
                                                         break
                                                     
-                                    draw_insta_upplaga_image.text((70, currant_y), "● Och mycket mer!", (255, 255, 255), font=insta_font)
+                                    draw_insta_utgava_image.text((70, currant_y), "● Och mycket mer!", (255, 255, 255), font=insta_font)
 
                                     
-                                    insta_upplaga_image.save(instagram_image_upplaga_destination_dir, quality=100)
-                                    print(f"Created social media upplaga image 2 for upplaga {upplaga_number}")
+                                    insta_utgava_image.save(instagram_image_utgava_destination_dir, quality=100)
+                                    print(f"Created social media utgava image 2 for utgava {utgava_number}")
                                 else:
-                                    print(f"No pdf generated for upplaga {upplaga_number} so no social media posts could be created!")
+                                    print(f"No pdf generated for utgava {utgava_number} so no social media posts could be created!")
                                 
                     
                     # Copy over image to destination in /a/images/
@@ -243,8 +243,8 @@ def copy_over_images(gen_type):
                     if gen_type != "new" or Path(new_img_url_with_extention).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                         create_image_switch = False
                         if "specific" in gen_type:
-                            desired_upplaga_nmr = gen_type.split(": ")[1]
-                            if int(upplaga_number) == int(desired_upplaga_nmr):
+                            desired_utgava_nmr = gen_type.split(": ")[1]
+                            if int(utgava_number) == int(desired_utgava_nmr):
                                 create_image_switch = True
                         else:
                             create_image_switch = True

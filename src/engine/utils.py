@@ -12,7 +12,7 @@ def file_parser(file):
     # Here we look for anything that starts with >>, then we get what is between >> and :, then we get the rest after ": "
     # This then stops if we find ">>", "/~" or the end of the document
 
-def make_regex_list_to_dict(list):
+def make_regex_list_to_dict(list) -> list:
     output_sum = []
     currant_bundle = {}
     number_of_articles = 0
@@ -100,18 +100,18 @@ def remove_åäö(string):
             string = string.replace(letter, replace_letters[letter])
     return string
 
-def get_curant_upplaga_number():
-    highest_upplaga_number = 1
-    for upplaga in reversed(content_reader.read_articles()):
-        if upplaga["Upplaga"] > highest_upplaga_number:
-            highest_upplaga_number = upplaga["Upplaga"]
-    return highest_upplaga_number
+def get_curant_utgava_number():
+    highest_utgava_number = 1
+    for utgava in reversed(content_reader.read_articles()):
+        if utgava["utgava"] > highest_utgava_number:
+            highest_utgava_number = utgava["utgava"]
+    return highest_utgava_number
 
-def make_article_id(article_title, upplaga_number):
+def make_article_id(article_title, utgava_number):
     id_article = remove_åäö(article_title)
     id_article = strip_string(remove_html_elements(id_article), 100)
-    id_upplaga = "-U" + str(upplaga_number)
-    return id_article + id_upplaga
+    id_utgava = "-U" + str(utgava_number)
+    return id_article + id_utgava
 
 def make_short_story_id(article_title, article_content):
     id_article = remove_åäö(article_title)
@@ -125,10 +125,10 @@ def make_short_story_id(article_title, article_content):
 def make_image_id(article_title):
     return "IMG-" + strip_string(remove_html_elements(article_title), 100)
 
-def find_img(article_title, upplaga_nmr, base_url):
+def find_img(article_title, utgava_nmr, base_url):
     old_img_title = make_image_id(article_title)
     new_img_title = remove_åäö(make_image_id(article_title))
-    old_img_path_no_extention = content_reader.articles_path / f"upplaga_{upplaga_nmr}" / old_img_title
+    old_img_path_no_extention = content_reader.articles_path / f"utgava_{utgava_nmr}" / old_img_title
     for ext in config.img_extentions:
         if Path(f"{old_img_path_no_extention}.{ext}").is_file():
             old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"

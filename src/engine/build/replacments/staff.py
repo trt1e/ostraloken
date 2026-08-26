@@ -22,10 +22,10 @@ for content in content_reader.read_txt("static/staff.txt"):
             <p>{content["Beskrivning"]}</p>
         </div>
     </div>
-    <!--
-    <a class="article clickable_element highlight" href="mailto:{content["Epost"]}"><p><b>Skicka epost till {name}</b></p></a>
-    -->
 </div>
+"""
+"""
+<a class="article clickable_element highlight" href="mailto:{content["Epost"]}"><p><b>Skicka epost till {name}</b></p></a>
 """
 
 output = {}

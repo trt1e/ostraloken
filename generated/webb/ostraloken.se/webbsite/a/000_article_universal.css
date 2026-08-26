@@ -51,8 +51,8 @@ main {
     color: var(--primary-color);
 }
 
-/* Upplaga number and date */
-#upplaga_and_date {
+/* utgava number and date */
+#utgava_and_date {
     width: 72rem;
     height: 1rem;
     z-index: 1;
@@ -64,30 +64,30 @@ main {
     justify-content: space-between;
 }
 @media (80rem <= width <= 120rem) {
-    #upplaga_and_date {
+    #utgava_and_date {
         width: 47rem;
     }
 }
 @media (45rem <= width < 80rem) {
-    #upplaga_and_date {
+    #utgava_and_date {
         width: 37rem;
     }
 }
 @media (width < 45rem) {
-    #upplaga_and_date {
+    #utgava_and_date {
         transform: translateX(0rem); /*Main width is 100%*//* It is made static so that*/
         text-align: right;
         height: fit-content;
     }
 }
-#upplaga_and_date p {
+#utgava_and_date p {
     color: var(--lighter-text-color);
     transition: color 0.3s;
 }
-#upplaga_and_date a {
+#utgava_and_date a {
     text-decoration: none;
 }
-#upplaga_and_date a:hover p {
+#utgava_and_date a:hover p {
     color: var(--secondary-color);
 }
 

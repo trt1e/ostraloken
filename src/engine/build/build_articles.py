@@ -94,7 +94,7 @@ def generate_static_section(title, content, image_src):
 # ---------------------------------------------
 
 # create the article for preview or /a/ articles
-def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, upplaga_nmr): # upplaga_nmr should be -1 if its the only/primary article
+def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, utgava_nmr): # utgava_nmr should be -1 if its the only/primary article
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./" # no redirect
@@ -118,7 +118,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         type_context = f'<p class="type_text">{type}</p>'
         
     # generate the article id
-    article_id = utils.make_article_id(title, upplaga_nmr)
+    article_id = utils.make_article_id(title, utgava_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters
     
     if redirect_src == "SHOULD_NOT_REDIRECT": # Not anchor
@@ -162,9 +162,9 @@ def get_all_articles(base_redirect_html_url, get_what_articles):
     generated_articles_based_on_type = {} # for get_what_articles == "Similar"
     generated_list = [] # for get_what_articles == "List"
     
-    for upplaga in reversed(content_reader.read_articles()):
-        upplaga_number = upplaga["Upplaga"]
-        content = upplaga["Content"]
+    for utgava in reversed(content_reader.read_articles()):
+        utgava_number = utgava["Editionsnummer"]
+        content = utgava["Content"]
         if content: # if there is content, content is the text, title, type and author
             for article_bundle in content:
                 article = article_bundle[0]
@@ -219,16 +219,16 @@ def get_all_articles(base_redirect_html_url, get_what_articles):
                 article_author = article["Skribent"]
                 
                 # not basic_title since that has been shortend alredy
-                article_id = utils.make_article_id(article_title, upplaga_number) # what is used to identefy the article
+                article_id = utils.make_article_id(article_title, utgava_number) # what is used to identefy the article
 
                 if get_what_articles == "All":
-                    img_url = utils.find_img(org_article_title, upplaga_number, f"{base_redirect_html_url}images/") # get the url to the img as a html link
-                    generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, upplaga_number))
+                    img_url = utils.find_img(org_article_title, utgava_number, f"{base_redirect_html_url}images/") # get the url to the img as a html link
+                    generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, utgava_number))
                     how_many_articles_generated += 1
                 elif get_what_articles == "Similar":
                     if article_type not in generated_articles_based_on_type:
                         generated_articles_based_on_type[article_type] = {} # initialize generated_articles_based_on_type[article_type]
-                    generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, upplaga_number)})
+                    generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, utgava_number)})
                     how_many_articles_generated += 1
                 else: # get_what_articles == "List"
                     generated_list.append(article)
@@ -254,26 +254,26 @@ def generate_all_articles():
     progressbar_item = progressbar.ProgressBar(maxval=int(len(content_reader.read_articles())))
     progressbar_item.start()
     
-    # go throught every upplaga
-    for progressbar_ticker, upplaga in enumerate(content_reader.read_articles()):
-        # go throught every article in the upplaga
-        upplaga_number = upplaga["Upplaga"]
-        upplaga_date = upplaga["Release_date"]
-        upplaga_extra_info = upplaga["Extra_upplaga_info"]
+    # go throught every utgava
+    for progressbar_ticker, utgava in enumerate(content_reader.read_articles()):
+        # go throught every article in the utgava
+        utgava_number = utgava["Editionsnummer"]
+        utgava_date = utgava["Utgivningsdatum"]
+        utgava_extra_info = utgava["Extra_information"]
         progressbar_item.update(progressbar_ticker + 1)
-        for article_bundle in upplaga["Content"]:
+        for article_bundle in utgava["Content"]:
             article = article_bundle[0]
             if article: # somethimes article is empty, this prevents that       
                 generated_article = "" # where we put the article
                 has_extra_info = False
                 
                 # this is done early so it is over the article itself
-                if upplaga_extra_info != "" and upplaga_extra_info is not None and has_extra_info is False:
+                if utgava_extra_info != "" and utgava_extra_info is not None and has_extra_info is False:
                     has_extra_info = True
                     # add the extra content
                     generated_article += f"""
 <div class="article extra_info attention">
-    <p><b>Notera:</b> {upplaga_extra_info}</p>
+    <p><b>Notera:</b> {utgava_extra_info}</p>
 </div>  
 """
                 article_title = article["Rubrik"]
@@ -282,13 +282,13 @@ def generate_all_articles():
                 article_type = article["Texttyp"]
                 article_author = article["Skribent"]
                 # copy over images and get the url to the right image
-                article_img_src = utils.find_img(basic_article_title, upplaga_number, "./images/")
-                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, -1, upplaga_number)
+                article_img_src = utils.find_img(basic_article_title, utgava_number, "./images/")
+                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, -1, utgava_number)
 
                 # generate the article id
-                article_id = utils.make_article_id(article_title, upplaga_number)
+                article_id = utils.make_article_id(article_title, utgava_number)
 
-                if article_type == "Insändare" and has_extra_info is False: # this is "else if" so that it cant both have extra upplaga info and a write-a-insändare prompt
+                if article_type == "Insändare" and has_extra_info is False: # this is "else if" so that it cant both have extra utgava info and a write-a-insändare prompt
                     has_extra_info = True
                     # add prompt to write insändare if it is a insändare
                     generated_article += """
@@ -318,10 +318,10 @@ def generate_all_articles():
                     "[+article_type_basic+]": utils.remove_html_elements(article_type),
                     "[+article_author+]": article_author,
                     "[+article_author_basic+]": utils.remove_html_elements(article_author),
-                    "[+upplaga_date_ISO_8601+]": f"{upplaga_date.split("-")[2]}-{upplaga_date.split("-")[1].zfill(2)}-{upplaga_date.split("-")[0].zfill(2)}",
+                    "[+utgava_date_ISO_8601+]": f"{utgava_date.split("-")[2]}-{utgava_date.split("-")[1].zfill(2)}-{utgava_date.split("-")[0].zfill(2)}",
                     "[+article+]": generated_article,
-                    "[+upplaga_number+]": str(upplaga_number),
-                    "[+upplaga_date+]": upplaga_date,
+                    "[+utgava_number+]": str(utgava_number),
+                    "[+utgava_date+]": utgava_date,
                     "[+text_to_intorduce_section+]": '<h2 id="read_similar">Läs liknande artiklar:</h2>', # so it can be removed
                     "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
                     "[+scrolling_news_feed+]": feed_element # add news feed

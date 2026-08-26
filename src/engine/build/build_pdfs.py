@@ -8,55 +8,53 @@ import pymupdf # To extract the pdfs to images
 # import scripts
 from engine import config
 from engine import utils
-from engine.handle_content import content_reader
 
 # Copy pdf:s
 def copy_over_pdfs(gen_type):
-    pdf_start_path = config.base_path / Path("content/upplagor_pdfs")
+    pdf_start_path = config.base_path / Path("content/utgavor_pdfs")
     pdf_file_end_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_files")
     pdf_images_end_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")
     
     amount_of_pdfs = 0
     all_amount_pages = {}
-    pdfs_list = os.listdir(pdf_start_path)
     
-    for file_dir in pdfs_list:
-        full_start_file_dir = pdf_start_path / file_dir
-        
+    desired_utgava_nmr = None
+    if "specific" in gen_type:
+        desired_utgava_nmr = re.findall(r"specific: (\d+)", gen_type)[0] # Find what desired utgava number we are searching for
+    
+    for file_dir in Path(pdf_start_path).iterdir():
         amount_of_pdfs += 1
-        upplaga_number = file_dir.split("Östra_Löken_upplaga_")[1].split(".pdf")[0]
+        utgava_number = re.findall(r"Ostra_Loken_utgava-(\d+)", file_dir.stem)[0]
 
         # Get the document
-        pdf_document = pymupdf.open(full_start_file_dir)
+        pdf_document = pymupdf.open(file_dir)
 
         # Get amount of pages
         amount_of_pages = len(pdf_document)
-        all_amount_pages[upplaga_number] = (amount_of_pages)
+        all_amount_pages[utgava_number] = amount_of_pages
         
-        full_pdf_file_end_path = pdf_file_end_path / utils.remove_åäö(file_dir)
+        full_pdf_file_end_path = pdf_file_end_path / utils.remove_åäö(file_dir.name)
         copy_file_switch = False
         
         if gen_type != "new" or Path(full_pdf_file_end_path).is_file() is False:
-            if "specific" in gen_type:
-                desired_upplaga_nmr = gen_type.split(": ")[1]
-                if int(upplaga_number) == int(desired_upplaga_nmr):
+            if desired_utgava_nmr:
+                if int(utgava_number) == int(desired_utgava_nmr):
                     copy_file_switch = True
             else:
                 copy_file_switch = True
 
         # Copy the file
         if copy_file_switch:
-            shutil.copyfile(full_start_file_dir, full_pdf_file_end_path)
+            shutil.copyfile(file_dir, full_pdf_file_end_path)
             
-            print(f"Copied pdf file {file_dir}")
+            print(f"Copied pdf file {file_dir.name}")
 
-        pdf_image_folder_path = pdf_images_end_path / f"Upplaga_{upplaga_number}"
+        pdf_image_folder_path = pdf_images_end_path / f"utgava_{utgava_number}"
         create_images_switch = False
         
         if gen_type != "new" or Path(pdf_image_folder_path).is_dir() is False: # if gen_type = "specific" we check if the folder for that pdf exists, not if it has image files inside
-            if "specific" in gen_type:
-                desired_upplaga_nmr = gen_type.split(": ")[1]
-                if int(upplaga_number) == int(desired_upplaga_nmr):
+            if desired_utgava_nmr:
+                if int(utgava_number) == int(desired_utgava_nmr):
                     create_images_switch = True
             else:
                 create_images_switch = True
@@ -69,25 +67,25 @@ def copy_over_pdfs(gen_type):
             for image_nr in range(amount_of_pages):
                 pdf_page = pdf_document[image_nr]
                 pdf_pixmap = pdf_page.get_pixmap(dpi=300)
-                created_pdf_image = Image.frombytes("RGB", [pdf_pixmap.width, pdf_pixmap.height], pdf_pixmap.samples)
+                created_pdf_image = Image.frombytes("RGB", (pdf_pixmap.width, pdf_pixmap.height), pdf_pixmap.samples)
                 created_pdf_image.save(pdf_image_folder_path / f"page_{str(image_nr + 1)}.webp", "WEBP")
             
-            print(f"Created pdf images for upplaga {upplaga_number}")
+            print(f"Created pdf images for utgava {utgava_number}")
     else:
         print("No pdf:s left to copy")
         
     # change the PDFjs_reader.js in the /pdfer/js/ folder so that it has the correct amount of pdfs listed
     pdf_js_program_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/js/PDF_reader.js")
     
-    # get the content
-    with open(pdf_js_program_path, "tr", encoding="utf-8") as file:  
-        js_file_content = file.read() # read it
     
     # Sort amount all pages
     all_amount_pages_sorted = dict(sorted(all_amount_pages.items(), key=lambda item: int(item[0])))
     
+    # get the content
+    with open(pdf_js_program_path, "tr", encoding="utf-8") as file:  
+        js_file_content = file.read() # read it
     # change how many are max pages
-    js_changed_content = re.sub(r"const maxPages = \d+", f"const maxPages = {max(list(all_amount_pages_sorted.values()))}", js_changed_content) 
+    js_changed_content = re.sub(r"const maxPages = \d+", f"const maxPages = {max(list(all_amount_pages_sorted.values()))}", js_file_content) 
     # change how many are max pages
     js_changed_content = re.sub(r"const pagesPerPDF = \[.*?\]", f"const pagesPerPDF = {list(all_amount_pages_sorted.values())}", js_changed_content)
     
