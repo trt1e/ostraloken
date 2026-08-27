@@ -49,7 +49,7 @@ def copy_over_pdfs(gen_type):
             
             print(f"Copied pdf file {file_dir.name}")
 
-        pdf_image_folder_path = pdf_images_end_path / f"utgava_{utgava_number}"
+        pdf_image_folder_path = pdf_images_end_path / f"Utgava_{utgava_number}"
         create_images_switch = False
         
         if gen_type != "new" or Path(pdf_image_folder_path).is_dir() is False: # if gen_type = "specific" we check if the folder for that pdf exists, not if it has image files inside

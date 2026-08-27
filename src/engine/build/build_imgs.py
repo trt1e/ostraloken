@@ -13,9 +13,9 @@ from engine.handle_content import content_reader
 
 # images
 def copy_over_images(gen_type):
-    instagram_article_image_template_path = config.base_path / Path("content/social_media_imgs_templates/Normal_article.png")
-    instagram_utgava_image_template_1_path = config.base_path / Path("content/social_media_imgs_templates/Utgava_1.png")
-    instagram_utgava_image_template_2_path = config.base_path / Path("content/social_media_imgs_templates/Utgava_2.png")
+    instagram_article_image_template_path = config.base_path / Path("content/extra/social_media_imgs_templates/Normal_article.png")
+    instagram_utgava_image_template_1_path = config.base_path / Path("content/extra/social_media_imgs_templates/Utgava_1.png")
+    instagram_utgava_image_template_2_path = config.base_path / Path("content/extra/social_media_imgs_templates/Utgava_2.png")
     
     generated_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/a/images")
     generated_utgava_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")

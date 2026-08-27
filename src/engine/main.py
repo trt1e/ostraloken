@@ -32,6 +32,7 @@ from engine.handle_content import content_fixer
 from engine.handle_content import template_generator
 from engine.build import gen_replacment_dict
 from engine.build import build_articles
+from engine.build import build_sitemap
 from engine.build import build_imgs
 from engine.build import build_pdfs
 from engine.discord_bot import bot
@@ -68,7 +69,7 @@ def run():
     ... = specific (s) --> Copy over a specific utgavas pdf 
     
     FIX CONTENT
-    $ inspect --> Looks through content so everything is as it should be, if not: it is reported   
+    $ inspect (i) --> Looks through content so everything is as it should be, if not: it's reported   
     $ fix ...
     ... = citationmarks (c) --> Replace all “ and ” with ", as they should be
     ... = article names (an) --> Rename normal storys to their title (keeping them in the same order)
@@ -118,6 +119,7 @@ def run():
                 gen_replacment_dict.replacment_for_all = gen_replacment_dict.create_dictionary()
                 gen_replacment_dict.generate_all_normal_pages()
                 build_articles.generate_all_articles()
+                build_sitemap.generate_all_sitemaps()
                 
             # images
             elif answer == "copy images new" or answer == "ci new" or answer == "ci n":
@@ -144,10 +146,8 @@ def run():
                     print(f"{utgava_to_copy} not a number")
                     
             # fix content
-            elif answer == "inspect":
-                content_fixer.inspect_normal_storys()
-                content_fixer.inspect_short_storys()
-                content_fixer.inspect_hear_me_outs()
+            elif answer == "inspect" or answer == "i":
+                content_fixer.inspect_all()
             elif answer == "fix citationmarks" or answer == "fix c":
                 content_fixer.fix_citationmarks()
             elif answer == "fix article names" or answer == "fix an":

@@ -7,7 +7,6 @@ import pkgutil
 # import scripts
 from engine import config
 from engine.build import build_articles
-from engine.build import build_sitemap
 from engine.build import replacments
 
 
@@ -50,16 +49,10 @@ def generate_webbsite(webb_path, template_path):
 
 # First find all the webb- and template paths
 def generate_all_normal_pages(): # go throught every file in templates
-    base_webb_paths = [
-        config.base_path / Path("generated/webb/nyhetsflode.ostraloken.se"),
-        config.base_path / Path("generated/webb/ostraloken.se")
-    ]
-            
-    for webb_path in base_webb_paths:
+    for webb_path in config.base_webb_paths:
         template_path = webb_path / "templates"
         extra_template_path = webb_path / "templates/extra"
         if extra_template_path.is_dir(): # If there is a extra/ folder in templates
             generate_webbsite(webb_path, extra_template_path)
             
         generate_webbsite(webb_path, template_path)
-        build_sitemap.gen_sitemap(webb_path)

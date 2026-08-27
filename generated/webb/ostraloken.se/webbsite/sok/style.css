@@ -1,19 +1,13 @@
 /* Base */
 * {
     scroll-margin-top: 5dvh; /*Centers it when getting there from another url via # */
+    z-index: -2;
 }
 
 /* Header */
 header {
     position: static;
-}
-#dropdown {
-    z-index: 12;
-}
-@media (width < 21rem) {
-    #dropdown {
-        display: none;
-    }
+    z-index: 10;
 }
 #dropdown_transition_item {
     position: absolute;
@@ -40,7 +34,7 @@ header {
     transition: background-color 0.3s, border 0.3s;
     position: sticky;
     top: 1rem;
-    z-index: 3;
+    z-index: -1;
 }
 #search_bar:hover {
     border: var(--primary-color) solid 2px;
@@ -66,10 +60,6 @@ header {
     .top_text {
         display: none;
     }
-}
-
-.article:not(:has(~ .article)) { /* Gör så bara sista .article har margin-bottom = 0 */
-    margin-bottom: 2.5rem;
 }
 
 .type_text {

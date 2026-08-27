@@ -1,6 +1,6 @@
 const query_string = window.location.search;
 const search_bar_element = document.querySelector("#search_bar");
-const all_article_elements = document.querySelectorAll(".article");
+const all_article_elements = document.querySelectorAll(".article:not(footer .article)");
 const feed_element = document.querySelector("#feed");
 const loading_element = document.querySelector("#loading_text");
 const empty_element = document.querySelector("#empty_text");

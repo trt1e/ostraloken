@@ -6,13 +6,10 @@ from pathlib import Path
 from engine import config
 from engine import utils
 
-# List the storys paths
-articles_path = config.base_path / Path("content/articles")
-
 # Read the normal articles
 def read_articles(): # !!! This one is treated diffrantly !!! To get the files and their content from all normal articals 
     output_sum = [] # all the output
-    for utgava in Path(articles_path).iterdir(): # go thrpguth every folder to get all the upplagor
+    for utgava in Path(config.articles_path).iterdir(): # go thrpguth every folder to get all the upplagor
         article_output_sum = []
         formated_utgava_info = {}
         for file_path in Path(utgava).iterdir(): # Go througth every file in the list and extract the content

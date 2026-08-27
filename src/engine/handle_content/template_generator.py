@@ -2,16 +2,16 @@ import os
 from pathlib import Path
 
 # import scripts
-from engine import utils
 from engine import config
+from engine import utils
 from engine.handle_content import content_reader
 
 
 def setup_new_utgava_folder(day, month, year):
     next_utgava_number = utils.get_curant_utgava_number()
     next_utgava_number += 1 # so highest_utgava_number is one higher than what exists
-    new_path = content_reader.articles_path / f"utgava_{next_utgava_number}" / "utgava_info.txt"
-    folder_path = content_reader.articles_path / f"utgava_{next_utgava_number}"
+    new_path = config.articles_path / f"utgava_{next_utgava_number}" / "utgava_info.txt"
+    folder_path = config.articles_path / f"utgava_{next_utgava_number}"
     os.makedirs(folder_path, exist_ok=True) # generate the folder
 
     content = f""">>Editionsnummer: {next_utgava_number}
@@ -25,7 +25,7 @@ def setup_new_utgava_articles(count_articles):
     next_utgava_number = utils.get_curant_utgava_number()
     # all new articles
     for article_number in range(int(count_articles)):
-        article_path = content_reader.articles_path / f"utgava_{next_utgava_number}" / f"{article_number + 1} ARTICLE_NAME.txt"
+        article_path = config.articles_path / f"utgava_{next_utgava_number}" / f"{article_number + 1} ARTICLE_NAME.txt"
         
         content = f""">>Rubrik: RUBRIK
 >>Texttyp: ARTIKEL_TYP

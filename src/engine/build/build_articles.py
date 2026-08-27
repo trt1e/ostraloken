@@ -124,7 +124,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
     if redirect_src == "SHOULD_NOT_REDIRECT": # Not anchor
         author_context = f'<p class="author_text"><b>{author}</b></p>'
         # if author is one of head Löken writers: point their name to their part of kontaktinfo 
-        if author in utils.head_writers:
+        if author in utils.get_head_writers():
             author_context = f'<p class="author_text"><a href="https://ostraloken.se/om_oss/#{author.replace(" ", "_")}"><b>{author}</b></a></p>'
         
         h_tag = "h2"
@@ -249,6 +249,7 @@ def generate_all_articles():
     all_short_storys = content_reader.read_txt("notiser.txt")
     
     random.seed(hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
+    print("Hash:", hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
     
     print("Generating all articles:")
     progressbar_item = progressbar.ProgressBar(maxval=int(len(content_reader.read_articles())))
@@ -272,7 +273,7 @@ def generate_all_articles():
                     has_extra_info = True
                     # add the extra content
                     generated_article += f"""
-<div class="article extra_info attention">
+<div class="article extra_info article_page attention">
     <p><b>Notera:</b> {utgava_extra_info}</p>
 </div>  
 """
@@ -288,15 +289,27 @@ def generate_all_articles():
                 # generate the article id
                 article_id = utils.make_article_id(article_title, utgava_number)
 
+                # Here we, if the articletype is Insändare, we ask if they want to send something in
                 if article_type == "Insändare" and has_extra_info is False: # this is "else if" so that it cant both have extra utgava info and a write-a-insändare prompt
                     has_extra_info = True
                     # add prompt to write insändare if it is a insändare
                     generated_article += """
-<a class="article extra_info user_prompt" href="https://forms.gle/bBiEhDSCFijSFoHk9" target="_blank">
+<a class="article extra_info article_page user_prompt" href="https://forms.gle/ndDtACGvhW7Nv9Nb8" target="_blank">
     <h2>Skicka in en insändare!</h2>
     <p>Vill du också skicka en insändare till Östra Löken? Fyll bara i denna korta enkät!</p>
 </a>
 """
+                # Here we do the same thing but for debatt, asking if they want to send one
+                elif article_type == "Debatt" and has_extra_info is False:
+                    has_extra_info = True
+                    # add prompt to write debatt if it is a debatt article
+                    generated_article += """
+<a class="article extra_info article_page user_prompt" href="https://forms.gle/xpzXuTedP3f6Ym6P9" target="_blank">
+    <h2>Skicka in en debattartikel!</h2>
+    <p>Vill du också skicka en debattartikel till Östra Löken? Fyll bara i denna korta enkät!</p>
+</a>
+"""
+
 
                 # add scrolling news feed
                 random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]

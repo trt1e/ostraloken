@@ -178,7 +178,7 @@ header #search {
         overflow-y: scroll;
         width: calc(100% - 3rem);
         height: calc(100vh - 6.5rem);
-        grid-template-rows: repeat(auto, minmax(0, 1fr));
+        grid-template-rows: repeat(auto-fill, minmax(0, 1fr));
         grid-template-columns: repeat(3, minmax(0, 1fr));
         justify-items: center;
         align-items: center;
@@ -216,12 +216,14 @@ header #search {
 }
 
 /* Main */
+#main_container {
+    min-height: 100vh;
+}
 main {
     margin: 0 auto 0 auto;
     padding: 3rem;
     padding-top: 0.7rem;
     width: calc(80rem - 8rem);
-    min-height: calc(100vh - 3.4rem - 4rem);
     height: fit-content;
     /*
     border-left: var(--darker-bg-color) solid 2px;
@@ -309,7 +311,7 @@ main li {
     border: var(--darker-bg-color) solid 2px;
     transition: 0.3s;
 }
-.article:not(:has(~ .article)) { /* Gör så bara sista .article har margin-bottom = 0 */
+.article:not(footer .nav_card):not(:has(~ .article)) { /* Gör så bara sista .article har margin-bottom = 0 */
     margin-bottom: 0;
 }
 
@@ -318,11 +320,14 @@ main li {
     border: var(--secondary-color) solid 2px;
     width: 12.5rem;
     position: absolute;
-    top: 7.9rem; /* FIIIIIIIIIIIXXXXXXXXXXXXXXX TTTTTTTTTTHHHHHHHHHHIIIIIIIIIIIISSSSSSSSSSSSSSS!!!!!!!!!!!*/
+    top: 7.6rem;
     left: 50%;
     transform: translateX(calc((72rem / 2) + 2rem)); /*width = 72rem*/
     transition: none;
     text-align: center;
+}
+.article_page.extra_info {
+    top: 6.9rem;
 }
 @media (83rem <= width <= 120rem) { 
     .extra_info {
@@ -499,7 +504,7 @@ footer {
 footer #nav_cards_container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(auto, 1fr);
+    grid-template-rows: repeat(auto-fill, 1fr);
     gap: 1.5rem;
     margin-bottom: 2rem;
     text-align: center;

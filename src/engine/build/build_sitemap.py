@@ -1,6 +1,9 @@
 from pathlib import Path
 import datetime
 
+# import scripts
+from engine import config
+
 def create_sitemap_url_part(loc, changefreq, priority):
     # Get currant date
     date_today = datetime.datetime.now()
@@ -71,3 +74,8 @@ def gen_sitemap(webb_path):
             sitemap_file.write(sitemap) # Write the file
         
     print(f"Created sitemap for {webb_address_root}")
+
+# Generate all sitemaps
+def generate_all_sitemaps():
+    for webb_path in config.base_webb_paths:
+        gen_sitemap(webb_path)

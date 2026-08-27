@@ -7,245 +7,105 @@ from engine import config
 from engine import utils
 
 
-############### ADD CHECKING STATIC AND PDFS HERE!!! #################
-############## ALSO FIX OLD STUFF LIKE FIND_BETWEEN() ###############
-
-def inspect_normal_storys(): # looks throught all files to se if something is wrong but doesnt change nothing
-    print("↓ ARTICLES ↓")
-    utgava_list = os.listdir(config.articles_path) # list all folders in dir
-    for utgava in utgava_list: # go thrpguth every folder to get all the upplagor
-        printed_something = False
-        exists_utgava_info_file = False
-        images_list = []
-        titles_list = []
-        # list all files in dir
-        file_list = os.listdir(config.articles_path / utgava)
-        for file in file_list: # Go througth every file in the list
-            if file[:4] != "IMG-":
-                # check if there are img files that do not start with IMG-
-                # OLD: if file[-3:] in config.img_extentions or file[-4:] in config.img_extentions:
-                if file.endswith(tuple(config.img_extentions)):
-                    print(f'WARNING: {file} is image but does not start with "IMG-" as it should')
-                    printed_something = True
-                else:
-                    try:
-                        # read the file
-                        with open(config.articles_path / utgava / file, "tr", encoding="utf-8") as file:  
-                            whole_text = file.read() # read it
-                        if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-                            print(f'NOTE: {file} contains “ and/or ”. Instead you should use "')
-                            printed_something = True
-                            
-                        if whole_text.count("<") != whole_text.count(">"):
-                            print(f'NOTE: {file} has a uneven amount of "<" and ">"')
-                            printed_something = True
-                            
-                        if file != "utgava_info.txt":
-                            if whole_text.find("### ") == -1:
-                                print(f'WARNING: {file} does not have a "### " as it should')
-                                printed_something = True
-                            if whole_text.find(" ##") == -1:
-                                print(f'WARNING: {file} does not have a " ##" as it should')
-                                printed_something = True
-                            if whole_text.find("¤¤¤ ") == -1:
-                                print(f'WARNING: {file} does not have a "¤¤¤ " as it should')
-                                printed_something = True
-                            if whole_text.find(" ¤¤") == -1:
-                                print(f'WARNING: {file} does not have a " ¤¤" as it should')
-                                printed_something = True
-                            if whole_text.find("@@@ ") == -1:
-                                print(f'WARNING: {file} does not have a "@@@ " as it should')
-                                printed_something = True
-                            if whole_text.find(" @@") == -1:
-                                print(f'WARNING: {file} does not have a " @@" as it should')
-                                printed_something = True
-
-                            if whole_text.find("### ") != -1 and whole_text.find(" ##") != -1:
-                                title = utils.find_between(whole_text, "### ", " ##", 0)
-                                if title == "":
-                                    print(f'WARNING: {file} title is empty')
-                                if title == "RUBRIK":
-                                    print(f'WARNING: {file} title is still template')
-                                    
-                                titles_list.append(utils.strip_string(utils.remove_html_elements(title), 100))
-                                
-                                if str("_".join(file.split(" ")[1:])).split(".")[0] != utils.strip_string(utils.remove_html_elements(title), 100):
-                                    print(f'WARNING: {file} (fixed: {str("_".join(file.split(" ")[1:])).split(".")[0]}) does not have same name as title: {title} (fixed: {utils.strip_string(utils.remove_html_elements(title), 100)})')
-                                    printed_something = True
-                                
-                            if whole_text.find("¤¤¤ ") != -1 and whole_text.find(" ¤¤") != -1:
-                                type = utils.find_between(whole_text, "¤¤¤ ", " ¤¤", 0)
-                                if type == "":
-                                    print(f'WARNING: {file} type is empty')
-                                if type == "ARTIKEL_TYP":
-                                    print(f'WARNING: {file} type is still template')
-                                
-                            if whole_text.find("@@@ ") != -1 and whole_text.find(" @@") != -1:
-                                writer = utils.find_between(whole_text, "@@@ ", " @@", 0)
-                                if writer == "":
-                                    print(f'WARNING: {file} writer is empty')
-                                if writer == "SKRIBENT":
-                                    print(f'WARNING: {file} writer is still template')
-                                
-                            article = whole_text[(whole_text.find(" @@") + 4):] # article is found after the writer aka after " @@"
-                            if article == "":
-                                print(f'WARNING: {file} does not have content after " @@"')
-                                printed_something = True
-                        else:
-                            exists_utgava_info_file = True
-                            utgava_number = utils.find_between(whole_text, "=== ", " ==", 0)
-                            utgava_date = utils.find_between(whole_text, "$$$ ", " $$", 0)
-                            
-                            if not re.search(r"^[0-9]+$", utgava_number):
-                                print(f'WARNING: {file} utgava number is not number')
-                                printed_something = True
-                            if not re.search(r"^[0-9 \-]+$", utgava_date):
-                                print(f'WARNING: {file} utgava date are not numbers')
-                                printed_something = True
-                            if utgava_date == "DD/MM/ÅÅÅÅ":
-                                print(f'WARNING: {file} utgava date is still the template')
-                                printed_something = True
-                            
-                            for image in images_list:
-                                image_title = str(image[4:]).split(".")[0]
-                                if image_title not in titles_list:
-                                    print(f"WARNING: {image} does not have a article it is linked to")
-                                    printed_something = True
-                            
-                            if printed_something is True:
-                                print(f"↑ utgava number: {utgava_number} ↑\n")
-                    except Exception as e:
-                        print(f"ERROR: {e}")
-                        printed_something = True
-            else: # starts with IMG-
-                images_list.append(file) # add the file to a list so we can check if it has article by same name
-            
-        if exists_utgava_info_file is False:
-            print(f'WARNING: {utgava} does not have a utgava_info.txt file')
-
-def inspect_short_storys():
-    # read the file
-    with open(config.notiser_path, "tr", encoding="utf-8") as file:  
-        whole_text = file.read() # read it
-    print("\n↓ NOTISER ↓")
-    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-        print(f'NOTE: Notiser contains “ and/or ”. Instead you should use "')
-        
-    if whole_text.count("<") != whole_text.count(">"):
-        print(f'NOTE: Notiser has a uneven amount of "<" and ">"')
+def inspect_all():
+    base_content_path = Path(config.base_path / "content")
     
-    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
-    for _ in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
-        # find where diffrent parts are in the document
-        title = utils.find_between(whole_text, "### ", " ##", last_final_pos)
-        if "++" in title:
-            print(f'WARNING: {title} contains "++" in title which it should not have')
-        if "##" in title:
-            print(f'WARNING: {title} contains "##" in title which it should not have')
-        if title == "":
-            print(f'WARNING: {title} is empty')
-        if title == "RUBRIK":
-            print(f'WARNING: {title} is still template')
-        article = utils.find_between(whole_text, "+++ ", " ++", last_final_pos)
-        if "++" in article:
-            print(f'WARNING: {title} contains "++" in article which it should not have')
-        if "##" in article:
-            print(f'WARNING: {title} contains "##" in article which it should not have')
-        if article == "":
-            print(f'WARNING: {title} text is empty')
-        if article == "BRÖDTEXT":
-            print(f'WARNING: {title} text is still template')
-        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
-        
-def inspect_hear_me_outs():
-    # read the file
-    with open(config.hear_me_outs_path, "tr", encoding="utf-8") as file:  
-        whole_text = file.read() # read it
-    print("\n↓ HEAR ME OUTS ↓")
-    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-        print(f'NOTE: Hear me outs contains “ and/or ”. Instead you should use "')
-        
-    if whole_text.count("<") != whole_text.count(">"):
-        print(f'NOTE: Hear me outs has a uneven amount of "<" and ">"')
+    # This is what is get looked throguh and will be updated when the script finds more folders
+    look_index = [base_content_path] # Start with just the content folder
     
-    last_final_pos = whole_text.find("### ") # start at the first title aka the first "### "  
-    for _ in range(whole_text.count("### ")): # repeat for how many hear me outs there are in the txt
-        # find where diffrent parts are in the document
-        hear_me_out = utils.find_between(whole_text, "### ", " ##", last_final_pos)
-        if "++" in hear_me_out:
-            print(f'WARNING: {hear_me_out} contains "++" in hear me out which it should not have')
-        if "##" in hear_me_out:
-            print(f'WARNING: {hear_me_out} contains "##" in hear me out which it should not have')
-        if hear_me_out == "":
-            print(f'WARNING: {hear_me_out} is empty')
-        if hear_me_out == "HEAR_ME_OUT":
-            print(f'WARNING: {hear_me_out} is still template')
-        desc = utils.find_between(whole_text, "+++ ", " ++", last_final_pos)
-        if "++" in desc:
-            print(f'WARNING: {hear_me_out} contains "++" in description which it should not have')
-        if "##" in desc:
-            print(f'WARNING: {hear_me_out} contains "##" in description which it should not have')
-        if hear_me_out == "BESKRIVNING":
-            print(f'WARNING: {hear_me_out} description is still template')
-        last_final_pos = whole_text.find(" ++", last_final_pos) + 3
-
-def fix_citationmarks():
-    # normal storys
-    fixed_something = False
-    utgava_list = os.listdir(config.articles_path) # list all folders in dir
-    for utgava in utgava_list: # go thrpguth every folder to get all the upplagor
-        for file_dir in Path(utgava).iterdir(): # Go througth every file in the list
-            if file_dir.name.startswith("IMG-"):
+    found_something = False
+    
+    for path in look_index:
+        currant_folder = Path(str(path).replace(str(base_content_path), ""))
+        for file_dir in path.iterdir():
+            if file_dir.is_file() and file_dir.suffix == ".txt":
+                file_name = currant_folder / file_dir.name
                 # read the file
                 with open(file_dir, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it
+                
                 if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-                    new_text = whole_text.replace("“", '"')
-                    new_text = new_text.replace("”", '"')
+                    print(f'NOTE: {file_name} contains “ and/or ”. Instead you should use "')
+                    found_something = True
                     
-                    with open(config.articles_path / utgava / Path(file.name), "w", encoding="utf-8") as file:
-                        file.write(new_text) # write to it
+                if re.search(r"[‘’]", whole_text): # if ‘ or ’ in file, should be '
+                    print(f"NOTE: {file_name} contains ‘ and/or ’. Instead you should use '")
+                    found_something = True
                     
+                parsed_file = utils.file_parser(whole_text)
+                formated_file = utils.make_regex_list_to_dict(parsed_file)
+                
+                if formated_file == "" or formated_file == [] or formated_file == [""]:
+                    print(f'WARNING: {file_name} is empty when formated')
+                    found_something = True
+                
+                for file in formated_file:
+                    file_keys = list(file.keys())
+                    for key in file_keys:
+                        # Check so there is no unwanted space
+                        if " " in key:
+                            print(f'WARNING: {file_name} contains a space in "{key[:30]}..." which it should not have')
+                            found_something = True
+                            
+                        # Check so there is no unwanted >>
+                        if ">>" in key:
+                            print(f'WARNING: {file_name} contains ">>" in "{key[:30]}..." which it should not have')
+                            found_something = True
+                    
+                    
+                    file_values = list(file.values())
+                    for value in file_values:
+                        # Check if it has a uneven amount of < and >
+                        if value.count("<") != value.count(">"):
+                            print(f'NOTE: {file_name} has a uneven amount of "<" and ">" (in the content). This could mean that there is a non closed html <tag>')
+                            found_something = True
+                        
+                        # Check so there is no unwanted >>
+                        if ">>" in value:
+                            print(f'WARNING: {file_name} contains ">>" in "{value[:30]}..." which it should not have')
+                            found_something = True
+                                
+                        
+            elif file_dir.is_dir():
+                look_index.append(file_dir)
+
+    if found_something is False:
+        print("Nothing found")
+
+def fix_citationmarks():
+    base_content_path = Path(config.base_path / "content")
+    
+    # This is what is get looked throguh and will be updated when the script finds more folders
+    look_index = [base_content_path] # Start with just the content folder
+    
+    fixed_something = False
+    
+    for path in look_index:
+        currant_folder = Path(str(path).replace(str(base_content_path), ""))
+        for file_dir in path.iterdir():
+            if file_dir.is_file() and file_dir.suffix == ".txt":
+                file_name = currant_folder / file_dir.name
+                # read the file
+                with open(file_dir, "tr", encoding="utf-8") as file:  
+                    whole_text = file.read() # read it
+                
+                if re.search(r"[“”‘’]", whole_text): # if “, ”, ‘ or ’ in file
+                    new_text = whole_text.replace('“', '"')
+                    new_text = new_text.replace('”', '"')
+                    new_text = new_text.replace("‘", "'")
+                    new_text = new_text.replace("’", "'")
+                    
+                    with open(file_dir, "w", encoding="utf-8") as file:
+                        file.write(new_text)
+                                    
                     fixed_something = True
-                    print(f"Fixed citationmark(s) in {file}")
+                    print(f"Fixed citationmark(s) in {file_name}")
                     
+            elif file_dir.is_dir():
+                look_index.append(file_dir)
+    
     if fixed_something is False:
-        print("No citationmarks to fix in articles")
-
-    # short storys
-    fixed_something = False
-    # read the file
-    with open(config.notiser_path, "tr", encoding="utf-8") as file:  
-        whole_text = file.read() # read it
-    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-        new_text = whole_text.replace("“", '"')
-        new_text = new_text.replace("”", '"')
-        with open(config.notiser_path, "w", encoding="utf-8") as file:
-            file.write(new_text) # write to it
-        
-        fixed_something = True
-        print(f"Fixed citationmark(s) in notiser")
-        
-    if fixed_something is False:
-        print("No citationmarks to fix in notiser")
-
-    # hear me outs
-    fixed_something = False
-
-    # read
-    with open(config.hear_me_outs_path, "tr", encoding="utf-8") as file:  
-        whole_text = file.read() # read it
-    if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-        new_text = whole_text.replace("“", '"')
-        new_text = new_text.replace("”", '"')
-        with open(config.hear_me_outs_path, "w", encoding="utf-8") as file:
-            file.write(new_text) # write to it
-        
-        fixed_something = True
-        print(f"Fixed citationmark(s) in hear me outs")
-        
-    if fixed_something is False:
-        print("No citationmarks to fix in hear me outs")
+        print("No citationmarks to fix")
 
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
     utgava_list = os.listdir(config.articles_path) # list all folders in dir
