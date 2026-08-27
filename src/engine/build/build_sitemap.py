@@ -61,12 +61,10 @@ def gen_sitemap(webb_path):
         
                     content += create_sitemap_url_part(currant_webb_address, change_frequency, priority)  
 
-        sitemap = f"""
-<?xml version="1.0" encoding="UTF-8"?> 
+        sitemap = f"""<?xml version="1.0" encoding="UTF-8"?> 
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"> 
     {content}
-</urlset> 
-"""
+</urlset>"""
         # Create/write to the sitemap file
         sitemap_path = webbsite_path / "sitemap.xml"
         sitemap = sitemap.replace("> ", f"> <!--ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!-->")
