@@ -1,23 +1,12 @@
 /* Base */
 * {
     scroll-margin-top: 5dvh; /*Centers it when getting there from another url via # */
-    z-index: -2;
+    /* z-index: -2; */
 }
 
 /* Header */
 header {
-    position: static;
-    z-index: 10;
-}
-#dropdown_transition_item {
     position: absolute;
-    top: 0;
-    right: 0.5rem;
-}
-#dropdown_button_container {
-    position: absolute;
-    top: 4rem;
-    right: 0.6rem;
 }
 
 /* Search */
@@ -34,7 +23,7 @@ header {
     transition: background-color 0.3s, border 0.3s;
     position: sticky;
     top: 1rem;
-    z-index: -1;
+    z-index: 8;
 }
 #search_bar:hover {
     border: var(--primary-color) solid 2px;
@@ -49,6 +38,12 @@ header {
     }
 }
 
+/* Main */
+main {
+    padding-top: calc(0.7rem + 3.4rem);
+}
+
+
 /* The feed */
 #feed {
     width: 100%;
@@ -61,7 +56,6 @@ header {
         display: none;
     }
 }
-
 .type_text {
     width: fit-content;
     background-color: var(--highlight-color);
