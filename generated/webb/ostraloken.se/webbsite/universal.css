@@ -310,6 +310,7 @@ main li {
     text-decoration: none;
     border: var(--darker-bg-color) solid 2px;
     transition: 0.3s;
+    z-index: 3;
 }
 .article:not(footer .nav_card):not(:has(~ .article)) { /* Gör så bara sista .article har margin-bottom = 0 */
     margin-bottom: 0;
@@ -395,7 +396,7 @@ a.extra_info.user_prompt:hover {
     justify-content: center;
     align-items: center;
     transform: rotate(90deg);
-    z-index: 2;
+    z-index: 6;
     cursor: pointer;
     border: var(--darker-bg-color) solid 2px;
     padding: 1rem;

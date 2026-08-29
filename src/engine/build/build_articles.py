@@ -256,12 +256,12 @@ def generate_all_articles():
     progressbar_item.start()
     
     # go throught every utgava
-    for progressbar_ticker, utgava in enumerate(content_reader.read_articles()):
+    for progressbar_ticker, utgava in enumerate(content_reader.read_articles(), 1):
         # go throught every article in the utgava
         utgava_number = utgava["Editionsnummer"]
         utgava_date = utgava["Utgivningsdatum"]
         utgava_extra_info = utgava["Extra_information"]
-        progressbar_item.update(progressbar_ticker + 1)
+        progressbar_item.update(progressbar_ticker)
         for article_bundle in utgava["Content"]:
             article = article_bundle[0]
             if article: # somethimes article is empty, this prevents that       
@@ -337,7 +337,9 @@ def generate_all_articles():
                     "[+utgava_date+]": utgava_date,
                     "[+text_to_intorduce_section+]": '<h2 id="read_similar">Läs liknande artiklar:</h2>', # so it can be removed
                     "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
-                    "[+scrolling_news_feed+]": feed_element # add news feed
+                    "[+scrolling_news_feed+]": feed_element, # add news feed
+                    #"[+qr_code_src+]": f"https://ostraloken.se/a/qr_codes/{utils.make_qr_id(article_title, utgava_number)}",
+                    "[+qr_code_src+]": f"./qr_codes/{utils.make_qr_id(article_title, utgava_number)}"
                 } # what gets replaced and with what
                 
                 if article_img_src is not None and article_img_src != "": # make image in preview to the article image if one exists

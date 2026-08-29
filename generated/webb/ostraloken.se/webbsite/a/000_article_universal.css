@@ -55,7 +55,7 @@ main {
 #utgava_and_date {
     width: 72rem;
     height: 1rem;
-    z-index: 1;
+    z-index: 4;
     width: calc(100%);
     position: static; 
     margin-bottom: 0.8rem;
@@ -178,6 +178,26 @@ main {
     }
     100% {
         transform: translateX(-100%);
+    }
+}
+
+/* QR code */
+#qr_code {
+    width: 10rem;
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    z-index: 2;
+    box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+}
+@media (width < 62rem) {
+    #qr_code {
+        display: none;
+    }
+}
+@media (height < 38rem) {
+    #qr_code {
+        display: none;
     }
 }
 

@@ -125,6 +125,11 @@ def make_short_story_id(article_title, article_content):
 def make_image_id(article_title):
     return "IMG-" + strip_string(remove_html_elements(article_title), 100)
 
+def make_qr_id(article_title, utgava_number):
+    id_article = remove_åäö(article_title)
+    id_article = strip_string(remove_html_elements(id_article), 100)
+    return "QR-" + str(id_article) + "-U" + str(utgava_number) + ".webp"
+
 def find_img(article_title, utgava_nmr, base_url):
     old_img_title = make_image_id(article_title)
     new_img_title = remove_åäö(make_image_id(article_title))

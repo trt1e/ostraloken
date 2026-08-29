@@ -1,7 +1,6 @@
 /* Base */
 * {
     scroll-margin-top: 5dvh; /*Centers it when getting there from another url via # */
-    /* z-index: -2; */
 }
 
 /* Header */
@@ -13,23 +12,25 @@ header {
 #search_bar {
     background-color: var(--dark-bg-color);
     border: var(--darkest-bg-color) solid 2px;
-    box-shadow: var(--secondary-color) 0 0 6rem;
+    box-shadow: transparent 0 0 3rem;
     width: 80%;
     height: 2rem;
     font-size: 1.2rem;
     margin: 2rem calc(50% - 40%) 4rem calc(50% - 40%);
     padding: 0.2rem 0.4rem;
     font-family: 'Times New Roman', Times, serif;
-    transition: background-color 0.3s, border 0.3s;
     position: sticky;
     top: 1rem;
+    transition: background-color 0.3s, border 0.3s, box-shadow 0.3s;
     z-index: 8;
 }
 #search_bar:hover {
     border: var(--primary-color) solid 2px;
+    box-shadow: var(--secondary-color) 0 0 3rem;
 }
 #search_bar:focus {
     border: var(--primary-color) solid 2px;
+    box-shadow: var(--secondary-color) 0 0 3rem;
 }
 @media (width < 30rem) {
     #search_bar {
