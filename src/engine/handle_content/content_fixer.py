@@ -5,6 +5,7 @@ from pathlib import Path
 # import scripts
 from engine import config
 from engine import utils
+from engine.handle_content import content_reader
 
 
 def inspect_all():
@@ -32,8 +33,8 @@ def inspect_all():
                     print(f"NOTE: {file_name} contains ‘ and/or ’. Instead you should use '")
                     found_something = True
                     
-                parsed_file = utils.file_parser(whole_text)
-                formated_file = utils.make_regex_list_to_dict(parsed_file)
+                parsed_file = content_reader.file_parser(whole_text)
+                formated_file = content_reader.make_regex_list_to_dict(parsed_file)
                 
                 if formated_file == "" or formated_file == [] or formated_file == [""]:
                     print(f'WARNING: {file_name} is empty when formated')
@@ -118,8 +119,8 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
                 with open(config.articles_path / utgava / file, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it
                 # find where title is in the document
-                parsed_file = utils.file_parser(whole_text)
-                formated_file = utils.make_regex_list_to_dict(parsed_file)
+                parsed_file = content_reader.file_parser(whole_text)
+                formated_file = content_reader.make_regex_list_to_dict(parsed_file)
                 basic_title = utils.remove_html_elements(formated_file[0]["Rubrik"])
                 
                 new_file_name = str(file_number) + "-" + utils.strip_string(basic_title, 100) + ".txt"

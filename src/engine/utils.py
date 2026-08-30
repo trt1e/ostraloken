@@ -6,35 +6,15 @@ from engine import config
 from engine.handle_content import content_reader
 
 
-def file_parser(file):
-    # find where diffrent parts are in the document
-    return re.findall(r">>(\w+): (.*?)(?=>>|\/\~|$)", file, re.S)
-    # Here we look for anything that starts with >>, then we get what is between >> and :, then we get the rest after ": "
-    # This then stops if we find ">>", "/~" or the end of the document
-
-def make_regex_list_to_dict(list) -> list:
-    output_sum = []
-    currant_bundle = {}
-    number_of_articles = 0
-    last_element = list[-1][0]
-    for package in list: # go throught all the packages
-        section_title = package[0].replace("\n", "")
-        section_text = package[1].replace("\n", "")
-        currant_bundle[section_title] = section_text # Ex: currant_bundle["Title"] = "What is the meaning of life?"
-        
-        if package[0] == last_element: # Then we have looped
-            output_sum.append(currant_bundle)
-            currant_bundle = {}
-            number_of_articles += 1
-            
-    return output_sum
-
+# Removes all unwanted characters such as % or § and replaces " " with "_"
+# NOTE: It does not remove åäö!
 def strip_string(string, max):
     if max == -1 or max == "" or max is None:
         return re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", string).replace(" ", "_")
     else:
         return re.sub(r"[^a-zA-Z0-9 åäöÅÄÖ]", "", string).replace(" ", "_")[:max]
 
+# We remove html elements from string
 def remove_html_elements(string):
     new_string = string
     last_pos = 0
@@ -51,6 +31,7 @@ def remove_html_elements(string):
         
     return new_string
 
+# If there is like a html element that is started but not closed then this closes the tag!
 def fix_cut_of_html_elements(text):
     # closes html element if it was left open
     extra_at_end = ""
@@ -100,36 +81,7 @@ def remove_åäö(string):
             string = string.replace(letter, replace_letters[letter])
     return string
 
-def get_curant_utgava_number():
-    highest_utgava_number = 1
-    for utgava in reversed(content_reader.read_articles()):
-        if utgava["utgava"] > highest_utgava_number:
-            highest_utgava_number = utgava["utgava"]
-    return highest_utgava_number
-
-def make_article_id(article_title, utgava_number):
-    id_article = remove_åäö(article_title)
-    id_article = strip_string(remove_html_elements(id_article), 100)
-    id_utgava = "-U" + str(utgava_number)
-    return id_article + id_utgava
-
-def make_short_story_id(article_title, article_content):
-    id_article = remove_åäö(article_title)
-    id_article = remove_åäö(article_content)
-    
-    id_article = strip_string(remove_html_elements(str(article_title)), 60)
-    id_content = strip_string(remove_html_elements(str(article_content)), 120)
-
-    return id_article + "+" + id_content
-
-def make_image_id(article_title):
-    return "IMG-" + strip_string(remove_html_elements(article_title), 100)
-
-def make_qr_id(article_title, utgava_number):
-    id_article = remove_åäö(article_title)
-    id_article = strip_string(remove_html_elements(id_article), 100)
-    return "QR-" + str(id_article) + "-U" + str(utgava_number) + ".webp"
-
+# Se if a image in /a/images/ exists
 def find_img(article_title, utgava_nmr, base_url):
     old_img_title = make_image_id(article_title)
     new_img_title = remove_åäö(make_image_id(article_title))
@@ -146,21 +98,45 @@ def find_img(article_title, utgava_nmr, base_url):
     else:
         return ""
 
+# Get the names of the people in staff.txt
 def get_head_writers():
     # Get head writers
     head_writers = [] # list Löken head writers
     # These are the names that if they wrote a article will redirect on click to the omoss page!
-    with open(config.base_path / "content/static/staff.txt", "tr", encoding="utf-8") as file:  
-        staff_file_content = file.read() # read it
-    formated_staff_file_content = make_regex_list_to_dict(file_parser(staff_file_content))
-    for person in formated_staff_file_content:
+    staff_file_content = content_reader.read_txt("static/staff.txt")
+    for person in staff_file_content:
         head_writers.append(person["Namn"])
     # Get head writers
     head_writers = [] # list Löken head writers
     # These are the names that if they wrote a article will redirect on click to the omoss page!
     with open(config.base_path / "content/static/staff.txt", "tr", encoding="utf-8") as file:  
         staff_file_content = file.read() # read it
-    formated_staff_file_content = make_regex_list_to_dict(file_parser(staff_file_content))
+    formated_staff_file_content = content_reader.make_regex_list_to_dict(content_reader.file_parser(staff_file_content))
     for person in formated_staff_file_content:
         head_writers.append(person["Namn"])
     return head_writers
+
+
+# Make IDs for diffrent elements:
+def make_article_id(article_title, utgava_number) -> str:
+    id_article = remove_åäö(article_title)
+    id_article = strip_string(remove_html_elements(id_article), 100)
+    id_utgava = "-U" + str(utgava_number)
+    return id_article + id_utgava
+
+def make_notis_id(article_title, article_content) -> str:
+    id_article = remove_åäö(article_title)
+    id_article = remove_åäö(article_content)
+    
+    id_article = strip_string(remove_html_elements(str(article_title)), 60)
+    id_content = strip_string(remove_html_elements(str(article_content)), 120)
+
+    return id_article + "+" + id_content
+
+def make_image_id(article_title) -> str:
+    return "IMG-" + strip_string(remove_html_elements(article_title), 100)
+
+def make_qr_id(article_title, utgava_number) -> str:
+    id_article = remove_åäö(article_title)
+    id_article = strip_string(remove_html_elements(id_article), 100)
+    return "QR-" + str(id_article) + "-U" + str(utgava_number) + ".webp"

@@ -314,7 +314,7 @@ def generate_all_articles():
                 # add scrolling news feed
                 random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]
                 final_random_short_story = f"<b>{random_short_story["Rubrik"]}</b> • {random_short_story["Artikel"]}"
-                short_story_id = utils.make_short_story_id(random_short_story["Rubrik"], random_short_story["Artikel"])
+                short_story_id = utils.make_notis_id(random_short_story["Rubrik"], random_short_story["Artikel"])
                 feed_element = f"""
 <div id="scrolling_news_feed">
     <a href="../notiser/#{short_story_id}">{final_random_short_story}</a>

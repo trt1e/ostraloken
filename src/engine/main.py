@@ -37,12 +37,86 @@ from engine.build import build_imgs
 from engine.build import build_pdfs
 from engine.discord_bot import bot
 
+"""
+class command:
+    def __init__(
+        self,
+        base: str, 
+        base_short: str | None,
+        keys: dict[str, list[str]] | None, 
+        keys_short: dict[str, list[str]] | None, 
+        desc: str | None,
+        catagory: str = "Base"
+    ):
+        self.base = base
+        self.base_short = base_short
+        self.keys = keys
+        self.keys_short = keys_short
+        self.desc = desc
+        self.catagory = catagory
+        
+    def check_match(self, command: str) -> bool:
+        command = command.strip().lower()
+        if self.base_short:
+            match_bool = command == self.base or command == self.base_short
+        else:
+            match_bool = command == self.base
+        return match_bool
+    
+    def print_help(self) -> str:
+        if self.keys:
+            keys_section = ""
+            for key in self.keys:
+                print(key)
+                keys_section += f""
+            
+            print_string = f"    $ {self.base} ({self.base_short}) ... --> {self.desc}"
+            
+        else:
+            print_string = f"    $ {self.base} ({self.base_short}) --> {self.desc}"
+        return print_string
+
+command("help", "h", None, None, "Lists all commands")
+command("close", "c", None, None, "Terminate program")
+command("restart", "r", None, None, "Restart program")
+command("new utgava template", "new ut", None, None, "Generates a new utgava template with articles, notiser and hear me outs", "Templates")
+command("gen all", "g", None, None, "Generate all webbpage files", "Generate text files")
+command("copy images", "ci", 
+    {
+        "gen_type": ["all", "new", "specific"], 
+        "output_type": ["article_images", "social_media_images", "article_qr_codes"]
+    }, {
+        "gen_type": ["a", "n", "s"], 
+        "output_type": ["ai", "smi", "qrc"]
+    }, "Copy over images", "Copy images"
+).print_help()
+command("copy pdfs", "cp", 
+    {"gen_type": ["all", "new", "specific"]}, 
+    {"gen_type": ["a", "n", "s"]}, 
+    "Copy over PDF:s", "copy PDF:s"
+)
+command("inspect", "i", 
+    {"gen_type": ["all", "new", "specific"]}, 
+    {"gen_type": ["a", "n", "s"]}, 
+    "Looks through content so everything is as it should be, if not: it's reported", "Fix content"
+)
+command("fix", None, 
+    {"gen_selection": ["citationmarks", "article names"]}, 
+    {"gen_selection": ["c", "an"]}, 
+    "Fix up content so that it is as it should be", "Fix content"
+)
+command("bot", None, 
+    {"gen_selection": ["start", "reminder", "send"]}, 
+    None, "Handle the discord bot", "Bot"
+)
+"""
+
 # UI for backend user
 def run():
     print("Welcome to the backend terminal!")
     print('(Print "help" for commands)')
     while True:
-        answer = input("$ ")
+        answer = input("$ ").strip().lower()
         try:
             if answer == "help" or answer == "h":
                 print("""
@@ -54,7 +128,7 @@ def run():
     $ new utgava template (new ut) --> Generates a new utgava template with articles, notiser and hear me outs
     
     GENERATE TEXT FILES
-    $ gen all (g) --> Generate all webbpage files that are generated
+    $ gen all (g) --> Generate all webbpage files
 
     COPY IMAGES
     $ copy images (ci) ...
@@ -122,16 +196,18 @@ def run():
                 build_sitemap.generate_all_sitemaps()
                 
             # images
-            elif answer == "copy images new" or answer == "ci new" or answer == "ci n":
-                build_imgs.copy_over_images("new")
-            elif answer == "copy images all" or answer == "ci all" or answer == "ci a":
-                build_imgs.copy_over_images("all")
-            elif answer == "copy images specific" or answer == "ci specific" or answer == "ci s":
-                utgava_to_copy = input("Copy over images in utgava: ")
-                if re.search(r"[0-9]", utgava_to_copy):
-                    build_imgs.copy_over_images(f"specific: {utgava_to_copy}")
-                else:
-                    print(f"{utgava_to_copy} not a number")
+            elif "copy images" in answer or "ci" in answer:
+                gen_type = ""
+                if answer == "copy images new" or answer == "ci new" or answer == "ci n":
+                    build_imgs.copy_over_images(["article_images", "social_media_images", "article_qr_codes"], "new")
+                elif answer == "copy images all" or answer == "ci all" or answer == "ci a":
+                    build_imgs.copy_over_images(["article_images", "social_media_images", "article_qr_codes"], "all")
+                elif answer == "copy images specific" or answer == "ci specific" or answer == "ci s":
+                    utgava_to_copy = input("Copy over images in utgava: ")
+                    if re.search(r"[0-9]", utgava_to_copy):
+                        build_imgs.copy_over_images(["article_images", "social_media_images", "article_qr_codes"], f"specific: {utgava_to_copy}")
+                    else:
+                        print(f"{utgava_to_copy} not a number")
                     
             # pdfs
             elif answer == "copy pdfs new" or answer == "cp new" or answer == "cp n":

@@ -5,11 +5,12 @@ from pathlib import Path
 from engine import config
 from engine import utils
 from engine.handle_content import content_reader
+from engine.handle_content import content_writer
 
 
 def setup_new_utgava_folder(day, month, year):
-    next_utgava_number = utils.get_curant_utgava_number()
-    next_utgava_number += 1 # so highest_utgava_number is one higher than what exists
+    next_utgava_number = len(content_reader.read_articles()) + 1
+    
     new_path = config.articles_path / f"utgava_{next_utgava_number}" / "utgava_info.txt"
     folder_path = config.articles_path / f"utgava_{next_utgava_number}"
     os.makedirs(folder_path, exist_ok=True) # generate the folder
@@ -22,25 +23,19 @@ def setup_new_utgava_folder(day, month, year):
         file.write(content) # write to it
     
 def setup_new_utgava_articles(count_articles):
-    next_utgava_number = utils.get_curant_utgava_number()
+    next_utgava_number = len(content_reader.read_articles()) + 1
+    
     # all new articles
     for article_number in range(int(count_articles)):
-        article_path = config.articles_path / f"utgava_{next_utgava_number}" / f"{article_number + 1} ARTICLE_NAME.txt"
-        
         content = f""">>Rubrik: RUBRIK
 >>Texttyp: ARTIKEL_TYP
 >>Skribent: SKRIBENT
 >>Artikel: 
 BRÖDTEXT"""
-        # create / find the file
-        with open(article_path, "x", encoding="utf-8") as file:
-            file.write(content) # write to it
+        content_writer.write_to_content(f"articles/utgava_{next_utgava_number}/{article_number + 1}-ARTICLE_NAME.txt", "x", content)
     
 def setup_new_notiser(count_notiser, day, month, year):
-    next_utgava_number = utils.get_curant_utgava_number()
-    for utgava in reversed(content_reader.read_articles()):
-        if utgava["utgava"] > next_utgava_number:
-            highest_utgava_number = utgava["utgava"]
+    next_utgava_number = len(content_reader.read_articles()) + 1
     
     content = f"""
 
@@ -56,9 +51,7 @@ def setup_new_notiser(count_notiser, day, month, year):
     for _ in range(int(count_notiser)):
         content += lone_content
     
-    # create / find the file
-    with open(config.notiser_path, "a", encoding="utf-8") as file:
-        file.write(content) # write to it
+    content_writer.write_to_content("notiser.txt", "a", content)
 
     print(f"Generated template for utgava {next_utgava_number}")
     
@@ -72,8 +65,6 @@ def setup_new_hear_me_outs(count_hear_me_outs):
     for _ in range(int(count_hear_me_outs)):
         content += lone_content
     
-    # create / find the file
-    with open(config.hear_me_outs_path, "a", encoding="utf-8") as file:
-        file.write(content) # write to it
+    content_writer.write_to_content("hear_me_outs.txt", "a", content)
     
     print(f"Generated template hear me outs")

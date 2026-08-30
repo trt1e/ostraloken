@@ -6,6 +6,32 @@ from pathlib import Path
 from engine import config
 from engine import utils
 
+# Parse a content file and extract its content
+def file_parser(file: str) -> list:
+    # find where diffrent parts are in the document
+    return re.findall(r">>(\w+): (.*?)(?=>>|\/\~|$)", file, re.S)
+    # Here we look for anything that starts with >>, then we get what is between >> and :, then we get the rest after ": "
+    # This then stops if we find ">>", "/~" or the end of the document
+
+# Format the content right
+def make_regex_list_to_dict(list) -> list:
+    output_sum = []
+    currant_bundle = {}
+    number_of_articles = 0
+    last_element = list[-1][0]
+    for package in list: # go throught all the packages
+        section_title = package[0].replace("\n", "")
+        section_text = package[1].replace("\n", "")
+        currant_bundle[section_title] = section_text # Ex: currant_bundle["Title"] = "What is the meaning of life?"
+        
+        if package[0] == last_element: # Then we have looped
+            output_sum.append(currant_bundle)
+            currant_bundle = {}
+            number_of_articles += 1
+            
+    return output_sum
+
+
 # Read the normal articles
 def read_articles(): # !!! This one is treated diffrantly !!! To get the files and their content from all normal articals 
     output_sum = [] # all the output
@@ -20,18 +46,14 @@ def read_articles(): # !!! This one is treated diffrantly !!! To get the files a
                     whole_text = file.read() # read it
                 
                 if file_name != "utgava_info": # If the file isnt the utgava info file
-                    parsed_file = utils.file_parser(whole_text)
-                    formated_file = utils.make_regex_list_to_dict(parsed_file)
+                    parsed_file = file_parser(whole_text)
+                    formated_file = make_regex_list_to_dict(parsed_file)
                     article_output_sum.append(formated_file)
                 else:
                     # find where diffrent parts are in the document
                     # REMEMBER: This is loaded 1, 10, 11, 12... 2, 20, 21, 22... 3, 30, 31, 32...
-                    parsed_utgava_info = utils.file_parser(whole_text)
-                    formated_utgava_info = utils.make_regex_list_to_dict(parsed_utgava_info)
-                    # utgava_number = re.findall(r">>Editionsnummer: (.*)", whole_text)[0]
-                    # utgava_date = re.findall(r">>Utgivningsdatum: (.*)", whole_text)[0]
-                    # utgava_extra_info = re.findall(r">>Extra information: (.*?)$", whole_text, re.S)[0].replace("\n", "")
-                    # utgava_extra_info.replace("\n", "")
+                    parsed_utgava_info = file_parser(whole_text)
+                    formated_utgava_info = make_regex_list_to_dict(parsed_utgava_info)
                     
         output = dict(formated_utgava_info[0]) | {"Content": article_output_sum}
         output_sum.append(output)
@@ -45,8 +67,8 @@ def read_txt(txt_path):
     with open(content_path, "tr", encoding="utf-8") as file:  
         whole_text = file.read() # read it
     
-    parsed_file = utils.file_parser(whole_text)
-    formated_file = utils.make_regex_list_to_dict(parsed_file)
+    parsed_file = file_parser(whole_text)
+    formated_file = make_regex_list_to_dict(parsed_file)
     return formated_file
 
 if __name__ == "__main__":
