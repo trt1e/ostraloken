@@ -112,11 +112,10 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
     utgava_list = os.listdir(config.articles_path) # list all folders in dir
     for utgava in utgava_list: # go thrpguth every folder to get all the upplagor
         # list all files in dir 
-        file_list = os.listdir(config.articles_path / utgava)
-        for file_number, file in enumerate(file_list, 1): # Go througth every file in the list and extract the content
-            if file != "utgava_info.txt" and file[:4] != "IMG-":
+        for file_number, file_dir in enumerate(Path(config.articles_path / utgava).iterdir(), 1): # Go througth every file in the list and extract the content
+            if file_dir.name != "utgava_info.txt" and file_dir.name[:4] != "IMG-" and file_dir.suffix not in config.img_extentions:
                 # extract
-                with open(config.articles_path / utgava / file, "tr", encoding="utf-8") as file:  
+                with open(file_dir, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it
                 # find where title is in the document
                 parsed_file = content_reader.file_parser(whole_text)
@@ -125,6 +124,6 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
                 
                 new_file_name = str(file_number) + "-" + utils.strip_string(basic_title, 100) + ".txt"
 
-                os.rename(file.name, (config.articles_path / utgava / new_file_name))
+                os.rename(file_dir, (config.articles_path / utgava / new_file_name))
 
     print("Article names successfully fixed!")

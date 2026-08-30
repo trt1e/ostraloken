@@ -40,7 +40,7 @@ def read_articles(): # !!! This one is treated diffrantly !!! To get the files a
         formated_utgava_info = {}
         for file_path in Path(utgava).iterdir(): # Go througth every file in the list and extract the content
             file_name = Path(file_path.name).stem
-            if not file_name.startswith("IMG-"): # If the file name does not start with "IMG-"
+            if not file_name.startswith("IMG-") and Path(file_path.name).suffix not in config.img_extentions: # If the file name does not start with "IMG-"
                 # read the file
                 with open(file_path, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it

@@ -6,8 +6,8 @@ const baseImagesUrl = "\pdf_images/";
 
 
 // DO NOT TOUCH!!!
-const maxPages = 4; // This specific variable is changed with engine/build/build_pdfs.py
-const pagesPerPDF = [1, 2, 2, 2, 2, 3, 2, 2, 4, 2, 3, 3, 4, 3, 3, 4, 4, 3, 3, 4, 4, 2, 3, 3, 3, 2, 2, 3, 3, 4, 3, 4, 3, 3, 2, 4, 3, 2, 2, 3, 3] // This specific variable is changed with engine/build/generate_frontend.py
+const maxPages = 5; // This specific variable is changed with engine/build/build_pdfs.py
+const pagesPerPDF = [1, 2, 2, 2, 2, 3, 2, 2, 4, 2, 3, 3, 4, 3, 3, 4, 4, 3, 3, 4, 4, 2, 3, 3, 3, 2, 2, 3, 3, 4, 3, 4, 3, 3, 2, 4, 3, 2, 2, 3, 3, 5] // This specific variable is changed with engine/build/generate_frontend.py
 // DO NOT TOUCH!!!
 
 const amoutPDFs = pagesPerPDF.length;

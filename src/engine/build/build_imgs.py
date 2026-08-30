@@ -29,20 +29,19 @@ def copy_over_images(output_type: list, gen_type: str):
     
     all_articles = content_reader.read_articles()
     
-    amount_of_articles = sum(len(utgava["Content"]) for utgava in all_articles)
+    amount_of_articles = len(all_articles)
     
     print("Generating images:")
     progressbar_item = progressbar.ProgressBar(maxval=int(amount_of_articles))
     progressbar_item.start()
     
     # go throught every utgava
-    for currant_utgava_number, utgava in enumerate(all_articles, 1):
+    for progressbar_ticker, utgava in enumerate(all_articles, 1):
         # go throught every article in the utgava
         utgava_number = utgava["Editionsnummer"]
         image_number = 0
-        for currant_article_number, article in enumerate(utgava["Content"], 1):
+        for article in utgava["Content"]:
             if article: # somethimes article is empty, this prevents that
-                progressbar_ticker = currant_utgava_number + currant_article_number
                 progressbar_item.update(progressbar_ticker)
                 
                 article_title = str(article[0]["Rubrik"])
@@ -51,8 +50,8 @@ def copy_over_images(output_type: list, gen_type: str):
                 
                 # Check if there is a image linked to the article currantly looked throught
                 for ext in config.img_extentions:
-                    if Path(f"{old_img_path_no_extention}.{ext}").is_file():
-                        old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+                    if Path(f"{old_img_path_no_extention}{ext}").is_file():
+                        old_img_path_with_extention = f"{old_img_path_no_extention}{ext}"
                         image_number += 1
                         break
                 else:
@@ -92,7 +91,7 @@ def copy_over_images(output_type: list, gen_type: str):
                             pass
                     
                     # Generate the qr codes to the articles
-                    elif "article_qr_codes" in output_type:
+                    if "article_qr_codes" in output_type:
                         article_id = utils.make_article_id(article_title, utgava_number)
                         article_file_name = utils.make_qr_id(article_title, utgava_number)
                         
@@ -134,8 +133,8 @@ def copy_over_images(output_type: list, gen_type: str):
                             pass
                     
                     # Generate the social media images
-                    elif "social_media_images" in output_type:
-                        new_img_title_insta = f"{image_number + 1}-" + utils.remove_åäö(utils.make_image_id(article_title))[4:].split(".")[0] + ".png"
+                    if "social_media_images" in output_type:
+                        new_img_title_insta = f"{image_number}-" + utils.remove_åäö(utils.make_image_id(article_title))[4:].split(".")[0] + ".png"
                         
                         # if all and no file: YES
                         # if all and file: YES

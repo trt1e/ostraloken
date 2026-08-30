@@ -8,7 +8,7 @@ from pathlib import Path
 engine_path = Path(__file__).resolve().parent
 base_path = Path(engine_path).parents[1]
 
-img_extentions = ["jpg", "JPG", "jpeg", "JPEG", "png", "PNG", "webp", "WEBP"]
+img_extentions = [".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG", ".webp", ".WEBP"]
 
 base_webb_paths = [
     base_path / Path("generated/webb/nyhetsflode.ostraloken.se"),

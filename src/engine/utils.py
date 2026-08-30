@@ -87,8 +87,8 @@ def find_img(article_title, utgava_nmr, base_url):
     new_img_title = remove_åäö(make_image_id(article_title))
     old_img_path_no_extention = config.articles_path / f"utgava_{utgava_nmr}" / old_img_title
     for ext in config.img_extentions:
-        if Path(f"{old_img_path_no_extention}.{ext}").is_file():
-            old_img_path_with_extention = f"{old_img_path_no_extention}.{ext}"
+        if Path(f"{old_img_path_no_extention}{ext}").is_file():
+            old_img_path_with_extention = f"{old_img_path_no_extention}{ext}"
             break
     else:
         old_img_path_with_extention = "NO_IMG" # article does not have image

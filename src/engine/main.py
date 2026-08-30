@@ -30,6 +30,7 @@ import threading # for discord bot to run separetly
 from engine import config
 from engine.handle_content import content_fixer
 from engine.handle_content import template_generator
+from engine.handle_content import content_reader
 from engine.build import gen_replacment_dict
 from engine.build import build_articles
 from engine.build import build_sitemap
@@ -183,10 +184,12 @@ def run():
                 if year is None or year == "" or not re.search(r"[0-9]", year):
                     year = "ÅÅÅÅ"
                     
-                template_generator.setup_new_utgava_folder(day, month, year)
-                template_generator.setup_new_utgava_articles(amount_of_articles)
-                template_generator.setup_new_notiser(amount_of_notiser, day, month, year)
-                template_generator.setup_new_hear_me_outs(amount_of_hear_me_outs)
+                next_utgava_number = len(content_reader.read_articles()) + 1
+    
+                template_generator.setup_new_utgava_folder(next_utgava_number, day, month, year)
+                template_generator.setup_new_utgava_articles(next_utgava_number, amount_of_articles)
+                template_generator.setup_new_notiser(next_utgava_number, amount_of_notiser, day, month, year)
+                template_generator.setup_new_hear_me_outs(next_utgava_number, amount_of_hear_me_outs)
             
             # generate text files
             elif answer == "gen all" or answer == "g":
