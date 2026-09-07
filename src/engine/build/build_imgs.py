@@ -1,4 +1,5 @@
 import os
+import re
 import math
 from pathlib import Path
 from PIL import Image, ImageOps, ImageDraw, ImageFont # To handle the images copyd and instagram images
@@ -15,7 +16,7 @@ from engine.handle_content import content_reader
 # images
 # output_type is a list that can contain: "article_images", "social_media_images" or "article_qr_codes"
 # gen_type is a str that can be: "all", "new" or "special: {type}"
-def copy_over_images(output_type: list, gen_type: str):
+def copy_over_images(output_type: list, gen_type: list):
     instagram_article_image_template_path = config.base_path / Path("content/extra/social_media_imgs_templates/Normal_article.png")
     instagram_utgava_image_template_1_path = config.base_path / Path("content/extra/social_media_imgs_templates/Utgava_1.png")
     instagram_utgava_image_template_2_path = config.base_path / Path("content/extra/social_media_imgs_templates/Utgava_2.png")
@@ -69,14 +70,15 @@ def copy_over_images(output_type: list, gen_type: str):
                         # if new and no file: YES
                         # if new and file: NO
                         new_img_url_with_extention = generated_images_path / new_img_title
-                        if gen_type != "new" or Path(new_img_url_with_extention).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
+                        if "new" not in gen_type or Path(new_img_url_with_extention).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                             create_image_switch = False
-                            if "specific" in gen_type:
-                                desired_utgava_nmr = gen_type.split(": ")[1]
-                                if int(utgava_number) == int(desired_utgava_nmr):
+                            for type_item in gen_type:
+                                if "specific" in str(type_item):
+                                    desired_utgava_nmr = re.findall(r"specific: (\d+)", type_item)[0]
+                                    if int(utgava_number) == int(desired_utgava_nmr):
+                                        create_image_switch = True
+                                else:
                                     create_image_switch = True
-                            else:
-                                create_image_switch = True
 
                             if create_image_switch:
                                 os.makedirs(Path(old_img_path_with_extention).parent, exist_ok=True) # generate the folder / make sure it exists
@@ -101,14 +103,15 @@ def copy_over_images(output_type: list, gen_type: str):
                         # if all and file: YES
                         # if new and no file: YES
                         # if new and file: NO
-                        if gen_type != "new" or Path(article_qr_destination_dir).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
+                        if "new" not in gen_type or Path(article_qr_destination_dir).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                             create_image_switch = False
-                            if "specific" in gen_type:
-                                desired_utgava_nmr = gen_type.split(": ")[1]
-                                if int(utgava_number) == int(desired_utgava_nmr):
+                            for type_item in gen_type:
+                                if "specific" in str(type_item):
+                                    desired_utgava_nmr = re.findall(r"specific: (\d+)", type_item)[0]
+                                    if int(utgava_number) == int(desired_utgava_nmr):
+                                        create_image_switch = True
+                                else:
                                     create_image_switch = True
-                            else:
-                                create_image_switch = True
 
                             if create_image_switch:
                                 # Add a qr-code to the image
@@ -142,14 +145,15 @@ def copy_over_images(output_type: list, gen_type: str):
                         # if new and file: NO                        
                         instagram_destination_folder = generated_social_media_imgs_path / f"Utgava_{utgava_number}"
                         instagram_image_destination_dir = instagram_destination_folder / new_img_title_insta
-                        if gen_type != "new" or Path(instagram_image_destination_dir).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
+                        if "new" not in gen_type or Path(instagram_image_destination_dir).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
                             create_image_switch = False
-                            if "specific" in gen_type:
-                                desired_utgava_nmr = gen_type.split(": ")[1]
-                                if int(utgava_number) == int(desired_utgava_nmr):
+                            for type_item in gen_type:
+                                if "specific" in str(type_item):
+                                    desired_utgava_nmr = re.findall(r"specific: (\d+)", type_item)[0]
+                                    if int(utgava_number) == int(desired_utgava_nmr):
+                                        create_image_switch = True
+                                else:
                                     create_image_switch = True
-                            else:
-                                create_image_switch = True
 
                             # Instagram image
                             if create_image_switch: 

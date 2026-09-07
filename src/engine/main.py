@@ -18,109 +18,7 @@ Allt stöd kommer varmhjärtat ignoreras av oss på Löken ❤️.
         <button class="popup_button clickable_element" id="popup_deny_button"><p><b>Nej, jag är fattig och töntig.</b></p></button>
     </dialog>
 -->
-"""
-print("BOOTING OSTRALOKEN!")
 
-import re
-from pathlib import Path
-import subprocess # To run "$ restart" in the terminal
-import threading # for discord bot to run separetly
-
-# import scripts
-from engine import config
-from engine.handle_content import content_fixer
-from engine.handle_content import template_generator
-from engine.handle_content import content_reader
-from engine.build import gen_replacment_dict
-from engine.build import build_articles
-from engine.build import build_sitemap
-from engine.build import build_imgs
-from engine.build import build_pdfs
-from engine.discord_bot import bot
-
-"""
-class command:
-    def __init__(
-        self,
-        base: str, 
-        base_short: str | None,
-        keys: dict[str, list[str]] | None, 
-        keys_short: dict[str, list[str]] | None, 
-        desc: str | None,
-        catagory: str = "Base"
-    ):
-        self.base = base
-        self.base_short = base_short
-        self.keys = keys
-        self.keys_short = keys_short
-        self.desc = desc
-        self.catagory = catagory
-        
-    def check_match(self, command: str) -> bool:
-        command = command.strip().lower()
-        if self.base_short:
-            match_bool = command == self.base or command == self.base_short
-        else:
-            match_bool = command == self.base
-        return match_bool
-    
-    def print_help(self) -> str:
-        if self.keys:
-            keys_section = ""
-            for key in self.keys:
-                print(key)
-                keys_section += f""
-            
-            print_string = f"    $ {self.base} ({self.base_short}) ... --> {self.desc}"
-            
-        else:
-            print_string = f"    $ {self.base} ({self.base_short}) --> {self.desc}"
-        return print_string
-
-command("help", "h", None, None, "Lists all commands")
-command("close", "c", None, None, "Terminate program")
-command("restart", "r", None, None, "Restart program")
-command("new utgava template", "new ut", None, None, "Generates a new utgava template with articles, notiser and hear me outs", "Templates")
-command("gen all", "g", None, None, "Generate all webbpage files", "Generate text files")
-command("copy images", "ci", 
-    {
-        "gen_type": ["all", "new", "specific"], 
-        "output_type": ["article_images", "social_media_images", "article_qr_codes"]
-    }, {
-        "gen_type": ["a", "n", "s"], 
-        "output_type": ["ai", "smi", "qrc"]
-    }, "Copy over images", "Copy images"
-).print_help()
-command("copy pdfs", "cp", 
-    {"gen_type": ["all", "new", "specific"]}, 
-    {"gen_type": ["a", "n", "s"]}, 
-    "Copy over PDF:s", "copy PDF:s"
-)
-command("inspect", "i", 
-    {"gen_type": ["all", "new", "specific"]}, 
-    {"gen_type": ["a", "n", "s"]}, 
-    "Looks through content so everything is as it should be, if not: it's reported", "Fix content"
-)
-command("fix", None, 
-    {"gen_selection": ["citationmarks", "article names"]}, 
-    {"gen_selection": ["c", "an"]}, 
-    "Fix up content so that it is as it should be", "Fix content"
-)
-command("bot", None, 
-    {"gen_selection": ["start", "reminder", "send"]}, 
-    None, "Handle the discord bot", "Bot"
-)
-"""
-
-# UI for backend user
-def run():
-    print("Welcome to the backend terminal!")
-    print('(Print "help" for commands)')
-    while True:
-        answer = input("$ ").strip().lower()
-        try:
-            if answer == "help" or answer == "h":
-                print("""
     $ help (h) --> Lists all commands
     $ close (c) --> Terminate script
     $ restart (r) --> Terminate, then restart script
@@ -154,16 +52,172 @@ def run():
     ... = start --> Start the discord bot
     ... = reminder --> Send a reminder that they should write this week
     ... = send --> Send any message you want via the bot
-""")
-            elif answer == "close" or answer == "c":
+"""
+print("BOOTING OSTRALOKEN!")
+
+import re
+from pathlib import Path
+import subprocess # To run "$ restart" in the terminal
+import threading # for discord bot to run separetly
+
+# import scripts
+from engine import config
+from engine.handle_content import content_fixer
+from engine.handle_content import template_generator
+from engine.handle_content import content_reader
+from engine.build import gen_replacment_dict
+from engine.build import build_articles
+from engine.build import build_sitemap
+from engine.build import build_imgs
+from engine.build import build_pdfs
+from engine.discord_bot import bot
+
+
+class command:
+    def __init__(
+        self,
+        base: str, 
+        base_short: str | None,
+        keys: dict[str, list[str]] | None, 
+        keys_short: dict[str, list[str | None]] | None, 
+        desc: str,
+        catagory: str = "Base"
+    ):
+        self.base = base
+        self.base_short = base_short
+        self.keys = keys
+        self.keys_short = keys_short
+        self.desc = desc
+        self.catagory = catagory 
+
+    def check_match_base(self, command: str) -> bool:
+        command_parts = command.strip().lower().split(" ")
+        base_parts = self.base.split(" ")
+        
+        match_bool = False
+        for element in command_parts:
+            if self.base_short:
+                base_short_parts = self.base_short.split(" ")
+                if (element in base_parts) or (element in base_short_parts):
+                    match_bool = True
+                    break
+            else:
+                if element in base_parts:
+                    match_bool = True
+                    break
+        
+        return match_bool
+    
+    def check_match_keys(self, command: str) -> list:
+        matched_keys = []
+        if self.keys:
+            command_parts = command.strip().lower().split(" ")
+            keys_parts = []
+            short_keys_parts = []
+
+            for i, value_list in enumerate(self.keys.values()):
+                for j, value in enumerate(value_list):
+                    keys_parts.append(str(value))
+                    
+                    if self.keys_short and list(self.keys_short.values())[i][j]:
+                        short_keys_parts.append(str(list(self.keys_short.values())[i][j]))
+            
+
+            for element in command_parts:
+                if element in keys_parts:
+                    matched_keys.append(element)
+                elif element in short_keys_parts:
+                    matched_keys.append(keys_parts[short_keys_parts.index(element)])
+        
+        return matched_keys
+    
+    def print_help(self) -> str:
+        if self.keys:
+            if len(self.keys) > 25:
+                print("WARNING: Cant have a command with more than 25 keys!")
+            alphabet = "AA BB CC DD EE FF GG HH II JJ KK LL MM NN PP QQ RR SS TT UU VV WW XX YY ZZ"[:len(self.keys) * 3 - 1]
+            if self.base_short:
+                print_string = f"    $ {self.base} ({self.base_short}) {alphabet} --> {self.desc}"
+            else:
+                print_string = f"    $ {self.base} {alphabet} --> {self.desc}"
+            
+            for i, value_list in enumerate(self.keys.values()):
+                currant_key = str(list(self.keys.keys())[i])
+                print_string += f"\n        - {currant_key}:"
+                for j, value in enumerate(value_list):
+                    if self.keys_short and list(self.keys_short.values())[i][j]:
+                        short_key = list(self.keys_short.values())[i][j]
+                        print_string += f"\n            {str(alphabet[i * 3 + 1]) + str(alphabet[i * 3])} = {value} ({short_key})"
+                    else:
+                        print_string += f"\n            {str(alphabet[i * 3 + 1]) + str(alphabet[i * 3])} = {value}"
+            
+        else:
+            if self.base_short:
+                print_string = f"    $ {self.base} ({self.base_short}) --> {self.desc}"
+            else:
+                print_string = f"    $ {self.base} --> {self.desc}"
+        
+        print(print_string)
+        return print_string
+
+
+all_commands = {
+    "help": command("help", "h", None, None, "Lists all commands"),
+    "close": command("close", "c", None, None, "Terminate program"),
+    "restart": command("restart", "r", None, None, "Restart program"),
+    "utgava template": command("utgava template", "ut", None, None, "Generates a new utgava template with articles, notiser and hear me outs", "Templates"),
+    "gen all": command("gen all", "g", None, None, "Generate all webbpage files", "Generate text files"),
+    "copy images": command("copy images", "ci", 
+        {
+            "gen_type": ["all", "new", "specific"], 
+            "output_type": ["article images", "social media images", "article qr codes"]
+        }, {
+            "gen_type": ["a", "n", "s"], 
+            "output_type": ["ai", "smi", "qr"]
+        }, "Copy over images", "Copy images"
+    ),
+    "copy pdfs": command("copy pdfs", "cp", 
+        {"gen_type": ["all", "new", "specific"]}, 
+        {"gen_type": ["a", "n", "s"]}, 
+        "Copy over PDF:s", "copy PDF:s"
+    ), "inspect": command("inspect", "i", None, None, "Looks through content so everything is as it should be, if not: it's reported", "Fix content"),
+    "fix": command("fix", None, 
+        {"gen_selection": ["citationmarks", "article names"]}, 
+        {"gen_selection": ["c", "an"]}, 
+        "Fix up content so that it is as it should be", "Fix content"
+    ),
+    "bot": command("bot", None, 
+        {"gen_selection": ["start", "reminder", "send"]}, 
+        None, "Handle the discord bot", "Bot"
+    )
+}
+
+# UI for backend user
+def run():
+    print("Welcome to the backend terminal!")
+    print('(Print "help" for commands)')
+    while True:
+        answer = input("$ ").strip().lower()
+        try:
+            if all_commands["help"].check_match_base(answer):
+                currant_catagory = ""
+                print("--------------------------------------------------------")
+                for currant_command in list(all_commands.values()):
+                    if currant_command.catagory != "Base" and currant_catagory != currant_command.catagory:
+                        print(f"\n    {currant_command.catagory.upper()}")
+                    currant_command.print_help()
+                    currant_catagory = currant_command.catagory
+                print("--------------------------------------------------------")
+            
+            elif all_commands["close"].check_match_base(answer):
                 break
-            elif answer == "restart" or answer == "r":
+            elif all_commands["restart"].check_match_base(answer):
                 print("Restarting...")
                 subprocess.run(f'python -u "{config.engine_path / Path("main.py")}"')
                 break
                 
             # new content
-            elif answer == "new utgava template" or answer == "new ut":
+            elif all_commands["utgava template"].check_match_base(answer):
                 amount_of_articles = input("Amount articles: ")
                 if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
                     amount_of_articles = 0
@@ -192,53 +246,90 @@ def run():
                 template_generator.setup_new_hear_me_outs(next_utgava_number, amount_of_hear_me_outs)
             
             # generate text files
-            elif answer == "gen all" or answer == "g":
+            elif all_commands["gen all"].check_match_base(answer):
                 gen_replacment_dict.replacment_for_all = gen_replacment_dict.create_dictionary()
                 gen_replacment_dict.generate_all_normal_pages()
                 build_articles.generate_all_articles()
                 build_sitemap.generate_all_sitemaps()
                 
             # images
-            elif "copy images" in answer or "ci" in answer:
-                gen_type = ""
-                if answer == "copy images new" or answer == "ci new" or answer == "ci n":
-                    build_imgs.copy_over_images(["article_images", "social_media_images", "article_qr_codes"], "new")
-                elif answer == "copy images all" or answer == "ci all" or answer == "ci a":
-                    build_imgs.copy_over_images(["article_images", "social_media_images", "article_qr_codes"], "all")
-                elif answer == "copy images specific" or answer == "ci specific" or answer == "ci s":
+            elif all_commands["copy images"].check_match_base(answer):
+                matching_keys = all_commands["copy images"].check_match_keys(answer)
+                
+                gen_type = []
+                output_type = []
+                
+                if "new" in matching_keys:
+                    gen_type.append("new")
+                if "all" in matching_keys:
+                    gen_type.append("all")
+                if "specific" in matching_keys:
                     utgava_to_copy = input("Copy over images in utgava: ")
                     if re.search(r"[0-9]", utgava_to_copy):
-                        build_imgs.copy_over_images(["article_images", "social_media_images", "article_qr_codes"], f"specific: {utgava_to_copy}")
+                        gen_type.append(f"specific: {utgava_to_copy}")
                     else:
                         print(f"{utgava_to_copy} not a number")
-                    
+                
+                if "article images" in matching_keys:
+                    output_type.append("article_images")
+                if "social media images" in matching_keys:
+                    output_type.append("social_media_images")
+                if "article qr codes" in matching_keys:
+                    output_type.append("article_qr_codes")
+                
+                if matching_keys == [] or output_type == []:
+                    print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
+                
+                build_imgs.copy_over_images(output_type, gen_type)
             # pdfs
-            elif answer == "copy pdfs new" or answer == "cp new" or answer == "cp n":
-                build_pdfs.copy_over_pdfs("new")
-            elif answer == "copy pdfs all" or answer == "cp all" or answer == "cp a":
-                build_pdfs.copy_over_pdfs("all")
-            elif answer == "copy pdfs specific" or answer == "cp specific" or answer == "cp s":
-                utgava_to_copy = input("Copy over pdf utgava: ")
-                if re.search(r"[0-9]", utgava_to_copy):
-                    build_pdfs.copy_over_pdfs(f"specific: {utgava_to_copy}")
-                else:
-                    print(f"{utgava_to_copy} not a number")
+            elif all_commands["copy pdfs"].check_match_base(answer):
+                matching_keys = all_commands["copy pdfs"].check_match_keys(answer)
+                
+                gen_type = []
+
+                if "new" in matching_keys:
+                    gen_type.append("new")
+                if "all" in matching_keys:
+                    gen_type.append("all")
+                if "specific" in matching_keys:
+                    utgava_to_copy = input("Copy over images in utgava: ")
+                    if re.search(r"[0-9]", utgava_to_copy):
+                        gen_type.append(f"specific: {utgava_to_copy}")
+                    else:
+                        print(f"{utgava_to_copy} not a number")
+                
+                if matching_keys == []:
+                    print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
+                
+                build_pdfs.copy_over_pdfs(gen_type)
                     
             # fix content
-            elif answer == "inspect" or answer == "i":
+            elif all_commands["inspect"].check_match_base(answer):
                 content_fixer.inspect_all()
-            elif answer == "fix citationmarks" or answer == "fix c":
-                content_fixer.fix_citationmarks()
-            elif answer == "fix article names" or answer == "fix an":
-                content_fixer.fix_all_backend_articles_names()
+            elif all_commands["fix"].check_match_base(answer):
+                matching_keys = all_commands["fix"].check_match_keys(answer)
+
+                has_generated = False
+
+                if "citationmarks" in matching_keys:
+                    content_fixer.fix_citationmarks()
+                    has_generated = True
+                if "article names" in matching_keys:
+                    content_fixer.fix_all_backend_articles_names()
+                    has_generated = True
+                    
+                if not has_generated:
+                    print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
             
             # discord bot
-            elif answer == "bot start":
+            elif all_commands["bot"].check_match_base(answer):
+                # Start
                 print("[Discord] Starting bot...")
                 bot_thread = threading.Thread(target=bot.run_discord_bot, daemon=True)
                 bot_thread.start()
                 bot.bot_ready_event.wait()
-            elif answer == "bot reminder":
+                
+                # Reminder
                 days_left = input('Time left (ex. "2 dagar" or "36h"): ')
                 if days_left != "":
                     bot_message = f"""# Bara {days_left} kvar!!!
@@ -252,7 +343,8 @@ Det bör påminnas också att det är __väldigt jobbigt__ för mig (Vilhelm) at
 
 Tack på förhand :heart: :heart: """
                     bot.send_discord_message(bot_message)
-            elif answer == "bot send":
+                
+                # Send
                 bot_input = input("Message: ")
                 if bot_input != "":
                     bot.send_discord_message(bot_input)

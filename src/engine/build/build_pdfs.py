@@ -10,17 +10,13 @@ from engine import config
 from engine import utils
 
 # Copy pdf:s
-def copy_over_pdfs(gen_type):
+def copy_over_pdfs(gen_type: list):
     pdf_start_path = config.base_path / Path("content/utgavor_pdfs")
     pdf_file_end_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_files")
     pdf_images_end_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")
     
     amount_of_pdfs = 0
     all_amount_pages = {}
-    
-    desired_utgava_nmr = None
-    if "specific" in gen_type:
-        desired_utgava_nmr = re.findall(r"specific: (\d+)", gen_type)[0] # Find what desired utgava number we are searching for
     
     for file_dir in Path(pdf_start_path).iterdir():
         amount_of_pdfs += 1
@@ -34,14 +30,19 @@ def copy_over_pdfs(gen_type):
         all_amount_pages[utgava_number] = amount_of_pages
         
         full_pdf_file_end_path = pdf_file_end_path / utils.remove_åäö(file_dir.name)
+        desired_utgava_nmr = None
         copy_file_switch = False
         
-        if gen_type != "new" or Path(full_pdf_file_end_path).is_file() is False:
+        for type_item in gen_type:
+            if "specific" in str(type_item):
+                desired_utgava_nmr = re.findall(r"specific: (\d+)", type_item)[0] # Find what desired utgava number we are searching for
+        
+        if "new" not in gen_type or Path(full_pdf_file_end_path).is_file() is False:
             if desired_utgava_nmr:
                 if int(utgava_number) == int(desired_utgava_nmr):
-                    copy_file_switch = True
+                    create_images_switch = True
             else:
-                copy_file_switch = True
+                create_images_switch = True
 
         # Copy the file
         if copy_file_switch:
@@ -52,7 +53,7 @@ def copy_over_pdfs(gen_type):
         pdf_image_folder_path = pdf_images_end_path / f"Utgava_{utgava_number}"
         create_images_switch = False
         
-        if gen_type != "new" or Path(pdf_image_folder_path).is_dir() is False: # if gen_type = "specific" we check if the folder for that pdf exists, not if it has image files inside
+        if "new" not in gen_type or Path(pdf_image_folder_path).is_file() is False: # if gen_type = "specific" we check if the folder for that pdf exists, not if it has image files inside
             if desired_utgava_nmr:
                 if int(utgava_number) == int(desired_utgava_nmr):
                     create_images_switch = True

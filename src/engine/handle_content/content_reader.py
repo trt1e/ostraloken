@@ -20,8 +20,8 @@ def make_regex_list_to_dict(list) -> list:
     number_of_articles = 0
     last_element = list[-1][0]
     for package in list: # go throught all the packages
-        section_title = package[0].replace("\n", "")
-        section_text = package[1].replace("\n", "")
+        section_title = package[0].strip()
+        section_text = package[1].strip()
         currant_bundle[section_title] = section_text # Ex: currant_bundle["Title"] = "What is the meaning of life?"
         
         if package[0] == last_element: # Then we have looped
