@@ -12,6 +12,7 @@ img_extentions = [".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG", ".webp", ".W
 
 base_webb_paths = [
     base_path / Path("generated/webb/nyhetsflode.ostraloken.se"),
+    base_path / Path("generated/webb/bilder.ostraloken.se"),
     base_path / Path("generated/webb/ostraloken.se")
 ]
 
