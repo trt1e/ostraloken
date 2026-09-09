@@ -12,16 +12,17 @@ const pagesPerPDF = [1, 2, 2, 2, 2, 3, 2, 2, 4, 2, 3, 3, 4, 3, 3, 4, 4, 3, 3, 4,
 
 const amoutPDFs = pagesPerPDF.length;
 
+// get query info in the url (like ostraloken.se/pdfer/?utgava=15)
+const query_string = window.location.search;
+const url_params = new URLSearchParams(query_string);
+
 let numberOfPages;
 let currant_utgava = amoutPDFs;
 let renderMode = "image"; // "browser" vs "image", we start on image since it is faster and better for viewing
 
 window.addEventListener("load", () => {
-    // get query info in the url (like ostraloken.se/pdfer/?utgava=15)
-    const queryString = window.location.search;
-    const urlParameters = new URLSearchParams(queryString);
     // extract
-    const wantedutgavaNumber = urlParameters.get("utgava")
+    const wantedutgavaNumber = url_params.get("utgava")
     // if there is a utgava request in url it sets it as the first 
     if (wantedutgavaNumber) {
         currant_utgava = parseInt(wantedutgavaNumber);
@@ -107,6 +108,10 @@ function render() {
     pdfNumber.style.display = "block";
     pdfImgContainer.style.display = "block";
     loadingText.style.display = "none";
+
+    // add currant search to url
+    url_params.set("utgava", currant_utgava);
+    history.replaceState(null, null, "?" + url_params.toString()); // uppdate url bar
     
     console.log("Renderd utgava " + currant_utgava)
 };
