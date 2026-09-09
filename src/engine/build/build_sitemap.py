@@ -66,7 +66,7 @@ def gen_sitemap(webb_path):
     {content}
 </urlset>"""
         # Create/write to the sitemap file
-        sitemap_path = webbsite_path / "sitemap.xml"
+        sitemap_path = webbsite_path / "webb_sitemap.xml"
         sitemap = sitemap.replace("> ", f"> <!--ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!-->")
         with open(sitemap_path, "w", encoding="utf-8") as sitemap_file:
             sitemap_file.write(sitemap) # Write the file

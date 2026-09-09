@@ -211,6 +211,7 @@ def run():
             
             elif all_commands["close"].check_match_base(answer):
                 break
+
             elif all_commands["restart"].check_match_base(answer):
                 print("Restarting...")
                 subprocess.run(f'python -u "{config.engine_path / Path("main.py")}"')
