@@ -4,7 +4,7 @@
 >>Rod_flagga: Gå i Fredrika bremer 
 >>Beskrivning: Handen bo är gangsters 
 
->>Rod_flagga: Klagar om sina ”dåliga betyg” när de får ett B
+>>Rod_flagga: Klagar om sina "dåliga betyg" när de får ett B
 >>Beskrivning: Har jobbat bajs hårt för mitt E och så sitter du här och klagar om ditt B 🙄
 
 >>Rod_flagga: Att hata matematik
@@ -12,3 +12,6 @@
 
 >>Rod_flagga: Att ta bort fast omprovstid
 >>Beskrivning: 
+
+>>Rod_flagga: Att stödrösta på L
+>>Beskrivning: Sånt L-move
