@@ -127,6 +127,23 @@ main {
     transition: 0.2s;
 }
 
+.rod_flagga_area {
+    width: 100%;
+    height: 4rem;
+    margin-top: 1rem;
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+}
+.RF_button {
+    background-color: white;
+    width: 90%;
+    height: 4rem;
+    border: var(--darkest-bg-color) solid 2px;
+    margin: auto;
+    transition: 0.2s;
+}
+
 #feed .article.notis {
     width: calc(60%);
     margin-left: calc(50% - 30% - 1rem - 2px);
