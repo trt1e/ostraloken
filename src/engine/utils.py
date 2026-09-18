@@ -94,7 +94,7 @@ def find_img(article_title, utgava_nmr):
         old_img_path_with_extention = "NO_IMG" # article does not have image
         
     if old_img_path_with_extention != "NO_IMG":
-        return new_img_title + ".webp"
+        return new_img_title
     else:
         return ""
 

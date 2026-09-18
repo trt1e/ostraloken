@@ -107,7 +107,7 @@ def generate_lone_article(redirect_src, img_src_base, img_src_head, title, conte
         if article_nmr != 0 and article_nmr != -1: # this is so the first image dosn't have loading lazy so it dosnt pop in
             image_extra += ' loading="lazy"'
             
-        image_context = f'<img src="{img_src_base}{img_src_head}" {image_extra} width="800" height="600">'
+        image_context = f'<img src="{img_src_base}{img_src_head}.webp" {image_extra} width="800" height="600">'
     if title is None or title == "":
         title = "Null"
     if content is None or content == "":

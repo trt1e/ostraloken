@@ -32,9 +32,9 @@ for utgava in reversed(content_reader.read_articles()):
                 # Add this new_img_url_with_extention into a html-structure
                 generated_images_linked += f"""
 <div class="image_container" id="{image_id}">
-    <img src="{url_path}" loading="lazy" width="800" height="600">
+    <a target="_blank" href="{url_path}"><img src="{url_path}" loading="lazy" width="800" height="600"></a>
     <h2>{article_title}</h2>
-</div>   
+</div>
 """
 
 output = {}
