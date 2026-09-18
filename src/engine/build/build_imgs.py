@@ -58,8 +58,53 @@ def copy_over_images(output_type: list, gen_type: list):
                 else:
                     old_img_path_with_extention = "NO_IMG" # article does not have image
                 
+                # Generate the qr codes to the articles
+                # This is done regardles of if there is a image linked to that article
+                if "article_qr_codes" in output_type:
+                    article_id = utils.make_article_id(article_title, utgava_number)
+                    article_file_name = utils.make_qr_id(article_title, utgava_number)
+                    
+                    article_qr_destination_dir = article_qr_destination_base_dir / Path(article_file_name)
+
+                    # if all and no file: YES
+                    # if all and file: YES
+                    # if new and no file: YES
+                    # if new and file: NO
+                    if "new" not in gen_type or Path(article_qr_destination_dir).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
+                        create_image_switch = False
+                        for type_item in gen_type:
+                            if "specific" in str(type_item):
+                                desired_utgava_nmr = re.findall(r"specific: (\d+)", type_item)[0]
+                                if int(utgava_number) == int(desired_utgava_nmr):
+                                    create_image_switch = True
+                            else:
+                                create_image_switch = True
+
+                        if create_image_switch:
+                            # Add a qr-code to the image
+                            utgava_qr = qrcode.QRCode(
+                                box_size=50,
+                                border=1.5
+                            )
+                            utgava_qr.add_data(f"https://ostraloken.se/a/{article_id}")
+                            utgava_qr.make(fit=True)
+                            utgava_img_qr = utgava_qr.make_image(
+                                fill_color="#EE7322", #FG
+                                back_color="#fbf6f3", #BG
+                                image_factory=PilImage
+                            ).convert("RGB")
+                            length = 500
+                            article_qr = utgava_img_qr.resize((length, length))
+                            
+                            article_qr.save(article_qr_destination_dir, quality=100)
+                            #print(f"Created QR code: {article_file_name}")
+                            
+                    else: # gen type == "new" and Path(new_img_url_with_extention).is_file():
+                        pass
+                
+                
                 # There is a image linked to this article 
-                if old_img_path_with_extention != "NO_IMG": # Create insta image
+                if old_img_path_with_extention != "NO_IMG":
                     # Generate the article images
                     if "article_images" in output_type:
                         new_img_title = utils.remove_åäö(utils.make_image_id(article_title)) + ".webp"
@@ -89,49 +134,6 @@ def copy_over_images(output_type: list, gen_type: list):
                                 new_image = image.resize((new_width, new_height))
                                 new_image.save(new_img_url_with_extention, quality=80)
                                 #print(f"Copied image: {new_img_title}")
-                        else: # gen type == "new" and Path(new_img_url_with_extention).is_file():
-                            pass
-                    
-                    # Generate the qr codes to the articles
-                    if "article_qr_codes" in output_type:
-                        article_id = utils.make_article_id(article_title, utgava_number)
-                        article_file_name = utils.make_qr_id(article_title, utgava_number)
-                        
-                        article_qr_destination_dir = article_qr_destination_base_dir / Path(article_file_name)
-
-                        # if all and no file: YES
-                        # if all and file: YES
-                        # if new and no file: YES
-                        # if new and file: NO
-                        if "new" not in gen_type or Path(article_qr_destination_dir).is_file() is False: # either gen_typ isn't new, or if it is, we still let it pass if there is no file
-                            create_image_switch = False
-                            for type_item in gen_type:
-                                if "specific" in str(type_item):
-                                    desired_utgava_nmr = re.findall(r"specific: (\d+)", type_item)[0]
-                                    if int(utgava_number) == int(desired_utgava_nmr):
-                                        create_image_switch = True
-                                else:
-                                    create_image_switch = True
-
-                            if create_image_switch:
-                                # Add a qr-code to the image
-                                utgava_qr = qrcode.QRCode(
-                                    box_size=50,
-                                    border=1.5
-                                )
-                                utgava_qr.add_data(f"https://ostraloken.se/a/{article_id}")
-                                utgava_qr.make(fit=True)
-                                utgava_img_qr = utgava_qr.make_image(
-                                    fill_color="#EE7322", #FG
-                                    back_color="#fbf6f3", #BG
-                                    image_factory=PilImage
-                                ).convert("RGB")
-                                length = 400
-                                article_qr = utgava_img_qr.resize((length, length))
-                                
-                                article_qr.save(article_qr_destination_dir, quality=100)
-                                #print(f"Created QR code: {article_file_name}")
-                                
                         else: # gen type == "new" and Path(new_img_url_with_extention).is_file():
                             pass
                     
@@ -328,7 +330,7 @@ def copy_over_images(output_type: list, gen_type: list):
                                     else:
                                         #print(f"No pdf generated for utgava {utgava_number} so no social media posts could be created!")
                                         pass
-                                    
+                       
     else:
         progressbar_item.finish()
         print("No images left to copy")

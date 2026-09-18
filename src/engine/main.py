@@ -1,57 +1,6 @@
 r"""
 Att fixa senare:
 - Alla artiklar innan utgava 11-5 ska dubbelkollas om artikeln är samma i pdf som text
-
-
-<!--
-    <dialog class="popup">
-        <img class="loken_image" alt="Östra Löken logo" src="./images/logo/östra_löken_i_östra_format_rak_vit_text.webp">
-        <h2>Hjälp Löken tjäna övervinster</h2>
-        <p>
-Just nu går jättemånga företag med rekordvinst, men inte vi – tills nu!
-Hjälp oss betala av våra enorma SMS-lån genom att prenumerera på Östra Löken Premium++ Basic.
-Vi tar gladerligen emot alla stora mängder av pengar, vare sig det är jättestora mängder pengar eller bara ganska stora mängder pengar.
-Allt stöd kommer varmhjärtat ignoreras av oss på Löken ❤️.
-<br><br>Östra Löken Premium++ Basic kostar just nu <b>bara 43 990 kr per månad</b>!
-</p>
-        <button class="popup_button clickable_element" id="popup_buy_button"><p><b>Prenumerera idag!</b></p></button>
-        <button class="popup_button clickable_element" id="popup_deny_button"><p><b>Nej, jag är fattig och töntig.</b></p></button>
-    </dialog>
--->
-
-    $ help (h) --> Lists all commands
-    $ close (c) --> Terminate script
-    $ restart (r) --> Terminate, then restart script
-    
-    TEMPLATES
-    $ new utgava template (new ut) --> Generates a new utgava template with articles, notiser and hear me outs
-    
-    GENERATE TEXT FILES
-    $ gen all (g) --> Generate all webbpage files
-
-    COPY IMAGES
-    $ copy images (ci) ...
-    ... = new (n) --> Copy over only the new images
-    ... = all (a) --> Copy over all images, even if they alredy exists
-    ... = specific (s) --> Copy over all images in a specific utgava
-    
-    COPY PDF:S
-    $ copy pdfs (cp) ...
-    ... = new (n) --> Copy over only the new pdf:s
-    ... = all (a) --> Copy over all pdf:s, even if they alredy exists
-    ... = specific (s) --> Copy over a specific utgavas pdf 
-    
-    FIX CONTENT
-    $ inspect (i) --> Looks through content so everything is as it should be, if not: it's reported   
-    $ fix ...
-    ... = citationmarks (c) --> Replace all “ and ” with ", as they should be
-    ... = article names (an) --> Rename normal storys to their title (keeping them in the same order)
-
-    DISCORD BOT
-    $ bot ...
-    ... = start --> Start the discord bot
-    ... = reminder --> Send a reminder that they should write this week
-    ... = send --> Send any message you want via the bot
 """
 print("BOOTING OSTRALOKEN!")
 
@@ -183,7 +132,7 @@ all_commands = {
     ), "inspect": command("inspect", "i", None, None, "Looks through content so everything is as it should be, if not: it's reported", "Fix content"),
     "fix": command("fix", None, 
         {"gen_selection": ["citationmarks", "article names"]}, 
-        {"gen_selection": ["c", "an"]}, 
+        {"gen_selection": ["ci", "an"]}, 
         "Fix up content so that it is as it should be", "Fix content"
     ),
     "bot": command("bot", None, 

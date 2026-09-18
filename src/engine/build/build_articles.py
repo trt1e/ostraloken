@@ -94,11 +94,11 @@ def generate_static_section(title, content, image_src):
 # ---------------------------------------------
 
 # create the article for preview or /a/ articles
-def generate_lone_article(redirect_src, img_src, title, content, type, author, article_nmr, utgava_nmr): # utgava_nmr should be -1 if its the only/primary article
+def generate_lone_article(redirect_src, img_src_base, img_src_head, title, content, type, author, article_nmr, utgava_nmr): # utgava_nmr should be -1 if its the only/primary article
     # if you dont want a ancor redirecting to be generated, set redirect_src to "SHOULD_NOT_REDIRECT"
     if redirect_src is None or redirect_src == "":
         redirect_src = "./" # no redirect
-    if img_src is None or img_src == "" or img_src == "NO_IMAGE_AVAILABLE":
+    if img_src_head is None or img_src_head == "" or img_src_head == "NO_IMAGE_AVAILABLE":
         no_img_class = "no_img"
         image_context = "<!-- NO IMAGE HERE -->"
     else:
@@ -107,7 +107,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         if article_nmr != 0 and article_nmr != -1: # this is so the first image dosn't have loading lazy so it dosnt pop in
             image_extra += ' loading="lazy"'
             
-        image_context = f'<img src="{img_src}" {image_extra} width="800" height="600">'
+        image_context = f'<img src="{img_src_base}{img_src_head}" {image_extra} width="800" height="600">'
     if title is None or title == "":
         title = "Null"
     if content is None or content == "":
@@ -134,7 +134,7 @@ def generate_lone_article(redirect_src, img_src, title, content, type, author, a
         final_article = f"""
 <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
     {type_context}
-    {image_context}
+    <a class="image_linking" href="https://bilder.ostraloken.se/#{img_src_head}">{image_context}</a>
     <{h_tag}>{title}</{h_tag}> <!-- This is the h1 since nothing else is on this page -->
     <p>{content}</p>
     {author_context}
@@ -222,13 +222,13 @@ def get_all_articles(base_redirect_html_url, get_what_articles):
                 article_id = utils.make_article_id(article_title, utgava_number) # what is used to identefy the article
 
                 if get_what_articles == "All":
-                    img_url = utils.find_img(org_article_title, utgava_number, f"{base_redirect_html_url}images/") # get the url to the img as a html link
-                    generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, utgava_number))
+                    img_url = utils.find_img(org_article_title, utgava_number) # get the url to the img as a html link
+                    generated_articles.append(generate_lone_article((base_redirect_html_url + article_id + ".html"), f"{base_redirect_html_url}images/", img_url, article_title, (shorted_main_text + extra_at_end + "..."), article_type, article_author, how_many_articles_generated, utgava_number))
                     how_many_articles_generated += 1
                 elif get_what_articles == "Similar":
                     if article_type not in generated_articles_based_on_type:
                         generated_articles_based_on_type[article_type] = {} # initialize generated_articles_based_on_type[article_type]
-                    generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, utgava_number)})
+                    generated_articles_based_on_type[article_type].update({article_id: generate_lone_article(("./" + article_id + ".html"), None, None, article_title, (shorted_main_text + extra_at_end + "..."), None, article_author, -1, utgava_number)})
                     how_many_articles_generated += 1
                 else: # get_what_articles == "List"
                     generated_list.append(article)
@@ -249,7 +249,7 @@ def generate_all_articles():
     all_short_storys = content_reader.read_txt("notiser.txt")
     
     random.seed(hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
-    print("Hash:", hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
+    #print("Hash:", hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
     
     print("Generating all articles:")
     progressbar_item = progressbar.ProgressBar(maxval=int(len(content_reader.read_articles())))
@@ -283,8 +283,8 @@ def generate_all_articles():
                 article_type = article["Texttyp"]
                 article_author = article["Skribent"]
                 # copy over images and get the url to the right image
-                article_img_src = utils.find_img(basic_article_title, utgava_number, "./images/")
-                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, article_title, article_main_text, article_type, article_author, -1, utgava_number)
+                article_img_src = utils.find_img(basic_article_title, utgava_number)
+                generated_article += generate_lone_article("SHOULD_NOT_REDIRECT", "./images/", article_img_src, article_title, article_main_text, article_type, article_author, -1, utgava_number)
 
                 # generate the article id
                 article_id = utils.make_article_id(article_title, utgava_number)

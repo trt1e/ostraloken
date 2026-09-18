@@ -1,0 +1,59 @@
+/* Base */
+:root {
+    --bg-color: #fbf6f3; /*for the background*/
+    --dark-bg-color: #f3efec; /*for things with a clearly differant background than --bg-color*/
+    --darker-bg-color: #ece8e4; /*for outline before hover*/
+    --darkest-bg-color: #d3cecc; /*for outlines and for hover outline*/
+    --text-color: #130c09; /*for text*/
+    --lighter-text-color: #aba29e; /*for less inportant text*/
+    --lightest-text-color: #f8f4f2;
+    --primary-color: #EE7322; /*for header and hover*/
+    --secondary-color: #da8852; /*for orange color before hover*/
+    --highlight-color: yellow; /*for the article type*/
+}
+* {
+    margin: 0;
+}
+body {
+    background-color: var(--bg-color);
+    background-image: linear-gradient(to bottom right, var(--bg-color), var(--dark-bg-color));
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: var(--text-color);
+    overflow-wrap: anywhere;
+}
+
+/* Main */
+main {
+    height: fit-content;
+    padding-top: 0.7rem;
+}
+h1 {
+    width: 100%;
+    min-height: 2.5rem;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 3rem;
+}
+
+.image_container {
+    background-image: radial-gradient(closest-side, var(--darkest-bg-color), transparent);
+    margin-bottom: 2rem;
+    transition: 0.3s;
+}
+.image_container img {
+    width: 100%;
+    height: calc(100vh - 3rem);
+    display: block;
+    object-fit: contain;
+    aspect-ratio: attr(width) / attr(height); /*To make sure frame exists*/
+}
+.image_container h2 {
+    min-height: 3rem;
+    text-align: center;
+    font-size: 2.2rem;
+}
+@media (width < 35rem) {
+    .image_container h2 {
+        font-size: 1.8rem;
+    }
+}

@@ -10,8 +10,8 @@ for utgava in reversed(content_reader.read_articles()):
     for article_bundle in utgava["Content"]:
         article = article_bundle[0]
         if article: # somethimes article is empty, this prevents that
-            article_img_src = utils.find_img(utils.remove_html_elements(str(article["Rubrik"])), utgava_number, "https://ostraloken.se/a/images/") # get the url to the right image
-            whole_content_articles += build_articles.generate_lone_article("SHOULD_NOT_REDIRECT", article_img_src, str(article["Rubrik"]), str(article["Artikel"]), str(article["Texttyp"]), str(article["Skribent"]), -1, utgava_number)
+            article_img_src = utils.find_img(utils.remove_html_elements(str(article["Rubrik"])), utgava_number) # get the url to the right image
+            whole_content_articles += build_articles.generate_lone_article("SHOULD_NOT_REDIRECT", "https://ostraloken.se/a/images/", article_img_src, str(article["Rubrik"]), str(article["Artikel"]), str(article["Texttyp"]), str(article["Skribent"]), -1, utgava_number)
 
 output = {}
 output[f"[+all_articles+]"] = whole_content_articles

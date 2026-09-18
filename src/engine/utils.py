@@ -82,7 +82,7 @@ def remove_åäö(string):
     return string
 
 # Se if a image in /a/images/ exists
-def find_img(article_title, utgava_nmr, base_url):
+def find_img(article_title, utgava_nmr):
     old_img_title = make_image_id(article_title)
     new_img_title = remove_åäö(make_image_id(article_title))
     old_img_path_no_extention = config.articles_path / f"utgava_{utgava_nmr}" / old_img_title
@@ -94,7 +94,7 @@ def find_img(article_title, utgava_nmr, base_url):
         old_img_path_with_extention = "NO_IMG" # article does not have image
         
     if old_img_path_with_extention != "NO_IMG":
-        return base_url + new_img_title + ".webp"
+        return new_img_title + ".webp"
     else:
         return ""
 

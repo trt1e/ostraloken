@@ -16,8 +16,8 @@ def create_dictionary():
         
     # Import the replacment components in the replacment dictionary
     # The files in /replacments/ output a dict which is named "output"
-    for module_bundle in pkgutil.iter_modules(replacments.__path__):
-        module = importlib.import_module(f"{replacments.__name__}.{module_bundle.name}")
+    for module_bundle in pkgutil.iter_modules(replacments.__path__): # We get all modules in the folder replacment
+        module = importlib.import_module(f"{replacments.__name__}.{module_bundle.name}") # We extract the module
         replacment_dictionary = replacment_dictionary | module.output # Merge the dicts
     
     print("Dictionary created")
@@ -33,14 +33,21 @@ def generate_webbsite(webb_path, template_path):
         if Path(file_dir).is_file(): # If it is not a folder
             with open(file_dir, "tr", encoding="utf-8") as file:  
                 whole_file = file.read() # read it
+            
+            destination_dir = None
             file_type = Path(file_dir).suffix
             if file_type == ".html":
                 destination_dir = re.findall(r"<!--@\( (.*?) \)@-->", whole_file)[0]
             elif file_type == ".css" or file_type == ".js":
                 destination_dir = re.findall(r"\/\*@\( (.*?) \)@\*\/", whole_file)[0]
             else:
+                print(f"WARNING: {file_dir} is not a html, css or js file.")
+            
+            # If there is no destination dir given or found, then the file is skipped and we give a warning
+            if not destination_dir:
                 print(f"WARNING: {file_dir} does not have a destination dir! Please add one. This file is skiped.")
                 continue
+            
             full_destination_dir = webb_path / "webbsite" / Path(str(destination_dir)) 
             os.makedirs(full_destination_dir.parent, exist_ok=True) # make sure the folder exists, else: generate the folder
             build_articles.generate_site(file_dir, full_destination_dir, replacment_for_all)
