@@ -118,13 +118,13 @@ def get_head_writers():
 
 
 # Make IDs for diffrent elements:
-def make_article_id(article_title, utgava_number) -> str:
+def make_article_id(article_title: str, utgava_number: int) -> str:
     id_article = remove_åäö(article_title)
     id_article = strip_string(remove_html_elements(id_article), 100)
     id_utgava = "-U" + str(utgava_number)
     return id_article + id_utgava
 
-def make_notis_id(article_title, article_content) -> str:
+def make_notis_id(article_title: str, article_content: str) -> str:
     id_article = remove_åäö(article_title)
     id_article = remove_åäö(article_content)
     
@@ -133,10 +133,10 @@ def make_notis_id(article_title, article_content) -> str:
 
     return id_article + "+" + id_content
 
-def make_image_id(article_title) -> str:
+def make_image_id(article_title: str) -> str:
     return "IMG-" + strip_string(remove_html_elements(article_title), 100)
 
-def make_qr_id(article_title, utgava_number) -> str:
+def make_qr_id(article_title: str, utgava_number: int) -> str:
     id_article = remove_åäö(article_title)
     id_article = strip_string(remove_html_elements(id_article), 100)
     return "QR-" + str(id_article) + "-U" + str(utgava_number) + ".webp"

@@ -26,13 +26,16 @@ for utgava in reversed(content_reader.read_articles()):
             # There is a image linked to this article 
             if old_img_path_with_extention != "NO_IMG":
                 image_id = utils.remove_åäö(utils.make_image_id(article_title))
-                url_path = "https://ostraloken.se/a/images/" + image_id + ".webp"
+                image_url_path = "https://ostraloken.se/a/images/" + image_id + ".webp"
+                
+                article_id = utils.remove_åäö(utils.make_article_id(article_title, utgava_number))
+                article_url_path = "https://ostraloken.se/a/" + article_id
                 
                 # Add this new_img_url_with_extention into a html-structure
                 generated_images_linked += f"""
 <div class="image_container" id="{image_id}">
-    <a target="_blank" href="{url_path}"><img src="{url_path}" loading="lazy" width="800" height="600"></a>
-    <h2>{article_title}</h2>
+    <a target="_blank" href="{image_url_path}"><img src="{image_url_path}" loading="lazy" width="800" height="600"></a>
+    <a href="{article_url_path}"><h2>{article_title}</h2></a>
 </div>
 """
 

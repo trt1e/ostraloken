@@ -39,6 +39,9 @@ h1 {
     background-image: radial-gradient(closest-side, var(--darkest-bg-color), transparent);
     margin-bottom: 2rem;
     transition: 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .image_container img {
     width: 100%;
@@ -47,10 +50,19 @@ h1 {
     object-fit: contain;
     aspect-ratio: attr(width) / attr(height); /*To make sure frame exists*/
 }
+.image_container a {
+    color: var(--text-color);
+    cursor: default;
+    text-decoration: none;
+}
+.image_container a:hover {
+    text-decoration: underline;
+}
 .image_container h2 {
     min-height: 3rem;
     text-align: center;
     font-size: 2.2rem;
+    width: fit-content;
 }
 @media (width < 35rem) {
     .image_container h2 {
