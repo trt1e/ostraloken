@@ -131,10 +131,15 @@ def generate_lone_article(redirect_src, img_src_base, img_src_head, title, conte
         if article_nmr == -1:
             h_tag = "h1"
         
+        # Add the linking of the image if there is a image
+        # This way there isnt a empty <a> tag if there is no image_context
+        if image_context != "<!-- NO IMAGE HERE -->":
+            image_context = f'<a class="image_linking" href="https://bilder.ostraloken.se/#{img_src_head}">{image_context}</a>'
+        
         final_article = f"""
 <article id="{article_id}" class="article {no_img_class}"> <!--Add the "no_img" class to article if it has no image-->
     {type_context}
-    <a class="image_linking" href="https://bilder.ostraloken.se/#{img_src_head}">{image_context}</a>
+    {image_context}
     <{h_tag}>{title}</{h_tag}> <!-- This is the h1 since nothing else is on this page -->
     <p>{content}</p>
     {author_context}

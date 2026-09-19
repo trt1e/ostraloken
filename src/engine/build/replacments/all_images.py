@@ -3,7 +3,6 @@ from pathlib import Path
 from engine import utils
 from engine import config
 from engine.handle_content import content_reader
-from engine.build import build_articles
 
 # All images linked and in html-structure
 generated_images_linked = ""
