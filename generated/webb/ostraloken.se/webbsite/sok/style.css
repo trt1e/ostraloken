@@ -104,6 +104,10 @@ main {
     color: var(--primary-color);
 }
 
+.image_linking {
+    cursor: default; 
+}
+
 #feed .article.hear_me_out {
     text-align: center;
 }

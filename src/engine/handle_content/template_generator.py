@@ -36,30 +36,40 @@ def setup_new_notiser(utgava_number, count_notiser, day, month, year):
 
 
 /~utgava {utgava_number} ({day}/{month}/{year}):"""
-    if int(count_notiser) == 0:
-        content = "" # make so it doesnt say "utgava {highest_utgava_number} ({day}/{month}/{year}):" if there are no notiser
     lone_content = f"""
 
 >>Rubrik: RUBRIK
 >>Artikel: BRÖDTEXT"""
     # add right amount of notiser to new utgava
-    for _ in range(int(count_notiser)):
-        content += lone_content
+    if count_notiser == None or count_notiser == "" or str(count_notiser) == "0":
+        content += "\n/~INGENTING HÄR"
+    else:
+        content += str(lone_content) * int(count_notiser)
     
     content_writer.write_to_content("notiser.txt", "a", content)
 
     print(f"Generated notis template for utgava {utgava_number}")
     
 def setup_new_hear_me_outs(utgava_number, count_hear_me_outs):
-    content = ""
     lone_content = f"""
 
 >>Hear_me_out: HEAR_ME_OUT
 >>Beskrivning: BESKRIVNING"""
-    # add right amount of notiser to new utgava
-    for _ in range(int(count_hear_me_outs)):
-        content += lone_content
+    # add right amount of hear me out to new utgava
+    content = str(lone_content) * int(count_hear_me_outs)
     
     content_writer.write_to_content("hear_me_outs.txt", "a", content)
     
     print(f"Generated hear me outs template for utgava {utgava_number}")
+
+def setup_new_rod_flagga(utgava_number, count_roda_flaggor):
+    lone_content = f"""
+
+>>Rod_flagga: ROD_FLAGGA
+>>Beskrivning: BESKRIVNING"""
+    # add right amount of rod flagga to new utgava
+    content = str(lone_content) * int(count_roda_flaggor)
+    
+    content_writer.write_to_content("roda_flaggor.txt", "a", content)
+    
+    print(f"Generated roda flaggors template for utgava {utgava_number}")

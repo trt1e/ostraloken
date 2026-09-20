@@ -36,7 +36,7 @@ def copy_over_pdfs(gen_type: list):
         for type_item in gen_type:
             if "specific" in str(type_item):
                 desired_utgava_nmr = re.findall(r"specific: (\d+)", type_item)[0] # Find what desired utgava number we are searching for
-        
+
         if "new" not in gen_type or Path(full_pdf_file_end_path).is_file() is False:
             if desired_utgava_nmr:
                 if int(utgava_number) == int(desired_utgava_nmr):
@@ -50,10 +50,11 @@ def copy_over_pdfs(gen_type: list):
             
             print(f"Copied pdf file {file_dir.name}")
 
+
         pdf_image_folder_path = pdf_images_end_path / f"Utgava_{utgava_number}"
         create_images_switch = False
         
-        if "new" not in gen_type or Path(pdf_image_folder_path).is_file() is False: # if gen_type = "specific" we check if the folder for that pdf exists, not if it has image files inside
+        if "new" not in gen_type or Path(pdf_image_folder_path).is_dir() is False: # if gen_type = "specific" we check if the folder for that pdf exists, not if it has image files inside
             if desired_utgava_nmr:
                 if int(utgava_number) == int(desired_utgava_nmr):
                     create_images_switch = True

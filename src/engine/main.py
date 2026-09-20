@@ -132,7 +132,7 @@ all_commands = {
     ), "inspect": command("inspect", "i", None, None, "Looks through content so everything is as it should be, if not: it's reported", "Fix content"),
     "fix": command("fix", None, 
         {"gen_selection": ["citationmarks", "article names"]}, 
-        {"gen_selection": ["ci", "an"]}, 
+        {"gen_selection": ["cm", "an"]}, 
         "Fix up content so that it is as it should be", "Fix content"
     ),
     "bot": command("bot", None, 
@@ -177,6 +177,9 @@ def run():
                 amount_of_hear_me_outs = input("Amount hear me outs: ")
                 if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "" or not re.search(r"[0-9]", amount_of_hear_me_outs):
                     amount_of_hear_me_outs = 0
+                amount_of_roda_flaggor = input("Amount roda flaggor: ")
+                if amount_of_roda_flaggor is None or amount_of_roda_flaggor == "" or not re.search(r"[0-9]", amount_of_roda_flaggor):
+                    amount_of_roda_flaggor = 0
                     
                 day = input("Day of release: ")
                 if day is None or day == "" or not re.search(r"[0-9]", day):
@@ -187,13 +190,14 @@ def run():
                 year = input("Year of release: ")
                 if year is None or year == "" or not re.search(r"[0-9]", year):
                     year = "ÅÅÅÅ"
-                    
+                
                 next_utgava_number = len(content_reader.read_articles()) + 1
     
                 template_generator.setup_new_utgava_folder(next_utgava_number, day, month, year)
                 template_generator.setup_new_utgava_articles(next_utgava_number, amount_of_articles)
                 template_generator.setup_new_notiser(next_utgava_number, amount_of_notiser, day, month, year)
                 template_generator.setup_new_hear_me_outs(next_utgava_number, amount_of_hear_me_outs)
+                template_generator.setup_new_rod_flagga(next_utgava_number, amount_of_roda_flaggor)
             
             # generate text files
             elif all_commands["gen all"].check_match_base(answer):

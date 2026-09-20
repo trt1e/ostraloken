@@ -516,8 +516,10 @@
 >>Rubrik: Har någon en blipp som fungerar?
 >>Artikel: Min blipp har typ slutat funka, har suttit utanför södra entrén sedan i tisdags. Jag fryser. Släpp in mig!!!
 
-/~utgava 43 (14/9/2026):
+
+/~utgava 43 (7/9/2026):
 /~INGENTING HÄR
+
 
 /~utgava 44 (14/9/2026):
 
@@ -529,3 +531,7 @@
 
 >>Rubrik: Besvikande val
 >>Artikel: Många röstare var besvikna efter riksdagsvalet 2026 då de hade hoppats att deras parti skulle få minst 75 %. "Nästa år dock…", avslutar en person Löken pratat med.
+
+
+/~utgava 45 (21/9/2026):
+/~INGENTING HÄR
