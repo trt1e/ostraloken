@@ -14,29 +14,56 @@
 <body>
     <main>
         <h1 class="top_text">Östra lökens korrekturläsare</h1>
-        <form id="main-submit-feed">
-            <label for="user-input-rubrik">Rubrik:</label>
+        
+        <h2 class="topic-catagorys">Input:</h2>
+        <form class="whole-article-container" id="main-submit-feed">
+            <label for="user-input-rubrik"><b>Rubrik:</b></label>
             <input type="text" name="r" id="user-input-rubrik">
             
-            <label for="user-input-texttyp">Texttyp:</label>
+            <label for="user-input-texttyp"><b>Texttyp:</b></label>
             <input type="text" name="t" id="user-input-texttyp">
 
-            <label for="user-input-skribent">Skribent:</label>
+            <label for="user-input-skribent"><b>Skribent:</b></label>
             <input type="text" name="s" id="user-input-skribent">
 
-            <label for="user-input-artikel">Artikel:</label>
+            <label for="user-input-artikel"><b>Artikel:</b></label>
             <textarea name="a" id="user-input-artikel" cols="60" rows="10"></textarea>
 
             <button type="submit">Analysera</button>
         </form>
 
+        <h2 class="topic-catagorys">Kommentarer:</h2>
+        <div class="whole-article-container">
+            <p><b>Rubrik:</b></p>
+            <p class="output" id="output-rubrik"></p>
+            
+            <p><b>Texttyp:</b></p>
+            <p class="output" id="output-texttyp"></p>
 
+            <p><b>Skribent:</b></p>
+            <p class="output" id="output-skribent"></p>
+
+            <p><b>Artikel:</b></p>
+            <p class="output" id="output-artikel"></p>
+        </div>
+
+        <h2 class="topic-catagorys">Hur den ser ut på ostraloken.se:</h2>
         <article id="article-template" class="article no_img">
             <p class="type_text" id="texttype-template-container">{texttyp}</p>
             <h2 id="title-template-container">{rubrik}</h2>
             <p id="article-template-container">{artikel}</p>
             <p class="author_text"><b id="writer-template-container">{skribent}</b></p>
         </article>
+
+        <h2 class="topic-catagorys">Formaterad artikel:</h2>
+        <div class="whole-article-container">
+            <textarea readonly id="formated-article" cols="60" rows="10"></textarea>
+            <p>
+                Kom ihåg att texten forfarande behöver formateras för HTML.<br>
+                T.ex. om du vill göra någonting i fetstil användar man &lt;b> (och för att stänga &lt;/b>) eller &lt;i> (och &lt;/i>) för kursivt, och allt det här går att hitta online.<br>
+                Det bör också sägas att man kommer behöva lägga till &lt;br> för att få en ny rad och ofta vill man ha &lt;br>&lt;br>.
+            </p>
+        </div>
     </main>
 
     <script src="./js/check_text.js"></script>
