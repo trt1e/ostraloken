@@ -25,12 +25,12 @@ def inspect_all():
                 with open(file_dir, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it
                 
-                if re.search(r"[“”]", whole_text): # if “ or ” in file, should be "
-                    print(f'NOTE: {file_name} contains “ and/or ”. Instead you should use "')
+                if re.search(r'[“"]', whole_text): # if “ or " in file, should be ”
+                    print(f'NOTE: {file_name} contains “ and/or ". Instead you should use ”')
                     found_something = True
                     
-                if re.search(r"[‘’]", whole_text): # if ‘ or ’ in file, should be '
-                    print(f"NOTE: {file_name} contains ‘ and/or ’. Instead you should use '")
+                if re.search(r"[‘']", whole_text): # if ‘ or ' in file, should be ’
+                    print(f"NOTE: {file_name} contains ‘ and/or '. Instead you should use ’")
                     found_something = True
                     
                 parsed_file = content_reader.file_parser(whole_text)
@@ -90,11 +90,11 @@ def fix_citationmarks():
                 with open(file_dir, "tr", encoding="utf-8") as file:  
                     whole_text = file.read() # read it
                 
-                if re.search(r"[“”‘’]", whole_text): # if “, ”, ‘ or ’ in file
-                    new_text = whole_text.replace('“', '"')
-                    new_text = new_text.replace('”', '"')
-                    new_text = new_text.replace("‘", "'")
-                    new_text = new_text.replace("’", "'")
+                if re.search(r"""[“"‘']""", whole_text): # if “, ", ‘ or ' in file
+                    new_text = whole_text.replace('“', '”')
+                    new_text = new_text.replace('"', '”')
+                    new_text = new_text.replace("‘", "’")
+                    new_text = new_text.replace("'", "’")
                     
                     with open(file_dir, "w", encoding="utf-8") as file:
                         file.write(new_text)

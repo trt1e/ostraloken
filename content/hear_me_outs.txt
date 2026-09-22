@@ -20,7 +20,7 @@
 >>Beskrivning: Nice kurvor - rätt grisch asså
 
 >>Hear_me_out: Petburk-korgen i naturkorridoren
->>Beskrivning: The hole... It's tight...
+>>Beskrivning: The hole... It’s tight...
 
 >>Hear_me_out: Toyota corolla 2006(blå)
 >>Beskrivning: Vädligt fin
@@ -71,7 +71,7 @@
 >>Beskrivning: Lång och varm
 
 >>Hear_me_out: Östra Löknens Linktree
->>Beskrivning: Rätt så orange y'know eh eh?
+>>Beskrivning: Rätt så orange y’know eh eh?
 
 >>Hear_me_out: Josip Broz Tito
 >>Beskrivning: Rätt grisch glasögon
@@ -118,7 +118,7 @@
 >>Hear_me_out: Kex choklad
 >>Beskrivning: Brun och god
 
->>Hear_me_out: Saint Patrick's day
+>>Hear_me_out: Saint Patrick’s day
 >>Beskrivning: Behövs förklaring
 
 >>Hear_me_out: Gustav Vasa
