@@ -20,6 +20,7 @@ body {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     color: var(--text-color);
     overflow-wrap: anywhere;
+    min-height: 100%;
 }
 
 /* Hide scrollbar */

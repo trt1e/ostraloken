@@ -1,0 +1,7 @@
+/* Content in main */
+#main-submit-feed {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}

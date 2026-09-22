@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Östra Lökens korrekturläsare är ett verktyg för att kolla så att din text håller upp till Lökens standard med några enkla funktioner!">
+    <title>Östra Lökens korrekturläsare</title>
+    
+    <link rel="stylesheet" href="https://ostraloken.se/universal.css">
+    <link rel="stylesheet" href="https://ostraloken.se/a/-article_universal.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" type="image/x-icon" href="./images/meta/lok_bild_cirkel_cog_48.ico">
+</head>
+<body>
+    <main>
+        <h1 class="top_text">Östra lökens korrekturläsare</h1>
+        <form id="main-submit-feed">
+            <label for="user-input-rubrik">Rubrik:</label>
+            <input type="text" name="r" id="user-input-rubrik">
+            
+            <label for="user-input-texttyp">Texttyp:</label>
+            <input type="text" name="t" id="user-input-texttyp">
+
+            <label for="user-input-skribent">Skribent:</label>
+            <input type="text" name="s" id="user-input-skribent">
+
+            <label for="user-input-artikel">Artikel:</label>
+            <textarea name="a" id="user-input-artikel" cols="60" rows="10"></textarea>
+
+            <button type="submit">Analysera</button>
+        </form>
+
+
+        <article id="article-template" class="article no_img">
+            <p class="type_text" id="texttype-template-container">{texttyp}</p>
+            <h2 id="title-template-container">{rubrik}</h2>
+            <p id="article-template-container">{artikel}</p>
+            <p class="author_text"><b id="writer-template-container">{skribent}</b></p>
+        </article>
+    </main>
+
+    <script src="./js/check_text.js"></script>
+</body>
+</html>
