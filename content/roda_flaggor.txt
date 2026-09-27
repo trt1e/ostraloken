@@ -15,3 +15,12 @@
 
 >>Rod_flagga: Att stödrösta på L
 >>Beskrivning: Sånt L-move
+
+>>Rod_flagga: Går på toa i skolan
+>>Beskrivning: Varför?
+
+>>Rod_flagga: Grov häng
+>>Beskrivning: För man ser skinkorna
+
+>>Rod_flagga: Att behöva äta tonfiskröra vid strömavbrott.
+>>Beskrivning: Det smakar det min katt spyr upp.
