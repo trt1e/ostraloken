@@ -17,10 +17,6 @@ base_webb_paths = [
 ]
 
 articles_path = base_path / Path("content/articles")
-""" 
-notiser_path = base_path / Path("content/notiser.txt")
-hear_me_outs_path = base_path / Path("content/hear_me_outs.txt")
-"""
 
 load_dotenv() # load .env
 # access .env

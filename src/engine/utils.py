@@ -3,7 +3,7 @@ from pathlib import Path
 
 # import scripts
 from engine import config
-from engine.handle_content import content_reader
+from engine.handle_content import reader
 
 
 # Removes all unwanted characters such as % or § and replaces " " with "_"
@@ -103,7 +103,7 @@ def get_head_writers():
     # Get head writers
     head_writers = [] # list Löken head writers
     # These are the names that if they wrote a article will redirect on click to the omoss page!
-    staff_file_content = content_reader.read_txt("static/staff.txt")
+    staff_file_content = reader.read_txt("static/staff.txt")
     for person in staff_file_content:
         head_writers.append(person["Namn"])
     # Get head writers
@@ -111,7 +111,7 @@ def get_head_writers():
     # These are the names that if they wrote a article will redirect on click to the omoss page!
     with open(config.base_path / "content/static/staff.txt", "tr", encoding="utf-8") as file:  
         staff_file_content = file.read() # read it
-    formated_staff_file_content = content_reader.make_regex_list_to_dict(content_reader.file_parser(staff_file_content))
+    formated_staff_file_content = reader.make_regex_list_to_dict(reader.file_parser(staff_file_content))
     for person in formated_staff_file_content:
         head_writers.append(person["Namn"])
     return head_writers

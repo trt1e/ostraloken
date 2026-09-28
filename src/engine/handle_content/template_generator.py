@@ -4,8 +4,8 @@ from pathlib import Path
 # import scripts
 from engine import config
 from engine import utils
-from engine.handle_content import content_reader
-from engine.handle_content import content_writer
+from engine.handle_content import reader
+from engine.handle_content import writer
 
 
 def setup_new_utgava_folder(utgava_number, day, month, year):
@@ -28,9 +28,34 @@ def setup_new_utgava_articles(utgava_number, count_articles):
 >>Skribent: SKRIBENT
 >>Artikel: 
 BRÖDTEXT"""
-        content_writer.write_to_content(f"articles/utgava_{utgava_number}/{article_number + 1}-ARTICLE_NAME.txt", "x", content)
+        writer.write_to_content(f"articles/utgava_{utgava_number}/{article_number + 1}-ARTICLE_NAME.txt", "x", content)
         print(f"Generated {article_number + 1}-ARTICLE_NAME.txt")
-    
+
+
+def setup_new_txt(utgava_number, count_list, day, month, year):
+    base_content_path = Path(config.base_path / "content")
+    for file_dir in base_content_path.iterdir():
+        if file_dir.is_file() and file_dir.suffix == ".txt":
+            content = f"""
+
+
+/~utgava {utgava_number} ({day}/{month}/{year}):"""
+            lone_content = f"""
+
+>>Rubrik: RUBRIK
+>>Artikel: BRÖDTEXT"""
+            # add right amount of notiser to new utgava
+            if count_list is None or count_list == "" or str(count_list) == "0":
+                content += "\n/~INGENTING HÄR"
+            else:
+                content += str(lone_content) * int(count_list)
+            
+            writer.write_to_content("notiser.txt", "a", content)
+
+            print(f"Generated notis template for utgava {utgava_number}")
+
+            
+
 def setup_new_notiser(utgava_number, count_notiser, day, month, year):
     content = f"""
 
@@ -46,7 +71,7 @@ def setup_new_notiser(utgava_number, count_notiser, day, month, year):
     else:
         content += str(lone_content) * int(count_notiser)
     
-    content_writer.write_to_content("notiser.txt", "a", content)
+    writer.write_to_content("notiser.txt", "a", content)
 
     print(f"Generated notis template for utgava {utgava_number}")
     
@@ -58,7 +83,7 @@ def setup_new_hear_me_outs(utgava_number, count_hear_me_outs):
     # add right amount of hear me out to new utgava
     content = str(lone_content) * int(count_hear_me_outs)
     
-    content_writer.write_to_content("hear_me_outs.txt", "a", content)
+    writer.write_to_content("hear_me_outs.txt", "a", content)
     
     print(f"Generated hear me outs template for utgava {utgava_number}")
 
@@ -70,6 +95,6 @@ def setup_new_rod_flagga(utgava_number, count_roda_flaggor):
     # add right amount of rod flagga to new utgava
     content = str(lone_content) * int(count_roda_flaggor)
     
-    content_writer.write_to_content("roda_flaggor.txt", "a", content)
+    writer.write_to_content("roda_flaggor.txt", "a", content)
     
     print(f"Generated roda flaggors template for utgava {utgava_number}")

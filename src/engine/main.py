@@ -11,14 +11,14 @@ import threading # for discord bot to run separetly
 
 # import scripts
 from engine import config
-from engine.handle_content import content_fixer
+from engine.handle_content import fixer
 from engine.handle_content import template_generator
-from engine.handle_content import content_reader
+from engine.handle_content import reader
 from engine.build import gen_replacment_dict
-from engine.build import build_articles
-from engine.build import build_sitemap
-from engine.build import build_imgs
-from engine.build import build_pdfs
+from engine.build import articles
+from engine.build import sitemap
+from engine.build import imgs
+from engine.build import pdfs
 from engine.discord_bot import bot
 
 
@@ -191,7 +191,7 @@ def run():
                 if year is None or year == "" or not re.search(r"[0-9]", year):
                     year = "ÅÅÅÅ"
                 
-                next_utgava_number = len(content_reader.read_articles()) + 1
+                next_utgava_number = len(reader.read_articles()) + 1
     
                 template_generator.setup_new_utgava_folder(next_utgava_number, day, month, year)
                 template_generator.setup_new_utgava_articles(next_utgava_number, amount_of_articles)
@@ -203,8 +203,8 @@ def run():
             elif all_commands["gen all"].check_match_base(answer):
                 gen_replacment_dict.replacment_for_all = gen_replacment_dict.create_dictionary()
                 gen_replacment_dict.generate_all_normal_pages()
-                build_articles.generate_all_articles()
-                build_sitemap.generate_all_sitemaps()
+                articles.generate_all_articles()
+                sitemap.generate_all_sitemaps()
                 
             # images
             elif all_commands["copy images"].check_match_base(answer):
@@ -234,7 +234,7 @@ def run():
                 if matching_keys == [] or output_type == []:
                     print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
                 
-                build_imgs.copy_over_images(output_type, gen_type)
+                imgs.copy_over_images(output_type, gen_type)
             # pdfs
             elif all_commands["copy pdfs"].check_match_base(answer):
                 matching_keys = all_commands["copy pdfs"].check_match_keys(answer)
@@ -255,21 +255,21 @@ def run():
                 if matching_keys == []:
                     print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
                 
-                build_pdfs.copy_over_pdfs(gen_type)
+                pdfs.copy_over_pdfs(gen_type)
                     
             # fix content
             elif all_commands["inspect"].check_match_base(answer):
-                content_fixer.inspect_all()
+                fixer.inspect_all()
             elif all_commands["fix"].check_match_base(answer):
                 matching_keys = all_commands["fix"].check_match_keys(answer)
 
                 has_generated = False
 
                 if "citationmarks" in matching_keys:
-                    content_fixer.fix_citationmarks()
+                    fixer.fix_citationmarks()
                     has_generated = True
                 if "article names" in matching_keys:
-                    content_fixer.fix_all_backend_articles_names()
+                    fixer.fix_all_backend_articles_names()
                     has_generated = True
                     
                 if not has_generated:

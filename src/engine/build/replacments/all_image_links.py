@@ -2,11 +2,11 @@ from pathlib import Path
 
 from engine import utils
 from engine import config
-from engine.handle_content import content_reader
+from engine.handle_content import reader
 
 # All images linked and in html-structure
 generated_images_linked = ""
-for utgava in reversed(content_reader.read_articles()):
+for utgava in reversed(reader.read_articles()):
     # go throught every article in the utgava
     utgava_number = utgava["Editionsnummer"]
     for article in utgava["Content"]:

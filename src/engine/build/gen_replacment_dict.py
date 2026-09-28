@@ -6,7 +6,7 @@ import pkgutil
 
 # import scripts
 from engine import config
-from engine.build import build_articles
+from engine.build import articles
 from engine.build import replacments
 
 
@@ -50,7 +50,7 @@ def generate_webbsite(webb_path, template_path):
             
             full_destination_dir = webb_path / "webbsite" / Path(str(destination_dir)) 
             os.makedirs(full_destination_dir.parent, exist_ok=True) # make sure the folder exists, else: generate the folder
-            build_articles.generate_site(file_dir, full_destination_dir, replacment_for_all)
+            articles.generate_site(file_dir, full_destination_dir, replacment_for_all)
             generated_site_name = (str(template_path).replace(str(config.base_path), "")).split("\\")[3]
             print(f"Generated {generated_site_name}: {file_dir.stem}{file_dir.suffix}")
 

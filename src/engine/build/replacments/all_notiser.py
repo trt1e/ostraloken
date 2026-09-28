@@ -1,9 +1,9 @@
 from engine import utils
-from engine.handle_content import content_reader
+from engine.handle_content import reader
 
 # All short storys
 generated_short_storys = ""
-for content in reversed(content_reader.read_txt("notiser.txt")):
+for content in reversed(reader.read_txt("notiser.txt")):
     short_story_id = utils.make_notis_id(content["Rubrik"], content["Artikel"])
     generated_short_storys += f"""
 <a class="article notis" id="{short_story_id}">

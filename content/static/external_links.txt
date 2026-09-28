@@ -1,59 +1,59 @@
 >>Rubrik: Skicka insändare
 >>Länk: https://forms.gle/ndDtACGvhW7Nv9Nb8
 >>Bild_källa: https://ostraloken.se/images/external_links/loken.webp
->>Viktigt: True
+>>Status: Viktigt
 
 >>Rubrik: Skicka debattartikel
 >>Länk: https://forms.gle/xpzXuTedP3f6Ym6P9
 >>Bild_källa: https://ostraloken.se/images/external_links/loken.webp
->>Viktigt: True
+>>Status: Viktigt
 
 >>Rubrik: Skicka <i>hear me out</i>
 >>Länk: https://forms.gle/Ka83WAaHwai2cvbG8
 >>Bild_källa: https://ostraloken.se/images/external_links/loken.webp
->>Viktigt: True
+>>Status: Viktigt
 
 >>Rubrik: Skicka <i>röd flagga</i>
 >>Länk: https://forms.gle/RjMoWwHMn4SC8BJf9
 >>Bild_källa: https://ostraloken.se/images/external_links/loken.webp
->>Viktigt: True
+>>Status: Viktigt
 
 >>Rubrik: Podcast
 >>Länk: https://open.spotify.com/show/28Zu5yYdK6LARijjqPaNPf?si=d6558a31e44541d6
 >>Bild_källa: https://ostraloken.se/images/external_links/redaktionen.webp
->>Viktigt: False
+>>Status: 
 
 >>Rubrik: Östragymnasiet.com
 >>Länk: https://östragymnasiet.ostraloken.se
 >>Bild_källa: https://ostraloken.se/images/external_links/ostragymnasiet.webp
->>Viktigt: False
+>>Status: 
 
 >>Rubrik: Gula broschyren
 >>Länk: https://ostraloken.se/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/
 >>Bild_källa: https://ostraloken.se/images/external_links/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.webp
->>Viktigt: False
+>>Status: 
 
 >>Rubrik: Instagram
 >>Länk: https://www.instagram.com/ostra_loken
 >>Bild_källa: https://ostraloken.se/images/external_links/instagram.webp
->>Viktigt: False
+>>Status: 
 
 >>Rubrik: Tiktok
 >>Länk: https://www.tiktok.com/@ostra_loken
 >>Bild_källa: https://ostraloken.se/images/external_links/tiktok.webp
->>Viktigt: False
+>>Status: 
 
 >>Rubrik: Youtube
 >>Länk: https://www.youtube.com/@%C3%96straL%C3%B6ken
 >>Bild_källa: https://ostraloken.se/images/external_links/youtube.webp
->>Viktigt: False
+>>Status: 
 
 >>Rubrik: Maps
 >>Länk: https://maps.app.goo.gl/nA7PduRYRjEiqyrG6
 >>Bild_källa: https://ostraloken.se/images/external_links/maps.webp
->>Viktigt: False
+>>Status: 
 
 >>Rubrik: Skicka epost
 >>Länk: mailto:kontakt@ostraloken.se
 >>Bild_källa: https://ostraloken.se/images/external_links/email.webp
->>Viktigt: False
+>>Status: 

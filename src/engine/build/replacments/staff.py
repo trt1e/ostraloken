@@ -1,9 +1,9 @@
-from engine.handle_content import content_reader
+from engine.handle_content import reader
 
 # Add content from staff
 generated_sections = ""
 staff_list = ""
-for content in content_reader.read_txt("static/staff.txt"):
+for content in reader.read_txt("static/staff.txt"):
     staff_list += f'<p>{content["Namn"]}</p>'
     
     name = content["Namn"]

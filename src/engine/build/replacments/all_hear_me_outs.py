@@ -1,8 +1,8 @@
-from engine.handle_content import content_reader
+from engine.handle_content import reader
 
 # All hear me outs
 generated_hear_me_outs = ""
-for id_nr, content in reversed(list(enumerate(content_reader.read_txt("hear_me_outs.txt")))):
+for id_nr, content in reversed(list(enumerate(reader.read_txt("hear_me_outs.txt")))):
     article_hear_me_out = content["Hear_me_out"]
     article_desc = content["Beskrivning"]
     if article_desc != "":

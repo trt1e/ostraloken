@@ -1,8 +1,8 @@
-from engine.handle_content import content_reader
+from engine.handle_content import reader
 
 # All hear me outs
 generated_roda_flaggor = ""
-for id_nr, content in enumerate(reversed(content_reader.read_txt("roda_flaggor.txt"))):
+for id_nr, content in enumerate(reversed(reader.read_txt("roda_flaggor.txt"))):
     article_rod_flagga = content["Rod_flagga"]
     article_desc = content["Beskrivning"]
     if article_desc != "":
