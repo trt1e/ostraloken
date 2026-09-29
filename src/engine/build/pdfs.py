@@ -40,9 +40,9 @@ def copy_over_pdfs(gen_type: list):
         if "new" not in gen_type or Path(full_pdf_file_end_path).is_file() is False:
             if desired_utgava_nmr:
                 if int(utgava_number) == int(desired_utgava_nmr):
-                    create_images_switch = True
+                    copy_file_switch = True
             else:
-                create_images_switch = True
+                copy_file_switch = True
 
         # Copy the file
         if copy_file_switch:

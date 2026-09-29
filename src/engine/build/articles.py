@@ -394,26 +394,33 @@ def generate_all_articles():
 # ---------------------------------------------
 
 # Nav page
-def get_nav_element(img_switch, highlight_switch):
+def get_nav_element(img_switch: bool, status_selector: dict[str, str] | None):
+    # status_selector makes so you first give the status in external_links.txt (tex ">>Status: Viktig") whilest the other gives what name it gets in css, aka highlight_context
     generated_nav_element = ""
     
     for content in reader.read_txt("static/external_links.txt"):
+        css_variables = ""
+        gen_status = False
         if content:
-            nav_element_important_status = content["Viktigt"]
-            if str(nav_element_important_status) == str(highlight_switch):
+            nav_element_status = content["Status"]
+            if status_selector:
+                if nav_element_status in list(status_selector.keys()):
+                    css_variables = list(status_selector.values())[list(status_selector.keys()).index(nav_element_status)]
+                    gen_status = True
+                    
+            else: # status_selector is None
+                if nav_element_status is None or nav_element_status == "":
+                    gen_status = True
+                    
+            if gen_status:
                 nav_element_image_src = content["Bild_källa"]
                 if img_switch and not (nav_element_image_src is None or nav_element_image_src == ""):
                     image_context = f'<img src="{nav_element_image_src}" alt="{nav_element_image_src}">'
                 else:
                     image_context = "<!-- NO IMAGE HERE -->"
-                    
-                if nav_element_important_status == "True":
-                    highlight_context = " highlight"
-                else:
-                    highlight_context = ""
                 
                 generated_nav_element += f"""
-<a class="article clickable_element nav_card{highlight_context}" target="_blank" href="{content["Länk"]}">
+<a class="article clickable_element nav_card {css_variables}" target="_blank" href="{content["Länk"]}">
     <h2>{content["Rubrik"]}</h2>
     {image_context}
 </a>
