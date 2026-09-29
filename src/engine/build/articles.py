@@ -253,9 +253,6 @@ def generate_all_articles():
     list_of_articles_with_similer_type = get_all_articles("./a/", "Similar")
     all_short_storys = reader.read_txt("notiser.txt")
     
-    random.seed(hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
-    #print("Hash:", hash(str(all_short_storys) + str(list_of_articles_with_similer_type)))
-    
     print("Generating all articles:")
     progressbar_item = progressbar.ProgressBar(maxval=int(len(reader.read_articles())))
     progressbar_item.start()
@@ -314,8 +311,8 @@ def generate_all_articles():
     <p>Vill du också skicka en debattartikel till Östra Löken? Fyll bara i denna korta enkät!</p>
 </a>
 """
-
-
+                random.seed(str(article_title))
+                
                 # add scrolling news feed
                 random_short_story = all_short_storys[random.randint(0, len(all_short_storys) - 1)]
                 final_random_short_story = f"<b>{random_short_story["Rubrik"]}</b> • {random_short_story["Artikel"]}"
@@ -356,19 +353,19 @@ def generate_all_articles():
                 dict_of_similar_articles_copy.pop(article_id) # remove the article (the one you are adding "read also" too) from the dict
                 new_list_of_similar_articles = list(dict_of_similar_articles_copy.values())
                 if new_list_of_similar_articles != []:
-                    random.seed(hash(str(new_list_of_similar_articles) + "1")) # we set the seed so that if we are to make a small change and push it it doesnt change everything, only when we add, remove or change articles of that type does this change
+                    random.seed(str(article_title) + "1") # we set the seed so that if we are to make a small change and push it it doesnt change everything, only when we add, remove or change articles of that type does this change
                     chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)] # this random function is determaistic so if we enter the same seed and same command it will give the same result which we want!
                     replacment["[+extra_article_link_1+]"] = chosen_article
                     new_list_of_similar_articles.remove(chosen_article) # we remove it so it isn't listed again
                     
                     if new_list_of_similar_articles != []:
-                        random.seed(hash(str(new_list_of_similar_articles) + "2"))
+                        random.seed(str(article_title) + "2")
                         chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
                         replacment["[+extra_article_link_2+]"] = chosen_article
                         new_list_of_similar_articles.remove(chosen_article)
                         
                         if new_list_of_similar_articles != []:
-                            random.seed(hash(str(new_list_of_similar_articles) + "3"))
+                            random.seed(str(article_title) + "3")
                             chosen_article = new_list_of_similar_articles[random.randint(0, len(new_list_of_similar_articles) - 1)]
                             replacment["[+extra_article_link_3+]"] = chosen_article
                         else:
