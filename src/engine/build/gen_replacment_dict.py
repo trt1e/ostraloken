@@ -10,6 +10,8 @@ from engine.build import articles
 from engine.build import replacments
 
 
+replacment_for_all = None # Define replacment_for_all
+
 # Create the dictionary where all articles (exept /a/ articles) are run through to see and replace using the dict generated here
 def create_dictionary():
     replacment_dictionary = {}
@@ -24,7 +26,7 @@ def create_dictionary():
     
     return replacment_dictionary
 
-replacment_for_all = create_dictionary()
+# replacment_for_all = create_dictionary()
 
 # Go throught and generate all non /a/ articles
 def generate_webbsite(webb_path, template_path):

@@ -19,7 +19,6 @@ from engine.build import articles
 from engine.build import sitemap
 from engine.build import imgs
 from engine.build import pdfs
-from engine.discord_bot import bot
 
 
 class command:
@@ -109,7 +108,6 @@ class command:
         print(print_string)
         return print_string
 
-
 all_commands = {
     "help": command("help", "h", None, None, "Lists all commands"),
     "close": command("close", "c", None, None, "Terminate program"),
@@ -135,11 +133,8 @@ all_commands = {
         {"gen_selection": ["cm", "an"]}, 
         "Fix up content so that it is as it should be", "Fix content"
     ),
-    "bot": command("bot", None, 
-        {"gen_selection": ["start", "reminder", "send"]}, 
-        None, "Handle the discord bot", "Bot"
-    )
 }
+
 
 # UI for backend user
 def run():
@@ -275,34 +270,6 @@ def run():
                 if not has_generated:
                     print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
             
-            # discord bot
-            elif all_commands["bot"].check_match_base(answer):
-                # Start
-                print("[Discord] Starting bot...")
-                bot_thread = threading.Thread(target=bot.run_discord_bot, daemon=True)
-                bot_thread.start()
-                bot.bot_ready_event.wait()
-                
-                # Reminder
-                days_left = input('Time left (ex. "2 dagar" or "36h"): ')
-                if days_left != "":
-                    bot_message = f"""# Bara {days_left} kvar!!!
-Om du inte har skrivit din/dina artiklar än bör du kanske göra det snart!
-<@&{config.discord_role_taged_in_reminders}>, skriv skriv skriv!!!
-Om du inte kan skriva denna utgava, vänligen meddela det.
-
-[Dokumentet hittar du här](https://drive.google.com/drive/folders/1AoPutNvMHKQpdiVQZescx4kgKbubEwPF)
-
-Det bör påminnas också att det är __väldigt jobbigt__ för mig (Vilhelm) att behöva sitta sent på en söndagskväll och sätta ihop layout för att någon väntade till sista sekunden för att skriva.
-
-Tack på förhand :heart: :heart: """
-                    bot.send_discord_message(bot_message)
-                
-                # Send
-                bot_input = input("Message: ")
-                if bot_input != "":
-                    bot.send_discord_message(bot_input)
-                
             else:
                 if answer != "":
                     print(f'"{answer}" is not a command')
@@ -311,3 +278,152 @@ Tack på förhand :heart: :heart: """
 
 if __name__ == "__main__":
     run()
+
+
+
+""" This is a test to se if argparse could work for this project, but it could not
+
+
+import argparse # So that you can run commands with terminal
+
+def cli():
+    parser = argparse.ArgumentParser(description="Östra Löken engine terminal")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    
+    # Add the commands
+    # Generate webbpage
+    parser_g = subparsers.add_parser("gen", aliases=["g"], help="Generate all webbpage files")
+    
+    # Create a new template
+    parser_nt = subparsers.add_parser("newtemplate", aliases=["nt"], help="Generates a new utgava template with articles, notiser, hear me outs and roda flaggor")
+    
+    # Copy images
+    parser_ci = subparsers.add_parser("copyimages", aliases=["ci"], help="Copy over images from content to generated")
+    
+    subparsers_catagory_ci = parser_ci.add_subparsers(dest="catagory", required=True, help="What types of images are to be copy:d")
+    subparsers_catagory_ci.add_parser("article", aliases=["ar"], help="Copy article images")
+    subparsers_catagory_ci.add_parser("socialmedia", aliases=["sm"], help="Copy social media images")
+    subparsers_catagory_ci.add_parser("qr", help="Copy article qr-codes")
+    subparsers_catagory_ci.add_parser("all", aliases=["a"], help="Copy all image catagorys")
+    
+    subparsers_scope_ci = parser_ci.add_subparsers(dest="scope", required=True, help="In what scope to copy the images")
+    subparsers_scope_ci.add_parser("all", aliases=["a"], help="Copy all images")
+    subparsers_scope_ci.add_parser("new", aliases=["n"], help="Copy the new images")
+    specific_subparsers_scope_ci = subparsers_scope_ci.add_parser("specific", aliases=["s"], help="Copy specific images")
+    specific_subparsers_scope_ci.add_argument("utgava", type=int, help="What specific utgava number to copy")
+    
+    # Copy PDF:s
+    parser_cp = subparsers.add_parser("copypdfs", aliases=["cp"], help="Copy over PDF:s from content to generated")
+
+    subparsers_scope_cp = parser_cp.add_subparsers(dest="scope", required=True, help="In what scope to copy the PDF:s")
+    subparsers_scope_cp.add_parser("all", aliases=["a"], help="Copy all PDF:s")
+    subparsers_scope_cp.add_parser("new", aliases=["n"], help="Copy the new PDF:s")
+    subparsers_scope_cp.add_parser("specific", aliases=["s"], help="Copy specific PDF:s")
+    specific_subparsers_scope_cp = subparsers_scope_ci.add_parser("", aliases=["s"], help="Copy specific PDF:s")
+    specific_subparsers_scope_cp.add_argument("utgava", type=int, help="What specific utgava number to copy")
+    
+    # Inspect
+    parser_i = subparsers.add_parser("inspect", aliases=["i"], help="Looks through content so everything is as it should be, if not: it's reported")
+    
+    # Fix
+    parser_fix = subparsers.add_parser("fix", help="Fix up content so that it is as it should be")
+    
+    subparsers_type_fix = parser_cp.add_subparsers(dest="type", required=True, help="What type of fix")
+    subparsers_type_fix.add_parser("citationmarks", aliases=["cm"], help="Fix the citationmarks in all contnent so that it uses swedish ”")
+    subparsers_type_fix.add_parser("filenames", aliases=["fn"], help="Set all the file names of all articles in content")
+    
+    # Bot
+    # parser_bot = subparsers.add_parser("bot", help="Handle the discord bot")
+    
+    
+    args = parser.parse_args()
+    
+    if args.command in ["gen", "g"]:
+        gen_replacment_dict.replacment_for_all = gen_replacment_dict.create_dictionary()
+        gen_replacment_dict.generate_all_normal_pages()
+        articles.generate_all_articles()
+        sitemap.generate_all_sitemaps()
+        
+    elif args.command in ["newtemplate", "nt"]:
+        amount_of_articles = input("Amount articles: ")
+        if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
+            amount_of_articles = 0
+        amount_of_notiser = input("Amount notiser: ")
+        if amount_of_notiser is None or amount_of_notiser == "" or not re.search(r"[0-9]", amount_of_notiser):
+            amount_of_notiser = 0
+        amount_of_hear_me_outs = input("Amount hear me outs: ")
+        if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "" or not re.search(r"[0-9]", amount_of_hear_me_outs):
+            amount_of_hear_me_outs = 0
+        amount_of_roda_flaggor = input("Amount roda flaggor: ")
+        if amount_of_roda_flaggor is None or amount_of_roda_flaggor == "" or not re.search(r"[0-9]", amount_of_roda_flaggor):
+            amount_of_roda_flaggor = 0
+            
+        day = input("Day of release: ")
+        if day is None or day == "" or not re.search(r"[0-9]", day):
+            day = "DD"
+        month = input("Month of release: ")
+        if month is None or month == "" or not re.search(r"[0-9]", month):
+            month = "MM"
+        year = input("Year of release: ")
+        if year is None or year == "" or not re.search(r"[0-9]", year):
+            year = "ÅÅÅÅ"
+        
+        next_utgava_number = len(reader.read_articles()) + 1
+
+        template_generator.setup_new_utgava_folder(next_utgava_number, day, month, year)
+        template_generator.setup_new_utgava_articles(next_utgava_number, amount_of_articles)
+        template_generator.setup_new_notiser(next_utgava_number, amount_of_notiser, day, month, year)
+        template_generator.setup_new_hear_me_outs(next_utgava_number, amount_of_hear_me_outs)
+        template_generator.setup_new_rod_flagga(next_utgava_number, amount_of_roda_flaggor)
+        
+    elif args.command in ["copyimages", "ci"]:
+        catagory = []
+        scope = []
+        
+        if args.catagory in ["article", "ar"]:
+            catagory.append("article_images")
+        if args.catagory in ["socialmedia", "sm"]:
+            catagory.append("social_media_images")
+        if args.catagory in ["qr"]:
+            catagory.append("article_qr_codes")
+        if args.catagory in ["all", "a"]:
+            catagory.append("article_images")
+            catagory.append("social_media_images")
+            catagory.append("article_qr_codes")
+        
+        if args.scope in ["all", "a"]:
+            scope.append("all")
+        if args.scope in ["new", "n"]:
+            scope.append("new")
+        if args.scope in ["specific", "s"]:
+            scope.append("specific")
+        
+        if catagory == [] or scope == []:
+            print('WARNING: All inputs are not given. Nothing will be generated. For more info: run "help"')
+        else:
+            imgs.copy_over_images(catagory, scope)
+
+    elif args.command in ["copypdfs", "cp"]:
+        scope = []
+        
+        if args.scope in ["all", "a"]:
+            scope.append("all")
+        if args.scope in ["new", "n"]:
+            scope.append("new")
+        if args.scope in ["specific", "s"]:
+            scope.append("specific")
+        
+        if scope == []:
+            print('WARNING: All inputs are not given. Nothing will be generated. For more info: run "help"')
+        else:
+            pdfs.copy_over_pdfs(scope)
+
+    elif args.command in ["inspect", "i"]:
+        fixer.inspect_all()
+        
+    elif args.command in ["fix"]:
+        if args.type in ["citationmarks", "cm"]:
+            fixer.fix_citationmarks()
+        if args.type in ["filenames", "fn"]:
+            fixer.fix_all_backend_articles_names()
+"""

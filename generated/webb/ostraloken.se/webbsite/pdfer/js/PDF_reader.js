@@ -80,7 +80,7 @@ function render() {
     pdfImgContainer.style.display = "none";
 
     // Uppdate the text saying what utgava it is
-    pdfNumber.innerText = `utgava ${currant_utgava} / ${amoutPDFs}`;
+    pdfNumber.innerText = `utgåva ${currant_utgava} / ${amoutPDFs}`;
 
     // Render the utgava for browser view
     pdfContent.src = `./pdf_files/Ostra_Loken_utgava-${currant_utgava}.pdf`;

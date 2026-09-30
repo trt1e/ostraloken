@@ -17,9 +17,3 @@ base_webb_paths = [
 ]
 
 articles_path = base_path / Path("content/articles")
-
-load_dotenv() # load .env
-# access .env
-discord_bot_token = os.getenv("discord_bot_token")
-discord_channel_id = os.getenv("discord_channel_id")
-discord_role_taged_in_reminders = os.getenv("discord_role_taged_in_reminders")

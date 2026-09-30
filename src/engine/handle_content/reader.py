@@ -70,6 +70,3 @@ def read_txt(txt_path):
     parsed_file = file_parser(whole_text)
     formated_file = make_regex_list_to_dict(parsed_file)
     return formated_file
-
-if __name__ == "__main__":
-    read_articles()
