@@ -5,7 +5,6 @@
     // This command runs automatically once when the codespace is created
     "postCreateCommand": [
         "pip install --upgrade pip",
-        "pip install .",
-        "runlok"
+        "pip install ."
     ]
 }
