@@ -6,8 +6,8 @@ import pkgutil
 
 # import scripts
 from engine import config
-from engine.build import articles
-from engine.build import replacments
+from engine.construct import articles
+from engine.construct import replacments
 
 
 replacment_for_all = None # Define replacment_for_all

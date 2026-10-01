@@ -14,7 +14,6 @@ dependencies = [
     "qrcode[pil]", # För "qrcode" och "qrcode.image.pil"
     "progressbar2", # För "progressbar"
     "pymupdf", # För "fitz"
-    "discord.py", # För "discord"
 ]
 
 [project.scripts]

@@ -1,6 +1,6 @@
 from engine import utils
 from engine.handle_content import reader
-from engine.build import articles
+from engine.construct import articles
 
 # All normal articles fully printed
 whole_content_articles = ""

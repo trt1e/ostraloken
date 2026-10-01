@@ -14,11 +14,11 @@ from engine import config
 from engine.handle_content import fixer
 from engine.handle_content import template_generator
 from engine.handle_content import reader
-from engine.build import gen_replacment_dict
-from engine.build import articles
-from engine.build import sitemap
-from engine.build import imgs
-from engine.build import pdfs
+from engine.construct import gen_replacment_dict
+from engine.construct import articles
+from engine.construct import sitemap
+from engine.construct import imgs
+from engine.construct import pdfs
 
 
 class command:

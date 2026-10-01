@@ -5,7 +5,6 @@ from pathlib import Path
 from PIL import Image, ImageOps, ImageDraw, ImageFont # To handle the images copyd and instagram images
 import qrcode # To create qr-codes
 from qrcode.image.pil import PilImage # To create qr-codes
-from pdf2image import convert_from_path # To extract the pdfs to images
 import progressbar # To show a progressbar in the backend terminal
 
 # import scripts

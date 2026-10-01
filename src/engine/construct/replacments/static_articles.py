@@ -1,5 +1,5 @@
 from engine.handle_content import reader
-from engine.build import articles
+from engine.construct import articles
 
 output = {}
 

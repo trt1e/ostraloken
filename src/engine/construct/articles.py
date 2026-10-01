@@ -7,7 +7,7 @@ import progressbar # To show a progressbar in the backend terminal
 from engine import config
 from engine import utils
 from engine.handle_content import reader
-from engine.build import gen_replacment_dict
+from engine.construct import gen_replacment_dict
 
 
 # ---------------------------------------------
