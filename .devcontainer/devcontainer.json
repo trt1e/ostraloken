@@ -3,5 +3,9 @@
     "image": "mcr.microsoft.com/devcontainers/python:1-3.12-bullseye",
     
     // This command runs automatically once when the codespace is created
-    "postCreateCommand": "pip install --upgrade pip && pip install . && runlok"
+    "postCreateCommand": [
+        "pip install --upgrade pip",
+        "pip install .",
+        "runlok"
+    ]
 }
