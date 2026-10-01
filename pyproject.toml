@@ -17,4 +17,4 @@ dependencies = [
 ]
 
 [project.scripts]
-lok = "engine.main:run"
+runlok = "engine.main:run"
