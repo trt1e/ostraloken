@@ -1,4 +1,4 @@
-# Östra Löken – webbplatsgenerator
+# Östra Löken - webbplatsgenerator
 
 Det här projektet genererar webbsidorna för Östra Löken, Östra Gymnasiets skolsatirtidning. Koden läser in text, artiklar, bilder och PDF:er från `content/` och bygger statiska sidor i `generated/webb/`.
 
@@ -6,8 +6,8 @@ Projektet är byggt som ett litet editor-verktyg i terminalen: en redaktion kan 
 
 ## Krav
 
-– Python 3.14 eller senare
-– `pip` för installation
+- Python 3.14 eller senare
+- `pip` för installation
 
 ## Installation
 
@@ -33,14 +33,14 @@ python -m engine
 
 Det startar en interaktiv terminal där du kan skriva kommandon som:
 
-– `help`
-– `gen all`
-– `new template`
-– `copy images ...`
-– `copy pdfs ...`
-– `inspect`
-– `fix ...`
-– `close`
+- `help`
+- `gen all`
+- `new template`
+- `copy images ...`
+- `copy pdfs ...`
+- `inspect`
+- `fix ...`
+- `close`
 
 ## Vanliga kommandon
 
@@ -115,11 +115,11 @@ Här skapas den producerade webbplatserna och de exporterade mediafilerna.
 ### `src/engine/`
 Här finns själva generatorn:
 
-– `construct/`: byggare för sidor, navigering, artiklar och sitemap
-– `handle_content/`: läsning, validering, generering och lagning av innehåll
-– `config.py`: sökvägar och projektkonstanter
-– `utils.py`: användbara funktioner för hela projektet
-– `main.py`: interaktiv terminal och kommandon
+- `construct/`: byggare för sidor, navigering, artiklar och sitemap
+- `handle_content/`: läsning, validering, generering och lagning av innehåll
+- `config.py`: sökvägar och projektkonstanter
+- `utils.py`: användbara funktioner för hela projektet
+- `main.py`: interaktiv terminal och kommandon
 
 ## Arbetsflöde
 
