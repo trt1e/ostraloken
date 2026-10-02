@@ -1,4 +1,4 @@
-# Östra Löken - webbplatsgenerator
+# Ostraloken
 
 Det här projektet genererar webbsidorna för Östra Löken, Östra Gymnasiets skolsatirtidning. Koden läser in text, artiklar, bilder och PDF:er från `content/` och bygger statiska sidor i `generated/webb/`.
 
