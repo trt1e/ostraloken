@@ -112,7 +112,7 @@ all_commands = {
     "help": command("help", "h", None, None, "Lists all commands"),
     "close": command("close", "c", None, None, "Terminate program"),
     "restart": command("restart", "r", None, None, "Restart program"),
-    "utgava template": command("utgava template", "ut", None, None, "Generates a new utgava template with articles, notiser and hear me outs", "Templates"),
+    "new template": command("new template", "nt", None, None, "Generates a new utgava template with articles, notiser and hear me outs", "Templates"),
     "gen all": command("gen all", "g", None, None, "Generate all webbpage files", "Generate text files"),
     "copy images": command("copy images", "ci", 
         {
@@ -162,7 +162,7 @@ def run():
                 break
                 
             # new content
-            elif all_commands["utgava template"].check_match_base(answer):
+            elif all_commands["new template"].check_match_base(answer):
                 amount_of_articles = input("Amount articles: ")
                 if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
                     amount_of_articles = 0

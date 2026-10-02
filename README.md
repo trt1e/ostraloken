@@ -1,58 +1,139 @@
-# Hur fungerar ostraloken?
+# Östra Löken – webbplatsgenerator
 
-## DENNA ÄR UTDATERAD!!!!
+Det här projektet genererar webbsidorna för Östra Löken, Östra Gymnasiets skolsatirtidning. Koden läser in text, artiklar, bilder och PDF:er från `content/` och bygger statiska sidor i `generated/webb/`.
 
+Projektet är byggt som ett litet editor-verktyg i terminalen: en redaktion kan skapa nya utgåvor, kopiera in mediafiler, kontrollera innehåll och generera hela webbplatsen.
 
-Östra Lökens webbsida är skapad för att enkelt kunna uppdateras då nytt innehåll läggs till. Den är skapad med en modulär struktur. Det här gör det enkelt att inte bara lägga till nya artiklar i backend:en utan man kan också enkelt lägga till en ny sida på ostraloken.se eller till och med en helt ny webbsida.
+## Krav
 
-All kod är helt skriven av Vilhelm Grill som också jobbar på Östra Lökens redaktion. Om du vill kontakta honom kan du göra det på vilhelm.grill@ostraloken.se!
+– Python 3.14 eller senare
+– `pip` för installation
 
-## 1. Backend:
-**Det är här webbsidan genereras (med backend-terminalen i generate_frontend.py) och där alla artiklar, bilder, notiser, hear me out:s och mer finns lagrade.**
+## Installation
 
-### generate_frontend.py
-För att köra denna fil behöver du ha python installerat (tidigast 3.14) och ha ett antal bibloteket installerade. Om du inte har python kan du ladda ner den online. Om du inte har har bibloteken kan du göra "pip install [biblotek]" i din terminal.
+```bash
+git clone https://github.com/trt1e/ostraloken.git
+cd ostraloken
+python -m pip install -e .
+```
 
-Kommandon i backend-terminalen kan ses med "$ help". Där får du också instruktioner om vad alla kommandon gör. Kortfattat kan du:
-    **1. Generera webbsidan** Då kopierar programet över filerna från templates och lägger in innehållet från content i dem.
-    **2. Skapa mallar** Du kan, med ett kommando, göra allting redo för en ny upplaga genom att få mallar för artiklar, notiser och hear me out:s färdigstälda för dig. Det här gör det enkelt att bara kopiera och klistra in innehållet.
-    **3. Kopiera över bilder & PDF:s** När du gör det kan du välja om du ska kopiera över alla, bara nya eller specefikt någon upplaga. Notera att när du ber den kopiera över nya kollar den endast om filerna finns, inte om de har ändrats.
-    **4. Fixa till content** Den viktigaste funktionen här är "$ inspect" som söker genom content för att se om några vanliga misstag har gjorts i filerna. Om så är fallet bör de troligtvis åtgärdas, men inte nödvändigtvis. Du kan också här fixa artiklarnas fil-namn så de är korrekta (det är extra viktigt om du ska länka dem med bilder).
+Det installerar projektet och registrerar CLI-kommandot `runlok`.
 
-Kortfattat har generate_frontend.py alla verktyg du behöver för att sköta ostraloken.se!
+## Starta programmet
 
-P.S. generate_frontend.py skapar endast filer, den tar inte bort gammla, så det kan förekomma att filer med gammla namn - både artiklar och bilder - ligger kvar. Det här är dock endast om du har bytt namn, så inte om de har samma namn.
+```bash
+runlok
+```
 
-### content
-I content finns själva arkivet. Här arkiveras alla artiklar, notiser, hear me out:s, insändare, pdf:er, statiskt innehåll och mer nästan exakt så de var när de publiserades. Om t.ex. en insändare inte publiserades borde den troligtvis inte vara med i arkivet. Alla stavfel och misstag måste lämnas kvar. Ändringar man får göra är att ändra bilden till en artikel eller annat, ändra artikeltyp och fixa till om fel citationstecken används (gör detta i backend-terminalen automatiskt). Bilder bör helst inte ändras men det kan exempelvis behövas om Östra Löken från första början inte hade rättigheterna till bilden eller om det finns ett starkt motiv att ändra den. 
+Alternativt kan du köra den inbyggda huvudfilen direkt:
 
-Det bör också noteras att tidiga artiklar (innan upplaga nr. 28) tryckte inte skribent, men i dessa fall har man kunnat gå tillbaka och kolla vem som skrev dessa artiklar.
+```bash
+python -m engine
+```
 
-Artiklarna, notiserna och hear me out:s använder ett egetutväcklat system för att skilja på olika delar av texten. För artiklar används "### " och " ##" för att urskilja rubriken, "¤¤¤ " och " ¤¤" för artikeltyp, "@@@ " och " @@" för skribent och det efter " @@" som artikelns innehåll. Både notiser och hear me out:s använder "### " och " ##" för rubrik respektive hear me out och de båda använder också "+++ " och " ++" för innehåll respektive beskrivning. Det är därför viktigt att dessa symboler inte används i texten på sätten använda i formateringen.
+Det startar en interaktiv terminal där du kan skriva kommandon som:
 
-Statiskt innehåll använder ett likande system. För statiska artiklar läggs de ut ganska unikt genom att sätta dem i en [+sådan här+] där deras rubrik är vad som sätts inuti, men där mellanrum (" ") bytts ut med understräck ("_").
+– `help`
+– `gen all`
+– `new template`
+– `copy images ...`
+– `copy pdfs ...`
+– `inspect`
+– `fix ...`
+– `close`
 
-## 2. Templates:
-**Här lagras html-filerna som ska kopieras och där allt innehåll ska läggas in.**
+## Vanliga kommandon
 
-Templates har relativt stora html-filer som är för stora för att helt enkelt vara inbakade i generate_frontend.py. Alla filer i webbpage generas från en templates fil där dess address bestäms innom en sådan här text i början: <!--@( URL )@--> 
-URL kan exempelvis vara t.ex. \ostraloken\ostraloken.se\webbpage\index.html
+### `help`
+Visar tillgängliga kommandon och deras användning.
 
-I mallfilerna fylls information in baserat på vart sådana här finns: [+article+]. Dessa markerar ut var python-scripten ska plasera visst innehåll. Dessa bytts sedan ut med dess innehåll.
+### `new template`
+Skapar en ny utgåva-mall. Programmet frågar efter antal artiklar, notiser, hear me out:s och röda flaggor samt datum och genererar därefter mappstruktur för den nya utgåvan.
 
-## 3. Webbpage:
-**I denna map lagras själva webbsidan - det är denna som finns på webben!**
+### `gen all`
+Genererar webbplatsens textinnehåll. Detta byggar om sidornas innehåll utifrån källfiler i `content/`.
 
-I webbpage finns det en blandning av innehåll som genereras automatiskt och som bara finns där. Alla HTML filer generas av generate_frontend.py och om du ändrar dessa filer i webbpage kommer ändringarna tas bort när webbsidan generaras på nytt.
+### `copy images`
+Kopierar bilder från `content/` till de mappar som används i den genererade webbplatsen.
 
-"/a" står för "artiklar" och är där alla generade artikelsidor och bilder finns.
+Exempel:
 
-### CSS-filer
-Uppmärksamma universal.css. Den här style-filen länkas alla html-filer till så om du ska lägga till någonting här bör de påverka en större andel av html-filerna.
+```bash
+$ copy images all social media images
+$ copy images new article images
+$ copy images specific article qr codes
+```
 
-Alla mappar har också en style.css-fil som endast används av html-filen i samma mapp.
+### `copy pdfs`
+Kopierar PDF:er för utgåvorna till den genererade webbplatsen.
 
-Id- och class-namnen samt kommentarer och kod är alla skrivna på engelska för att öka tillgänglighet och för att följa universiella standader.
+Exempel:
 
-### Mappstruktur
-Mappstrukturen på ostraloken.se är väldigt enkel. Index-filen och universal-filen är de enda som är på root-lagret. För allting annat än html-filen för index läggs det i en egen mapp (som allt annat). Det finns också en js-mapp för alla javascript-filer som används av flera av sidorna. Om endast en sida använder en js-fil läggs den som submapp till html- och css-filen. Samma gäller bilder.
+```bash
+$ copy pdfs all
+$ copy pdfs new
+$ copy pdfs specific
+```
+
+### `inspect`
+Går igenom innehållet för att hitta vanliga fel och problem i publiceringsfilerna.
+
+### `fix`
+Fixar de vanligaste formaterings- eller namnrelaterade problemen. Exempelvis med citationstecken eller artikelnamn.
+
+## Projektstruktur
+
+```text
+.
+├── content/
+│   ├── articles/
+│   ├── extra/
+│   ├── static/
+│   ├── utgavor_pdfs/
+│   └── ...
+├── generated/
+│   ├── social_media_imgs/
+│   └── webb/
+├── src/
+│   └── engine/
+│       ├── construct/
+│       ├── handle_content/
+│       ├── config.py
+│       ├── utils.py
+│       └── main.py
+├── pyproject.toml
+├── README.md
+└── ...
+```
+
+### `content/`
+Här lagras redaktionens källmaterial: artiklar, notiser, hear me out:s, röda flaggor, statiskt innehåll, bilder och PDF:er.
+
+### `generated/`
+Här skapas den producerade webbplatserna och de exporterade mediafilerna.
+
+### `src/engine/`
+Här finns själva generatorn:
+
+– `construct/`: byggare för sidor, navigering, artiklar och sitemap
+– `handle_content/`: läsning, validering, generering och lagning av innehåll
+– `config.py`: sökvägar och projektkonstanter
+– `utils.py`: användbara funktioner för hela projektet
+– `main.py`: interaktiv terminal och kommandon
+
+## Arbetsflöde
+
+1. Skapa ny utgåva med `$ utgava template`
+2. Fyll i artiklar och övrigt innehåll i `content/`
+3. Laga namnen med `$ fix article names`, rätta citationstecken med `$ fix citationmarks` och se till så att allting är rätt med `$ inspect`
+4. Kopiera över bilder och PDF:er om det behövs
+5. Kör `$ gen all` för att bygga webbsidan
+6. Publisera de genererade webbsidorna till internet med `git add .`, `git commit -m "..."` och `git push`
+
+## Notering
+
+Projektet skriver och uppdaterar genererade filer, men det tar inte bort gamla filer automatiskt. Det kan därför förekomma äldre artefakter om namn på filer eller mappar ändrats.
+
+## Licens och ansvar
+
+Det här projektet används för att driva Östra Lökens webbsida och publiceringsflöde. Koden och filerna är ämnade för den interna produktionen kring tidningen.
