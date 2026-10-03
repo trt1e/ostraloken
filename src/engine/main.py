@@ -7,6 +7,7 @@ print("BOOTING OSTRALOKEN!")
 import re
 from pathlib import Path
 import subprocess # To run "$ restart" in the terminal
+import sys
 import threading # for discord bot to run separetly
 
 # import scripts
@@ -142,139 +143,139 @@ def run():
     print('(Print "help" for commands)')
     while True:
         answer = input("$ ").strip().lower()
-        try:
-            if all_commands["help"].check_match_base(answer):
-                currant_catagory = ""
-                print("--------------------------------------------------------")
-                for currant_command in list(all_commands.values()):
-                    if currant_command.catagory != "Base" and currant_catagory != currant_command.catagory:
-                        print(f"\n    {currant_command.catagory.upper()}")
-                    currant_command.print_help()
-                    currant_catagory = currant_command.catagory
-                print("--------------------------------------------------------")
+        #try:
+        if all_commands["help"].check_match_base(answer):
+            currant_catagory = ""
+            print("--------------------------------------------------------")
+            for currant_command in list(all_commands.values()):
+                if currant_command.catagory != "Base" and currant_catagory != currant_command.catagory:
+                    print(f"\n    {currant_command.catagory.upper()}")
+                currant_command.print_help()
+                currant_catagory = currant_command.catagory
+            print("--------------------------------------------------------")
+        
+        elif all_commands["close"].check_match_base(answer):
+            break
+
+        elif all_commands["restart"].check_match_base(answer):
+            print("Restarting...")
+            subprocess.run([sys.executable, "-u", str(config.engine_path / Path("main.py"))])
+            break
             
-            elif all_commands["close"].check_match_base(answer):
-                break
-
-            elif all_commands["restart"].check_match_base(answer):
-                print("Restarting...")
-                subprocess.run(f'python -u "{config.engine_path / Path("main.py")}"')
-                break
+        # new content
+        elif all_commands["new template"].check_match_base(answer):
+            amount_of_articles = input("Amount articles: ")
+            if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
+                amount_of_articles = 0
+            amount_of_notiser = input("Amount notiser: ")
+            if amount_of_notiser is None or amount_of_notiser == "" or not re.search(r"[0-9]", amount_of_notiser):
+                amount_of_notiser = 0
+            amount_of_hear_me_outs = input("Amount hear me outs: ")
+            if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "" or not re.search(r"[0-9]", amount_of_hear_me_outs):
+                amount_of_hear_me_outs = 0
+            amount_of_roda_flaggor = input("Amount roda flaggor: ")
+            if amount_of_roda_flaggor is None or amount_of_roda_flaggor == "" or not re.search(r"[0-9]", amount_of_roda_flaggor):
+                amount_of_roda_flaggor = 0
                 
-            # new content
-            elif all_commands["new template"].check_match_base(answer):
-                amount_of_articles = input("Amount articles: ")
-                if amount_of_articles is None or amount_of_articles == "" or not re.search(r"[0-9]", amount_of_articles):
-                    amount_of_articles = 0
-                amount_of_notiser = input("Amount notiser: ")
-                if amount_of_notiser is None or amount_of_notiser == "" or not re.search(r"[0-9]", amount_of_notiser):
-                    amount_of_notiser = 0
-                amount_of_hear_me_outs = input("Amount hear me outs: ")
-                if amount_of_hear_me_outs is None or amount_of_hear_me_outs == "" or not re.search(r"[0-9]", amount_of_hear_me_outs):
-                    amount_of_hear_me_outs = 0
-                amount_of_roda_flaggor = input("Amount roda flaggor: ")
-                if amount_of_roda_flaggor is None or amount_of_roda_flaggor == "" or not re.search(r"[0-9]", amount_of_roda_flaggor):
-                    amount_of_roda_flaggor = 0
-                    
-                day = input("Day of release: ")
-                if day is None or day == "" or not re.search(r"[0-9]", day):
-                    day = "DD"
-                month = input("Month of release: ")
-                if month is None or month == "" or not re.search(r"[0-9]", month):
-                    month = "MM"
-                year = input("Year of release: ")
-                if year is None or year == "" or not re.search(r"[0-9]", year):
-                    year = "ÅÅÅÅ"
-                
-                next_utgava_number = len(reader.read_articles()) + 1
-    
-                template_generator.setup_new_utgava_folder(next_utgava_number, day, month, year)
-                template_generator.setup_new_utgava_articles(next_utgava_number, amount_of_articles)
-                template_generator.setup_new_notiser(next_utgava_number, amount_of_notiser, day, month, year)
-                template_generator.setup_new_hear_me_outs(next_utgava_number, amount_of_hear_me_outs)
-                template_generator.setup_new_rod_flagga(next_utgava_number, amount_of_roda_flaggor)
+            day = input("Day of release: ")
+            if day is None or day == "" or not re.search(r"[0-9]", day):
+                day = "DD"
+            month = input("Month of release: ")
+            if month is None or month == "" or not re.search(r"[0-9]", month):
+                month = "MM"
+            year = input("Year of release: ")
+            if year is None or year == "" or not re.search(r"[0-9]", year):
+                year = "ÅÅÅÅ"
             
-            # generate text files
-            elif all_commands["gen all"].check_match_base(answer):
-                gen_replacment_dict.replacment_for_all = gen_replacment_dict.create_dictionary()
-                gen_replacment_dict.generate_all_normal_pages()
-                articles.generate_all_articles()
-                sitemap.generate_all_sitemaps()
-                
-            # images
-            elif all_commands["copy images"].check_match_base(answer):
-                matching_keys = all_commands["copy images"].check_match_keys(answer)
-                
-                gen_type = []
-                output_type = []
-                
-                if "new" in matching_keys:
-                    gen_type.append("new")
-                if "all" in matching_keys:
-                    gen_type.append("all")
-                if "specific" in matching_keys:
-                    utgava_to_copy = input("Copy over images in utgava: ")
-                    if re.search(r"[0-9]", utgava_to_copy):
-                        gen_type.append(f"specific: {utgava_to_copy}")
-                    else:
-                        print(f"{utgava_to_copy} not a number")
-                
-                if "article images" in matching_keys:
-                    output_type.append("article_images")
-                if "social media images" in matching_keys:
-                    output_type.append("social_media_images")
-                if "article qr codes" in matching_keys:
-                    output_type.append("article_qr_codes")
-                
-                if matching_keys == [] or output_type == []:
-                    print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
-                
-                imgs.copy_over_images(output_type, gen_type)
-            # pdfs
-            elif all_commands["copy pdfs"].check_match_base(answer):
-                matching_keys = all_commands["copy pdfs"].check_match_keys(answer)
-                
-                gen_type = []
+            next_utgava_number = len(reader.read_articles()) + 1
 
-                if "new" in matching_keys:
-                    gen_type.append("new")
-                if "all" in matching_keys:
-                    gen_type.append("all")
-                if "specific" in matching_keys:
-                    utgava_to_copy = input("Copy over images in utgava: ")
-                    if re.search(r"[0-9]", utgava_to_copy):
-                        gen_type.append(f"specific: {utgava_to_copy}")
-                    else:
-                        print(f"{utgava_to_copy} not a number")
-                
-                if matching_keys == []:
-                    print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
-                
-                pdfs.copy_over_pdfs(gen_type)
-                    
-            # fix content
-            elif all_commands["inspect"].check_match_base(answer):
-                fixer.inspect_all()
-            elif all_commands["fix"].check_match_base(answer):
-                matching_keys = all_commands["fix"].check_match_keys(answer)
-
-                has_generated = False
-
-                if "citationmarks" in matching_keys:
-                    fixer.fix_citationmarks()
-                    has_generated = True
-                if "article names" in matching_keys:
-                    fixer.fix_all_backend_articles_names()
-                    has_generated = True
-                    
-                if not has_generated:
-                    print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
+            template_generator.setup_new_utgava_folder(next_utgava_number, day, month, year)
+            template_generator.setup_new_utgava_articles(next_utgava_number, amount_of_articles)
+            template_generator.setup_new_notiser(next_utgava_number, amount_of_notiser, day, month, year)
+            template_generator.setup_new_hear_me_outs(next_utgava_number, amount_of_hear_me_outs)
+            template_generator.setup_new_rod_flagga(next_utgava_number, amount_of_roda_flaggor)
+        
+        # generate text files
+        elif all_commands["gen all"].check_match_base(answer):
+            gen_replacment_dict.replacment_for_all = gen_replacment_dict.create_dictionary()
+            gen_replacment_dict.generate_all_normal_pages()
+            articles.generate_all_articles()
+            sitemap.generate_all_sitemaps()
             
-            else:
-                if answer != "":
-                    print(f'"{answer}" is not a command')
-        except Exception as e:
-            print(f"ERROR: {e}")
+        # images
+        elif all_commands["copy images"].check_match_base(answer):
+            matching_keys = all_commands["copy images"].check_match_keys(answer)
+            
+            gen_type = []
+            output_type = []
+            
+            if "new" in matching_keys:
+                gen_type.append("new")
+            if "all" in matching_keys:
+                gen_type.append("all")
+            if "specific" in matching_keys:
+                utgava_to_copy = input("Copy over images in utgava: ")
+                if re.search(r"[0-9]", utgava_to_copy):
+                    gen_type.append(f"specific: {utgava_to_copy}")
+                else:
+                    print(f"{utgava_to_copy} not a number")
+            
+            if "article images" in matching_keys:
+                output_type.append("article_images")
+            if "social media images" in matching_keys:
+                output_type.append("social_media_images")
+            if "article qr codes" in matching_keys:
+                output_type.append("article_qr_codes")
+            
+            if matching_keys == [] or output_type == []:
+                print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
+            
+            imgs.copy_over_images(output_type, gen_type)
+        # pdfs
+        elif all_commands["copy pdfs"].check_match_base(answer):
+            matching_keys = all_commands["copy pdfs"].check_match_keys(answer)
+            
+            gen_type = []
+
+            if "new" in matching_keys:
+                gen_type.append("new")
+            if "all" in matching_keys:
+                gen_type.append("all")
+            if "specific" in matching_keys:
+                utgava_to_copy = input("Copy over images in utgava: ")
+                if re.search(r"[0-9]", utgava_to_copy):
+                    gen_type.append(f"specific: {utgava_to_copy}")
+                else:
+                    print(f"{utgava_to_copy} not a number")
+            
+            if matching_keys == []:
+                print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
+            
+            pdfs.copy_over_pdfs(gen_type)
+                
+        # fix content
+        elif all_commands["inspect"].check_match_base(answer):
+            fixer.inspect_all()
+        elif all_commands["fix"].check_match_base(answer):
+            matching_keys = all_commands["fix"].check_match_keys(answer)
+
+            has_generated = False
+
+            if "citationmarks" in matching_keys:
+                fixer.fix_citationmarks()
+                has_generated = True
+            if "article names" in matching_keys:
+                fixer.fix_all_backend_articles_names()
+                has_generated = True
+                
+            if not has_generated:
+                print('WARNING: All inputs are not given. Nothing will be generated. For more info: do "$ help"')
+        
+        else:
+            if answer != "":
+                print(f'"{answer}" is not a command')
+        #except Exception as e:
+        #    print(f"ERROR: {e}")
 
 if __name__ == "__main__":
     run()

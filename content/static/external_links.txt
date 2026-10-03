@@ -1,3 +1,8 @@
+/~Status kan vara:
+/~  ”Viktig”
+/~  ”Speciell”
+/~  ””
+
 >>Rubrik: Skicka in din text
 >>Länk: https://forms.gle/ndDtACGvhW7Nv9Nb8
 >>Bild_källa: https://ostraloken.se/images/external_links/loken.webp
@@ -12,11 +17,6 @@
 >>Länk: https://forms.gle/RjMoWwHMn4SC8BJf9
 >>Bild_källa: https://ostraloken.se/images/external_links/loken.webp
 >>Status: Viktig
-
->>Rubrik: Russinkrisen musikal audition
->>Länk: https://forms.gle/Fa2rnMugfyVoyWEb9
->>Bild_källa: https://storage.needpix.com/rsynced_images/microphone-1018787_1280.png
->>Status: Speciell
 
 >>Rubrik: Podcast
 >>Länk: https://open.spotify.com/show/28Zu5yYdK6LARijjqPaNPf?si=d6558a31e44541d6
