@@ -34,7 +34,7 @@ BRÖDTEXT"""
 
 def setup_new_txt(utgava_number, count_list, day, month, year):
     base_content_path = Path(config.base_path / "content")
-    for file_dir in base_content_path.iterdir():
+    for file_dir in sorted(base_content_path.iterdir()):
         if file_dir.is_file() and file_dir.suffix == ".txt":
             content = f"""
 

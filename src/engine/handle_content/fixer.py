@@ -18,7 +18,7 @@ def inspect_all():
     
     for path in look_index:
         currant_folder = Path(str(path).replace(str(base_content_path), ""))
-        for file_dir in path.iterdir():
+        for file_dir in sorted(path.iterdir()):
             if file_dir.is_file() and file_dir.suffix == ".txt":
                 file_name = currant_folder / file_dir.name
                 # read the file
@@ -83,7 +83,7 @@ def fix_citationmarks():
     
     for path in look_index:
         currant_folder = Path(str(path).replace(str(base_content_path), ""))
-        for file_dir in path.iterdir():
+        for file_dir in sorted(path.iterdir()):
             if file_dir.is_file() and file_dir.suffix == ".txt":
                 file_name = currant_folder / file_dir.name
                 # read the file
@@ -109,10 +109,9 @@ def fix_citationmarks():
         print("No citationmarks to fix")
 
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
-    utgava_list = os.listdir(config.articles_path) # list all folders in dir
-    for utgava in utgava_list: # go thrpguth every folder to get all the upplagor
+    for utgava in sorted(config.articles_path.iterdir()): # go thrpguth every folder to get all the upplagor
         # list all files in dir 
-        for file_number, file_dir in enumerate(Path(config.articles_path / utgava).iterdir(), 1): # Go througth every file in the list and extract the content
+        for file_number, file_dir in sorted(enumerate(Path(config.articles_path / utgava.name).iterdir()), 1): # Go througth every file in the list and extract the content
             if file_dir.name != "utgava_info.txt" and file_dir.name[:4] != "IMG-" and file_dir.suffix not in config.img_extentions:
                 # extract
                 with open(file_dir, "tr", encoding="utf-8") as file:  
@@ -124,6 +123,6 @@ def fix_all_backend_articles_names(): # Make the names in articles more consista
                 
                 new_file_name = str(file_number) + "-" + utils.strip_string(basic_title, 100) + ".txt"
 
-                os.rename(file_dir, (config.articles_path / utgava / new_file_name))
+                os.rename(file_dir, (config.articles_path / utgava.name / new_file_name))
 
     print("Article names successfully fixed!")

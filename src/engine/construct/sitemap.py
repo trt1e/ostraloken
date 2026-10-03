@@ -38,7 +38,7 @@ def gen_sitemap(webb_path):
             currant_location = str(Path(*path.parts[min(int(0 - distance_from_root), 0):])).replace("\\", "/") + "/"
         currant_base_webb_address = "https://" + webb_address_root + "/" + currant_location
         
-        for item in path.iterdir():
+        for item in sorted(path.iterdir()):
             if item.is_dir(): # is a folder
                 paths_to_search.append(Path(path / item))
             elif item.is_file(): # is a file

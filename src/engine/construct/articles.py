@@ -53,7 +53,7 @@ def generate_site(template_path, generated_path, dictionary_of_replacment): # th
     
     # Add the base elements
     base_dir_path = config.base_path / Path("generated/webb/ostraloken.se/templates/base/")
-    for file in Path(base_dir_path).iterdir():
+    for file in sorted(Path(base_dir_path).iterdir()):
         data_read = get_base(base_dir_path / file.name)
         final_file = final_file.replace(f"[+{file.stem}+]", data_read) # add data to final file
         final_file = final_file.replace(f"[+{file.stem}:index_version+]", data_read.replace("../", "./")) # add index version of data to final file (for index.html)
@@ -116,7 +116,7 @@ def generate_lone_article(redirect_src, img_src_base, img_src_head, title, conte
         type_context = "<!-- NO TYPE HERE -->"
     else:
         type_context = f'<p class="type_text">{type}</p>'
-        
+
     # generate the article id
     article_id = utils.make_article_id(title, utgava_nmr)
     # We strip the title of any unwanted caracters and replace spaces with _. Then we do the same to the author but only the first 15 caracters and last we add type if there is any caracters left since it then cuts of so its only combinend 100 caracters

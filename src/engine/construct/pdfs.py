@@ -18,7 +18,7 @@ def copy_over_pdfs(gen_type: list):
     amount_of_pdfs = 0
     all_amount_pages = {}
     
-    for file_dir in Path(pdf_start_path).iterdir():
+    for file_dir in sorted(Path(pdf_start_path).iterdir()):
         amount_of_pdfs += 1
         utgava_number = re.findall(r"Ostra_Loken_utgava-(\d+)", file_dir.stem)[0]
 

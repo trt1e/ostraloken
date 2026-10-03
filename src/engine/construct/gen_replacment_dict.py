@@ -31,7 +31,7 @@ def create_dictionary():
 # Go throught and generate all non /a/ articles
 def generate_webbsite(webb_path, template_path):
     # Go throught all the folders in template dir
-    for file_dir in Path(template_path).iterdir():
+    for file_dir in sorted(Path(template_path).iterdir()):
         if Path(file_dir).is_file(): # If it is not a folder
             with open(file_dir, "tr", encoding="utf-8") as file:  
                 whole_file = file.read() # read it
