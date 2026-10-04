@@ -95,7 +95,7 @@ def copy_over_pdfs(gen_type: list):
     with open(pdf_js_program_path, "w", encoding="utf-8") as file:
         file.write(js_changed_content) # write to it
     
-    print("Uppdated amoutPDFs, maxPages and pagesPerPDF in PDF_reader.js")
+    print("Uppdated maxPages and pagesPerPDF in PDF_reader.js")
     
     # Copy over Om_krisen_kriget_eller_Ulf_Kristersson_kommer
     pdf_start_path = config.base_path / Path("content/extra/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.pdf")

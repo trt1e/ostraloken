@@ -24,3 +24,12 @@
 
 >>Rod_flagga: Att behöva äta tonfiskröra vid strömavbrott.
 >>Beskrivning: Det smakar det min katt spyr upp.
+
+>>Rod_flagga: Grovt häng med bälte.
+>>Beskrivning: Bältet är helt opraktsikt och jag vill inte se dina skinkor.
+
+>>Rod_flagga: Att ha på sig korta speedos badbyxor efter 45 års åldern
+>>Beskrivning: Det är nästan så att man tar upp mobilen och knappar in alla möjliga SOS nummer.
+
+>>Rod_flagga: Folk som inte tar översta tallriken i matsalen
+>>Beskrivning: Har aldrig hyst så mycket agg mot en grupp människor innan

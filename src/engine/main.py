@@ -1,6 +1,8 @@
 r"""
 Att fixa senare:
 - Alla artiklar innan utgava 11-5 ska dubbelkollas om artikeln är samma i pdf som text
+
+GÖR SÅ LINUX KAN RENDERA SOCIAL MEDIA IMAGES!!!
 """
 print("BOOTING OSTRALOKEN!")
 

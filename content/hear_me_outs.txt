@@ -168,3 +168,9 @@
 
 >>Hear_me_out: Pendeltågsförseningar
 >>Beskrivning: Är det inte underbart?
+
+>>Hear_me_out: Katten i hatten
+>>Beskrivning: Mystiskt aura och dyker upp från ingenstans när du minst anar det 😉
+
+>>Hear_me_out: Hissen
+>>Beskrivning: Hjälper komma uppåt i livet.

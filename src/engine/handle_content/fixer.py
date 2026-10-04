@@ -111,7 +111,7 @@ def fix_citationmarks():
 def fix_all_backend_articles_names(): # Make the names in articles more consistant
     for utgava in sorted(config.articles_path.iterdir()): # go thrpguth every folder to get all the upplagor
         # list all files in dir 
-        for file_number, file_dir in sorted(enumerate(Path(config.articles_path / utgava.name).iterdir()), 1): # Go througth every file in the list and extract the content
+        for file_number, file_dir in enumerate(sorted(Path(config.articles_path / utgava.name).iterdir()), 1): # Go througth every file in the list and extract the content
             if file_dir.name != "utgava_info.txt" and file_dir.name[:4] != "IMG-" and file_dir.suffix not in config.img_extentions:
                 # extract
                 with open(file_dir, "tr", encoding="utf-8") as file:  
