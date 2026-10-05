@@ -140,3 +140,13 @@ def make_qr_id(article_title: str, utgava_number: int) -> str:
     id_article = remove_åäö(article_title)
     id_article = strip_string(remove_html_elements(id_article), 100)
     return "QR-" + str(id_article) + "-U" + str(utgava_number) + ".webp"
+
+
+# sort correctly
+def sort_article(file_dir: Path):
+    if file_dir.name != "utgava_info.txt" and file_dir.name[:4] != "IMG-" and file_dir.suffix not in config.img_extentions:
+        utgava_number = re.findall(r"utgava_(\d+)", str(file_dir))[0]
+        whole_text = reader.read_txt(Path(f"articles/utgava_{utgava_number}/{file_dir.name}"))
+        return int(whole_text[0]["Placeringsnummer"]) # Return the key as the Placeringsnummer
+    else:
+        return 1000 # These remain unsorted and are placed after all articles

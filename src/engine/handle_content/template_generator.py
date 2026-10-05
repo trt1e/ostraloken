@@ -23,7 +23,8 @@ def setup_new_utgava_folder(utgava_number, day, month, year):
 def setup_new_utgava_articles(utgava_number, count_articles):
     # all new articles
     for article_number in range(int(count_articles)):
-        content = f""">>Rubrik: RUBRIK
+        content = f""">>Placeringsnummer: {article_number + 1}
+>>Rubrik: RUBRIK
 >>Texttyp: ARTIKEL_TYP
 >>Skribent: SKRIBENT
 >>Artikel: 

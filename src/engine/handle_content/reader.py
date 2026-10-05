@@ -38,7 +38,7 @@ def read_articles(): # !!! This one is treated diffrantly !!! To get the files a
     for utgava in sorted(Path(config.articles_path).iterdir()): # go thrpguth every folder to get all the upplagor
         article_output_sum = []
         formated_utgava_info = {}
-        for file_path in sorted(Path(utgava).iterdir()): # Go througth every file in the list and extract the content
+        for file_path in sorted(Path(utgava).iterdir(), key=utils.sort_article): # Go througth every file in the list and extract the content
             file_name = Path(file_path.name).stem
             if not file_name.startswith("IMG-") and Path(file_path.name).suffix not in config.img_extentions: # If the file name does not start with "IMG-"
                 # read the file
