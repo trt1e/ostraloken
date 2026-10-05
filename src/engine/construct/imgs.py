@@ -19,6 +19,7 @@ def copy_over_images(output_type: list, gen_type: list):
     instagram_article_image_template_path = config.base_path / Path("content/extra/social_media_imgs_templates/Normal_article.png")
     instagram_utgava_image_template_1_path = config.base_path / Path("content/extra/social_media_imgs_templates/Utgava_1.png")
     instagram_utgava_image_template_2_path = config.base_path / Path("content/extra/social_media_imgs_templates/Utgava_2.png")
+    impact_font_path = config.base_path / Path("content/extra/social_media_imgs_templates/impact.ttf")
     
     generated_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/a/images")
     generated_utgava_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")
@@ -172,8 +173,7 @@ def copy_over_images(output_type: list, gen_type: list):
                                 textarea_width = 950 # px
                                 draw_insta_image = ImageDraw.Draw(insta_image)
                                 # Import impact
-                                impact_font = config.base_path / Path("generated/social_media_imgs/templates/impact.ttf")
-                                insta_font = ImageFont.truetype(impact_font, 64)
+                                insta_font = ImageFont.truetype(impact_font_path, 64)
                                 # Split up the son-to-be-drawn-text
                                 currant_x_length = 0
                                 words_on_row = ""
@@ -288,8 +288,7 @@ def copy_over_images(output_type: list, gen_type: list):
                                         draw_insta_utgava_image = ImageDraw.Draw(insta_utgava_image)
                                         
                                         # Import impact
-                                        impact_font = config.base_path / Path("generated/social_media_imgs/templates/impact.ttf")
-                                        insta_font = ImageFont.truetype(impact_font, 48)
+                                        insta_font = ImageFont.truetype(impact_font_path, 48)
                                         
                                         # Add some articles
                                         currant_y = 140
