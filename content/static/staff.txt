@@ -17,10 +17,16 @@
 >>Bild_källa: https://ostraloken.se/images/people/John.webp
 
 >>Namn: Magne Nordström
->>Beskrivning: Magne Nordström är tidningens yngsta skribent som först gjorde sig känd för sina insändare under annat namn. Sedan dess har Nordström anställts av redaktionen och skriver idag alltid under sitt riktiga namn.
+>>Beskrivning: Magne Nordström gjorde sig först känd för sina insändare under annat namn. Sedan dess har Nordström anställts av redaktionen och skriver idag som en skrivveteran – under sitt riktiga namn.
 >>Titel: Skribent
 >>Epost: magne.nordström@ostraloken.se
 >>Bild_källa: https://ostraloken.se/images/people/Magne.webp
+
+>>Namn: Oskar Sundkvist Ehmsen
+>>Beskrivning: Efter att ha fått en skrivmaskin i present för ett antal år sedan har Oskar Sundkvist Ehmsen nu blivit en del av Östra Lökens redaktion. Han är Lökens yngsta och nyaste skribent, men det märks inte i hans skrivande.
+>>Titel: Skribent
+>>Epost: 
+>>Bild_källa: https://ostraloken.se/images/people/Oskar.webp
 
 >>Namn: Elliot Sandström
 >>Beskrivning: För att säkerställa att alla viktiga ögonblick i Östra Lökens historia plåtas finns Elliot Sandström där med kameran ute. Han har också skrivit en och annan artikel.

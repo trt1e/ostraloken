@@ -174,3 +174,9 @@
 
 >>Hear_me_out: Hissen
 >>Beskrivning: Hjälper komma uppåt i livet.
+
+>>Hear_me_out: Kondomer från normal
+>>Beskrivning: billig o bra
+
+>>Hear_me_out: Åka hissen en våning.
+>>Beskrivning: Orka gå i trapporna.
