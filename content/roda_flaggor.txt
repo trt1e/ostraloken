@@ -42,3 +42,9 @@
 
 >>Rod_flagga: banka i skoltoan
 >>Beskrivning: det var inte kul !!
+
+>>Rod_flagga: Socialist
+>>Beskrivning: Skapar fattigdom och misär
+
+>>Rod_flagga: Alltid rusha hem ASAP efter skolan
+>>Beskrivning: Liksom stanna och häng
