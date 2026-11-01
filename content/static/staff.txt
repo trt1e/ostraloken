@@ -23,10 +23,16 @@
 >>Bild_källa: https://ostraloken.se/images/people/Magne.webp
 
 >>Namn: Oskar Sundkvist Ehmsen
->>Beskrivning: Efter att ha fått en skrivmaskin i present för ett antal år sedan har Oskar Sundkvist Ehmsen nu blivit en del av Östra Lökens redaktion. Han är Lökens yngsta och nyaste skribent, men det märks inte i hans skrivande.
+>>Beskrivning: Efter att ha fått en skrivmaskin i present för ett antal år sedan har Oskar Sundkvist Ehmsen nu blivit en del av Östra Lökens redaktion.
 >>Titel: Skribent
 >>Epost: 
 >>Bild_källa: https://ostraloken.se/images/people/Oskar.webp
+
+>>Namn: David Cohen
+>>Beskrivning: Det är David.
+>>Titel: Skribent
+>>Epost: 
+>>Bild_källa: https://ostraloken.se/images/people/David.webp
 
 >>Namn: Elliot Sandström
 >>Beskrivning: För att säkerställa att alla viktiga ögonblick i Östra Lökens historia plåtas finns Elliot Sandström där med kameran ute. Han har också skrivit en och annan artikel.
@@ -34,8 +40,8 @@
 >>Epost: elliot.sandström@ostraloken.se
 >>Bild_källa: https://ostraloken.se/images/people/Elliot.webp
 
->>Namn: Miguel Aguirre Castillo
->>Beskrivning: I rollen som Tiktok-ansvarig hittar vi Miguel Aguirre Castillo. Med en förmåga att nå ut till unga sköter han kontot genom att ladda upp då och då.
->>Titel: Tiktok
->>Epost: miguel.aguirre.castillo@ostraloken.se
->>Bild_källa: https://ostraloken.se/images/people/Miguel.webp
+>->Namn: Miguel Aguirre Castillo
+>->Beskrivning: I rollen som Tiktok-ansvarig hittar vi Miguel Aguirre Castillo. Med en förmåga att nå ut till unga sköter han kontot genom att ladda upp då och då.
+>->Titel: Tiktok
+>->Epost: miguel.aguirre.castillo@ostraloken.se
+>->Bild_källa: https://ostraloken.se/images/people/Miguel.webp
