@@ -292,23 +292,13 @@ def generate_all_articles():
                 article_id = utils.make_article_id(article_title, utgava_number)
 
                 # Here we, if the articletype is Insändare, we ask if they want to send something in
-                if article_type == "Insändare" and has_extra_info is False: # this is "else if" so that it cant both have extra utgava info and a write-a-insändare prompt
+                if (article_type == "Insändare" or article_type == "Debatt" or article_type == "Inskickad artikel") and has_extra_info is False: # this is "else if" so that it cant both have extra utgava info and a write-a-insändare prompt
                     has_extra_info = True
                     # add prompt to write insändare if it is a insändare
-                    generated_article += """
+                    generated_article += f"""
 <a class="article extra_info article_page user_prompt" href="https://forms.gle/ndDtACGvhW7Nv9Nb8" target="_blank">
-    <h2>Skicka in en insändare!</h2>
-    <p>Vill du också skicka en insändare till Östra Löken? Fyll bara i denna korta enkät!</p>
-</a>
-"""
-                # Here we do the same thing but for debatt, asking if they want to send one
-                elif article_type == "Debatt" and has_extra_info is False:
-                    has_extra_info = True
-                    # add prompt to write debatt if it is a debatt article
-                    generated_article += """
-<a class="article extra_info article_page user_prompt" href="https://forms.gle/xpzXuTedP3f6Ym6P9" target="_blank">
-    <h2>Skicka in en debattartikel!</h2>
-    <p>Vill du också skicka en debattartikel till Östra Löken? Fyll bara i denna korta enkät!</p>
+    <h2>Skicka in en text!</h2>
+    <p>Vill du också skicka en {article_type.lower()} till Östra Löken? Fyll bara i denna korta enkät!</p>
 </a>
 """
                 random.seed(str(article_title))

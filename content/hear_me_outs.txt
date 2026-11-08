@@ -180,3 +180,12 @@
 
 >>Hear_me_out: Åka hissen en våning.
 >>Beskrivning: Orka gå i trapporna.
+
+>>Hear_me_out: Tacos 
+>>Beskrivning: 
+
+>>Hear_me_out: Snusmumriken
+>>Beskrivning: Han e lwk söt
+
+>>Hear_me_out: Carl XVI Gustaf
+>>Beskrivning: Så fkn kunglig ser ni inte alfahane

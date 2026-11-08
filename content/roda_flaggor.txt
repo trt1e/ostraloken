@@ -51,3 +51,6 @@
 
 >>Rod_flagga: Typ hälften av alla Hear me outs... 
 >>Beskrivning: 
+
+>>Rod_flagga: Att inte spela tetris i diskmaskinen
+>>Beskrivning: VEM lägger inte in disken som om det vore tetris???? Varför inte bara lägga in disken ordentligt och fint för att slippa ha på diskmaskinen 73 timmar om dygnet?
