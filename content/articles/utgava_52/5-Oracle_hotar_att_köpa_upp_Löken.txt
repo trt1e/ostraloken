@@ -1,0 +1,9 @@
+>>Placeringsnummer: 6
+>>Rubrik: Oracle hotar att köpa upp Löken
+>>Texttyp: Ekonomi
+>>Skribent: David Cohen
+>>Artikel: 
+Knappt någon utanför den innersta kretsen i Oracles ledning vet hur Östra löken hänger ihop med bolaget. En anledning till uppköpet kan vara att Östra löken är en av de få verksamheter vars värde inte riskerar att falla om AI-bubblan spricker.<br><br>
+Oracle är ett företag som är ökänt för sin marknadsföringsstrategi. Så fort ett bolag med någon som helst ambition dyker upp köper Oracle upp dem. Oräkneliga organisationer och lovande småföretag har slukats upp på det viset. Trots det ökar pressen på deras chefer. Det är tydligt att deras investerare tycker att pengarna inte räcker, och att investeringen i AI måste snabba på.<br><br>
+Det publiceras inte offentligt hur mycket Löken tjänar på sina operationer, så det går inte att säga med säkerhet hur mycket av deras pengar går till datacenter-investering. Man skulle kunna tänka sig att Oracle skulle vara mer intresserad av det. Tänk om det inte läggs tillräckligt mycket på att bygga om hela närområdet till en serverfarm?<br><br>
+Tråkigt nog finns det också en risk att redaktionens finansavdelning sätter stopp för det hela. Huvudanledningen till det är villkoren för uppköpet. Teamet som är sköter förhandlandet vill att det ska investeras mer på att bygga ut AI-funktioner i allt som har med Östra löken att göra. Varje person på redaktionen kommer att avskedas och ersättas av den senaste OpenAI modellen. Webbsidan ska få en sprillans ny chatbot som besökare kan engagera med för att ”förbättra läsarens upplevelse”. Mänskliga läsare behövs inte nu för tiden. De kommer så småningom också att ersättas av AI.
