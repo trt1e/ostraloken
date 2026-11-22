@@ -1,0 +1,8 @@
+>>Placeringsnummer: 2
+>>Rubrik: Googles autokorrekt är helt störd
+>>Texttyp: Teknik
+>>Skribent: David Cohen
+>>Artikel: 
+Googles autokorrekt är helt störd. Alla som har tvingats använda en av Googles många appar kan nämna åtminstone en gång då Google Docs försökte byta ett ord till ett annat, och sedan ångrade sig. Varje gång det händer har man två alternativ: antingen står man ut med de röda och blåa markörerna, eller så rapporterar man programmets orimliga förslag. Då får man hoppas och be att man inte störs av samma förslag nästa gång.<br><br>
+En sådan korrigerande funktion skulle kunna vara värt det, men den är alldeles för opraktisk som det ser ut idag. Den amerikanska myndigheten Bureau for Labour Statistics har visat att varje person som använder Google Docs tappar ungefär en timme per år för att brottas med Googles autokorrekt. Det uppskattas att denna förlust av produktivitet kan bland annat ha bidragit till den svarta tisdagen i 1929, börskraschen i 2008 och kollapsen av Sovjetunionen för 35 år sedan.<br><br>
+De smartaste teknikerna på Östra gymnasiet fick uppdraget av redaktionen att lösa problemet; den föreslagna lösningen är helt enkelt revolutionerande. Hela arbetsflödet, från skrivandet till publiceringen, kommer att skötas via fax, men bara under en kort tid. ”Beroendet på storföretagens slösaktiga program måste upphöra, helt enkelt”, berättar Guido, den ledande teknikaren. ”Vi jobbar hårt på att bygga vårt egna alternativ till Google Docs, men det kommer att ta ett tag. Personligen skulle jag hellre se artiklar skrivas på papper och därefter levereras med brevbärare, men att utnyttja telefonlinjerna funkar också”.

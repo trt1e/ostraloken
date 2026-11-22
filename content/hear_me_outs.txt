@@ -189,3 +189,9 @@
 
 >>Hear_me_out: Carl XVI Gustaf
 >>Beskrivning: Så fkn kunglig ser ni inte alfahane
+
+>>Hear_me_out: Glass framför kaminen
+>>Beskrivning: Perfekt blanding av varmt och kallt på kvällen
+
+>>Hear_me_out: Sluta cykla så sent som möjligt
+>>Beskrivning: Roligt att utmana ödet på isen
