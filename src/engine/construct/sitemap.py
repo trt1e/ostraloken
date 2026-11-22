@@ -17,9 +17,8 @@ def create_sitemap_url_part(loc, changefreq, priority):
     </url> 
 """
 
-def gen_sitemap(webb_path):
-    webbsite_path = webb_path / Path("webbsite")
-    webb_address_root = webbsite_path.parent.name
+def gen_sitemap(webbsite_path):
+    webb_address_root = webbsite_path.name
     
     paths_to_search = [Path(webbsite_path)]
     
@@ -75,5 +74,6 @@ def gen_sitemap(webb_path):
 
 # Generate all sitemaps
 def generate_all_sitemaps():
-    for webb_path in config.base_webb_paths:
-        gen_sitemap(webb_path)
+    for webb_path in config.webb_paths:
+        whole_webb_path = config.base_path / Path("generated" / webb_path)
+        gen_sitemap(whole_webb_path)

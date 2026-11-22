@@ -50,23 +50,21 @@ def generate_webbsite(webb_path, template_path):
                 print(f"WARNING: {file_dir} does not have a destination dir! Please add one. This file is skiped.")
                 continue
             
-            full_destination_dir = webb_path / "webbsite" / Path(str(destination_dir)) 
+            full_destination_dir = webb_path / Path(str(destination_dir)) 
             os.makedirs(full_destination_dir.parent, exist_ok=True) # make sure the folder exists, else: generate the folder
             articles.generate_site(file_dir, full_destination_dir, replacment_for_all)
-            # Set the generated site name (ex "ostraloken.se") as the folder under "webb"
-            generated_site_name = None
-            for i, part in enumerate(template_path.parts):
-                if part == "webb":
-                    generated_site_name = template_path.parts[i + 1]
+            # Set the generated site name (ex "ostraloken.se") as the folder under "generated"
+            generated_site_name = template_path.parts[-1]
                     
             print(f"Generated {generated_site_name}: {file_dir.stem}{file_dir.suffix}")
 
 # First find all the webb- and template paths
 def generate_all_normal_pages(): # go throught every file in templates
-    for webb_path in config.base_webb_paths:
-        template_path = webb_path / "templates"
-        extra_template_path = webb_path / "templates/extra"
+    for webb_path in config.webb_paths:
+        whole_webb_path = config.base_path / Path("generated" / webb_path)
+        template_path = config.base_path / Path("templates" / webb_path)
+        extra_template_path = config.base_path / Path("templates/extra" / webb_path)
         if extra_template_path.is_dir(): # If there is a extra/ folder in templates
-            generate_webbsite(webb_path, extra_template_path)
+            generate_webbsite(whole_webb_path, extra_template_path)
             
-        generate_webbsite(webb_path, template_path)
+        generate_webbsite(whole_webb_path, template_path)

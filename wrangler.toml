@@ -1,0 +1,5 @@
+name = "ostraloken"
+compatibility_date = "2026-11-20"
+
+[assets]
+directory = "./generated" # Byt ut mot mappen som ditt Python-skript spottar ur sig

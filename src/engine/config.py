@@ -10,10 +10,10 @@ base_path = Path(engine_path).parents[1]
 
 img_extentions = [".jpg", ".JPG", ".jpeg", ".JPEG", ".png", ".PNG", ".webp", ".WEBP"]
 
-base_webb_paths = [
-    base_path / Path("generated/webb/nyhetsflode.ostraloken.se"),
-    base_path / Path("generated/webb/bilder.ostraloken.se"),
-    base_path / Path("generated/webb/ostraloken.se")
+webb_paths = [
+    Path("nyhetsflode.ostraloken.se"),
+    Path("bilder.ostraloken.se"),
+    Path("ostraloken.se"),
 ]
 
 articles_path = base_path / Path("content/articles")

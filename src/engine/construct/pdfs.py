@@ -12,8 +12,8 @@ from engine import utils
 # Copy pdf:s
 def copy_over_pdfs(gen_type: list):
     pdf_start_path = config.base_path / Path("content/utgavor_pdfs")
-    pdf_file_end_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_files")
-    pdf_images_end_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")
+    pdf_file_end_path = config.base_path / Path("generated/ostraloken.se/pdfer/pdf_files")
+    pdf_images_end_path = config.base_path / Path("generated/ostraloken.se/pdfer/pdf_images")
     
     amount_of_pdfs = 0
     all_amount_pages = {}
@@ -77,7 +77,7 @@ def copy_over_pdfs(gen_type: list):
         print("No pdf:s left to copy")
         
     # change the PDFjs_reader.js in the /pdfer/js/ folder so that it has the correct amount of pdfs listed
-    pdf_js_program_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/js/PDF_reader.js")
+    pdf_js_program_path = config.base_path / Path("generated/ostraloken.se/pdfer/js/PDF_reader.js")
     
     
     # Sort amount all pages
@@ -99,7 +99,7 @@ def copy_over_pdfs(gen_type: list):
     
     # Copy over Om_krisen_kriget_eller_Ulf_Kristersson_kommer
     pdf_start_path = config.base_path / Path("content/extra/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.pdf")
-    pdf_file_end_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/pdf_files/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.pdf")
+    pdf_file_end_path = config.base_path / Path("generated/ostraloken.se/Om_krisen_kriget_eller_Ulf_Kristersson_kommer/pdf_files/Om_krisen_kriget_eller_Ulf_Kristersson_kommer.pdf")
     
     os.makedirs(Path(pdf_file_end_path).parent, exist_ok=True) # generate the folder
     shutil.copyfile(pdf_start_path, pdf_file_end_path)

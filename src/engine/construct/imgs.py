@@ -21,12 +21,12 @@ def copy_over_images(output_type: list, gen_type: list):
     instagram_utgava_image_template_2_path = config.base_path / Path("content/extra/social_media_imgs_templates/Utgava_2.png")
     impact_font_path = config.base_path / Path("content/extra/social_media_imgs_templates/impact.ttf")
     
-    generated_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/a/images")
-    generated_utgava_images_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/pdfer/pdf_images")
+    generated_images_path = config.base_path / Path("generated/ostraloken.se/a/images")
+    generated_utgava_images_path = config.base_path / Path("generated/ostraloken.se/pdfer/pdf_images")
     
-    article_qr_destination_base_dir = config.base_path / Path("generated/webb/ostraloken.se/webbsite/a/qr_codes")
+    article_qr_destination_base_dir = config.base_path / Path("generated/ostraloken.se/a/qr_codes")
     
-    generated_social_media_imgs_path = config.base_path / Path("generated/social_media_imgs")
+    generated_social_media_imgs_path = config.base_path / Path("social_media_imgs")
     
     all_articles = reader.read_articles()
     

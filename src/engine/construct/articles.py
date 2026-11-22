@@ -52,7 +52,7 @@ def generate_site(template_path, generated_path, dictionary_of_replacment): # th
         final_file = final_file.replace(str(ending), f"{ending} {start_warning}ATTENTION: YOU ARE RIGHT NOW IN A GENERATED FILE!{end_warning}")
     
     # Add the base elements
-    base_dir_path = config.base_path / Path("generated/webb/ostraloken.se/templates/base/")
+    base_dir_path = config.base_path / Path("templates/ostraloken.se/base/")
     for file in sorted(Path(base_dir_path).iterdir()):
         data_read = get_base(base_dir_path / file.name)
         final_file = final_file.replace(f"[+{file.stem}+]", data_read) # add data to final file
@@ -247,8 +247,8 @@ def get_all_articles(base_redirect_html_url, get_what_articles):
 
 # Generate all the article files in /a/
 def generate_all_articles():
-    article_template_path = config.base_path / Path("generated/webb/ostraloken.se/templates/a/articles_pages.html")
-    generated_articles_path = config.base_path / Path("generated/webb/ostraloken.se/webbsite/a")
+    article_template_path = config.base_path / Path("templates/ostraloken.se/a/articles_pages.html")
+    generated_articles_path = config.base_path / Path("generated/ostraloken.se/a")
     
     list_of_articles_with_similer_type = get_all_articles("./a/", "Similar")
     all_short_storys = reader.read_txt("notiser.txt")
@@ -330,7 +330,6 @@ def generate_all_articles():
                     "[+text_to_intorduce_section+]": '<h2 id="read_similar">Läs liknande artiklar:</h2>', # so it can be removed
                     "[+thumb_image_url+]": "https://ostraloken.se/images/meta/Östra_Löken_webbsida_cover_image.png", # basic backup image
                     "[+scrolling_news_feed+]": feed_element, # add news feed
-                    #"[+qr_code_src+]": f"https://ostraloken.se/a/qr_codes/{utils.make_qr_id(article_title, utgava_number)}",
                     "[+qr_code_src+]": f"./qr_codes/{utils.make_qr_id(article_title, utgava_number)}"
                 } # what gets replaced and with what
                 
