@@ -1,0 +1,74 @@
+* {
+    scroll-margin-top: 30vh; /*Centers it when getting there from another url via # */
+}
+
+/* Content in main */
+.article:target {
+    animation: articleSelected 0.8s ease-in-out 0.1s 2;
+}
+
+.kontakt_card {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    margin-top: 1rem;
+}
+.kontakt_card img {
+    height: 8rem;
+    width: 8rem;
+    border-radius: 25%;
+}
+@media (width < 16rem) {
+    .kontakt_card img {
+        width: 100%;
+    }
+}
+.kontakt_card h2 {
+    font-size: 1.5rem;
+}
+.kontakt_card_not_link_section {
+    width: 100%;
+    display: flex;
+    padding: 0.2rem 0;
+    margin-bottom: 0.6rem;
+    outline: transparent solid 2px;
+}
+.kontakt_card:target .kontakt_card_not_link_section {
+    animation: kontaktCardNotLinkSectionSelected 0.8s ease-in-out 0.1s 2;
+}
+@media (width < 35rem) {
+    .kontakt_card_not_link_section {
+        display: block;
+    }
+}
+.kontakt_card_text_section {
+    margin-left: 0.8rem;
+}
+@media (width < 35rem) {
+    .kontakt_card_text_section {
+        margin-left: 0;
+    }
+}
+
+@keyframes kontaktCardNotLinkSectionSelected {
+    0% {
+        background-color: var(--bg-color);
+        outline: transparent solid 2px;
+        transform: translate(0, 0);
+        box-shadow: none;
+    }
+
+    50% {
+        background-color: var(--darker-bg-color);
+        outline: var(--primary-color) solid 2px;
+        transform: translate(0, -0.2rem);
+        box-shadow: var(--darkest-bg-color) 0.2rem 0.2rem 0.8rem;
+    }
+    
+    100% {
+        background-color: var(--bg-color);
+        outline: transparent solid 2px;
+        transform: translate(0, 0);
+        box-shadow: none;
+    }
+}
